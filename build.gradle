@@ -1,0 +1,22 @@
+apply plugin: "java"
+
+repositories {
+    mavenCentral()
+}
+
+group = "no.vegvesen.nvdb"
+
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
+
+dependencies {
+    compile "com.google.code.gson:gson:2.2.2"
+    compile "org.slf4j:slf4j-api:1.7.12"
+    compile "com.google.guava:guava:18.0"
+
+    compile "org.glassfish.jersey.core:jersey-client:2.20"
+    compile "org.glassfish.jersey.connectors:jersey-apache-connector:2.20"
+
+    testCompile "junit:junit:4.12"
+}
