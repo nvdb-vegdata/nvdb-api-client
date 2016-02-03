@@ -111,7 +111,7 @@ public class GenericResultSet<T> implements ResultSet<T> {
             if (currentPage != null) {
                 return currentPage.withStart(m);
             } else {
-                return null;
+                return Page.subPage(pageSizeParam, m);
             }
         }).orElse(null);
         this.hasNext = currentPage != null;
