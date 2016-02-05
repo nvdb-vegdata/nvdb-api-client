@@ -7,8 +7,8 @@ Open source Java client library for use with the NVDB REST API v2
 * The API version 2 is not yet released. This client is a work in progress.
 
 # How to build
-The repo contains the Gradle wrapper. The client is built running:
+The repo contains the Gradle wrapper. Put simply, the client can be built and published to your Maven local by running:
 ```
-./gradlew build
+./gradlew pTML
 ```
 
