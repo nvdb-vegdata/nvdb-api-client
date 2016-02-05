@@ -1,10 +1,12 @@
 apply plugin: "java"
 apply plugin: "idea"
+apply plugin: "maven-publish"
 apply from: "gradle/git.gradle"
 apply from: "gradle/versioning.gradle"
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 group = "no.vegvesen.nvdb"
@@ -39,6 +41,23 @@ artifacts {
     archives javadocJar
 }
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+	    artifactId 'nvdbapi-client'
+
+            from components.java
+
+            artifact sourceJar {
+                classifier "sources"
+            }
+
+            artifact javadocJar {
+                classifier "javadoc"
+            }
+        }
+    }
+}
 
 task writeBuildInfo << {
     Properties properties = new Properties();
