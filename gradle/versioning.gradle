@@ -1,0 +1,26 @@
+def version = rootProject.getProperty("build.version")
+
+if (rootProject.hasProperty("build.patch")) {
+    def patch = rootProject.getProperty("build.patch")
+    if (patch?.trim()) {
+        version += "-$patch"
+    }
+}
+
+if (rootProject.hasProperty("build.branch")) {
+    def branch = rootProject.getProperty("build.branch").toUpperCase()
+    if (branch != "MASTER") {
+        version += "-$branch"
+    }
+}
+
+ext.snapshot = false
+if (rootProject.hasProperty("build.snapshot")) {
+    snapshot = rootProject.getProperty("build.snapshot").toBoolean()
+}
+
+if (snapshot) {
+    version += "-SNAPSHOT"
+}
+
+project.version = version

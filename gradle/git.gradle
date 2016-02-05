@@ -1,0 +1,26 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.ajoberstar:gradle-git:1.1.0'
+    }
+}
+
+import org.ajoberstar.grgit.*
+import java.text.SimpleDateFormat
+
+def repo = Grgit.open(project.file('.'))
+def head = repo.head()
+
+SimpleDateFormat iso8601 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+ext {
+    name = "nvdbapi"
+    git_hash = head.id
+    git_shorthash = head.abbreviatedId
+    git_date = iso8601.format(head.date)
+    git_branch = repo.branch.current.name
+    build_date = iso8601.format(new Date())
+    build_builder = "${System.getProperty("user.name")}@${InetAddress.getLocalHost().getHostName()}"
+}
+repo.close()

@@ -1,5 +1,7 @@
 apply plugin: "java"
 apply plugin: "idea"
+apply from: "gradle/git.gradle"
+apply from: "gradle/versioning.gradle"
 
 repositories {
     mavenCentral()
@@ -37,3 +39,21 @@ artifacts {
     archives javadocJar
 }
 
+
+task writeBuildInfo << {
+    Properties properties = new Properties();
+    properties.put("git.branch", git_branch);
+    properties.put("git.hash", git_shorthash);
+    properties.put("git.date", git_date.toString());
+    properties.put("build.version", version);
+    properties.put("build.date", build_date.toString());
+    properties.put("build.builder", build_builder.toString());
+
+    def resourceDir = new File("${buildDir}/resources/main/")
+    resourceDir.mkdirs()
+    new File(resourceDir, "build.properties").withWriter { writer ->
+        properties.store(writer, null)
+    }
+}
+
+processResources.dependsOn(writeBuildInfo)
