@@ -23,35 +23,28 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package no.vegvesen.nvdbapi.client.gson;
+package no.vegvesen.nvdbapi.client.model;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.model.Geometry;
-import no.vegvesen.nvdbapi.client.model.RoadPlacement;
-import no.vegvesen.nvdbapi.client.model.RefLinkPosition;
-import no.vegvesen.nvdbapi.client.model.RoadPlacementBulkResult;
-import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
+import java.util.Optional;
 
-public final class RoadPlacementParser {
-    private RoadPlacementParser() {}
+public class RoadPlacementBulkResult {
+    private final String key;
+    private final Optional<RoadPlacement> result;
 
-    public static RoadPlacementBulkResult parseRoadPlacementBulkResult(String key, JsonElement value) {
-        RoadPlacement result = null;
-        if (!value.isJsonNull()) {
-            JsonObject obj = value.getAsJsonObject();
-            result = parseRoadPlacement(obj);
-        }
-
-        return new RoadPlacementBulkResult(key, result);
+    public RoadPlacementBulkResult(String key, RoadPlacement result) {
+        this.key = key;
+        this.result = Optional.ofNullable(result);
     }
 
-    public static RoadPlacement parseRoadPlacement(JsonObject obj) {
-        RoadRef roadRef = RoadRefParser.parse(obj.getAsJsonObject("vegreferanse"));
-        RefLinkPosition refLinkPosition = ShortRefLinkParser.parseShortRefLink(obj.getAsJsonObject("veglenke"));
-        Geometry point = GeometryParser.parse(obj.getAsJsonObject("geometri"));
-
-        return new RoadPlacement(roadRef, refLinkPosition, point);
+    public String getKey() {
+        return key;
     }
 
+    public boolean hasResult() {
+        return result.isPresent();
+    }
+
+    public Optional<RoadPlacement> getResult() {
+        return result;
+    }
 }

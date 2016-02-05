@@ -26,18 +26,18 @@
 package no.vegvesen.nvdbapi.client.clients;
 
 import com.google.common.base.Joiner;
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
 import no.vegvesen.nvdbapi.client.gson.RoadPlacementParser;
 import no.vegvesen.nvdbapi.client.model.Projection;
 import no.vegvesen.nvdbapi.client.model.RoadPlacement;
+import no.vegvesen.nvdbapi.client.model.RoadPlacementBulkResult;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class RoadPlacementClient extends AbstractJerseyClient {
 
@@ -61,34 +61,31 @@ public class RoadPlacementClient extends AbstractJerseyClient {
         return getResults("veglenke", request.getQueryParam(), projection);
     }
 
-    public List<RoadPlacement> getRoadPlacementsInBulk(List<RoadRefRequest> requests, Projection projection) {
+    public List<RoadPlacementBulkResult> getRoadPlacementsInBulk(List<RoadRefRequest> requests, Projection projection) {
         String queryParam = Joiner.on(",").join(requests);
         return getRoadPlacementsInBatch("vegreferanser", queryParam, projection);
     }
 
-    public List<RoadPlacement> getRoadPlacementsInBulkFromReflinks(List<RefLinkRequest> requests, Projection projection) {
+    public List<RoadPlacementBulkResult> getRoadPlacementsInBulkFromReflinks(List<RefLinkRequest> requests, Projection projection) {
         String queryParam = Joiner.on(",").join(requests);
         return getRoadPlacementsInBatch("veglenker", queryParam, projection);
     }
 
-    private List<RoadPlacement> getRoadPlacementsInBatch(String paramName, String queryParam, Projection projection) {
-        UriBuilder url = getRoadPlacementBulkEndpoint();
+    private List<RoadPlacementBulkResult> getRoadPlacementsInBatch(String paramName, String queryParam, Projection projection) {
+        UriBuilder url = bulkEndpoint();
 
         url.queryParam(paramName, queryParam);
         url.queryParam("srid", projection.getSrid());
 
         WebTarget target = getClient().target(url);
 
-        JsonArray results = JerseyHelper.execute(target).getAsJsonArray();
+        JsonObject resultMap = JerseyHelper.execute(target).getAsJsonObject();
 
-        List<RoadPlacement> placements = new ArrayList<>();
-        results.forEach(result -> placements.add(RoadPlacementParser.parseRoadPlacement(result.getAsJsonObject())));
-
-        return placements;
+        return resultMap.entrySet().stream().map(r -> RoadPlacementParser.parseRoadPlacementBulkResult(r.getKey(), r.getValue())).collect(Collectors.toList());
     }
 
     private RoadPlacement getResults(String paramName, String queryParam, Projection projection) {
-        UriBuilder url = getRoadPlacementEndpoint();
+        UriBuilder url = endpoint();
 
         url.queryParam(paramName, queryParam);
         url.queryParam("srid", projection.getSrid());
@@ -100,15 +97,12 @@ public class RoadPlacementClient extends AbstractJerseyClient {
         return RoadPlacementParser.parseRoadPlacement(result);
     }
 
-    private UriBuilder getRoadPlacementEndpoint() {
-        return getRoot().path("/veg");
+    private UriBuilder endpoint() {
+        return start().path("/veg");
     }
 
-    private UriBuilder getRoadPlacementBulkEndpoint() {
-        return getRoadPlacementEndpoint().path("/batch");
+    private UriBuilder bulkEndpoint() {
+        return endpoint().path("/batch");
     }
 
-    private UriBuilder getRoot() {
-        return start();
-    }
 }
