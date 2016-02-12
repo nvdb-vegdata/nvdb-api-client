@@ -13,12 +13,12 @@ When it's released, the API will be available at https://www.vegvesen.no/nvdb/ap
 This artifact will be published to Maven Central and Bintray upon releases.
 
 ## Gradle
-```
+```gradle
 compile "no.vegvesen.nvdb:nvdbapi-client:1.0.0"
 ```
 
 ## Maven
-```
+```xml
 <dependency>
     <groupId>no.vegvesen.nvdb</groupId>
     <artifactId>nvdbapi-client</artifactId>
@@ -38,7 +38,7 @@ To start using the library simply instantiate the factory. It takes three argume
 2. Value for request header **User-Agent**
 3. Value for request header **X-Client-Name**
 
-```
+```java
 // First, create factory
 ClientFactory factory = new ClientFactory("https://www.vegvesen.no/nvdb/api/v2", "Jersey2", "IntegrationTest");
 // Then, create your client. Typically, there's one per root endpoint
@@ -52,7 +52,7 @@ factory.close();
 ```
 # How to build 
 The repo contains the Gradle wrapper. The client is built running:
-```
+```bash
 // Simple compilation 
 ./gradlew build
 
