@@ -55,7 +55,7 @@ public final class ClientFactory implements AutoCloseable {
     }
 
     public ClientFactory(String baseUrl) {
-        this(baseUrl, null, null);
+        this(baseUrl, "nvdbapi-client", null);
     }
 
     public boolean isClosed() {
