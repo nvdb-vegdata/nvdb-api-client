@@ -45,7 +45,7 @@ ClientFactory factory = new ClientFactory("https://www.vegvesen.no/nvdb/api/v2",
 RoadObjectClient client = factory.createRoadObjectClient();
 
 // Example single object download
-RoadObject ro = client.getRoadObject(543, 1);
+RoadObject ro = client.getRoadObject(534, 1);
 
 // Remember to close your factory when you're done using it
 factory.close();
