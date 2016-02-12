@@ -40,7 +40,7 @@ To start using the library simply instantiate the factory. It takes three argume
 
 ```java
 // First, create factory
-ClientFactory factory = new ClientFactory("https://www.vegvesen.no/nvdb/api/v2", "Jersey2", "IntegrationTest");
+ClientFactory factory = new ClientFactory("https://www.vegvesen.no/nvdb/api/v2", "nvdbapi-client", "ACME");
 // Then, create your client. Typically, there's one per root endpoint
 RoadObjectClient client = factory.createRoadObjectClient();
 
