@@ -50,16 +50,16 @@ public final class GuidanceParametersParser {
         Boolean isAbstract = parseBooleanMember(obj, "abstrakt_type");
         Boolean hasFiltration = parseBooleanMember(obj, "filtrering");
         Boolean isDerived = parseBooleanMember(obj, "avledet");
-        Boolean needsParent = parseBooleanMember(obj, "ma_ha_mor");
+        Boolean needsParent = parseBooleanMember(obj, "må_ha_mor");
         Boolean isMeasureSet = parseBooleanMember(obj, "er_dataserie");
         String coverage = parseStringMember(obj, "dekningsgrad");
         Boolean overlaps = parseBooleanMember(obj, "overlapp");
 
         FeatureType.Relevant laneRelevant =
-                FeatureType.Relevant.from(parseStringMember(obj, "kjorefelt_relevant"));
+                FeatureType.Relevant.from(parseStringMember(obj, "kjørefelt_relevant"));
         FeatureType.Relevant sidePositionRelevant =
                 FeatureType.Relevant.from(parseStringMember(obj, "sideposisjon_relevant"));
-        Boolean heightRelevant = parseBooleanMember(obj, "hoyde_relevant");
+        Boolean heightRelevant = parseBooleanMember(obj, "høyde_relevant");
         Boolean directionRelevant = parseBooleanMember(obj, "retning_relevant");
         Boolean movable = parseBooleanMember(obj, "flyttbar");
         FeatureType.Survivability survivability =
