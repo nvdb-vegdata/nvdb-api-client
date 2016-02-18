@@ -28,10 +28,8 @@ package no.vegvesen.nvdbapi.client.gson;
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.roadnet.Link;
-import no.vegvesen.nvdbapi.client.model.roadnet.Ltema;
 import no.vegvesen.nvdbapi.client.model.roadnet.SosiMedium;
 import no.vegvesen.nvdbapi.client.model.roadnet.TopologyLevel;
-import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObject;
 import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
 
 import java.time.LocalDate;
@@ -56,7 +54,6 @@ public final class LinkParser {
 
         SosiMedium medium = Optional.ofNullable(parseStringMember(obj, "medium")).map(SosiMedium::from).orElse(null);
         TopologyLevel level = Optional.ofNullable(parseIntMember(obj, "topologinivå")).map(TopologyLevel::from).orElse(null);
-        Ltema roadType = Optional.ofNullable(parseIntMember(obj, "vegtype")).map(Ltema::from).orElse(null);
 
         // Areas
         int region = parseIntMember(obj, "region");
@@ -75,7 +72,7 @@ public final class LinkParser {
             roadRef = RoadRefParser.parse(obj.getAsJsonObject("vegreferanse"));
         }
 
-        return new Link(id, start, end, startNode, endNode, fromDate, toDate, medium, level, roadType, region, county, municipality, roadDepartment, geo, roadRef, isConnectionLink);
+        return new Link(id, start, end, startNode, endNode, fromDate, toDate, medium, level, region, county, municipality, roadDepartment, geo, roadRef, isConnectionLink);
     }
 
 }

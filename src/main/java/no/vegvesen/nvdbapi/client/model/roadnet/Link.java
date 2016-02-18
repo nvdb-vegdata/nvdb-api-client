@@ -40,7 +40,6 @@ public final class Link implements Serializable {
     private final double end;
     private final SosiMedium medium;
     private final TopologyLevel topologyLevel;
-    private final Ltema roadType;
     private final int county;
     private final int municipality;
     private final int region;
@@ -55,14 +54,13 @@ public final class Link implements Serializable {
     public Link(long id, double start, double end,
                 String startNode, String endNode,
                 LocalDate fromDate, LocalDate toDate,
-                SosiMedium medium, TopologyLevel level, Ltema roadType, int region, int county, int municipality, int roadDepartment,
+                SosiMedium medium, TopologyLevel level, int region, int county, int municipality, int roadDepartment,
                 Geometry geometry, RoadRef roadRef, boolean isConnectionLink) {
         this.id = id;
         this.start = start;
         this.end = end;
         this.medium = medium;
         this.topologyLevel = level;
-        this.roadType = roadType;
         this.county = county;
         this.municipality = municipality;
         this.region = region;
@@ -102,10 +100,6 @@ public final class Link implements Serializable {
 
     public RoadRef getRoadRef() {
         return roadRef;
-    }
-
-    public Ltema getRoadType() {
-        return roadType;
     }
 
     public int getCounty() {
