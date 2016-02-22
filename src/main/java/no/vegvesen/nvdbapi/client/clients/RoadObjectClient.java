@@ -45,6 +45,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MultivaluedHashMap;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriBuilder;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -82,7 +84,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
         UriBuilder path = start()
                 .path(String.format("/vegobjekter/%d/statistikk", featureTypeId));
 
-        applyRequestParameters(path, request);
+        applyRequestParameters(path, convert(request));
         WebTarget target = getClient().target(path);
 
         JsonElement e = JerseyHelper.execute(target);
@@ -93,14 +95,38 @@ public class RoadObjectClient extends AbstractJerseyClient {
         return getRoadObjects(featureTypeId, RoadObjectRequest.DEFAULT);
     }
 
+    /**
+     * This method can be used when you desire complete control of which query parameters is sent to the API
+     * @param featureTypeId
+     * @param queryParameters
+     * @return
+     */
+    public RoadObjectsResult getRoadObjects(int featureTypeId, MultivaluedMap<String, String> queryParameters) {
+        UriBuilder path = start()
+                .path(String.format("/vegobjekter/%d", featureTypeId));
+
+        applyRequestParameters(path, queryParameters);
+        WebTarget target = getClient().target(path);
+
+        return new RoadObjectsResult(target, extractPage(queryParameters), datakatalog);
+    }
+
     public RoadObjectsResult getRoadObjects(int featureTypeId, RoadObjectRequest request) {
         UriBuilder path = start()
                 .path(String.format("/vegobjekter/%d", featureTypeId));
 
-        applyRequestParameters(path, request);
+        applyRequestParameters(path, convert(request));
         WebTarget target = getClient().target(path);
 
         return new RoadObjectsResult(target, Optional.ofNullable(request.getPage()), datakatalog);
+    }
+
+    private Optional<Page> extractPage(MultivaluedMap<String, String> params) {
+        if (params.containsKey("antall")) {
+            return Optional.of(Page.count(Integer.parseInt(params.getFirst("antall"))));
+        }
+
+        return Optional.empty();
     }
 
     public RoadObject getRoadObject(int featureTypeId, long featureId) {
@@ -111,7 +137,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
         UriBuilder path = start()
                 .path(String.format("/vegobjekter/%d/%d", featureTypeId, featureId));
 
-        applyRequestParameters(path, request);
+        applyRequestParameters(path, convert(request));
 
         WebTarget target = getClient().target(path);
 
@@ -127,32 +153,44 @@ public class RoadObjectClient extends AbstractJerseyClient {
         Objects.requireNonNull(from, "Missing from argument!");
 
         UriBuilder path = start()
-                    .path(String.format("/vegobjekter/%d/endringer", typeId))
-                    .queryParam("etter", ArgUtil.date(from))
-                    .queryParam("type", type.getArgValue());
+                .path(String.format("/vegobjekter/%d/endringer", typeId))
+                .queryParam("etter", ArgUtil.date(from))
+                .queryParam("type", type.getArgValue());
 
         WebTarget target = getClient().target(path);
 
         return new ChangesResult(datakatalog.getDataTypeMap(), typeId, target, Optional.ofNullable(page));
     }
 
-    private static void applyRequestParameters(UriBuilder path, RoadObjectRequest request) {
-        // Paging is left to the RoadObjectsResult class
-        request.getSegmented().ifPresent(v -> path.queryParam("segmentering", v));
-        request.getProjection().ifPresent(v -> path.queryParam("srid", v.getSrid()));
-        request.getDistanceTolerance().ifPresent(v -> path.queryParam("geometritoleranse", v));
-        request.getDepth().ifPresent(v -> path.queryParam("dybde", v));
-        getIncludeArgument(request.getIncludes()).ifPresent(v -> path.queryParam("inkluder", v));
-        request.getAttributeFilter().ifPresent(v -> path.queryParam("egenskap", v));
-        request.getOverlapFilters().forEach(f -> path.queryParam("overlapp", f.toString()));
-        request.getBbox().ifPresent(v -> path.queryParam("kartutsnitt", v));
-        request.getRoadRefFilter().ifPresent(v -> path.queryParam("vegreferanse", v));
-        flatten(request.getMunicipalities()).ifPresent(v -> path.queryParam("kommune", v));
-        flatten(request.getCounties()).ifPresent(v -> path.queryParam("fylke", v));
-        flatten(request.getRegions()).ifPresent(v -> path.queryParam("region", v));
-        flatten(request.getRoadDepartments()).ifPresent(v -> path.queryParam("vegavdeling", v));
-        flattenString(request.getContractAreas()).ifPresent(v -> path.queryParam("kontraktsomrade", v));
-        flattenString(request.getNationalRoutes()).ifPresent(v -> path.queryParam("riksvegrute", v));
+    private static void applyRequestParameters(UriBuilder path, MultivaluedMap<String, String> params) {
+        params.forEach((k, values) -> {
+            path.queryParam(k, values.toArray(new String[0]));
+        });
+    }
+
+    private static MultivaluedMap<String, String> convert(RoadObjectRequest request) {
+        MultivaluedMap<String, String> map = new MultivaluedHashMap<>();
+
+        // Single parameters
+        request.getSegmented().ifPresent(v -> map.putSingle("segmentering", Boolean.toString(v)));
+        request.getProjection().ifPresent(v -> map.putSingle("srid", Integer.toString(v.getSrid())));
+        request.getDistanceTolerance().ifPresent(v -> map.putSingle("geometritoleranse", Integer.toString(v)));
+        request.getDepth().ifPresent(v -> map.putSingle("dybde", v));
+        getIncludeArgument(request.getIncludes()).ifPresent(v -> map.putSingle("inkluder", v));
+        request.getAttributeFilter().ifPresent(v -> map.putSingle("egenskap", v));
+        request.getBbox().ifPresent(v -> map.putSingle("kartutsnitt", v));
+        request.getRoadRefFilter().ifPresent(v -> map.putSingle("vegreferanse", v));
+        flatten(request.getMunicipalities()).ifPresent(v -> map.putSingle("kommune", v));
+        flatten(request.getCounties()).ifPresent(v -> map.putSingle("fylke", v));
+        flatten(request.getRegions()).ifPresent(v -> map.putSingle("region", v));
+        flatten(request.getRoadDepartments()).ifPresent(v -> map.putSingle("vegavdeling", v));
+        flattenString(request.getContractAreas()).ifPresent(v -> map.putSingle("kontraktsomrade", v));
+        flattenString(request.getNationalRoutes()).ifPresent(v -> map.putSingle("riksvegrute", v));
+
+        // Multiple parameters
+        request.getOverlapFilters().forEach(f -> map.add("overlapp", f.toString()));
+
+        return map;
     }
 
     private static Optional<String> flatten(List<Integer> set) {

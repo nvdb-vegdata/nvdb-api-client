@@ -51,7 +51,7 @@ public abstract class AbstractJerseyClient implements AutoCloseable, Serializabl
         this.client = client;
     }
 
-    public Client getClient() {
+    protected Client getClient() {
         return client;
     }
 
