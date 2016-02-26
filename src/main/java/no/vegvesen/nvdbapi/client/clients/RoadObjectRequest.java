@@ -139,7 +139,7 @@ public class RoadObjectRequest {
     }
 
     public RoadObjectRequest forStatistics() {
-        return toMutable().withPage(null).build();
+        return toMutable().withPage(null).withSegmented(null).build();
     }
 
     public Builder toMutable() {
