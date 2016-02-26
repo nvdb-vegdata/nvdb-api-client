@@ -30,20 +30,26 @@ public class Geometry {
     private final Projection projection;
     private final Quality quality;
     private final boolean isSimplified;
+    private final boolean isOwnGeometry;
 
-    public Geometry(String wkt, Projection projection, boolean isSimplified) {
-        this(wkt, projection, null, isSimplified);
+    public Geometry(String wkt, Projection projection, boolean isSimplified, boolean isOwnGeometry) {
+        this(wkt, projection, null, isSimplified, isOwnGeometry);
     }
 
-    public Geometry(String wkt, Projection projection, Quality quality, boolean isSimplified) {
+    public Geometry(String wkt, Projection projection, Quality quality, boolean isSimplified, boolean isOwnGeometry) {
         this.wkt = wkt;
         this.projection = projection;
         this.quality = quality;
         this.isSimplified = isSimplified;
+        this.isOwnGeometry = isOwnGeometry;
     }
 
     public boolean isSimplified() {
         return isSimplified;
+    }
+
+    public boolean isOwnGeometry() {
+        return isOwnGeometry;
     }
 
     public String getWkt() {

@@ -45,6 +45,7 @@ public final class GeometryParser {
         Projection srid = getNode(obj, "srid").map(GeometryParser::parseProjection).orElse(null);
 
         boolean isSimplified = Optional.ofNullable(parseBooleanMember(obj, "forenklet")).orElse(false);
+        boolean isOwnGeometry = Optional.ofNullable(parseBooleanMember(obj, "egengeometri")).orElse(false);
         Quality quality = null;
         if (obj.has("kvalitet")) {
             int method = parseIntMember(obj, "kvalitet.metode");
@@ -57,7 +58,7 @@ public final class GeometryParser {
             quality = new Quality(method, accuracy, heightMethod, heightAccuracy, tolerance, visibility, verifiedDate);
         }
 
-        return new Geometry(wkt, srid, quality, isSimplified);
+        return new Geometry(wkt, srid, quality, isSimplified, isOwnGeometry);
     }
 
     public static Projection parseProjection(JsonElement e) {

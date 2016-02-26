@@ -26,6 +26,7 @@
 package no.vegvesen.nvdbapi.client.model.roadobjects;
 
 import com.google.common.collect.ImmutableList;
+import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
 import no.vegvesen.nvdbapi.client.model.areas.Route;
 
@@ -40,15 +41,17 @@ public class Location {
     private final ImmutableList<Route> nationalRoutes;
     private final ImmutableList<RoadRef> roadRefs;
     private final ImmutableList<Placement> placements;
+    private final Geometry geometry;
 
     private final Double length;
 
     public Location(ImmutableList<Integer> municipalities, ImmutableList<Integer> counties, ImmutableList<Integer> regions,
                     ImmutableList<Integer> departments, Double length, ImmutableList<Placement> placements, ImmutableList<RoadRef> roadRefs,
-                    ImmutableList<ContractArea> contractAreas, ImmutableList<Route> nationalRoutes) {
+                    ImmutableList<ContractArea> contractAreas, ImmutableList<Route> nationalRoutes, Geometry geometry) {
         this.placements = placements;
         this.contractAreas = contractAreas;
         this.nationalRoutes = nationalRoutes;
+        this.geometry = geometry;
         this.municipalities = requireNonNull(municipalities);
         this.counties = requireNonNull(counties);
         this.regions = requireNonNull(regions);
@@ -93,4 +96,7 @@ public class Location {
         return length;
     }
 
+    public Geometry getGeometry() {
+        return geometry;
+    }
 }

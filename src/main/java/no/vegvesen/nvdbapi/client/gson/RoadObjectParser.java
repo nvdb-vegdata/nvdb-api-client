@@ -116,6 +116,11 @@ public final class RoadObjectParser {
                     .map(JsonElement::getAsJsonObject).map(AreaParser::parseRoute).collect(Collectors.toList());
         }
 
+        Geometry geometry = null;
+        if (obj.has("geometri")) {
+            geometry = GeometryParser.parse(obj.get("geometri").getAsJsonObject());
+        }
+
         JsonArray refs = obj.getAsJsonArray("vegreferanser");
         List<RoadRef> roadRefs = Collections.emptyList();
         if (refs != null) {
@@ -134,7 +139,8 @@ public final class RoadObjectParser {
         Double length = parseDoubleMember(obj, "strekningslengde");
 
         return new Location(ImmutableList.copyOf(municipalities), ImmutableList.copyOf(counties), ImmutableList.copyOf(regions),
-                            ImmutableList.copyOf(departments), length, ImmutableList.copyOf(placements), ImmutableList.copyOf(roadRefs), ImmutableList.copyOf(contractAreas), ImmutableList.copyOf(nationalRoutes));
+                ImmutableList.copyOf(departments), length, ImmutableList.copyOf(placements), ImmutableList.copyOf(roadRefs),
+                ImmutableList.copyOf(contractAreas), ImmutableList.copyOf(nationalRoutes), geometry);
     }
 
     private static SegmentationFilter parseSegmentFilter(JsonObject object) {
