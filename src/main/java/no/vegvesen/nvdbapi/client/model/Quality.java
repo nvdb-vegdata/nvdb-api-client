@@ -26,9 +26,10 @@
 package no.vegvesen.nvdbapi.client.model;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 public class Quality {
-    private final LocalDate verifiedDate;
+    private final Optional<LocalDate> verifiedDate;
     private final int method;
     private final Integer accuracy;
     private final int visibility;
@@ -37,7 +38,7 @@ public class Quality {
     private final int tolerance;
 
     public Quality(int method, Integer accuracy, Integer heightMethod, int heightAccuracy, int tolerance, int visibility, LocalDate verifiedDate) {
-        this.verifiedDate = verifiedDate;
+        this.verifiedDate = Optional.ofNullable(verifiedDate);
         this.method = method;
         this.accuracy = accuracy;
         this.visibility = visibility;
@@ -46,7 +47,7 @@ public class Quality {
         this.tolerance = tolerance;
     }
 
-    public LocalDate getVerifiedDate() {
+    public Optional<LocalDate> getVerifiedDate() {
         return verifiedDate;
     }
 
