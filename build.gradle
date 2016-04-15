@@ -47,7 +47,7 @@ artifacts {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-	    artifactId 'nvdbapi-client'
+	    artifactId 'nvdb-api-client'
 
             from components.java
 
