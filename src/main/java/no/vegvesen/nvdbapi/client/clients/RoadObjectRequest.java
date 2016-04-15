@@ -138,8 +138,19 @@ public class RoadObjectRequest {
         return nationalRoutes;
     }
 
+    /**
+     * This method strips any parameters that are not supported by the API
+     * for statistics requests
+     * @return
+     */
     public RoadObjectRequest forStatistics() {
-        return toMutable().withPage(null).withSegmented(null).build();
+        return toMutable()
+                .withIncludes(Collections.emptySet())
+                .withPage(null)
+                .withDistanceTolerance(null)
+                .withProjection(null)
+                .withDepth((String) null)
+                .build();
     }
 
     public Builder toMutable() {
