@@ -103,7 +103,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
      * @param queryParameters
      * @return
      */
-    public RoadObjectsResult getRoadobjects(int featureTypeId, MultivaluedMap<String, String> queryParameters) {
+    public RoadObjectsResult getRoadObjects(int featureTypeId, MultivaluedMap<String, String> queryParameters) {
         UriBuilder path = start()
                 .path(String.format("/vegobjekter/%d", featureTypeId));
 
