@@ -41,6 +41,8 @@ public final class GeometryParser {
     }
 
     public static Geometry parse(JsonObject obj) {
+        if (obj==null) return null;
+
         String wkt = parseStringMember(obj, "wkt");
         Projection srid = getNode(obj, "srid").map(GeometryParser::parseProjection).orElse(null);
 
