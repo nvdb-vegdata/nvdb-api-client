@@ -39,8 +39,6 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -52,10 +50,10 @@ import java.util.stream.StreamSupport;
 public class GenericResultSet<T> implements ResultSet<T> {
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private JsonObject currentResponse;
     private final WebTarget baseTarget;
     private final Function<JsonObject, T> parser;
     private Page currentPage;
+    private String token;
     private boolean hasNext = true;
 
     protected GenericResultSet(WebTarget baseTarget, Optional<Page> currentPage, Function<JsonObject, T> parser) {
@@ -96,7 +94,7 @@ public class GenericResultSet<T> implements ResultSet<T> {
 
         // Consume and parse response
         String json = response.readEntity(String.class);
-        this.currentResponse = new JsonParser().parse(json).getAsJsonObject();
+        JsonObject currentResponse = new JsonParser().parse(json).getAsJsonObject();
 
         int pageSizeParam = GsonUtil.parseIntMember(currentResponse, "metadata.antall");
         logger.debug("Page size returned was {}.", pageSizeParam);
@@ -108,20 +106,21 @@ public class GenericResultSet<T> implements ResultSet<T> {
                 .map(JsonElement::getAsJsonObject).collect(Collectors.toList());
 
         // Prepare next request
-        Optional<String> nextMarker = GsonUtil.getNode(currentResponse, "metadata.neste.start").map(JsonElement::getAsString);
-        this.currentPage = nextMarker.map(m -> {
-            if (currentPage != null) {
-                return currentPage.withStart(m);
-            } else {
-                return Page.subPage(pageSizeParam, m);
-            }
-        }).orElse(null);
-        this.hasNext = currentPage != null;
+        String nextToken = GsonUtil.getNode(currentResponse, "metadata.neste.start").map(JsonElement::getAsString).orElse(null);
+        logger.debug("last token: " + token + " next token: " + nextToken);
+        // no next page if last token and next token are equal
+        hasNext = nextToken != null && (token == null || !nextToken.equals(token));
+        token = nextToken;
+        currentPage = Page.subPage(pageSizeParam, token);
         logger.debug("Got {} features.", l.size());
         if (!hasNext) {
             logger.debug("Result set exhausted.");
         }
         return l.stream().map(parser).collect(Collectors.toList());
+    }
+
+    public String nextToken() {
+        return token;
     }
 
     private static WebTarget applyPage(Page page, WebTarget target) {
@@ -134,4 +133,5 @@ public class GenericResultSet<T> implements ResultSet<T> {
 
         return target;
     }
+
 }
