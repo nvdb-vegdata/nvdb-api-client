@@ -71,6 +71,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
     public Attribute getAttribute(int featureTypeId, long featureId, int attributeTypeId) {
         UriBuilder path = start()
                 .path(String.format("/vegobjekter/%d/%d/egenskaper/%d", featureTypeId, featureId, attributeTypeId));
+        logger.debug("Invoking {}", path);
         WebTarget target = getClient().target(path);
         JsonElement e = JerseyHelper.execute(target);
         return RoadObjectParser.parseAttribute(datakatalog.getDataTypeMap(), e.getAsJsonObject());
@@ -85,6 +86,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
                 .path(String.format("/vegobjekter/%d/statistikk", featureTypeId));
 
         applyRequestParameters(path, convert(request));
+        logger.debug("Invoking {}", path);
         WebTarget target = getClient().target(path);
 
         JsonElement e = JerseyHelper.execute(target);
@@ -101,7 +103,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
      * @param queryParameters
      * @return
      */
-    public RoadObjectsResult getRoadObjects(int featureTypeId, MultivaluedMap<String, String> queryParameters) {
+    public RoadObjectsResult getRoadobjects(int featureTypeId, MultivaluedMap<String, String> queryParameters) {
         UriBuilder path = start()
                 .path(String.format("/vegobjekter/%d", featureTypeId));
 
@@ -123,7 +125,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
     private Optional<Page> extractPage(MultivaluedMap<String, String> params) {
         if (params.containsKey("antall")) {
-            return Optional.of(Page.count(Integer.parseInt(params.getFirst("antall"))));
+           return Optional.of(Page.count(Integer.parseInt(params.getFirst("antall"))));
         }
 
         return Optional.empty();
@@ -137,6 +139,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
         UriBuilder path = start()
                 .path(String.format("/vegobjekter/%d/%d", featureTypeId, featureId));
 
+        logger.debug("Invoking {}", path);
         applyRequestParameters(path, convert(request));
 
         WebTarget target = getClient().target(path);
@@ -153,9 +156,9 @@ public class RoadObjectClient extends AbstractJerseyClient {
         Objects.requireNonNull(from, "Missing from argument!");
 
         UriBuilder path = start()
-                .path(String.format("/vegobjekter/%d/endringer", typeId))
-                .queryParam("etter", ArgUtil.date(from))
-                .queryParam("type", type.getArgValue());
+                    .path(String.format("/vegobjekter/%d/endringer", typeId))
+                    .queryParam("etter", ArgUtil.date(from))
+                    .queryParam("type", type.getArgValue());
 
         WebTarget target = getClient().target(path);
 
@@ -212,6 +215,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
     public List<Attribute> getAttributes(int featureTypeId, long featureId) {
         UriBuilder path = start()
                 .path(String.format("/vegobjekter/%d/%d/egenskaper", featureTypeId, featureId));
+        logger.debug("Invoking {}", path);
         WebTarget target = getClient().target(path);
 
         JsonArray array = JerseyHelper.execute(target).getAsJsonArray();
@@ -228,7 +232,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
     private static Optional<String> getIncludeArgument(Set<Include> values) {
         // Defaults
-        if (values.isEmpty()) {
+        if (values == null || values.isEmpty()) {
             return Optional.empty();
         }
 

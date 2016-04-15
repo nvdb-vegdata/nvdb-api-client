@@ -153,4 +153,10 @@ public class RoadObject {
     public Stream<Segment> segments() {
         return segments.stream();
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(id);
+    }
+
 }

@@ -101,7 +101,9 @@ public class GenericResultSet<T> implements ResultSet<T> {
         int pageSizeParam = GsonUtil.parseIntMember(currentResponse, "metadata.antall");
         logger.debug("Page size returned was {}.", pageSizeParam);
 
-        logger.debug("Response: {}", currentResponse.toString());
+        if (logger.isTraceEnabled()){
+            logger.trace("Response: {}", currentResponse.toString());
+        }
         List<JsonObject> l = StreamSupport.stream(currentResponse.getAsJsonArray("objekter").spliterator(), false)
                 .map(JsonElement::getAsJsonObject).collect(Collectors.toList());
 

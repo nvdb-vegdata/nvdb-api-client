@@ -139,7 +139,7 @@ public final class RoadObjectParser {
         Double length = parseDoubleMember(obj, "strekningslengde");
 
         return new Location(ImmutableList.copyOf(municipalities), ImmutableList.copyOf(counties), ImmutableList.copyOf(regions),
-                ImmutableList.copyOf(departments), length, ImmutableList.copyOf(placements), ImmutableList.copyOf(roadRefs),
+                            ImmutableList.copyOf(departments), length, ImmutableList.copyOf(placements), ImmutableList.copyOf(roadRefs),
                 ImmutableList.copyOf(contractAreas), ImmutableList.copyOf(nationalRoutes), geometry);
     }
 

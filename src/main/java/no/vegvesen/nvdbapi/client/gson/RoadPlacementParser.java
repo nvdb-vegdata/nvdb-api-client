@@ -51,7 +51,7 @@ public final class RoadPlacementParser {
         RefLinkPosition refLinkPosition = ShortRefLinkParser.parseShortRefLink(obj.getAsJsonObject("veglenke"));
         Geometry point = GeometryParser.parse(obj.getAsJsonObject("geometri"));
 
-        return new RoadPlacement(roadRef, refLinkPosition, point);
+       return new RoadPlacement(roadRef, refLinkPosition, point);
     }
 
 }
