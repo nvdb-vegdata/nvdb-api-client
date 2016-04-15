@@ -42,6 +42,7 @@ public class RoadObjectRequest {
     private final Optional<String> attributeFilter;
     private final Optional<String> bbox;
     private final Optional<String> roadRefFilter;
+    private final Optional<String> refLinkFilter;
     private final Set<RoadObjectClient.Include> includes;
     private final List<OverlapFilter> overlapFilters;
     private final List<Integer> municipalities;
@@ -61,6 +62,7 @@ public class RoadObjectRequest {
         attributeFilter = b.attributeFilter;
         bbox = b.bbox;
         roadRefFilter = b.roadRefFilter;
+        refLinkFilter = b.refLinkFilter;
         overlapFilters = b.overlapFilters;
         municipalities = b.municipalities;
         counties = b.counties;
@@ -114,6 +116,10 @@ public class RoadObjectRequest {
         return roadRefFilter;
     }
 
+    public Optional<String> getRefLinkFilter() {
+        return refLinkFilter;
+    }
+
     public List<Integer> getMunicipalities() {
         return municipalities;
     }
@@ -164,6 +170,7 @@ public class RoadObjectRequest {
         attributeFilter.ifPresent(b::withAttributeFilter);
         bbox.ifPresent(b::withBbox);
         roadRefFilter.ifPresent(b::withRoadRefFilter);
+        refLinkFilter.ifPresent(b::withRefLinkFilter);
         overlapFilters.forEach(of -> b.addOverlapFilter(of.filter, of.typeId));
         b.withMunicipalities(municipalities);
         b.withCounties(counties);
@@ -183,6 +190,7 @@ public class RoadObjectRequest {
         private Optional<String> attributeFilter = Optional.empty();
         private Optional<String> bbox = Optional.empty();
         private Optional<String> roadRefFilter = Optional.empty();
+        public Optional<String> refLinkFilter = Optional.empty();
         private List<OverlapFilter> overlapFilters = new ArrayList<>();
         private List<Integer> municipalities = Collections.emptyList();
         private List<Integer> counties = Collections.emptyList();
@@ -262,6 +270,11 @@ public class RoadObjectRequest {
 
         public Builder withRoadRefFilter(String filter) {
             this.roadRefFilter = Optional.ofNullable(filter);
+            return this;
+        }
+
+        public Builder withRefLinkFilter(String filter) {
+            this.refLinkFilter = Optional.ofNullable(filter);
             return this;
         }
 
