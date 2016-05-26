@@ -56,10 +56,10 @@ public final class LinkParser {
         TopologyLevel level = Optional.ofNullable(parseIntMember(obj, "topologinivå")).map(TopologyLevel::from).orElse(null);
 
         // Areas
-        int region = parseIntMember(obj, "region");
-        int county = parseIntMember(obj, "fylke");
-        int municipality = parseIntMember(obj, "kommune");
-        int roadDepartment = parseIntMember(obj, "vegavdeling");
+        Integer municipality = parseIntMember(obj, "kommune");
+        Integer region = parseIntMember(obj, "region");
+        Integer county = parseIntMember(obj, "fylke");
+        Integer roadDepartment = parseIntMember(obj, "vegavdeling");
 
         // Geometry
         Geometry geo = null;
