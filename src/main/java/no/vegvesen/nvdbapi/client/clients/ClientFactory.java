@@ -28,16 +28,20 @@ package no.vegvesen.nvdbapi.client.clients;
 import no.vegvesen.nvdbapi.client.clients.filters.RequestHeaderFilter;
 import no.vegvesen.nvdbapi.client.gson.GsonMessageBodyHandler;
 import no.vegvesen.nvdbapi.client.model.datakatalog.Datakatalog;
+import no.vegvesen.nvdbapi.client.util.LoggingFilter;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.glassfish.jersey.apache.connector.ApacheClientProperties;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.message.DeflateEncoder;
 import org.glassfish.jersey.message.GZipEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public final class ClientFactory implements AutoCloseable {
     private final String baseUrl;
@@ -46,16 +50,22 @@ public final class ClientFactory implements AutoCloseable {
     private Datakatalog datakatalog;
     private List<AbstractJerseyClient> clients;
     private boolean isClosed;
+    private final Logger debugLogger;
 
     public ClientFactory(String baseUrl, String userAgent, String xClientName) {
+        this(baseUrl, userAgent, xClientName, null);
+    }
+
+    public ClientFactory(String baseUrl, String userAgent, String xClientName, String debugLogName) {
         this.baseUrl = baseUrl;
         this.userAgent = userAgent;
         this.xClientName = xClientName;
+        this.debugLogger = Optional.ofNullable(debugLogName).filter(s -> s.trim().length() > 0).map(LoggerFactory::getLogger).orElse(null);
         this.clients = new ArrayList<>();
     }
 
     public ClientFactory(String baseUrl) {
-        this(baseUrl, null, null);
+        this(baseUrl, null, null, null);
     }
 
     public boolean isClosed() {
@@ -133,6 +143,9 @@ public final class ClientFactory implements AutoCloseable {
         if (enableCompression) {
             config.register(GZipEncoder.class);
             config.register(DeflateEncoder.class);
+        }
+        if (debugLogger != null) {
+            config.register(new LoggingFilter(debugLogger, true));
         }
         config.property(ApacheClientProperties.CONNECTION_MANAGER, new PoolingHttpClientConnectionManager());
         config.register(GsonMessageBodyHandler.class);
