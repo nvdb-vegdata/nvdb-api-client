@@ -3,11 +3,8 @@
 # nvdb-api-client
 Open source Java client library for use with the NVDB REST API v2
 
-# WARNING
-* The API version 2 is not yet released. This client is a work in progress.
-
 # API URL
-When it's released, the API will be available at https://www.vegvesen.no/nvdb/api/v2.
+Base URL for the API is https://www.vegvesen.no/nvdb/api/v2
 
 # Artifact
 This artifact will be published to Maven Central and Bintray upon releases.
