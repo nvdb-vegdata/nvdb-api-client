@@ -7,7 +7,7 @@ Open source Java client library for use with the NVDB REST API v2
 Base URL for the API is https://www.vegvesen.no/nvdb/api/v2
 
 # Artifact
-This artifact will be published to Maven Central and Bintray upon releases.
+This artifact will be published to _jCenter_ upon releases: http://jcenter.bintray.com/
 
 ## Gradle
 ```gradle
