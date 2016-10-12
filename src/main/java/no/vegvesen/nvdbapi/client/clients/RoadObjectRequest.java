@@ -35,14 +35,14 @@ public class RoadObjectRequest {
     public static final RoadObjectRequest DEFAULT = new Builder().build();
 
     private final Page page;
-    private final Optional<Boolean> segmented;
-    private final Optional<String> depth;
-    private final Optional<Projection> projection;
-    private final Optional<Integer> distanceTolerance;
-    private final Optional<String> attributeFilter;
-    private final Optional<String> bbox;
-    private final Optional<String> roadRefFilter;
-    private final Optional<String> refLinkFilter;
+    private final Boolean segmented;
+    private final String depth;
+    private final Projection projection;
+    private final Integer distanceTolerance;
+    private final String attributeFilter;
+    private final String bbox;
+    private final String roadRefFilter;
+    private final String refLinkFilter;
     private final Set<RoadObjectClient.Include> includes;
     private final List<OverlapFilter> overlapFilters;
     private final List<Integer> municipalities;
@@ -81,19 +81,19 @@ public class RoadObjectRequest {
     }
 
     public Optional<Boolean> getSegmented() {
-        return segmented;
+        return Optional.ofNullable(segmented);
     }
 
     public Optional<String> getDepth() {
-        return depth;
+        return Optional.ofNullable(depth);
     }
 
     public Optional<Projection> getProjection() {
-        return projection;
+        return Optional.ofNullable(projection);
     }
 
     public Optional<Integer> getDistanceTolerance() {
-        return distanceTolerance;
+        return Optional.ofNullable(distanceTolerance);
     }
 
     public Set<RoadObjectClient.Include> getIncludes() {
@@ -105,19 +105,19 @@ public class RoadObjectRequest {
     }
 
     public Optional<String> getAttributeFilter() {
-        return attributeFilter;
+        return Optional.ofNullable(attributeFilter);
     }
 
     public Optional<String> getBbox() {
-        return bbox;
+        return Optional.ofNullable(bbox);
     }
 
     public Optional<String> getRoadRefFilter() {
-        return roadRefFilter;
+        return Optional.ofNullable(roadRefFilter);
     }
 
     public Optional<String> getRefLinkFilter() {
-        return refLinkFilter;
+        return Optional.ofNullable(refLinkFilter);
     }
 
     public List<Integer> getMunicipalities() {
@@ -162,15 +162,15 @@ public class RoadObjectRequest {
     public Builder toMutable() {
         Builder b = new Builder();
         b.withPage(page);
-        segmented.ifPresent(b::withSegmented);
-        depth.ifPresent(b::withDepth);
-        projection.ifPresent(b::withProjection);
-        distanceTolerance.ifPresent(b::withDistanceTolerance);
+        b.withSegmented(segmented);
+        b.withDepth(depth);
+        b.withProjection(projection);
+        b.withDistanceTolerance(distanceTolerance);
         b.withIncludes(includes);
-        attributeFilter.ifPresent(b::withAttributeFilter);
-        bbox.ifPresent(b::withBbox);
-        roadRefFilter.ifPresent(b::withRoadRefFilter);
-        refLinkFilter.ifPresent(b::withRefLinkFilter);
+        b.withAttributeFilter(attributeFilter);
+        b.withBbox(bbox);
+        b.withRoadRefFilter(roadRefFilter);
+        b.withRefLinkFilter(refLinkFilter);
         overlapFilters.forEach(of -> b.addOverlapFilter(of.filter, of.typeId));
         b.withMunicipalities(municipalities);
         b.withCounties(counties);
@@ -182,15 +182,15 @@ public class RoadObjectRequest {
     public static class Builder {
 
         private Page page = Page.count(1000);
-        private Optional<Boolean> segmented = Optional.empty();
-        private Optional<String> depth = Optional.empty();
-        private Optional<Projection> projection = Optional.empty();
-        private Optional<Integer> distanceTolerance = Optional.empty();
+        private Boolean segmented = false;
+        private String depth = null;
+        private Projection projection = null;
+        private Integer distanceTolerance = null;
         private Set<RoadObjectClient.Include> includes = Collections.emptySet();
-        private Optional<String> attributeFilter = Optional.empty();
-        private Optional<String> bbox = Optional.empty();
-        private Optional<String> roadRefFilter = Optional.empty();
-        public Optional<String> refLinkFilter = Optional.empty();
+        private String attributeFilter = null;
+        private String bbox = null;
+        private String roadRefFilter = null;
+        private String refLinkFilter = null;
         private List<OverlapFilter> overlapFilters = new ArrayList<>();
         private List<Integer> municipalities = Collections.emptyList();
         private List<Integer> counties = Collections.emptyList();
@@ -216,17 +216,17 @@ public class RoadObjectRequest {
         }
 
         public Builder withSegmented(Boolean segmented) {
-            this.segmented = Optional.ofNullable(segmented);
+            this.segmented = segmented;
             return this;
         }
 
         public Builder withProjection(Projection projection) {
-            this.projection = Optional.ofNullable(projection);
+            this.projection = projection;
             return this;
         }
 
         public Builder withDepth(Integer depth) {
-            this.depth = Optional.ofNullable(depth).map(d -> d.toString());
+            this.depth = Optional.ofNullable(depth).map(Object::toString).orElse(null);
             return this;
         }
 
@@ -235,7 +235,7 @@ public class RoadObjectRequest {
         }
 
         private Builder withDepth(String depth) {
-            this.depth = Optional.ofNullable(depth);
+            this.depth = depth;
             return this;
         }
 
@@ -254,27 +254,27 @@ public class RoadObjectRequest {
         }
 
         public Builder withDistanceTolerance(Integer distanceTolerance) {
-            this.distanceTolerance = Optional.ofNullable(distanceTolerance);
+            this.distanceTolerance = distanceTolerance;
             return this;
         }
 
         public Builder withAttributeFilter(String attributeFilter) {
-            this.attributeFilter = Optional.ofNullable(attributeFilter);
+            this.attributeFilter = attributeFilter;
             return this;
         }
 
         public Builder withBbox(String bbox) {
-            this.bbox = Optional.ofNullable(bbox);
+            this.bbox = bbox;
             return this;
         }
 
         public Builder withRoadRefFilter(String filter) {
-            this.roadRefFilter = Optional.ofNullable(filter);
+            this.roadRefFilter = filter;
             return this;
         }
 
         public Builder withRefLinkFilter(String filter) {
-            this.refLinkFilter = Optional.ofNullable(filter);
+            this.refLinkFilter = filter;
             return this;
         }
 
