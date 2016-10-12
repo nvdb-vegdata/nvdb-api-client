@@ -99,13 +99,20 @@ public class JerseyHelper {
         Response response = execute(inv, Response.class);
 
         if (!isSuccess(response)) {
-            if (response.getStatus() == 404) {
-                return Optional.empty();
+            switch (response.getStatus()) {
+                case 404:
+                    return Optional.empty();
+                default:
+                    throw parseError(response);
             }
-            throw parseError(response);
         }
 
-        InputStream is = response.readEntity(InputStream.class);
-        return Optional.of(new JsonParser().parse(new InputStreamReader(is)));
+        switch (response.getStatus()) {
+            case 204:
+                return Optional.empty();
+            default:
+                InputStream is = response.readEntity(InputStream.class);
+                return Optional.of(new JsonParser().parse(new InputStreamReader(is)));
+        }
     }
 }
