@@ -25,6 +25,10 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
+import no.vegvesen.nvdbapi.client.model.Projection;
+
+import java.util.Optional;
+
 public class RoadRefRequest {
 
     private final int county;
@@ -34,6 +38,7 @@ public class RoadRefRequest {
     private final int roadNumber;
     private final int hp;
     private final int meter;
+    private final Projection projection;
 
     public RoadRefRequest(Builder builder) {
         this.county = builder.county;
@@ -43,6 +48,7 @@ public class RoadRefRequest {
         this.roadNumber = builder.roadNumber;
         this.hp = builder.hp;
         this.meter = builder.meter;
+        this.projection = builder.projection;
     }
 
     public int getCounty() { return county; }
@@ -69,6 +75,10 @@ public class RoadRefRequest {
         return meter;
     }
 
+    public Optional<Projection> getProjection() {
+        return Optional.ofNullable(projection);
+    }
+
     public String getQueryParam() {
         String county = String.format("%02d", this.getCounty());
         String municipality = String.format("%02d", this.getMunicipality());
@@ -90,39 +100,80 @@ public class RoadRefRequest {
         private int roadNumber;
         private int hp;
         private int meter;
+        private Projection projection;
 
+        @Deprecated
         public Builder setMunicipality(int municipality) {
+            return withMunicipality(municipality);
+        }
+
+        @Deprecated
+        public Builder setRoadCategory(String roadCategory) {
+            return withRoadCategory(roadCategory);
+        }
+
+        @Deprecated
+        public Builder setRoadStatus(String roadStatus) {
+            return withRoadStatus(roadStatus);
+        }
+
+        @Deprecated
+        public Builder setRoadNumber(int roadNumber) {
+            return withRoadNumber(roadNumber);
+        }
+
+        @Deprecated
+        public Builder setCounty(int county) {
+            return withCounty(county);
+        }
+
+        @Deprecated
+        public Builder setHp(int hp) {
+            return withHp(hp);
+        }
+
+        @Deprecated
+        public Builder setMeter(int meter) {
+            return withMeter(meter);
+        }
+
+        public Builder withMunicipality(int municipality) {
             this.municipality = municipality;
             return this;
         }
 
-        public Builder setRoadCategory(String roadCategory) {
+        public Builder withRoadCategory(String roadCategory) {
             this.roadCategory = roadCategory;
             return this;
         }
 
-        public Builder setRoadStatus(String roadStatus) {
+        public Builder withRoadStatus(String roadStatus) {
             this.roadStatus = roadStatus;
             return this;
         }
 
-        public Builder setRoadNumber(int roadNumber) {
+        public Builder withRoadNumber(int roadNumber) {
             this.roadNumber = roadNumber;
             return this;
         }
 
-        public Builder setCounty(int county) {
+        public Builder withCounty(int county) {
             this.county = county;
             return this;
         }
 
-        public Builder setHp(int hp) {
+        public Builder withHp(int hp) {
             this.hp = hp;
             return this;
         }
 
-        public Builder setMeter(int meter) {
+        public Builder withMeter(int meter) {
             this.meter = meter;
+            return this;
+        }
+
+        public Builder withProjection(Projection projection) {
+            this.projection = projection;
             return this;
         }
 

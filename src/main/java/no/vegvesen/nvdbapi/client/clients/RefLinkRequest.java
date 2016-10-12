@@ -25,14 +25,24 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
+import no.vegvesen.nvdbapi.client.model.Projection;
+
+import java.util.Optional;
+
 public class RefLinkRequest {
 
     private final int id;
     private final double position;
+    private final Projection projection;
 
     public RefLinkRequest(int id, double position) {
+        this(id, position, null);
+    }
+
+    public RefLinkRequest(int id, double position, Projection projection) {
         this.id = id;
         this.position = position;
+        this.projection = projection;
     }
 
     public int getId() {
@@ -41,6 +51,10 @@ public class RefLinkRequest {
 
     public double getPosition() {
         return position;
+    }
+
+    public Optional<Projection> getProjection() {
+        return Optional.ofNullable(projection);
     }
 
     public String getQueryParam() {

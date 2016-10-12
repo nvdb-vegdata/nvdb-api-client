@@ -26,6 +26,7 @@
 package no.vegvesen.nvdbapi.client.clients;
 
 import com.google.common.base.Joiner;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
 import no.vegvesen.nvdbapi.client.gson.RoadPlacementParser;
@@ -37,6 +38,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class RoadPlacementClient extends AbstractJerseyClient {
@@ -45,20 +47,67 @@ public class RoadPlacementClient extends AbstractJerseyClient {
         super(baseUrl, client);
     }
 
+    /**
+     *
+     * @param request
+     * @return
+     * @deprecated Use {@link #findPlacement(RefLinkRequest)}
+     */
+    @Deprecated
     public RoadPlacement getRoadPlacement(RoadRefRequest request) {
-        return getResults("vegreferanse", request.getQueryParam(), Projection.UTM33);
+        return getResults("vegreferanse", request.getQueryParam(), null).orElse(null);
     }
 
+    /**
+     *
+     * @param request
+     * @return
+     * @deprecated Use {@link #findPlacement(RefLinkRequest)}
+     */
+    @Deprecated
     public RoadPlacement getRoadPlacement(RoadRefRequest request, Projection projection) {
-        return getResults("vegreferanse", request.getQueryParam(), projection);
+        return getResults("vegreferanse", request.getQueryParam(), projection).orElse(null);
     }
 
+    /**
+     *
+     * @param request
+     * @return
+     * Use {@link #findPlacement(RefLinkRequest)}
+     */
+    @Deprecated
     public RoadPlacement getRoadPlacement(RefLinkRequest request) {
-        return getResults("veglenke", request.getQueryParam(), Projection.UTM33);
+        return getResults("veglenke", request.getQueryParam(), null).orElse(null);
     }
 
+    /**
+     *
+     * @param request
+     * @param projection
+     * @return
+     * Use {@link #findPlacement(RefLinkRequest)}
+     */
+    @Deprecated
     public RoadPlacement getRoadPlacement(RefLinkRequest request, Projection projection) {
-        return getResults("veglenke", request.getQueryParam(), projection);
+        return getResults("veglenke", request.getQueryParam(), projection).orElse(null);
+    }
+
+    /**
+     * Search for a placement by road ref.
+     * @param request search parameters
+     * @return
+     */
+    public Optional<RoadPlacement> findPlacement(RoadRefRequest request) {
+        return getResults("vegreferanse", request.getQueryParam(), request.getProjection().orElse(null));
+    }
+
+    /**
+     * Search for a placement by ref link.
+     * @param request search parameters
+     * @return
+     */
+    public Optional<RoadPlacement> findPlacement(RefLinkRequest request) {
+        return getResults("veglenke", request.getQueryParam(), request.getProjection().orElse(null));
     }
 
     public List<RoadPlacementBulkResult> getRoadPlacementsInBulk(List<RoadRefRequest> requests, Projection projection) {
@@ -75,7 +124,7 @@ public class RoadPlacementClient extends AbstractJerseyClient {
         UriBuilder url = bulkEndpoint();
 
         url.queryParam(paramName, queryParam);
-        url.queryParam("srid", projection.getSrid());
+        Optional.ofNullable(projection).ifPresent(p -> url.queryParam("srid", projection.getSrid()));
 
         WebTarget target = getClient().target(url);
 
@@ -84,17 +133,17 @@ public class RoadPlacementClient extends AbstractJerseyClient {
         return resultMap.entrySet().stream().map(r -> RoadPlacementParser.parseRoadPlacementBulkResult(r.getKey(), r.getValue())).collect(Collectors.toList());
     }
 
-    private RoadPlacement getResults(String paramName, String queryParam, Projection projection) {
+    private Optional<RoadPlacement> getResults(String paramName, String queryParam, Projection projection) {
         UriBuilder url = endpoint();
 
         url.queryParam(paramName, queryParam);
-        url.queryParam("srid", projection.getSrid());
+        Optional.ofNullable(projection).ifPresent(p -> url.queryParam("srid", projection.getSrid()));
 
         WebTarget target = getClient().target(url);
 
-        JsonObject result = JerseyHelper.execute(target).getAsJsonObject();
-
-        return RoadPlacementParser.parseRoadPlacement(result);
+        return JerseyHelper.executeOptional(target)
+                .map(JsonElement::getAsJsonObject)
+                .map(RoadPlacementParser::parseRoadPlacement);
     }
 
     private UriBuilder endpoint() {
