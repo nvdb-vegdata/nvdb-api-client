@@ -25,7 +25,11 @@
 
 package no.vegvesen.nvdbapi.client.model;
 
-public class Projection {
+import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Optional;
+
+public class Projection implements Serializable {
     public static final Projection UTM33 = new Projection(32633, "utm33");
     public static final Projection WGS84 = new Projection(4326, "wgs84");
 
@@ -43,5 +47,36 @@ public class Projection {
 
     public String getAlias() {
         return alias;
+    }
+
+    @Override
+    public String toString() {
+        return "Projection{" +
+                "alias='" + alias + '\'' +
+                ", srid=" + srid +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Projection that = (Projection) o;
+
+        if (srid != that.srid) return false;
+        return alias.equals(that.alias);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = alias.hashCode();
+        result = 31 * result + srid;
+        return result;
+    }
+
+    public static Optional<Projection> of(int srid) {
+        return Arrays.asList(UTM33, WGS84).stream().filter(p -> p.getSrid() == srid).findAny();
     }
 }

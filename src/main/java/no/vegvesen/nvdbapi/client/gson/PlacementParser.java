@@ -25,12 +25,18 @@
 
 package no.vegvesen.nvdbapi.client.gson;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.Position;
 import no.vegvesen.nvdbapi.client.model.RefLinkPosition;
 import no.vegvesen.nvdbapi.client.model.RoadPlacement;
 import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
+
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public final class PlacementParser {
 
@@ -49,6 +55,13 @@ public final class PlacementParser {
         Double distance = obj.getAsJsonPrimitive("avstand").getAsDouble();
 
         return new Position.Result(placement, distance);
+    }
+
+    public static List<Position.Result> parseList(JsonArray array) {
+        return StreamSupport.stream(array.spliterator(), false)
+                        .map(JsonElement::getAsJsonObject)
+                        .map(PlacementParser::parsePosition)
+                        .collect(Collectors.toList());
     }
 
 }

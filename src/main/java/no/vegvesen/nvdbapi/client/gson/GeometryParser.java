@@ -63,14 +63,7 @@ public final class GeometryParser {
         return new Geometry(wkt, srid, quality, isSimplified, isOwnGeometry);
     }
 
-    public static Projection parseProjection(JsonElement e) {
-        switch (e.getAsInt()) {
-            case 32633:
-                return Projection.UTM33;
-            case 4326:
-                return Projection.WGS84;
-            default:
-                return null;
-        }
+    static Projection parseProjection(JsonElement e) {
+        return Projection.of(e.getAsInt()).orElse(null);
     }
 }
