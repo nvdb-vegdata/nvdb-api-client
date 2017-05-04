@@ -25,44 +25,44 @@
 
 package no.vegvesen.nvdbapi.client.model.roadobjects;
 
-import com.google.common.collect.ImmutableList;
-
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 public class SegmentationFilter {
-    private final ImmutableList<Integer> municipalities;
-    private final ImmutableList<Integer> counties;
-    private final ImmutableList<Integer> regions;
-    private final ImmutableList<Integer> roadDepartments;
-    private final ImmutableList<RoadRefFilter> roadRefFilters;
+    private final List<Integer> municipalities;
+    private final List<Integer> counties;
+    private final List<Integer> regions;
+    private final List<Integer> roadDepartments;
+    private final List<RoadRefFilter> roadRefFilters;
 
-    public SegmentationFilter(ImmutableList<Integer> municipalities, ImmutableList<Integer> counties,
-                              ImmutableList<Integer> regions, ImmutableList<Integer> roadDepartments,
-                              ImmutableList<RoadRefFilter> roadRefFilters) {
-        this.roadRefFilters = Optional.ofNullable(roadRefFilters).orElse(ImmutableList.of());
-        this.municipalities = Optional.ofNullable(municipalities).orElse(ImmutableList.of());
-        this.counties = Optional.ofNullable(counties).orElse(ImmutableList.of());
-        this.regions = Optional.ofNullable(regions).orElse(ImmutableList.of());
-        this.roadDepartments = Optional.ofNullable(roadDepartments).orElse(ImmutableList.of());
+    public SegmentationFilter(List<Integer> municipalities, List<Integer> counties,
+                              List<Integer> regions, List<Integer> roadDepartments,
+                              List<RoadRefFilter> roadRefFilters) {
+        this.roadRefFilters = Optional.ofNullable(roadRefFilters).orElse(Collections.emptyList());
+        this.municipalities = Optional.ofNullable(municipalities).orElse(Collections.emptyList());
+        this.counties = Optional.ofNullable(counties).orElse(Collections.emptyList());
+        this.regions = Optional.ofNullable(regions).orElse(Collections.emptyList());
+        this.roadDepartments = Optional.ofNullable(roadDepartments).orElse(Collections.emptyList());
     }
 
-    public ImmutableList<RoadRefFilter> getRoadRefFilters() {
+    public List<RoadRefFilter> getRoadRefFilters() {
         return roadRefFilters;
     }
 
-    public ImmutableList<Integer> getMunicipalities() {
+    public List<Integer> getMunicipalities() {
         return municipalities;
     }
 
-    public ImmutableList<Integer> getCounties() {
+    public List<Integer> getCounties() {
         return counties;
     }
 
-    public ImmutableList<Integer> getRegions() {
+    public List<Integer> getRegions() {
         return regions;
     }
 
-    public ImmutableList<Integer> getRoadDepartments() {
+    public List<Integer> getRoadDepartments() {
         return roadDepartments;
     }
 }

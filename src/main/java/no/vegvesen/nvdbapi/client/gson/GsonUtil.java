@@ -25,12 +25,12 @@
 
 package no.vegvesen.nvdbapi.client.gson;
 
-import com.google.common.base.Strings;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import no.vegvesen.nvdbapi.client.model.datakatalog.JavaType;
+import no.vegvesen.nvdbapi.client.util.Strings;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

@@ -25,7 +25,6 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
-import com.google.common.base.Joiner;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
@@ -111,12 +110,12 @@ public class RoadPlacementClient extends AbstractJerseyClient {
     }
 
     public List<RoadPlacementBulkResult> getRoadPlacementsInBulk(List<RoadRefRequest> requests, Projection projection) {
-        String queryParam = Joiner.on(",").join(requests);
+        String queryParam = requests.stream().map(RoadRefRequest::getQueryParam).collect(Collectors.joining(","));
         return getRoadPlacementsInBatch("vegreferanser", queryParam, projection);
     }
 
     public List<RoadPlacementBulkResult> getRoadPlacementsInBulkFromReflinks(List<RefLinkRequest> requests, Projection projection) {
-        String queryParam = Joiner.on(",").join(requests);
+        String queryParam = requests.stream().map(RefLinkRequest::getQueryParam).collect(Collectors.joining(","));
         return getRoadPlacementsInBatch("veglenker", queryParam, projection);
     }
 

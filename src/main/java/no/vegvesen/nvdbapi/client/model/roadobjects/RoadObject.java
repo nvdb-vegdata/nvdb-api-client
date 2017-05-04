@@ -25,11 +25,11 @@
 
 package no.vegvesen.nvdbapi.client.model.roadobjects;
 
-import com.google.common.collect.ImmutableList;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.stream.Stream;
 
 public class RoadObject {
@@ -41,16 +41,16 @@ public class RoadObject {
     private final Location location;
     private final Geometry geometry;
     private final SegmentationFilter segmentationFilter;
-    private final ImmutableList<Segment> segments;
-    private final ImmutableList<Attribute> attributes;
-    private final ImmutableList<Association> children;
-    private final ImmutableList<Association> parents;
+    private final List<Segment> segments;
+    private final List<Attribute> attributes;
+    private final List<Association> children;
+    private final List<Association> parents;
     private final LocalDateTime lastModified;
 
     public RoadObject(long id, Integer typeId, Integer version, LocalDate startDate, LocalDate endDate,
-                      SegmentationFilter segmentationFilter, ImmutableList<Segment> segments,
+                      SegmentationFilter segmentationFilter, List<Segment> segments,
                       Location location, Geometry geometry, LocalDateTime lastModified,
-                      ImmutableList<Attribute> attributes, ImmutableList<Association> children, ImmutableList<Association> parents) {
+                      List<Attribute> attributes, List<Association> children, List<Association> parents) {
         this.id = id;
         this.typeId = typeId;
         this.version = version;
@@ -98,7 +98,7 @@ public class RoadObject {
         return lastModified;
     }
 
-    public ImmutableList<Attribute> getAttributes() {
+    public List<Attribute> getAttributes() {
         return attributes;
     }
 
@@ -110,11 +110,11 @@ public class RoadObject {
         return attributes.stream();
     }
 
-    public ImmutableList<Association> getChildren() {
+    public List<Association> getChildren() {
         return children;
     }
 
-    public ImmutableList<Association> getParents() {
+    public List<Association> getParents() {
         return parents;
     }
 
@@ -146,7 +146,7 @@ public class RoadObject {
         return segmentationFilter;
     }
 
-    public ImmutableList<Segment> getSegments() {
+    public List<Segment> getSegments() {
         return segments;
     }
 

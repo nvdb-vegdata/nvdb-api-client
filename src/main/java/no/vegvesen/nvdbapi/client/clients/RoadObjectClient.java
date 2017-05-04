@@ -25,7 +25,6 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
-import com.google.common.base.Joiner;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -210,7 +209,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
             return Optional.empty();
         }
 
-        return Optional.of(Joiner.on(",").join(set));
+        return Optional.of(set.stream().collect(Collectors.joining(",")));
     }
 
     public List<Attribute> getAttributes(int featureTypeId, long featureId) {

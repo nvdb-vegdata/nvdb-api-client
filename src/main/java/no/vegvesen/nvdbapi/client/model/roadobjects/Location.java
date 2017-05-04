@@ -25,29 +25,30 @@
 
 package no.vegvesen.nvdbapi.client.model.roadobjects;
 
-import com.google.common.collect.ImmutableList;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
 import no.vegvesen.nvdbapi.client.model.areas.Route;
 
+import java.util.List;
+
 import static java.util.Objects.requireNonNull;
 
 public class Location {
-    private final ImmutableList<Integer> municipalities;
-    private final ImmutableList<Integer> counties;
-    private final ImmutableList<Integer> regions;
-    private final ImmutableList<Integer> departments;
-    private final ImmutableList<ContractArea> contractAreas;
-    private final ImmutableList<Route> nationalRoutes;
-    private final ImmutableList<RoadRef> roadRefs;
-    private final ImmutableList<Placement> placements;
+    private final List<Integer> municipalities;
+    private final List<Integer> counties;
+    private final List<Integer> regions;
+    private final List<Integer> departments;
+    private final List<ContractArea> contractAreas;
+    private final List<Route> nationalRoutes;
+    private final List<RoadRef> roadRefs;
+    private final List<Placement> placements;
     private final Geometry geometry;
 
     private final Double length;
 
-    public Location(ImmutableList<Integer> municipalities, ImmutableList<Integer> counties, ImmutableList<Integer> regions,
-                    ImmutableList<Integer> departments, Double length, ImmutableList<Placement> placements, ImmutableList<RoadRef> roadRefs,
-                    ImmutableList<ContractArea> contractAreas, ImmutableList<Route> nationalRoutes, Geometry geometry) {
+    public Location(List<Integer> municipalities, List<Integer> counties, List<Integer> regions,
+                    List<Integer> departments, Double length, List<Placement> placements, List<RoadRef> roadRefs,
+                    List<ContractArea> contractAreas, List<Route> nationalRoutes, Geometry geometry) {
         this.placements = placements;
         this.contractAreas = contractAreas;
         this.nationalRoutes = nationalRoutes;
@@ -60,35 +61,35 @@ public class Location {
         this.roadRefs = requireNonNull(roadRefs);
     }
 
-    public ImmutableList<Integer> getMunicipalities() {
+    public List<Integer> getMunicipalities() {
         return municipalities;
     }
 
-    public ImmutableList<Integer> getCounties() {
+    public List<Integer> getCounties() {
         return counties;
     }
 
-    public ImmutableList<Integer> getRegions() {
+    public List<Integer> getRegions() {
         return regions;
     }
 
-    public ImmutableList<Integer> getDepartments() {
+    public List<Integer> getDepartments() {
         return departments;
     }
 
-    public ImmutableList<ContractArea> getContractAreas() {
+    public List<ContractArea> getContractAreas() {
         return contractAreas;
     }
 
-    public ImmutableList<Route> getNationalRoutes() {
+    public List<Route> getNationalRoutes() {
         return nationalRoutes;
     }
 
-    public ImmutableList<RoadRef> getRoadRefs() {
+    public List<RoadRef> getRoadRefs() {
         return roadRefs;
     }
 
-    public ImmutableList<Placement> getPlacements() {
+    public List<Placement> getPlacements() {
         return placements;
     }
 

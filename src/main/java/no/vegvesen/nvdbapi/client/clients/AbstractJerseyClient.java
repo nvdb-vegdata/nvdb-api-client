@@ -25,8 +25,8 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
-import com.google.common.base.Strings;
 import com.google.gson.Gson;
+import no.vegvesen.nvdbapi.client.util.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -20,7 +20,6 @@ targetCompatibility = "1.8"
 dependencies {
     api "com.google.code.gson:gson:2.8.0"
     api "org.slf4j:slf4j-api:1.7.25"
-    api "com.google.guava:guava:21.0"
 
     api "org.glassfish.jersey.core:jersey-client:2.25.1"
     api "org.glassfish.jersey.connectors:jersey-apache-connector:2.25.1"

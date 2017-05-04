@@ -25,8 +25,7 @@
 
 package no.vegvesen.nvdbapi.client.exceptions;
 
-import com.google.common.base.Strings;
-import com.google.common.base.Throwables;
+import no.vegvesen.nvdbapi.client.util.Strings;
 
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -45,7 +44,7 @@ public final class ApiError {
         try {
             this.helpUri = !Strings.isNullOrEmpty(helpUri) ? new URI(helpUri) : null;
         } catch (URISyntaxException ex) {
-            throw Throwables.propagate(ex);
+            throw new RuntimeException(ex);
         }
     }
 

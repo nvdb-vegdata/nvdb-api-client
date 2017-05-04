@@ -25,7 +25,6 @@
 
 package no.vegvesen.nvdbapi.client.gson;
 
-import com.google.common.collect.ImmutableList;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -95,8 +94,8 @@ public final class RoadObjectParser {
             segments = StreamSupport.stream(segmenter.spliterator(), false).map(e -> parseSegment(e.getAsJsonObject())).collect(Collectors.toList());
         }
 
-        return new RoadObject(id, typeId, version, startDate, endDate, segFilter, ImmutableList.copyOf(segments), location, geometry,
-                lastModified, ImmutableList.copyOf(attributes), ImmutableList.copyOf(childrenList), ImmutableList.copyOf(parentList));
+        return new RoadObject(id, typeId, version, startDate, endDate, segFilter, segments, location, geometry,
+                lastModified, attributes, childrenList, parentList);
     }
 
     private static Location parseLocation(JsonObject obj) {
@@ -138,9 +137,9 @@ public final class RoadObjectParser {
 
         Double length = parseDoubleMember(obj, "strekningslengde");
 
-        return new Location(ImmutableList.copyOf(municipalities), ImmutableList.copyOf(counties), ImmutableList.copyOf(regions),
-                            ImmutableList.copyOf(departments), length, ImmutableList.copyOf(placements), ImmutableList.copyOf(roadRefs),
-                ImmutableList.copyOf(contractAreas), ImmutableList.copyOf(nationalRoutes), geometry);
+        return new Location(municipalities, counties, regions,
+                departments, length, placements, roadRefs,
+                contractAreas, nationalRoutes, geometry);
     }
 
     private static SegmentationFilter parseSegmentFilter(JsonObject object) {
@@ -150,8 +149,8 @@ public final class RoadObjectParser {
         List<Integer> roadDepartments = Optional.ofNullable(parseIntListMember(object, "vegavdelinger")).orElse(Collections.emptyList());
         List<RoadRefFilter> roadRefFilters = Optional.ofNullable(parseRoadRefFilter(object)).orElse(Collections.emptyList());
 
-        return new SegmentationFilter(ImmutableList.copyOf(municipalities), ImmutableList.copyOf(counties),
-                ImmutableList.copyOf(regions), ImmutableList.copyOf(roadDepartments), ImmutableList.copyOf(roadRefFilters));
+        return new SegmentationFilter(municipalities, counties,
+                regions, roadDepartments, roadRefFilters);
     }
 
     private static Segment parseSegment(JsonObject obj) {

@@ -25,7 +25,6 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
-import com.google.common.base.Stopwatch;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
@@ -33,6 +32,7 @@ import no.vegvesen.nvdbapi.client.gson.AttributeTypeParser;
 import no.vegvesen.nvdbapi.client.gson.FeatureTypeParser;
 import no.vegvesen.nvdbapi.client.gson.DatakatalogVersionParser;
 import no.vegvesen.nvdbapi.client.model.datakatalog.*;
+import no.vegvesen.nvdbapi.client.util.Stopwatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -106,10 +106,10 @@ public class DatakatalogClient extends AbstractJerseyClient {
         List<FeatureType> types = new ArrayList<>();
         Stopwatch sw = Stopwatch.createStarted();
         JsonArray array = JerseyHelper.executeOptional(target).map(JsonElement::getAsJsonArray).get();
-        long requestTime = sw.stop().elapsed(TimeUnit.MILLISECONDS);
-        sw.reset().start();
+        long requestTime = sw.stop().elapsedMillis();
+        sw = Stopwatch.createStarted();
         array.forEach(e -> types.add(FeatureTypeParser.parse(dataTypes, e.getAsJsonObject())));
-        long parsingTime = sw.stop().elapsed(TimeUnit.MILLISECONDS);
+        long parsingTime = sw.stop().elapsedMillis();
         LOG.debug("Request execution took {} ms. Request parsing took {} ms. Total: {} ms.", requestTime, parsingTime, requestTime + parsingTime);
         return types;
     }

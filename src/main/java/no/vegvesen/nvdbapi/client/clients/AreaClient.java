@@ -25,7 +25,6 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
-import com.google.common.base.Joiner;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -154,7 +153,7 @@ public class AreaClient extends AbstractJerseyClient {
             inkluder.add("vegobjekt");
         }
 
-        return Joiner.on(",").join(inkluder);
+        return inkluder.stream().collect(Collectors.joining(","));
     }
 
     private UriBuilder areaRoot() {
