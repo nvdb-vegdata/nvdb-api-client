@@ -28,6 +28,7 @@ dependencies {
     compile "org.glassfish.jersey.connectors:jersey-apache-connector:2.25.1"
 
     testCompile "junit:junit:4.12"
+    testCompile 'ch.qos.logback:logback-site:1.2.2'
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {
