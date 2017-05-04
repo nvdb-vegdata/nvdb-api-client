@@ -1,5 +1,4 @@
-apply plugin: "java"
-apply plugin: "idea"
+apply plugin: 'java-library'
 apply plugin: "maven-publish"
 apply from: "gradle/git.gradle"
 apply from: "gradle/versioning.gradle"
@@ -19,16 +18,15 @@ targetCompatibility = "1.8"
 [compileJava, compileTestJava]*.options*.encoding = "UTF-8"
 
 dependencies {
-    compile "com.google.code.gson:gson:2.8.0"
-    compile "org.slf4j:slf4j-api:1.7.25"
-    compile "com.google.guava:guava:21.0"
+    api "com.google.code.gson:gson:2.8.0"
+    api "org.slf4j:slf4j-api:1.7.25"
+    api "com.google.guava:guava:21.0"
 
+    api "org.glassfish.jersey.core:jersey-client:2.25.1"
+    api "org.glassfish.jersey.connectors:jersey-apache-connector:2.25.1"
 
-    compile "org.glassfish.jersey.core:jersey-client:2.25.1"
-    compile "org.glassfish.jersey.connectors:jersey-apache-connector:2.25.1"
-
-    testCompile "junit:junit:4.12"
-    testCompile 'ch.qos.logback:logback-site:1.2.2'
+    testImplementation "junit:junit:4.12"
+    testRuntimeOnly 'ch.qos.logback:logback-site:1.2.2'
 }
 
 task sourceJar(type: Jar, dependsOn: classes) {
