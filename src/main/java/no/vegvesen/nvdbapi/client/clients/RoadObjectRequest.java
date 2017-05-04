@@ -182,7 +182,7 @@ public class RoadObjectRequest {
     public static class Builder {
 
         private Page page = Page.count(1000);
-        private Boolean segmented = false;
+        private Boolean segmented;
         private String depth = null;
         private Projection projection = null;
         private Integer distanceTolerance = null;

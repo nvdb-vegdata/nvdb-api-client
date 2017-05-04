@@ -54,6 +54,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import static no.vegvesen.nvdbapi.client.clients.RoadObjectRequestBuilder.convert;
+
 public class RoadObjectClient extends AbstractJerseyClient {
     private static final Logger logger = LoggerFactory.getLogger(RoadObjectClient.class);
     private final Datakatalog datakatalog;
@@ -166,50 +168,10 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
     private static void applyRequestParameters(UriBuilder path, MultivaluedMap<String, String> params) {
         params.forEach((k, values) -> {
-            path.queryParam(k, values.toArray(new String[0]));
+            values.forEach(val -> {
+                path.queryParam(k, val);
+            });
         });
-    }
-
-    private static MultivaluedMap<String, String> convert(RoadObjectRequest request) {
-        MultivaluedMap<String, String> map = new MultivaluedHashMap<>();
-
-        // Single parameters
-        request.getSegmented().ifPresent(v -> map.putSingle("segmentering", Boolean.toString(v)));
-        request.getProjection().ifPresent(v -> map.putSingle("srid", Integer.toString(v.getSrid())));
-        request.getDistanceTolerance().ifPresent(v -> map.putSingle("geometritoleranse", Integer.toString(v)));
-        request.getDepth().ifPresent(v -> map.putSingle("dybde", v));
-        getIncludeArgument(request.getIncludes()).ifPresent(v -> map.putSingle("inkluder", v));
-        request.getAttributeFilter().ifPresent(v -> map.putSingle("egenskap", v));
-        request.getBbox().ifPresent(v -> map.putSingle("kartutsnitt", v));
-        request.getRoadRefFilter().ifPresent(v -> map.putSingle("vegreferanse", v));
-        request.getRefLinkFilter().ifPresent(v -> map.putSingle("veglenke", v));
-        flatten(request.getMunicipalities()).ifPresent(v -> map.putSingle("kommune", v));
-        flatten(request.getCounties()).ifPresent(v -> map.putSingle("fylke", v));
-        flatten(request.getRegions()).ifPresent(v -> map.putSingle("region", v));
-        flatten(request.getRoadDepartments()).ifPresent(v -> map.putSingle("vegavdeling", v));
-        flattenString(request.getContractAreas()).ifPresent(v -> map.putSingle("kontraktsomrade", v));
-        flattenString(request.getNationalRoutes()).ifPresent(v -> map.putSingle("riksvegrute", v));
-
-        // Multiple parameters
-        request.getOverlapFilters().forEach(f -> map.add("overlapp", f.toString()));
-
-        return map;
-    }
-
-    private static Optional<String> flatten(List<Integer> set) {
-        if (set.isEmpty()) {
-            return Optional.empty();
-        }
-
-        return Optional.of(set.stream().map(i -> i.toString()).collect(Collectors.joining(",")));
-    }
-
-    private static Optional<String> flattenString(List<String> set) {
-        if (set.isEmpty()) {
-            return Optional.empty();
-        }
-
-        return Optional.of(set.stream().collect(Collectors.joining(",")));
     }
 
     public List<Attribute> getAttributes(int featureTypeId, long featureId) {
@@ -223,31 +185,6 @@ public class RoadObjectClient extends AbstractJerseyClient {
                 .map(e -> e.getAsJsonObject())
                 .map(o -> RoadObjectParser.parseAttribute(datakatalog.getDataTypeMap(), o))
                 .collect(Collectors.toList());
-    }
-
-    private static Optional<String> getIncludeArgument(Include... informationToInclude) {
-        Set<Include> values = informationToInclude != null && informationToInclude.length > 0 ? new HashSet<>(Arrays.asList(informationToInclude)) : Collections.emptySet();
-        return getIncludeArgument(values);
-    }
-
-    private static Optional<String> getIncludeArgument(Set<Include> values) {
-        // Defaults
-        if (values == null || values.isEmpty()) {
-            return Optional.empty();
-        }
-
-        // "All" trumps any other values
-        if (values.contains(Include.ALL)) {
-            return Optional.of(Include.ALL.value);
-        }
-
-        // "minimum" is redundant except when alone
-        if (values.size() == 1 && values.contains(Include.MINIMUM)) {
-            return Optional.of(Include.MINIMUM.value);
-        }
-
-        String val = values.stream().filter(i -> i != Include.MINIMUM).map(i -> i.value).collect(Collectors.joining(","));
-        return Optional.of(val);
     }
 
     public enum Include {
