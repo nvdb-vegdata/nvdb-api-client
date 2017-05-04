@@ -102,14 +102,8 @@ public class RoadObjectClient extends AbstractJerseyClient {
      * @param featureTypeId
      * @param queryParameters
      * @return
-     * @deprecated Use {@link #getRoadObjects(int, MultivaluedMap)}
      */
-    @Deprecated
     public RoadObjectsResult getRoadobjects(int featureTypeId, MultivaluedMap<String, String> queryParameters) {
-        return getRoadObjects(featureTypeId, queryParameters);
-    }
-
-    public RoadObjectsResult getRoadObjects(int featureTypeId, MultivaluedMap<String, String> queryParameters) {
         UriBuilder path = start()
                 .path(String.format("/vegobjekter/%d", featureTypeId));
 
