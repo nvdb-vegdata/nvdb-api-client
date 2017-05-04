@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, Statens vegvesen
+ * Copyright (c) 2015-2017, Statens vegvesen
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
