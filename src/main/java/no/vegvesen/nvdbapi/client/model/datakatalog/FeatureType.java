@@ -159,7 +159,7 @@ public final class FeatureType implements Serializable {
     public enum PlacementType {
         NONE("INGEN"),
         POINT("PUNKT"),
-        LINE("STREKNING"),
+        LINE("LINJE"),
         MULTI_POINT("MULTIPUNKT");
 
         private final String name;
