@@ -19,9 +19,10 @@ targetCompatibility = "1.8"
 [compileJava, compileTestJava]*.options*.encoding = "UTF-8"
 
 dependencies {
-    compile "com.google.code.gson:gson:2.2.2"
-    compile "org.slf4j:slf4j-api:1.7.12"
-    compile "com.google.guava:guava:18.0"
+    compile "com.google.code.gson:gson:2.8.0"
+    compile "org.slf4j:slf4j-api:1.7.25"
+    compile "com.google.guava:guava:21.0"
+
 
     compile "org.glassfish.jersey.core:jersey-client:2.25.1"
     compile "org.glassfish.jersey.connectors:jersey-apache-connector:2.25.1"
