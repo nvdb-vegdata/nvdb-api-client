@@ -99,7 +99,7 @@ public class RoadRef {
         return fromMeter;
     }
 
-    public int getToMeter() {
+    public Integer getToMeter() {
         return toMeter;
     }
 
