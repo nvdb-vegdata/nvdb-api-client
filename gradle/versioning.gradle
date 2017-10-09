@@ -3,7 +3,7 @@ def version = rootProject.getProperty("build.version")
 if (rootProject.hasProperty("build.patch")) {
     def patch = rootProject.getProperty("build.patch")
     if (patch?.trim()) {
-        version += "-$patch"
+        version += ".$patch"
     }
 }
 
