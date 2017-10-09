@@ -82,7 +82,10 @@ class RoadObjectRequestBuilder {
             return Optional.of(RoadObjectClient.Include.MINIMUM.stringValue());
         }
 
-        String val = values.stream().filter(i -> i != RoadObjectClient.Include.MINIMUM).map(i -> i.stringValue()).collect(Collectors.joining(","));
+        String val = values.stream()
+                           .filter(i -> i != RoadObjectClient.Include.MINIMUM)
+                           .map(RoadObjectClient.Include::stringValue)
+                           .collect(Collectors.joining(","));
         return Optional.of(val);
     }
 
@@ -91,7 +94,9 @@ class RoadObjectRequestBuilder {
             return Optional.empty();
         }
 
-        return Optional.of(set.stream().map(i -> i.toString()).collect(Collectors.joining(",")));
+        return Optional.of(set.stream()
+                              .map(Object::toString)
+                              .collect(Collectors.joining(",")));
     }
 
     private static Optional<String> flattenString(List<String> set) {
@@ -99,6 +104,7 @@ class RoadObjectRequestBuilder {
             return Optional.empty();
         }
 
-        return Optional.of(set.stream().collect(Collectors.joining(",")));
+        return Optional.of(set.stream()
+                              .collect(Collectors.joining(",")));
     }
 }

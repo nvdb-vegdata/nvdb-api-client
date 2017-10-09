@@ -77,7 +77,7 @@ public class LoggingFilter implements ClientRequestFilter, ClientResponseFilter,
     /**
      * Create a logging filter with custom settings of entity
      * logging.
-     *
+     * @param logger custom {@code {@link Logger}} to use
      * @param printEntity if true, entity will be logged as well up to the default maxEntitySize, which is 10KB
      */
     public LoggingFilter(Logger logger, boolean printEntity) {
@@ -90,6 +90,8 @@ public class LoggingFilter implements ClientRequestFilter, ClientResponseFilter,
      * Creates a logging filter with entity logging turned on, but potentially limiting the size
      * of entity to be buffered and logged.
      *
+     * @param logger custom {@code {@link Logger}} to use
+
      * @param maxEntitySize maximum number of entity bytes to be logged (and buffered) - if the entity is larger,
      *                      logging filter will print (and buffer in memory) only the specified number of bytes
      *                      and print "...more..." string at the end.

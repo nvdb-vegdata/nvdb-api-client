@@ -76,4 +76,15 @@ public final class FeatureTypeParser {
 
         return new FeatureType(id, name, description, attributeTypes, parents, children, instructions, sosiName, sosiNvdbName, sortNumber, objectListDate, placementType, parameters);
     }
+
+    public static FeatureTypeCategory parseCategory(JsonObject obj) {
+        Integer id = parseIntMember(obj, "id");
+        String name = parseStringMember(obj, "navn");
+        String shortName = parseStringMember(obj, "kortnavn");
+        String description = parseStringMember(obj, "beskrivelse");
+        Integer sortNumber = parseIntMember(obj, "sorteringsnummer");
+        LocalDate validFrom = parseDateMember(obj, "startdato");
+
+        return new FeatureTypeCategory(id, name, shortName, description, sortNumber, validFrom);
+    }
 }

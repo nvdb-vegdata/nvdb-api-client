@@ -42,9 +42,7 @@ public interface EnumAttributeType extends Serializable {
     List<EnumValue> getSortedValuesList();
 
     /**
-     * The number of enum alternatives.
-     *
-     * @return
+     * @return The number of enum alternatives.
      */
     int size();
 }

@@ -60,7 +60,10 @@ public final class ClientFactory implements AutoCloseable {
         this.baseUrl = baseUrl;
         this.userAgent = userAgent;
         this.xClientName = xClientName;
-        this.debugLogger = Optional.ofNullable(debugLogName).filter(s -> s.trim().length() > 0).map(LoggerFactory::getLogger).orElse(null);
+        this.debugLogger = Optional.ofNullable(debugLogName)
+                                   .filter(s -> s.trim().length() > 0)
+                                   .map(LoggerFactory::getLogger)
+                                   .orElse(null);
         this.clients = new ArrayList<>();
     }
 

@@ -54,7 +54,7 @@ public class RoadNetRequest {
         projection = b.projection;
         bbox = b.bbox;
     }
-    
+
     public static Builder newBuilder() {
         return new Builder();
     }

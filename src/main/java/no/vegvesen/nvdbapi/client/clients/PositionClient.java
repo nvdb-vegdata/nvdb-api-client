@@ -65,9 +65,9 @@ public class PositionClient extends AbstractJerseyClient {
 
         List<Position.Result> collect =
                 StreamSupport.stream(results.spliterator(), false)
-                .map(JsonElement::getAsJsonObject)
-                .map(PlacementParser::parsePosition)
-                .collect(Collectors.toList());
+                             .map(JsonElement::getAsJsonObject)
+                             .map(PlacementParser::parsePosition)
+                             .collect(Collectors.toList());
         return new Position(collect);
     }
 

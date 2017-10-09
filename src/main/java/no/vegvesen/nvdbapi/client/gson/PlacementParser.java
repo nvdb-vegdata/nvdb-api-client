@@ -59,9 +59,9 @@ public final class PlacementParser {
 
     public static List<Position.Result> parseList(JsonArray array) {
         return StreamSupport.stream(array.spliterator(), false)
-                        .map(JsonElement::getAsJsonObject)
-                        .map(PlacementParser::parsePosition)
-                        .collect(Collectors.toList());
+                                .map(JsonElement::getAsJsonObject)
+                                .map(PlacementParser::parsePosition)
+                                .collect(Collectors.toList());
     }
 
 }
