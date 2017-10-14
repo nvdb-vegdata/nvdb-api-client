@@ -45,6 +45,9 @@ import java.util.stream.StreamSupport;
 
 public final class GsonUtil {
 
+    private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
+    private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
     private GsonUtil() {
     }
 
@@ -94,7 +97,8 @@ public final class GsonUtil {
 
     public static LocalDateTime parseDateTimeMember(JsonObject obj, String path) {
         return Optional.ofNullable(parseStringMember(obj, path))
-                .map(v -> DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss").parse(v, LocalDateTime::from)).orElse(null);
+                .map(v -> v.contains("T") ? LocalDateTime.parse(v) : dateTimeFormatter.parse(v, LocalDateTime::from))
+                .orElse(null);
     }
 
     public static LocalDate parseDateMember(JsonObject obj, String path) {
@@ -103,7 +107,7 @@ public final class GsonUtil {
 
     public static LocalTime parseTimeMember(JsonObject obj, String path) {
         return Optional.ofNullable(parseStringMember(obj, path))
-                .map(v -> LocalTime.parse(v, DateTimeFormatter.ofPattern("HH:mm:ss"))).orElse(null);
+                .map(v -> LocalTime.parse(v, timeFormatter)).orElse(null);
     }
 
     public static LocalDate parseDateMember(JsonObject obj, String path, String pattern) {
@@ -114,18 +118,20 @@ public final class GsonUtil {
 
     public static List<Integer> parseIntListMember(JsonObject obj, String path) {
         return getNode(obj, path)
-                .map(e -> e.getAsJsonArray())
+                .map(JsonElement::getAsJsonArray)
                 .map(a -> StreamSupport.stream(a.spliterator(), false)
-                        .map(e -> e.getAsInt()).collect(Collectors.toList()))
+                        .map(JsonElement::getAsInt)
+                        .collect(Collectors.toList()))
                 .orElse(Collections.emptyList());
 
     }
 
     public static List<Long> parseLongListMember(JsonObject obj, String path) {
         return getNode(obj, path)
-                .map(e -> e.getAsJsonArray())
+                .map(JsonElement::getAsJsonArray)
                 .map(a -> StreamSupport.stream(a.spliterator(), false)
-                        .map(e -> e.getAsLong()).collect(Collectors.toList()))
+                        .map(JsonElement::getAsLong)
+                        .collect(Collectors.toList()))
                 .orElse(null);
 
     }
@@ -165,7 +171,9 @@ public final class GsonUtil {
             }
 
 
-            temp = temp.map(e -> e.getAsJsonObject()).map(o -> o.get(p)).filter(o -> !o.isJsonNull());
+            temp = temp.map(JsonElement::getAsJsonObject)
+                       .map(o -> o.get(p))
+                       .filter(o -> !o.isJsonNull());
         }
         return temp;
     }

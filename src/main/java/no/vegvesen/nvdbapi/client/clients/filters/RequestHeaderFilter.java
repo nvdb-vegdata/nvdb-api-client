@@ -28,32 +28,36 @@ package no.vegvesen.nvdbapi.client.clients.filters;
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
+import javax.ws.rs.core.MultivaluedMap;
 import java.io.IOException;
 import java.util.Arrays;
 
 public class RequestHeaderFilter implements ClientRequestFilter {
     private static final String X_CLIENT = "X-Client";
     private static final String DAKAT_VERSION = "X-Datakatalog-Versjon";
-    private static final String ACCEPT_ENCODING = "Accept-Encoding";
 
     private final String userAgent;
     private final String xClientName;
     private final String dakatVersion;
     private final boolean enableCompression;
+    private final String apiRevision;
 
-    public RequestHeaderFilter(String userAgent, String xClientName, String dakatVersion, boolean enableCompression) {
+    public RequestHeaderFilter(String userAgent, String xClientName, String dakatVersion, boolean enableCompression, String apiRevision) {
         this.userAgent = userAgent;
         this.xClientName = xClientName;
         this.dakatVersion = dakatVersion;
         this.enableCompression = enableCompression;
+        this.apiRevision = apiRevision;
     }
 
     @Override
     public void filter(ClientRequestContext requestContext) throws IOException {
-        requestContext.getHeaders().putSingle(HttpHeaders.USER_AGENT, userAgent);
-        if (enableCompression) requestContext.getHeaders().put(HttpHeaders.ACCEPT_ENCODING, Arrays.asList("gzip", "deflate"));
+        MultivaluedMap<String, Object> headers = requestContext.getHeaders();
+        headers.putSingle(HttpHeaders.ACCEPT, apiRevision);
+        headers.putSingle(HttpHeaders.USER_AGENT, userAgent);
+        if (enableCompression) headers.put(HttpHeaders.ACCEPT_ENCODING, Arrays.asList("gzip", "deflate"));
 
-        requestContext.getHeaders().putSingle(X_CLIENT, xClientName);
-        if (dakatVersion != null) requestContext.getHeaders().putSingle(DAKAT_VERSION, dakatVersion);
+        headers.putSingle(X_CLIENT, xClientName);
+        if (dakatVersion != null) headers.putSingle(DAKAT_VERSION, dakatVersion);
     }
 }
