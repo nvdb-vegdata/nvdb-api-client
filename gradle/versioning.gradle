@@ -1,26 +1,13 @@
-def version = rootProject.getProperty("build.version")
+apply plugin: 'pl.allegro.tech.build.axion-release'
 
-if (rootProject.hasProperty("build.patch")) {
-    def patch = rootProject.getProperty("build.patch")
-    if (patch?.trim()) {
-        version += ".$patch"
+// http://axion-release-plugin.readthedocs.io/
+
+scmVersion {
+    tag {
+        prefix = 'nvdb-api-client'
     }
 }
 
-if (rootProject.hasProperty("build.branch")) {
-    def branch = rootProject.getProperty("build.branch").toUpperCase()
-    if (branch != "MASTER") {
-        version += "-$branch"
-    }
+allprojects {
+    project.version = scmVersion.version
 }
-
-ext.snapshot = false
-if (rootProject.hasProperty("build.snapshot")) {
-    snapshot = rootProject.getProperty("build.snapshot").toBoolean()
-}
-
-if (snapshot) {
-    version += "-SNAPSHOT"
-}
-
-project.version = version
