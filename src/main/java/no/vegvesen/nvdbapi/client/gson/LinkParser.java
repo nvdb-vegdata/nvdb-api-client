@@ -74,7 +74,12 @@ public final class LinkParser {
             roadRef = RoadRefParser.parse(obj.getAsJsonObject("vegreferanse"));
         }
 
-        return new Link(id, start, end, startNode, endNode, fromDate, toDate, medium, ltema, level, region, county, municipality, roadDepartment, geo, roadRef, isConnectionLink);
+        Long superLinkId = null;
+        if(obj.has("superLinkId")) {
+            superLinkId = parseLongMember(obj, "superLinkId");
+        }
+
+        return new Link(id, superLinkId, start, end, startNode, endNode, fromDate, toDate, medium, ltema, level, region, county, municipality, roadDepartment, geo, roadRef, isConnectionLink);
     }
 
 }
