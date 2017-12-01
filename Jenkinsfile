@@ -10,7 +10,7 @@ pipeline {
         }
         stage('Publish') {
             steps {
-                sh './gradlew publishMavenJavaPublicationToSnapshotRepository'
+                sh './gradlew publishToMavenLocal publishMavenJavaPublicationToSnapshotRepository'
             }
         }
     }

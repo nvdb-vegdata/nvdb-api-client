@@ -22,22 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-
 package no.vegvesen.nvdbapi.client.model.datakatalog;
 
-public class DataType {
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.Optional;
+
+public class FeatureTypeCategory implements Serializable {
     private final int id;
     private final String name;
     private final String shortName;
     private final String description;
-    private final JavaType type;
+    private final int sortNumber;
+    private final LocalDate startDate;
 
-    public DataType(int id, String name, String shortName, String description, JavaType type) {
+    public FeatureTypeCategory(int id, String name, String shortName, String description, int sortNumber, LocalDate startDate) {
         this.id = id;
         this.name = name;
         this.shortName = shortName;
         this.description = description;
-        this.type = type;
+        this.sortNumber = sortNumber;
+        this.startDate = startDate;
     }
 
     public int getId() {
@@ -56,8 +61,12 @@ public class DataType {
         return description;
     }
 
-    public JavaType getJavaType() {
-        return type;
+    public int getSortNumber() {
+        return sortNumber;
+    }
+
+    public Optional<LocalDate> getStartDate() {
+        return Optional.ofNullable(startDate);
     }
 
     @Override
@@ -65,24 +74,36 @@ public class DataType {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        DataType dataType = (DataType) o;
+        FeatureTypeCategory that = (FeatureTypeCategory) o;
 
-        return id == dataType.id;
-
+        if (id != that.id) return false;
+        if (sortNumber != that.sortNumber) return false;
+        if (!name.equals(that.name)) return false;
+        if (!shortName.equals(that.shortName)) return false;
+        if (!description.equals(that.description)) return false;
+        return startDate != null ? startDate.equals(that.startDate) : that.startDate == null;
     }
 
     @Override
     public int hashCode() {
-        return id;
+        int result = id;
+        result = 31 * result + name.hashCode();
+        result = 31 * result + shortName.hashCode();
+        result = 31 * result + description.hashCode();
+        result = 31 * result + sortNumber;
+        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
+        return result;
     }
 
     @Override
     public String toString() {
-        return "DataType{" +
+        return "FeatureTypeCategory{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", shortName='" + shortName + '\'' +
                 ", description='" + description + '\'' +
+                ", sortNumber=" + sortNumber +
+                ", startDate=" + startDate +
                 '}';
     }
 }

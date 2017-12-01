@@ -47,6 +47,9 @@ public final class ClientFactory implements AutoCloseable {
     private final String baseUrl;
     private final String userAgent;
     private final String xClientName;
+
+    private final String apiRevision = "application/vnd.vegvesen.nvdb-v2-rev2+json";
+
     private Datakatalog datakatalog;
     private List<AbstractJerseyClient> clients;
     private boolean isClosed;
@@ -60,7 +63,10 @@ public final class ClientFactory implements AutoCloseable {
         this.baseUrl = baseUrl;
         this.userAgent = userAgent;
         this.xClientName = xClientName;
-        this.debugLogger = Optional.ofNullable(debugLogName).filter(s -> s.trim().length() > 0).map(LoggerFactory::getLogger).orElse(null);
+        this.debugLogger = Optional.ofNullable(debugLogName)
+                                   .filter(s -> s.trim().length() > 0)
+                                   .map(LoggerFactory::getLogger)
+                                   .orElse(null);
         this.clients = new ArrayList<>();
     }
 
@@ -149,7 +155,7 @@ public final class ClientFactory implements AutoCloseable {
         }
         config.property(ApacheClientProperties.CONNECTION_MANAGER, new PoolingHttpClientConnectionManager());
         config.register(GsonMessageBodyHandler.class);
-        config.register(new RequestHeaderFilter(userAgent, xClientName, datakatalogVersion, enableCompression));
+        config.register(new RequestHeaderFilter(userAgent, xClientName, datakatalogVersion, enableCompression, apiRevision));
 
         return ClientBuilder.newBuilder().withConfig(config).build();
     }

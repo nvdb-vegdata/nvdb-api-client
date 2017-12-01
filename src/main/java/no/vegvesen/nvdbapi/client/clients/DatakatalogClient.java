@@ -54,7 +54,10 @@ public class DatakatalogClient extends AbstractJerseyClient {
 
     public Version getVersion() {
         WebTarget target = getClient().target(endpoint()).path("versjon");
-        return JerseyHelper.executeOptional(target).map(JsonElement::getAsJsonObject).map(DatakatalogVersionParser::parseVersion).get();
+        return JerseyHelper.executeOptional(target)
+                           .map(JsonElement::getAsJsonObject)
+                           .map(DatakatalogVersionParser::parseVersion)
+                           .get();
     }
 
     public List<DataType> getDataTypes() {
@@ -67,7 +70,8 @@ public class DatakatalogClient extends AbstractJerseyClient {
     }
 
     public Map<Integer, DataType> getDataTypeMap() {
-        return getDataTypes().stream().collect(Collectors.toMap(DataType::getId, Function.identity()));
+        return getDataTypes().stream()
+                             .collect(Collectors.toMap(DataType::getId, Function.identity()));
     }
 
     public List<Unit> getUnits() {
@@ -79,13 +83,25 @@ public class DatakatalogClient extends AbstractJerseyClient {
                 .collect(Collectors.toList());
     }
 
+    public List<FeatureTypeCategory> getCategories() {
+        WebTarget target = getClient().target(endpoint()).path("kategorier");
+        JsonElement units = JerseyHelper.execute(target);
+        return StreamSupport.stream(units.getAsJsonArray().spliterator(), false)
+                .map(JsonElement::getAsJsonObject)
+                .map(FeatureTypeParser::parseCategory)
+                .collect(Collectors.toList());
+    }
+
     public Map<Integer, Unit> getUnitMap() {
-        return getUnits().stream().collect(Collectors.toMap(Unit::getId, Function.identity()));
+        return getUnits().stream()
+                         .collect(Collectors.toMap(Unit::getId, Function.identity()));
     }
 
     public Optional<AttributeType> getAttributeType(Map<Integer, DataType> dataTypes, int typeId) {
         WebTarget target = getClient().target(endpoint()).path("egenskapstyper").path(Integer.toString(typeId));
-        return JerseyHelper.executeOptional(target).map(JsonElement::getAsJsonObject).map(o -> AttributeTypeParser.parse(dataTypes, o));
+        return JerseyHelper.executeOptional(target)
+                           .map(JsonElement::getAsJsonObject)
+                           .map(o -> AttributeTypeParser.parse(dataTypes, o));
     }
 
     public Datakatalog getDatakalog() {
@@ -97,15 +113,23 @@ public class DatakatalogClient extends AbstractJerseyClient {
         return new Datakatalog(v, featureTypes, units, dataTypes);
     }
 
-    public List<FeatureType> getFeatureTypes(Map<Integer, DataType> dataTypes, Include... informationToIncludes) {
-        WebTarget target = getClient().target(endpoint());
+    public List<FeatureType> getFeatureTypes(Map<Integer, DataType> dataTypes, Include... informationToInclude) {
+        return getFeatureTypes(dataTypes, -1, informationToInclude);
+    }
 
-        String includeArgument = getIncludeArgument(false, informationToIncludes);
-        if (includeArgument != null) target = target.queryParam("inkluder", includeArgument);
+    public List<FeatureType> getFeatureTypes(Map<Integer, DataType> dataTypes, int category, Include... informationToInclude) {
+        UriBuilder url = endpoint();
+        String includeArgument = getIncludeArgument(false, informationToInclude);
+        if (includeArgument != null) url.queryParam("inkluder", includeArgument);
+        if (category > 0) url.queryParam("kategori", category);
+
+        WebTarget target = getClient().target(url);
 
         List<FeatureType> types = new ArrayList<>();
         Stopwatch sw = Stopwatch.createStarted();
-        JsonArray array = JerseyHelper.executeOptional(target).map(JsonElement::getAsJsonArray).get();
+        JsonArray array = JerseyHelper.executeOptional(target)
+                                      .map(JsonElement::getAsJsonArray)
+                                      .get();
         long requestTime = sw.stop().elapsedMillis();
         sw = Stopwatch.createStarted();
         array.forEach(e -> types.add(FeatureTypeParser.parse(dataTypes, e.getAsJsonObject())));
@@ -120,7 +144,9 @@ public class DatakatalogClient extends AbstractJerseyClient {
         String includeArgument = getIncludeArgument(true, informationToInclude);
         if (includeArgument != null) target = target.queryParam("inkluder", includeArgument);
 
-        return JerseyHelper.executeOptional(target).map(JsonElement::getAsJsonObject).map(o -> FeatureTypeParser.parse(types, o));
+        return JerseyHelper.executeOptional(target)
+                           .map(JsonElement::getAsJsonObject)
+                           .map(o -> FeatureTypeParser.parse(types, o));
     }
 
     private static String getIncludeArgument(boolean singleRequest, Include... informationToInclude) {
@@ -136,7 +162,9 @@ public class DatakatalogClient extends AbstractJerseyClient {
             return Include.ALL.value;
         }
 
-        return values.stream().map(i -> i.value).collect(Collectors.joining(","));
+        return values.stream()
+                .map(i -> i.value)
+                .collect(Collectors.joining(","));
     }
 
     private UriBuilder endpoint() {

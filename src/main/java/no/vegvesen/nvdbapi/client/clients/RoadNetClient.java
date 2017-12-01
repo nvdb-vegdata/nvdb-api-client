@@ -55,7 +55,8 @@ public class RoadNetClient extends AbstractJerseyClient {
         WebTarget target = getClient().target(path);
         JsonElement result = JerseyHelper.execute(target);
         return StreamSupport.stream(result.getAsJsonArray().spliterator(), false)
-                .map(e -> LinkParser.parse(e.getAsJsonObject())).collect(Collectors.toList());
+                            .map(e -> LinkParser.parse(e.getAsJsonObject()))
+                            .collect(Collectors.toList());
     }
 
     public LinkResult getLinks() {
@@ -82,7 +83,9 @@ public class RoadNetClient extends AbstractJerseyClient {
         if (list == null) {
             return null;
         }
-        return list.stream().map(Objects::toString).collect(Collectors.joining(","));
+        return list.stream()
+                   .map(Objects::toString)
+                   .collect(Collectors.joining(","));
     }
 
     private UriBuilder endpoint() {

@@ -48,8 +48,8 @@ public class RoadPlacementClient extends AbstractJerseyClient {
 
     /**
      *
-     * @param request
-     * @return
+     * @param request to execute
+     * @return {@code {@link RoadPlacement}} matching request
      * @deprecated Use {@link #findPlacement(RefLinkRequest)}
      */
     @Deprecated
@@ -59,8 +59,9 @@ public class RoadPlacementClient extends AbstractJerseyClient {
 
     /**
      *
-     * @param request
-     * @return
+     * @param request to execute
+     * @param projection used for coordinates in query and result
+     * @return {@code {@link RoadPlacement}} matching request
      * @deprecated Use {@link #findPlacement(RefLinkRequest)}
      */
     @Deprecated
@@ -70,9 +71,9 @@ public class RoadPlacementClient extends AbstractJerseyClient {
 
     /**
      *
-     * @param request
-     * @return
-     * Use {@link #findPlacement(RefLinkRequest)}
+     * @param request to execute
+     * @return {@code {@link RoadPlacement}} matching request
+     * @deprecated Use {@link #findPlacement(RefLinkRequest)}
      */
     @Deprecated
     public RoadPlacement getRoadPlacement(RefLinkRequest request) {
@@ -81,10 +82,10 @@ public class RoadPlacementClient extends AbstractJerseyClient {
 
     /**
      *
-     * @param request
-     * @param projection
-     * @return
-     * Use {@link #findPlacement(RefLinkRequest)}
+     * @param request to execute
+     * @param projection used in query and result
+     * @return {@code {@link RoadPlacement}} matching request
+     * @deprecated Use {@link #findPlacement(RefLinkRequest)}
      */
     @Deprecated
     public RoadPlacement getRoadPlacement(RefLinkRequest request, Projection projection) {
@@ -94,7 +95,7 @@ public class RoadPlacementClient extends AbstractJerseyClient {
     /**
      * Search for a placement by road ref.
      * @param request search parameters
-     * @return
+     * @return {@code Optional<RoadPlacement>} if query had result, otherwise {@code Optional.empty()}
      */
     public Optional<RoadPlacement> findPlacement(RoadRefRequest request) {
         return getResults("vegreferanse", request.getQueryParam(), request.getProjection().orElse(null));
@@ -103,7 +104,7 @@ public class RoadPlacementClient extends AbstractJerseyClient {
     /**
      * Search for a placement by ref link.
      * @param request search parameters
-     * @return
+     * @return {@code Optional<RoadPlacement>} if query had result, otherwise {@code Optional.empty()}
      */
     public Optional<RoadPlacement> findPlacement(RefLinkRequest request) {
         return getResults("veglenke", request.getQueryParam(), request.getProjection().orElse(null));

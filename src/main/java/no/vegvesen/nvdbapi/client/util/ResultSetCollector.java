@@ -34,7 +34,7 @@ import java.util.stream.Stream;
 /**
  * This class can be used as convenience for paging the API
  * and consuming the result.
- * @param <T>
+ * @param <T> Result type
  */
 public class ResultSetCollector<T> {
 

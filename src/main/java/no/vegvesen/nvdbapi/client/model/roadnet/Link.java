@@ -34,8 +34,9 @@ import java.util.Optional;
 
 public final class Link implements Serializable {
 
-    private final Optional<Geometry> geometry;
+    private final Geometry geometry;
     private final long id;
+    private final Long superLinkId;
     private final double start;
     private final double end;
     private final SosiMedium medium;
@@ -52,12 +53,14 @@ public final class Link implements Serializable {
     private final String startNode;
     private final String endNode;
 
-    public Link(long id, double start, double end,
+    public Link(long id, Long superLinkId, double start, double end,
                 String startNode, String endNode,
                 LocalDate fromDate, LocalDate toDate,
-                SosiMedium medium, Ltema ltema, TopologyLevel level, Integer region, Integer county, Integer municipality, Integer roadDepartment,
+                SosiMedium medium, Ltema ltema, TopologyLevel level, Integer region, Integer county,
+                Integer municipality, Integer roadDepartment,
                 Geometry geometry, RoadRef roadRef, boolean isConnectionLink) {
         this.id = id;
+        this.superLinkId = superLinkId;
         this.start = start;
         this.end = end;
         this.medium = medium;
@@ -73,11 +76,15 @@ public final class Link implements Serializable {
         this.endNode = endNode;
         this.roadRef = roadRef;
         this.isConnectionLink = isConnectionLink;
-        this.geometry = Optional.ofNullable(geometry);
+        this.geometry = geometry;
     }
 
     public long getId() {
         return id;
+    }
+
+    public Optional<Long> getSuperLinkId() {
+        return Optional.ofNullable(superLinkId);
     }
 
     public boolean isConnectionLink() {
@@ -141,6 +148,6 @@ public final class Link implements Serializable {
     }
 
     public Optional<Geometry> getGeometry() {
-        return geometry;
+        return Optional.ofNullable(geometry);
     }
 }

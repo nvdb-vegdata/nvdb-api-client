@@ -103,11 +103,14 @@ public class GenericResultSet<T> implements ResultSet<T> {
             logger.trace("Response: {}", currentResponse.toString());
         }
         List<JsonObject> l = StreamSupport.stream(currentResponse.getAsJsonArray("objekter").spliterator(), false)
-                .map(JsonElement::getAsJsonObject).collect(Collectors.toList());
+                                           .map(JsonElement::getAsJsonObject)
+                                           .collect(Collectors.toList());
 
         // Prepare next request
-        String nextToken = GsonUtil.getNode(currentResponse, "metadata.neste.start").map(JsonElement::getAsString).orElse(null);
-        logger.debug("last token: " + token + " next token: " + nextToken);
+        String nextToken = GsonUtil.getNode(currentResponse, "metadata.neste.start")
+                                   .map(JsonElement::getAsString)
+                                   .orElse(null);
+        logger.debug("last token: {} next token: {}",token, nextToken);
         // no next page if last token and next token are equal
         hasNext = nextToken != null && (token == null || !nextToken.equals(token));
         token = nextToken;
@@ -116,7 +119,9 @@ public class GenericResultSet<T> implements ResultSet<T> {
         if (!hasNext) {
             logger.debug("Result set exhausted.");
         }
-        return l.stream().map(parser).collect(Collectors.toList());
+        return l.stream()
+                .map(parser)
+                .collect(Collectors.toList());
     }
 
     public String nextToken() {

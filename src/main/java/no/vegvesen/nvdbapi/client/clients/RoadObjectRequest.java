@@ -147,7 +147,7 @@ public class RoadObjectRequest {
     /**
      * This method strips any parameters that are not supported by the API
      * for statistics requests
-     * @return
+     * @return {@code {@link RoadObjectRequest}} for statistics about {@code this} query
      */
     public RoadObjectRequest forStatistics() {
         return toMutable()

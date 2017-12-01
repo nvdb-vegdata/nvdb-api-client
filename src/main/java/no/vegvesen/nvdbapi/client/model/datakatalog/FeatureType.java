@@ -121,7 +121,7 @@ public final class FeatureType implements Serializable {
     /**
      * Convenience method for retriving a specific attribute type
      *
-     * @param id
+     * @param id attribute type id
      * @return the attribute type requested or null if not present
      */
     public AttributeType getAttributeType(Integer id) {
@@ -131,7 +131,9 @@ public final class FeatureType implements Serializable {
     /**
      * Convenience method for retriving a specific attribute type. This method casts to the specified
      *
-     * @param id
+     * @param id attribute type id
+     * @param clazz type of {@code {@link AttributeType}}
+     * @param <T> type of {@code {@link AttributeType}}
      * @return the attribute type requested or null if not present
      */
     public <T extends AttributeType> T getAttributeType(Integer id, Class<T> clazz) {
@@ -149,7 +151,7 @@ public final class FeatureType implements Serializable {
     /**
      * The returned stream is sorted on the attribute <i>specified</i> order.
      *
-     * @return
+     * @return {@code AttributeType}s sorted by sort number
      * @see AttributeType#getSortNumber()
      */
     public Stream<AttributeType> sortedAttributeTypes() {
@@ -169,7 +171,10 @@ public final class FeatureType implements Serializable {
         }
 
         public static PlacementType from(String text) {
-            return Arrays.asList(values()).stream().filter(s -> s.name.equalsIgnoreCase(text)).findAny().orElse(null);
+            return Arrays.stream(values())
+                         .filter(s -> s.name.equalsIgnoreCase(text))
+                         .findAny()
+                         .orElse(null);
         }
     }
 
