@@ -75,8 +75,8 @@ public final class LinkParser {
         }
 
         Long superLinkId = null;
-        if(obj.has("superLinkId")) {
-            superLinkId = parseLongMember(obj, "superLinkId");
+        if(obj.has("foreldrelenkeid")) {
+            superLinkId = parseLongMember(obj, "foreldrelenkeid");
         }
 
         return new Link(id, superLinkId, start, end, startNode, endNode, fromDate, toDate, medium, ltema, level, region, county, municipality, roadDepartment, geo, roadRef, isConnectionLink);
