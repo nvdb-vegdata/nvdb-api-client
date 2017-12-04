@@ -44,7 +44,6 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriBuilder;
 import java.time.LocalDate;
@@ -217,7 +216,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
     public enum IncludeGeometry {
         ATTRIBUTE("egenskap"),
         LOCATION("lokasjon"),
-        GEOMETRY("geometri"),
+        DERIVED("utledet"),
         NONE("ingen");
 
         private final String value;
@@ -230,7 +229,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
         }
 
         public static Set<IncludeGeometry> all() {
-            return EnumSet.of(ATTRIBUTE, LOCATION, GEOMETRY);
+            return EnumSet.of(ATTRIBUTE, LOCATION, DERIVED);
         }
     }
 
