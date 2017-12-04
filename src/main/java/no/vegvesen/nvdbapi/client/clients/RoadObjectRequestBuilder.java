@@ -44,6 +44,7 @@ class RoadObjectRequestBuilder {
         request.getDistanceTolerance().ifPresent(v -> map.putSingle("geometritoleranse", Integer.toString(v)));
         request.getDepth().ifPresent(v -> map.putSingle("dybde", v));
         getIncludeArgument(request.getIncludes()).ifPresent(v -> map.putSingle("inkluder", v));
+        getIncludeGeometriesArgument(request.getIncludeGeometries()).ifPresent(v -> map.putSingle("inkludergeometri", v));
         request.getAttributeFilter().ifPresent(v -> map.putSingle("egenskap", v));
         request.getBbox().ifPresent(v -> map.putSingle("kartutsnitt", v));
         request.getRoadRefFilter().ifPresent(v -> map.putSingle("vegreferanse", v));
@@ -59,11 +60,6 @@ class RoadObjectRequestBuilder {
         request.getOverlapFilters().forEach(f -> map.add("overlapp", f.toString()));
 
         return map;
-    }
-
-    private static Optional<String> getIncludeArgument(RoadObjectClient.Include... informationToInclude) {
-        Set<RoadObjectClient.Include> values = informationToInclude != null && informationToInclude.length > 0 ? new HashSet<>(Arrays.asList(informationToInclude)) : Collections.emptySet();
-        return getIncludeArgument(values);
     }
 
     private static Optional<String> getIncludeArgument(Set<RoadObjectClient.Include> values) {
@@ -87,6 +83,23 @@ class RoadObjectRequestBuilder {
                            .map(RoadObjectClient.Include::stringValue)
                            .collect(Collectors.joining(","));
         return Optional.of(val);
+    }
+
+    private static Optional<String> getIncludeGeometriesArgument(Set<RoadObjectClient.IncludeGeometry> values) {
+        // Defaults
+        if (values == null
+                || values.isEmpty()
+                || values.equals(RoadObjectClient.IncludeGeometry.all())) {
+            return Optional.empty();
+        }
+
+        if (values.contains(RoadObjectClient.IncludeGeometry.NONE)) {
+            return Optional.ofNullable(RoadObjectClient.IncludeGeometry.NONE.stringValue());
+        }
+
+        return Optional.of(values.stream()
+                .map(RoadObjectClient.IncludeGeometry::stringValue)
+                .collect(Collectors.joining(",")));
     }
 
     private static Optional<String> flatten(List<Integer> set) {

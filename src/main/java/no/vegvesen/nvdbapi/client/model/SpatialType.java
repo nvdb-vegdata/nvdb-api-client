@@ -48,6 +48,9 @@ public enum SpatialType {
     }
 
     public static SpatialType from(String type) {
-        return Arrays.stream(values()).filter(v -> v.name.toLowerCase().equalsIgnoreCase(type)).findAny().orElse(UNKNOWN);
+        return Arrays.stream(values())
+                .filter(v -> v.name.equalsIgnoreCase(type))
+                .findAny()
+                .orElse(UNKNOWN);
     }
 }
