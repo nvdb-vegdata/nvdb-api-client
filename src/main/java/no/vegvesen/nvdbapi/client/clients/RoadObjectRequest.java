@@ -44,6 +44,7 @@ public class RoadObjectRequest {
     private final String roadRefFilter;
     private final String refLinkFilter;
     private final Set<RoadObjectClient.Include> includes;
+    private final Set<RoadObjectClient.IncludeGeometry> includeGeometries;
     private final List<OverlapFilter> overlapFilters;
     private final List<Integer> municipalities;
     private final List<Integer> counties;
@@ -58,6 +59,7 @@ public class RoadObjectRequest {
         depth = b.depth;
         projection = b.projection;
         includes = b.includes;
+        includeGeometries = b.includeGeometries;
         distanceTolerance = b.distanceTolerance;
         attributeFilter = b.attributeFilter;
         bbox = b.bbox;
@@ -98,6 +100,10 @@ public class RoadObjectRequest {
 
     public Set<RoadObjectClient.Include> getIncludes() {
         return includes;
+    }
+
+    public Set<RoadObjectClient.IncludeGeometry> getIncludeGeometries() {
+        return this.includeGeometries;
     }
 
     public List<OverlapFilter> getOverlapFilters() {
@@ -187,6 +193,7 @@ public class RoadObjectRequest {
         private Projection projection = null;
         private Integer distanceTolerance = null;
         private Set<RoadObjectClient.Include> includes = Collections.emptySet();
+        private Set<RoadObjectClient.IncludeGeometry> includeGeometries = Collections.emptySet();
         private String attributeFilter = null;
         private String bbox = null;
         private String roadRefFilter = null;
@@ -245,7 +252,17 @@ public class RoadObjectRequest {
         }
 
         public Builder withIncludes(RoadObjectClient.Include... includes) {
-            this.includes = new TreeSet<>(Arrays.asList(includes));
+            this.includes = new HashSet<>(Arrays.asList(includes));
+            return this;
+        }
+
+        public Builder withIncludeGeometries(Set<RoadObjectClient.IncludeGeometry> includes) {
+            this.includeGeometries = includes;
+            return this;
+        }
+
+        public Builder withIncludeGeometries(RoadObjectClient.IncludeGeometry... includes) {
+            this.includeGeometries = new HashSet<>(Arrays.asList(includes));
             return this;
         }
 
