@@ -30,6 +30,7 @@ import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Optional;
 
 public final class Link implements Serializable {
@@ -149,5 +150,36 @@ public final class Link implements Serializable {
 
     public Optional<Geometry> getGeometry() {
         return Optional.ofNullable(geometry);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Link link = (Link) o;
+        return id == link.id &&
+                Double.compare(link.start, start) == 0 &&
+                Double.compare(link.end, end) == 0 &&
+                isConnectionLink == link.isConnectionLink &&
+                Objects.equals(geometry, link.geometry) &&
+                Objects.equals(superLinkId, link.superLinkId) &&
+                medium == link.medium &&
+                ltema == link.ltema &&
+                topologyLevel == link.topologyLevel &&
+                Objects.equals(county, link.county) &&
+                Objects.equals(municipality, link.municipality) &&
+                Objects.equals(region, link.region) &&
+                Objects.equals(roadDepartment, link.roadDepartment) &&
+                Objects.equals(roadRef, link.roadRef) &&
+                Objects.equals(fromDate, link.fromDate) &&
+                Objects.equals(toDate, link.toDate) &&
+                Objects.equals(startNode, link.startNode) &&
+                Objects.equals(endNode, link.endNode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(geometry, id, superLinkId, start, end, medium, ltema, topologyLevel, county, municipality,
+                region, roadDepartment, roadRef, isConnectionLink, fromDate, toDate, startNode, endNode);
     }
 }

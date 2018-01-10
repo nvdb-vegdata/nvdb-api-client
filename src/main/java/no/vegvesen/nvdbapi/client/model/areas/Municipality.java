@@ -28,6 +28,7 @@ package no.vegvesen.nvdbapi.client.model.areas;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Optional;
 
 public final class Municipality implements Serializable {
@@ -82,5 +83,25 @@ public final class Municipality implements Serializable {
 
     public int getRoadDepartment() {
         return roadDepartment;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Municipality that = (Municipality) o;
+        return number == that.number &&
+                region == that.region &&
+                county == that.county &&
+                roadDepartment == that.roadDepartment &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(boundingBox, that.boundingBox) &&
+                Objects.equals(centerPoint, that.centerPoint);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, number, name, boundingBox, centerPoint, region, county, roadDepartment);
     }
 }

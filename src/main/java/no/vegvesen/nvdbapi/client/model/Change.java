@@ -28,6 +28,7 @@ package no.vegvesen.nvdbapi.client.model;
 import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObject;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Change {
@@ -64,6 +65,22 @@ public class Change {
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Change change = (Change) o;
+        return typeId == change.typeId &&
+                featureId == change.featureId &&
+                Objects.equals(roadObject, change.roadObject) &&
+                type == change.type;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(typeId, featureId, roadObject, type);
+    }
+
     public enum Type {
         /**
          * Not yet supported
@@ -93,7 +110,10 @@ public class Change {
         }
 
         public static Type from(String apiValue) {
-            return Arrays.stream(values()).filter(s -> s.stringValue().equalsIgnoreCase(apiValue)).findAny().orElse(null);
+            return Arrays.stream(values())
+                    .filter(s -> s.stringValue().equalsIgnoreCase(apiValue))
+                    .findAny()
+                    .orElse(null);
         }
     }
 }

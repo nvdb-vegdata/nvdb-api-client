@@ -25,6 +25,8 @@
 
 package no.vegvesen.nvdbapi.client.model.roadobjects;
 
+import java.util.Objects;
+
 public class Statistics {
 
     private final int numFound;
@@ -41,5 +43,19 @@ public class Statistics {
 
     public long getLength() {
         return length;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Statistics that = (Statistics) o;
+        return numFound == that.numFound &&
+                length == that.length;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(numFound, length);
     }
 }

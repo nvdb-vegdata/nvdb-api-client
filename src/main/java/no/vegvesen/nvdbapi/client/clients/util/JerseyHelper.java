@@ -111,8 +111,11 @@ public class JerseyHelper {
             case 204:
                 return Optional.empty();
             default:
-                InputStream is = response.readEntity(InputStream.class);
-                return Optional.of(new JsonParser().parse(new InputStreamReader(is)));
+                try (InputStream is = response.readEntity(InputStream.class)) {
+                    return Optional.of(new JsonParser().parse(new InputStreamReader(is)));
+                } catch (Exception e) {
+                    throw new RuntimeException("Error parsing response", e);
+                }
         }
     }
 }

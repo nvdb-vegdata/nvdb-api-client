@@ -26,6 +26,7 @@
 package no.vegvesen.nvdbapi.client.model.areas;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Optional;
 
 public final class Route implements Serializable {
@@ -62,5 +63,22 @@ public final class Route implements Serializable {
 
     public String getPeriod() {
         return period;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Route route = (Route) o;
+        return Objects.equals(id, route.id) &&
+                Objects.equals(number, route.number) &&
+                Objects.equals(name, route.name) &&
+                Objects.equals(description, route.description) &&
+                Objects.equals(period, route.period);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, number, name, description, period);
     }
 }

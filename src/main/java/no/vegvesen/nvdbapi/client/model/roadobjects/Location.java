@@ -30,6 +30,7 @@ import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
 import no.vegvesen.nvdbapi.client.model.areas.Route;
 
 import java.util.List;
+import java.util.Objects;
 
 import static java.util.Objects.requireNonNull;
 
@@ -99,5 +100,28 @@ public class Location {
 
     public Geometry getGeometry() {
         return geometry;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Location location = (Location) o;
+        return Objects.equals(municipalities, location.municipalities) &&
+                Objects.equals(counties, location.counties) &&
+                Objects.equals(regions, location.regions) &&
+                Objects.equals(departments, location.departments) &&
+                Objects.equals(contractAreas, location.contractAreas) &&
+                Objects.equals(nationalRoutes, location.nationalRoutes) &&
+                Objects.equals(roadRefs, location.roadRefs) &&
+                Objects.equals(placements, location.placements) &&
+                Objects.equals(geometry, location.geometry) &&
+                Objects.equals(length, location.length);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(municipalities, counties, regions, departments, contractAreas, nationalRoutes, roadRefs,
+                placements, geometry, length);
     }
 }

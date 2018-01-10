@@ -27,6 +27,7 @@ package no.vegvesen.nvdbapi.client.model;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Stream;
 
@@ -62,19 +63,15 @@ public class Projection implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Projection that = (Projection) o;
-
-        if (srid != that.srid) return false;
-        return alias.equals(that.alias);
-
+        return srid == that.srid &&
+                Objects.equals(alias, that.alias);
     }
 
     @Override
     public int hashCode() {
-        int result = alias.hashCode();
-        result = 31 * result + srid;
-        return result;
+
+        return Objects.hash(alias, srid);
     }
 
     public static Optional<Projection> of(int srid) {

@@ -28,6 +28,8 @@ package no.vegvesen.nvdbapi.client.model.roadobjects;
 import no.vegvesen.nvdbapi.client.model.Direction;
 import no.vegvesen.nvdbapi.client.model.SidePosition;
 
+import java.util.Objects;
+
 public class Placement {
     private final int netElementId;
     private final double startPosition;
@@ -77,31 +79,18 @@ public class Placement {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Placement placement = (Placement) o;
-
-        if (netElementId != placement.netElementId) return false;
-        if (Double.compare(placement.startPosition, startPosition) != 0) return false;
-        if (Double.compare(placement.endPosition, endPosition) != 0) return false;
-        if (direction != placement.direction) return false;
-        if (sidePos != placement.sidePos) return false;
-        return !(lane != null ? !lane.equals(placement.lane) : placement.lane != null);
-
+        return netElementId == placement.netElementId &&
+                Double.compare(placement.startPosition, startPosition) == 0 &&
+                Double.compare(placement.endPosition, endPosition) == 0 &&
+                direction == placement.direction &&
+                sidePos == placement.sidePos &&
+                Objects.equals(lane, placement.lane);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = netElementId;
-        temp = Double.doubleToLongBits(startPosition);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(endPosition);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (direction != null ? direction.hashCode() : 0);
-        result = 31 * result + (sidePos != null ? sidePos.hashCode() : 0);
-        result = 31 * result + (lane != null ? lane.hashCode() : 0);
-        return result;
+        return Objects.hash(netElementId, startPosition, endPosition, direction, sidePos, lane);
     }
 
     @Override

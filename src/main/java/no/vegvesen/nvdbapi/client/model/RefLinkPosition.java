@@ -25,6 +25,8 @@
 
 package no.vegvesen.nvdbapi.client.model;
 
+import java.util.Objects;
+
 public class RefLinkPosition {
 
     private final int id;
@@ -47,5 +49,25 @@ public class RefLinkPosition {
 
     public String getShortName() {
         return shortName;
+    }
+
+    @Override
+    public String toString() {
+        return getShortName();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RefLinkPosition that = (RefLinkPosition) o;
+        return id == that.id &&
+                Double.compare(that.position, position) == 0 &&
+                Objects.equals(shortName, that.shortName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, position, shortName);
     }
 }

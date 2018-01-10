@@ -27,6 +27,8 @@ package no.vegvesen.nvdbapi.client.model.roadobjects;
 
 import no.vegvesen.nvdbapi.client.model.Geometry;
 
+import java.util.Objects;
+
 public class Segment {
 
     private final Geometry geometry;
@@ -80,5 +82,25 @@ public class Segment {
 
     public Integer getLength() {
         return length;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Segment segment = (Segment) o;
+        return municipality == segment.municipality &&
+                county == segment.county &&
+                region == segment.region &&
+                roadDepartment == segment.roadDepartment &&
+                Objects.equals(geometry, segment.geometry) &&
+                Objects.equals(placement, segment.placement) &&
+                Objects.equals(roadRef, segment.roadRef) &&
+                Objects.equals(length, segment.length);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(geometry, municipality, county, region, roadDepartment, placement, roadRef, length);
     }
 }

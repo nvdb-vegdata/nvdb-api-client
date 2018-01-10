@@ -25,6 +25,8 @@
 
 package no.vegvesen.nvdbapi.client.model;
 
+import java.util.Objects;
+
 public class Geometry {
     private final String wkt;
     private final Projection projection;
@@ -71,5 +73,22 @@ public class Geometry {
 
     public String toString(boolean extended) {
         return extended ? String.format("SRID=%d;%s", projection.getSrid(), wkt) : wkt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Geometry geometry = (Geometry) o;
+        return isSimplified == geometry.isSimplified &&
+                isOwnGeometry == geometry.isOwnGeometry &&
+                Objects.equals(wkt, geometry.wkt) &&
+                Objects.equals(projection, geometry.projection) &&
+                Objects.equals(quality, geometry.quality);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(wkt, projection, quality, isSimplified, isOwnGeometry);
     }
 }

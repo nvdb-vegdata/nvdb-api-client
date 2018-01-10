@@ -26,6 +26,7 @@
 package no.vegvesen.nvdbapi.client.model;
 
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Optional;
 
 public class Quality {
@@ -73,5 +74,24 @@ public class Quality {
 
     public int getTolerance() {
         return tolerance;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Quality quality = (Quality) o;
+        return method == quality.method &&
+                visibility == quality.visibility &&
+                heightAccuracy == quality.heightAccuracy &&
+                tolerance == quality.tolerance &&
+                Objects.equals(verifiedDate, quality.verifiedDate) &&
+                Objects.equals(accuracy, quality.accuracy) &&
+                Objects.equals(heightMethod, quality.heightMethod);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(verifiedDate, method, accuracy, visibility, heightMethod, heightAccuracy, tolerance);
     }
 }

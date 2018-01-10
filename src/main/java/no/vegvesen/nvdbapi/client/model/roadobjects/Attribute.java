@@ -27,6 +27,7 @@ package no.vegvesen.nvdbapi.client.model.roadobjects;
 
 import no.vegvesen.nvdbapi.client.model.datakatalog.DataType;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class Attribute {
@@ -88,5 +89,22 @@ public class Attribute {
 
     public boolean isEnum() {
         return enumId.isPresent();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Attribute attribute = (Attribute) o;
+        return typeId == attribute.typeId &&
+                Objects.equals(typeName, attribute.typeName) &&
+                Objects.equals(datatype, attribute.datatype) &&
+                Objects.equals(value, attribute.value) &&
+                Objects.equals(enumId, attribute.enumId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(typeId, typeName, datatype, value, enumId);
     }
 }

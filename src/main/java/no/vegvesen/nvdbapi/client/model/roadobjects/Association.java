@@ -25,6 +25,7 @@
 
 package no.vegvesen.nvdbapi.client.model.roadobjects;
 
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -59,5 +60,19 @@ public class Association {
     @Override
     public String toString() {
         return String.format("Association(typeId=%d, features=%s)", typeId, getFeatureIds());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Association that = (Association) o;
+        return typeId == that.typeId &&
+                Objects.equals(roadObjects, that.roadObjects);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(typeId, roadObjects);
     }
 }

@@ -27,6 +27,8 @@ package no.vegvesen.nvdbapi.client.model;
 
 import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
 
+import java.util.Objects;
+
 public class RoadPlacement {
 
     private final RoadRef roadRef;
@@ -49,5 +51,29 @@ public class RoadPlacement {
 
     public Geometry getPoint() {
         return point;
+    }
+
+    @Override
+    public String toString() {
+        return "RoadPlacement{" +
+                "roadRef=" + roadRef +
+                ", refLinkPosition=" + refLinkPosition +
+                ", point=" + point +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RoadPlacement that = (RoadPlacement) o;
+        return Objects.equals(roadRef, that.roadRef) &&
+                Objects.equals(refLinkPosition, that.refLinkPosition) &&
+                Objects.equals(point, that.point);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(roadRef, refLinkPosition, point);
     }
 }

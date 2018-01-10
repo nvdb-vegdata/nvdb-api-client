@@ -27,6 +27,7 @@ package no.vegvesen.nvdbapi.client.model.roadobjects;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class SegmentationFilter {
@@ -64,5 +65,22 @@ public class SegmentationFilter {
 
     public List<Integer> getRoadDepartments() {
         return roadDepartments;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SegmentationFilter that = (SegmentationFilter) o;
+        return Objects.equals(municipalities, that.municipalities) &&
+                Objects.equals(counties, that.counties) &&
+                Objects.equals(regions, that.regions) &&
+                Objects.equals(roadDepartments, that.roadDepartments) &&
+                Objects.equals(roadRefFilters, that.roadRefFilters);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(municipalities, counties, regions, roadDepartments, roadRefFilters);
     }
 }

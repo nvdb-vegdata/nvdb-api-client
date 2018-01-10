@@ -28,6 +28,7 @@ package no.vegvesen.nvdbapi.client.model;
 import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
 
 import java.util.List;
+import java.util.Objects;
 
 public class Position {
     private final List<Result> results;
@@ -68,5 +69,47 @@ public class Position {
         public Double getDistance() {
             return distance;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Result result = (Result) o;
+            return Objects.equals(placement, result.placement) &&
+                    Objects.equals(distance, result.distance);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(placement, distance);
+        }
+
+        @Override
+        public String toString() {
+            return "Result{" +
+                    "placement=" + placement +
+                    ", distance=" + distance +
+                    '}';
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Position position = (Position) o;
+        return Objects.equals(results, position.results);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(results);
+    }
+
+    @Override
+    public String toString() {
+        return "Position{" +
+                "results=" + results +
+                '}';
     }
 }

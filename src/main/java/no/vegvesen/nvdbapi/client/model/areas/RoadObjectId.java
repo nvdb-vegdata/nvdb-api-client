@@ -25,6 +25,8 @@
 
 package no.vegvesen.nvdbapi.client.model.areas;
 
+import java.util.Objects;
+
 public class RoadObjectId {
     private final int featureTypeId;
     private final long featureId;
@@ -40,5 +42,19 @@ public class RoadObjectId {
 
     public long getFeatureId() {
         return featureId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RoadObjectId that = (RoadObjectId) o;
+        return featureTypeId == that.featureTypeId &&
+                featureId == that.featureId;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(featureTypeId, featureId);
     }
 }

@@ -26,6 +26,7 @@
 package no.vegvesen.nvdbapi.client.model.areas;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Optional;
 
 public final class ContractArea implements Serializable {
@@ -52,5 +53,21 @@ public final class ContractArea implements Serializable {
 
     public String getType() {
         return type;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ContractArea that = (ContractArea) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(number, that.number) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(type, that.type);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, number, name, type);
     }
 }

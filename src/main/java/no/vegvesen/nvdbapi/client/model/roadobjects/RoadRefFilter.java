@@ -25,6 +25,8 @@
 
 package no.vegvesen.nvdbapi.client.model.roadobjects;
 
+import java.util.Objects;
+
 public class RoadRefFilter {
     private final Integer county;
     private final Integer municipality;
@@ -70,5 +72,25 @@ public class RoadRefFilter {
 
     public Integer getToHp() {
         return toHp;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RoadRefFilter that = (RoadRefFilter) o;
+        return Objects.equals(county, that.county) &&
+                Objects.equals(municipality, that.municipality) &&
+                Objects.equals(category, that.category) &&
+                Objects.equals(status, that.status) &&
+                Objects.equals(number, that.number) &&
+                Objects.equals(fromHp, that.fromHp) &&
+                Objects.equals(toHp, that.toHp);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(county, municipality, category, status, number, fromHp, toHp);
     }
 }

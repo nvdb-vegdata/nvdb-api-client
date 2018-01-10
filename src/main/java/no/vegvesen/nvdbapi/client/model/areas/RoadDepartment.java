@@ -26,6 +26,7 @@
 package no.vegvesen.nvdbapi.client.model.areas;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Optional;
 
 public final class RoadDepartment implements Serializable {
@@ -50,5 +51,20 @@ public final class RoadDepartment implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RoadDepartment that = (RoadDepartment) o;
+        return number == that.number &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, number, name);
     }
 }

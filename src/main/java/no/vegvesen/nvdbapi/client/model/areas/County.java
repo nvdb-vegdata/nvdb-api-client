@@ -28,6 +28,7 @@ package no.vegvesen.nvdbapi.client.model.areas;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Optional;
 
 public final class County implements Serializable {
@@ -70,5 +71,23 @@ public final class County implements Serializable {
 
     public int getRegion() {
         return region;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        County county = (County) o;
+        return number == county.number &&
+                region == county.region &&
+                Objects.equals(id, county.id) &&
+                Objects.equals(name, county.name) &&
+                Objects.equals(boundingBox, county.boundingBox) &&
+                Objects.equals(centerPoint, county.centerPoint);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, number, name, boundingBox, centerPoint, region);
     }
 }

@@ -28,6 +28,7 @@ package no.vegvesen.nvdbapi.client.model.areas;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Optional;
 
 public final class Region implements Serializable {
@@ -64,5 +65,22 @@ public final class Region implements Serializable {
 
     public Optional<Geometry> getCenterPoint() {
         return centerPoint;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Region region = (Region) o;
+        return number == region.number &&
+                Objects.equals(id, region.id) &&
+                Objects.equals(name, region.name) &&
+                Objects.equals(boundingBox, region.boundingBox) &&
+                Objects.equals(centerPoint, region.centerPoint);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, number, name, boundingBox, centerPoint);
     }
 }

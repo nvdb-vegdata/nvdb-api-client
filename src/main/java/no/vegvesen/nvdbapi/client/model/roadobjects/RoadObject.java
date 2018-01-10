@@ -30,6 +30,7 @@ import no.vegvesen.nvdbapi.client.model.Geometry;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 public class RoadObject {
@@ -159,4 +160,30 @@ public class RoadObject {
         return String.valueOf(id);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        RoadObject that = (RoadObject) o;
+        return id == that.id &&
+                Objects.equals(typeId, that.typeId) &&
+                Objects.equals(version, that.version) &&
+                Objects.equals(startDate, that.startDate) &&
+                Objects.equals(endDate, that.endDate) &&
+                Objects.equals(location, that.location) &&
+                Objects.equals(geometry, that.geometry) &&
+                Objects.equals(segmentationFilter, that.segmentationFilter) &&
+                Objects.equals(segments, that.segments) &&
+                Objects.equals(attributes, that.attributes) &&
+                Objects.equals(children, that.children) &&
+                Objects.equals(parents, that.parents) &&
+                Objects.equals(lastModified, that.lastModified);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(id, typeId, version, startDate, endDate, location, geometry, segmentationFilter, segments,
+                attributes, children, parents, lastModified);
+    }
 }
