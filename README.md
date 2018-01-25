@@ -18,8 +18,8 @@ compile "no.vegvesen.nvdb:nvdbapi-client:1.0.1"
 ```xml
 <dependency>
     <groupId>no.vegvesen.nvdb</groupId>
-    <artifactId>nvdbapi-client</artifactId>
-    <version>1.0.1</version>
+    <artifactId>nvdb-api-client</artifactId>
+    <version>1.1.0</version>
 </dependency>
 ```
 
