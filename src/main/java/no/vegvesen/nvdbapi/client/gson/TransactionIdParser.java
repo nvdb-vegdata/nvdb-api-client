@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Statens vegvesen
+ * Copyright (c) 2015-2018, Statens vegvesen
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,34 +23,20 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package no.vegvesen.nvdbapi.client.model;
+package no.vegvesen.nvdbapi.client.gson;
 
-import no.vegvesen.nvdbapi.client.model.datakatalog.Version;
+import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.transaction.TransactionId;
 
 import java.time.LocalDateTime;
 
-public class Status {
+public class TransactionIdParser {
 
-    private final LocalDateTime lastUpdated;
-    private final TransactionId lastProcessedTransaction;
-    private final Version datakatalogVersion;
+    public static TransactionId parseTransactionId(JsonObject obj) {
 
-    public Status(LocalDateTime lastUpdated, TransactionId lastProcessedTransaction, Version datakatalogVersion) {
-        this.lastUpdated = lastUpdated;
-        this.lastProcessedTransaction = lastProcessedTransaction;
-        this.datakatalogVersion = datakatalogVersion;
-    }
+        Integer id = GsonUtil.parseIntMember(obj, "transaksjonsid");
+        LocalDateTime date = GsonUtil.parseDateTimeMember(obj, "transaksjonstidspunkt");
 
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
-    }
-
-    public TransactionId getLastProcessedTransaction() {
-        return lastProcessedTransaction;
-    }
-
-    public Version getDatakatalogVersion() {
-        return datakatalogVersion;
+        return new TransactionId(id, date);
     }
 }

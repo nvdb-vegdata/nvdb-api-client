@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Statens vegvesen
+ * Copyright (c) 2015-2018, Statens vegvesen
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,34 +23,47 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package no.vegvesen.nvdbapi.client.model;
+package no.vegvesen.nvdbapi.client.model.transaction;
 
-import no.vegvesen.nvdbapi.client.model.datakatalog.Version;
-import no.vegvesen.nvdbapi.client.model.transaction.TransactionId;
+import java.util.Objects;
 
-import java.time.LocalDateTime;
+public class NextPage {
+    private final String start;
+    private final String href;
 
-public class Status {
-
-    private final LocalDateTime lastUpdated;
-    private final TransactionId lastProcessedTransaction;
-    private final Version datakatalogVersion;
-
-    public Status(LocalDateTime lastUpdated, TransactionId lastProcessedTransaction, Version datakatalogVersion) {
-        this.lastUpdated = lastUpdated;
-        this.lastProcessedTransaction = lastProcessedTransaction;
-        this.datakatalogVersion = datakatalogVersion;
+    public NextPage(String start, String href) {
+        this.start = start;
+        this.href = href;
     }
 
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
+    public String getStart() {
+        return start;
     }
 
-    public TransactionId getLastProcessedTransaction() {
-        return lastProcessedTransaction;
+    public String getHref() {
+        return href;
     }
 
-    public Version getDatakatalogVersion() {
-        return datakatalogVersion;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        NextPage nextPage = (NextPage) o;
+        return Objects.equals(getStart(), nextPage.getStart()) &&
+            Objects.equals(getHref(), nextPage.getHref());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getStart(), getHref());
+    }
+
+    @Override
+    public String toString() {
+        return "NextPage{" +
+            "start='" + start + '\'' +
+            ", href='" + href + '\'' +
+            '}';
     }
 }

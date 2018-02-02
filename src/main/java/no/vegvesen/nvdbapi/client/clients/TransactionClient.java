@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Statens vegvesen
+ * Copyright (c) 2015-2018, Statens vegvesen
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,34 +23,30 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package no.vegvesen.nvdbapi.client.model;
+package no.vegvesen.nvdbapi.client.clients;
 
-import no.vegvesen.nvdbapi.client.model.datakatalog.Version;
-import no.vegvesen.nvdbapi.client.model.transaction.TransactionId;
+import com.google.gson.JsonObject;
+import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
+import no.vegvesen.nvdbapi.client.gson.StatusParser;
+import no.vegvesen.nvdbapi.client.model.Status;
 
-import java.time.LocalDateTime;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.UriBuilder;
 
-public class Status {
+public class TransactionClient extends AbstractJerseyClient {
 
-    private final LocalDateTime lastUpdated;
-    private final TransactionId lastProcessedTransaction;
-    private final Version datakatalogVersion;
-
-    public Status(LocalDateTime lastUpdated, TransactionId lastProcessedTransaction, Version datakatalogVersion) {
-        this.lastUpdated = lastUpdated;
-        this.lastProcessedTransaction = lastProcessedTransaction;
-        this.datakatalogVersion = datakatalogVersion;
+    protected TransactionClient(String baseUrl, Client client) {
+        super(baseUrl, client);
     }
 
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
-    }
+    public Status getStatus() {
+        UriBuilder url = start().path("/transaksjoner");
 
-    public TransactionId getLastProcessedTransaction() {
-        return lastProcessedTransaction;
-    }
+        WebTarget target = getClient().target(url);
 
-    public Version getDatakatalogVersion() {
-        return datakatalogVersion;
+        JsonObject result = JerseyHelper.execute(target).getAsJsonObject();
+
+        return StatusParser.parseStatus(result);
     }
 }

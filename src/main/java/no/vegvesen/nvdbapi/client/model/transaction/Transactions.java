@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Statens vegvesen
+ * Copyright (c) 2015-2018, Statens vegvesen
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,34 +23,48 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package no.vegvesen.nvdbapi.client.model;
+package no.vegvesen.nvdbapi.client.model.transaction;
 
-import no.vegvesen.nvdbapi.client.model.datakatalog.Version;
-import no.vegvesen.nvdbapi.client.model.transaction.TransactionId;
+import java.util.List;
+import java.util.Objects;
 
-import java.time.LocalDateTime;
+public class Transactions {
+    private final List<Transaction> transactions;
+    private final Metadata metadata;
 
-public class Status {
-
-    private final LocalDateTime lastUpdated;
-    private final TransactionId lastProcessedTransaction;
-    private final Version datakatalogVersion;
-
-    public Status(LocalDateTime lastUpdated, TransactionId lastProcessedTransaction, Version datakatalogVersion) {
-        this.lastUpdated = lastUpdated;
-        this.lastProcessedTransaction = lastProcessedTransaction;
-        this.datakatalogVersion = datakatalogVersion;
+    public Transactions(List<Transaction> transactions, Metadata metadata) {
+        this.transactions = transactions;
+        this.metadata = metadata;
     }
 
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
+    public List<Transaction> getTransactions() {
+        return transactions;
     }
 
-    public TransactionId getLastProcessedTransaction() {
-        return lastProcessedTransaction;
+    public Metadata getMetadata() {
+        return metadata;
     }
 
-    public Version getDatakatalogVersion() {
-        return datakatalogVersion;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Transactions that = (Transactions) o;
+        return Objects.equals(getTransactions(), that.getTransactions()) &&
+            Objects.equals(getMetadata(), that.getMetadata());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getTransactions(), getMetadata());
+    }
+
+    @Override
+    public String toString() {
+        return "Transactions{" +
+            "transactions=" + transactions +
+            ", metadata=" + metadata +
+            '}';
     }
 }

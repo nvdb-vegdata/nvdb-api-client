@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Statens vegvesen
+ * Copyright (c) 2015-2018, Statens vegvesen
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,34 +23,49 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package no.vegvesen.nvdbapi.client.model;
-
-import no.vegvesen.nvdbapi.client.model.datakatalog.Version;
-import no.vegvesen.nvdbapi.client.model.transaction.TransactionId;
+package no.vegvesen.nvdbapi.client.model.transaction;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
-public class Status {
+public class TransactionId {
 
-    private final LocalDateTime lastUpdated;
-    private final TransactionId lastProcessedTransaction;
-    private final Version datakatalogVersion;
+    private final int id;
+    private final LocalDateTime date;
 
-    public Status(LocalDateTime lastUpdated, TransactionId lastProcessedTransaction, Version datakatalogVersion) {
-        this.lastUpdated = lastUpdated;
-        this.lastProcessedTransaction = lastProcessedTransaction;
-        this.datakatalogVersion = datakatalogVersion;
+    public TransactionId(int id, LocalDateTime date) {
+        this.id = id;
+        this.date = date;
     }
 
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
+    public int getId() {
+        return id;
     }
 
-    public TransactionId getLastProcessedTransaction() {
-        return lastProcessedTransaction;
+    public LocalDateTime getDate() {
+        return date;
     }
 
-    public Version getDatakatalogVersion() {
-        return datakatalogVersion;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TransactionId that = (TransactionId) o;
+        return getId() == that.getId() &&
+            Objects.equals(getDate(), that.getDate());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getId(), getDate());
+    }
+
+    @Override
+    public String toString() {
+        return "TransactionId{" +
+            "id=" + id +
+            ", date=" + date +
+            '}';
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Statens vegvesen
+ * Copyright (c) 2015-2018, Statens vegvesen
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -23,34 +23,48 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package no.vegvesen.nvdbapi.client.model;
+package no.vegvesen.nvdbapi.client.model.transaction;
 
-import no.vegvesen.nvdbapi.client.model.datakatalog.Version;
-import no.vegvesen.nvdbapi.client.model.transaction.TransactionId;
+import java.util.Objects;
 
-import java.time.LocalDateTime;
+public class Metadata {
 
-public class Status {
+    private final int numReturned;
+    private final NextPage nextPage;
 
-    private final LocalDateTime lastUpdated;
-    private final TransactionId lastProcessedTransaction;
-    private final Version datakatalogVersion;
-
-    public Status(LocalDateTime lastUpdated, TransactionId lastProcessedTransaction, Version datakatalogVersion) {
-        this.lastUpdated = lastUpdated;
-        this.lastProcessedTransaction = lastProcessedTransaction;
-        this.datakatalogVersion = datakatalogVersion;
+    public Metadata(int numReturned, NextPage nextPage) {
+        this.numReturned = numReturned;
+        this.nextPage = nextPage;
     }
 
-    public LocalDateTime getLastUpdated() {
-        return lastUpdated;
+    public int getNumReturned() {
+        return numReturned;
     }
 
-    public TransactionId getLastProcessedTransaction() {
-        return lastProcessedTransaction;
+    public NextPage getNextPage() {
+        return nextPage;
     }
 
-    public Version getDatakatalogVersion() {
-        return datakatalogVersion;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Metadata that = (Metadata) o;
+        return getNumReturned() == that.getNumReturned() &&
+            Objects.equals(getNextPage(), that.getNextPage());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getNumReturned(), getNextPage());
+    }
+
+    @Override
+    public String toString() {
+        return "Metadata{" +
+            "numReturned=" + numReturned +
+            ", nextPage=" + nextPage +
+            '}';
     }
 }
