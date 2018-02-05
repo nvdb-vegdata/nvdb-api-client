@@ -25,6 +25,7 @@
 
 package no.vegvesen.nvdbapi.client.model.transaction;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -32,11 +33,11 @@ public class RoadObjectMetadata {
 
     private final RoadObjectType roadObjectType;
     private final int version;
-    private final LocalDateTime startDate;
-    private final LocalDateTime endDate;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
     private final LocalDateTime lastModified;
 
-    public RoadObjectMetadata(RoadObjectType roadObjectType, int version, LocalDateTime startDate, LocalDateTime endDate, LocalDateTime lastModified) {
+    public RoadObjectMetadata(RoadObjectType roadObjectType, int version, LocalDate startDate, LocalDate endDate, LocalDateTime lastModified) {
         this.roadObjectType = roadObjectType;
         this.version = version;
         this.startDate = startDate;
@@ -52,11 +53,11 @@ public class RoadObjectMetadata {
         return version;
     }
 
-    public LocalDateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public LocalDateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 

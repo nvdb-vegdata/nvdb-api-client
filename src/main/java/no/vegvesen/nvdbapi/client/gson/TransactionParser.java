@@ -29,6 +29,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.transaction.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -46,7 +47,7 @@ public class TransactionParser {
 
     private static Metadata parseMetadata(JsonObject obj) {
         int numReturned = parseIntMember(obj, "returnert");
-        NextPage nextPage = parseNextPage(obj);
+        NextPage nextPage = parseNextPage(obj.getAsJsonObject("neste"));
 
         return new Metadata(numReturned, nextPage);
     }
@@ -75,18 +76,18 @@ public class TransactionParser {
             parseIntMember(e.getAsJsonObject(), "id"),
             parseStringMember(e.getAsJsonObject(), "href"),
             parseRoadObjectMetadata(e.getAsJsonObject().getAsJsonObject("metadata")),
-            Type.from(parseStringMember(e.getAsJsonObject(), "traksaksjonstype")))));
+            Type.from(parseStringMember(e.getAsJsonObject(), "transaksjonstype_tekst")))));
 
         return roadObjects;
     }
 
     private static RoadObjectMetadata parseRoadObjectMetadata(JsonObject obj) {
         int version = parseIntMember(obj, "versjon");
-        LocalDateTime startDate = parseDateTimeMember(obj, "startdato");
-        LocalDateTime endDate = parseDateTimeMember(obj, "sluttdato");
+        LocalDate startDate = parseDateMember(obj, "startdato");
+        LocalDate endDate = parseDateMember(obj, "sluttdato");
         LocalDateTime lastModified = parseDateTimeMember(obj, "sist_modifisert");
 
-        return new RoadObjectMetadata(parseRoadObjectType(obj), version, startDate, endDate, lastModified);
+        return new RoadObjectMetadata(parseRoadObjectType(obj.getAsJsonObject("type")), version, startDate, endDate, lastModified);
     }
 
     private static RoadObjectType parseRoadObjectType(JsonObject obj) {
