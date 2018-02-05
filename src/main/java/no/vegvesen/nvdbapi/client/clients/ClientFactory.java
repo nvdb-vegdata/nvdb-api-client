@@ -140,6 +140,13 @@ public final class ClientFactory implements AutoCloseable {
         return c;
     }
 
+    public TransactionsClient createTransactionsClient(){
+        assertIsOpen();
+        TransactionsClient c = new TransactionsClient(baseUrl, createClient(null));
+        clients.add(c);
+        return c;
+    }
+
     private Client createClient(String datakatalogVersion) {
         return createClient(datakatalogVersion, true);
     }

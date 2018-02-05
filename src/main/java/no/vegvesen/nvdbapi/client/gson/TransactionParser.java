@@ -25,7 +25,74 @@
 
 package no.vegvesen.nvdbapi.client.gson;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import no.vegvesen.nvdbapi.client.model.transaction.*;
+
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
+
 public class TransactionParser {
 
-    //TODO - modell skal være klar.
+    public static Transactions parseTransactions(JsonObject obj) {
+        Metadata metadata = parseMetadata(obj.getAsJsonObject("metadata"));
+        List<Transaction> transactions = parseTransaction(obj.getAsJsonArray("objekter"));
+
+        return new Transactions(transactions, metadata);
+    }
+
+    private static Metadata parseMetadata(JsonObject obj) {
+        int numReturned = parseIntMember(obj, "returnert");
+        NextPage nextPage = parseNextPage(obj);
+
+        return new Metadata(numReturned, nextPage);
+    }
+
+    private static NextPage parseNextPage(JsonObject obj) {
+        String start = GsonUtil.parseStringMember(obj, "start");
+        String href = GsonUtil.parseStringMember(obj, "href");
+
+        return new NextPage(start, href);
+    }
+
+    private static List<Transaction> parseTransaction(JsonArray obj) {
+        List<Transaction> transactions = new ArrayList<>();
+        obj.forEach(e -> transactions.add(new Transaction(
+            parseIntMember(e.getAsJsonObject(), "id"),
+            parseDateTimeMember(e.getAsJsonObject(), "dato"),
+            parseStringMember(e.getAsJsonObject(), "brukerid"),
+            parseRoadObjects(e.getAsJsonObject().getAsJsonArray("objekter")))));
+
+        return transactions;
+    }
+
+    private static List<RoadObject> parseRoadObjects(JsonArray obj) {
+        List<RoadObject> roadObjects = new ArrayList<>();
+        obj.forEach(e -> roadObjects.add(new RoadObject(
+            parseIntMember(e.getAsJsonObject(), "id"),
+            parseStringMember(e.getAsJsonObject(), "href"),
+            parseRoadObjectMetadata(e.getAsJsonObject().getAsJsonObject("metadata")),
+            Type.from(parseStringMember(e.getAsJsonObject(), "traksaksjonstype")))));
+
+        return roadObjects;
+    }
+
+    private static RoadObjectMetadata parseRoadObjectMetadata(JsonObject obj) {
+        int version = parseIntMember(obj, "versjon");
+        LocalDateTime startDate = parseDateTimeMember(obj, "startdato");
+        LocalDateTime endDate = parseDateTimeMember(obj, "sluttdato");
+        LocalDateTime lastModified = parseDateTimeMember(obj, "sist_modifisert");
+
+        return new RoadObjectMetadata(parseRoadObjectType(obj), version, startDate, endDate, lastModified);
+    }
+
+    private static RoadObjectType parseRoadObjectType(JsonObject obj) {
+        int id = parseIntMember(obj, "id");
+        String name = parseStringMember(obj, "navn");
+
+        return new RoadObjectType(id, name);
+    }
 }

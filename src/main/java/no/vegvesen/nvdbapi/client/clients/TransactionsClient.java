@@ -27,26 +27,26 @@ package no.vegvesen.nvdbapi.client.clients;
 
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
-import no.vegvesen.nvdbapi.client.gson.StatusParser;
-import no.vegvesen.nvdbapi.client.model.Status;
+import no.vegvesen.nvdbapi.client.gson.TransactionParser;
+import no.vegvesen.nvdbapi.client.model.transaction.Transactions;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 
-public class TransactionClient extends AbstractJerseyClient {
+public class TransactionsClient extends AbstractJerseyClient {
 
-    protected TransactionClient(String baseUrl, Client client) {
+    protected TransactionsClient(String baseUrl, Client client) {
         super(baseUrl, client);
     }
 
-    public Status getStatus() {
+    public Transactions getTransactions() {
         UriBuilder url = start().path("/transaksjoner");
 
         WebTarget target = getClient().target(url);
 
         JsonObject result = JerseyHelper.execute(target).getAsJsonObject();
 
-        return StatusParser.parseStatus(result);
+        return TransactionParser.parseTransactions(result);
     }
 }
