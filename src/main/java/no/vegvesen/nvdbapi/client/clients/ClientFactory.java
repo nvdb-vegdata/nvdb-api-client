@@ -48,7 +48,7 @@ public final class ClientFactory implements AutoCloseable {
     private final String userAgent;
     private final String xClientName;
 
-    private final String apiRevision = "application/vnd.vegvesen.nvdb-v2-rev2+json";
+    private final String apiRevision = "application/vnd.vegvesen.nvdb-v3+json";
 
     private Datakatalog datakatalog;
     private List<AbstractJerseyClient> clients;

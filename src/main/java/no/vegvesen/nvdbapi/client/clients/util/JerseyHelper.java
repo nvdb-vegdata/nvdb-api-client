@@ -46,7 +46,7 @@ import java.util.Optional;
 
 public class JerseyHelper {
     private static final Logger logger = LoggerFactory.getLogger(JerseyHelper.class);
-    public static final String MEDIA_TYPE = "application/vnd.vegvesen.nvdb-v2+json";
+    public static final String MEDIA_TYPE = "application/vnd.vegvesen.nvdb-v3+json";
 
     private JerseyHelper() {
     }
