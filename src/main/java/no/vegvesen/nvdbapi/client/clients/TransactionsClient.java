@@ -25,14 +25,14 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
-import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
 import no.vegvesen.nvdbapi.client.gson.TransactionParser;
-import no.vegvesen.nvdbapi.client.model.transaction.Transactions;
+import no.vegvesen.nvdbapi.client.model.Page;
+import no.vegvesen.nvdbapi.client.model.transaction.Transaction;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
+import java.util.Optional;
 
 public class TransactionsClient extends AbstractJerseyClient {
 
@@ -40,13 +40,23 @@ public class TransactionsClient extends AbstractJerseyClient {
         super(baseUrl, client);
     }
 
-    public Transactions getTransactions() {
+    public TransacionsResult getTransactions() {
         UriBuilder url = start().path("/transaksjoner");
-
         WebTarget target = getClient().target(url);
 
-        JsonObject result = JerseyHelper.execute(target).getAsJsonObject();
+        return new TransacionsResult(target, Optional.of(Page.count(1000)));
+    }
 
-        return TransactionParser.parseTransactions(result);
+    public TransacionsResult getTransactions(Page page) {
+        UriBuilder url = start().path("/transaksjoner");
+        WebTarget target = getClient().target(url);
+
+        return new TransacionsResult(target, Optional.ofNullable(page));
+    }
+
+    public static class TransacionsResult extends GenericResultSet<Transaction>{
+        protected TransacionsResult(WebTarget baseTarget, Optional<Page> currentPage) {
+            super(baseTarget, currentPage, TransactionParser::parseTransaction);
+        }
     }
 }

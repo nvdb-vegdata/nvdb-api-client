@@ -38,36 +38,12 @@ import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 
 public class TransactionParser {
 
-    public static Transactions parseTransactions(JsonObject obj) {
-        Metadata metadata = parseMetadata(obj.getAsJsonObject("metadata"));
-        List<Transaction> transactions = parseTransaction(obj.getAsJsonArray("objekter"));
-
-        return new Transactions(transactions, metadata);
-    }
-
-    private static Metadata parseMetadata(JsonObject obj) {
-        int numReturned = parseIntMember(obj, "returnert");
-        NextPage nextPage = parseNextPage(obj.getAsJsonObject("neste"));
-
-        return new Metadata(numReturned, nextPage);
-    }
-
-    private static NextPage parseNextPage(JsonObject obj) {
-        String start = GsonUtil.parseStringMember(obj, "start");
-        String href = GsonUtil.parseStringMember(obj, "href");
-
-        return new NextPage(start, href);
-    }
-
-    private static List<Transaction> parseTransaction(JsonArray obj) {
-        List<Transaction> transactions = new ArrayList<>();
-        obj.forEach(e -> transactions.add(new Transaction(
-            parseIntMember(e.getAsJsonObject(), "id"),
-            parseDateTimeMember(e.getAsJsonObject(), "dato"),
-            parseStringMember(e.getAsJsonObject(), "brukerid"),
-            parseRoadObjects(e.getAsJsonObject().getAsJsonArray("objekter")))));
-
-        return transactions;
+    public static Transaction parseTransaction(JsonObject obj) {
+        return new Transaction(
+            parseIntMember(obj, "id"),
+            parseDateTimeMember(obj, "dato"),
+            parseStringMember(obj, "brukerid"),
+            parseRoadObjects(obj.getAsJsonArray("objekter")));
     }
 
     private static List<RoadObject> parseRoadObjects(JsonArray obj) {
