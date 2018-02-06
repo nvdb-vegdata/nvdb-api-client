@@ -40,10 +40,14 @@ public class TransactionParser {
 
     public static Transaction parseTransaction(JsonObject obj) {
         return new Transaction(
-            parseIntMember(obj, "id"),
-            parseDateTimeMember(obj, "dato"),
-            parseStringMember(obj, "brukerid"),
+            parseTransactionId(obj), parseStringMember(obj, "brukerid"),
             parseRoadObjects(obj.getAsJsonArray("objekter")));
+    }
+
+    private static TransactionId parseTransactionId(JsonObject obj){
+        Integer id = parseIntMember(obj, "id");
+        LocalDateTime dateTime = parseDateTimeMember(obj, "dato");
+        return new TransactionId(id, dateTime);
     }
 
     private static List<RoadObject> parseRoadObjects(JsonArray obj) {
@@ -58,7 +62,7 @@ public class TransactionParser {
     }
 
     private static RoadObjectMetadata parseRoadObjectMetadata(JsonObject obj) {
-        int version = parseIntMember(obj, "versjon");
+        Integer version = parseIntMember(obj, "versjon");
         LocalDate startDate = parseDateMember(obj, "startdato");
         LocalDate endDate = parseDateMember(obj, "sluttdato");
         LocalDateTime lastModified = parseDateTimeMember(obj, "sist_modifisert");

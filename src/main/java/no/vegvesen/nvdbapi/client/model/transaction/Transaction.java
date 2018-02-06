@@ -31,24 +31,18 @@ import java.util.Objects;
 
 public class Transaction {
 
-    private final int id;
-    private final LocalDateTime date;
+    private final TransactionId transactionId;
     private final String userId;
     private final List<RoadObject> roadObjects;
 
-    public Transaction(int id, LocalDateTime date, String userId, List<RoadObject> roadObjects) {
-        this.id = id;
-        this.date = date;
+    public Transaction(TransactionId transactionId, String userId, List<RoadObject> roadObjects) {
+        this.transactionId = transactionId;
         this.userId = userId;
         this.roadObjects = roadObjects;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public LocalDateTime getDate() {
-        return date;
+    public TransactionId getTransactionId() {
+        return transactionId;
     }
 
     public String getUserId() {
@@ -64,8 +58,7 @@ public class Transaction {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
-        return getId() == that.getId() &&
-            Objects.equals(getDate(), that.getDate()) &&
+        return Objects.equals(getTransactionId(), that.getTransactionId()) &&
             Objects.equals(getUserId(), that.getUserId()) &&
             Objects.equals(getRoadObjects(), that.getRoadObjects());
     }
@@ -73,14 +66,13 @@ public class Transaction {
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), getDate(), getUserId(), getRoadObjects());
+        return Objects.hash(getTransactionId(), getUserId(), getRoadObjects());
     }
 
     @Override
     public String toString() {
         return "Transaction{" +
-            "id=" + id +
-            ", date=" + date +
+            "transactionId=" + transactionId +
             ", userId='" + userId + '\'' +
             ", roadObjects=" + roadObjects +
             '}';

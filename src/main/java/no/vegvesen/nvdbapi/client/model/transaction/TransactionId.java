@@ -30,15 +30,15 @@ import java.util.Objects;
 
 public class TransactionId {
 
-    private final int id;
+    private final Integer id;
     private final LocalDateTime date;
 
-    public TransactionId(int id, LocalDateTime date) {
+    public TransactionId(Integer id, LocalDateTime date) {
         this.id = id;
         this.date = date;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
@@ -57,7 +57,6 @@ public class TransactionId {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(getId(), getDate());
     }
 

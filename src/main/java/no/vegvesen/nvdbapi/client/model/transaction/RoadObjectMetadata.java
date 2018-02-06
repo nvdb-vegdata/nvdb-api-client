@@ -32,12 +32,12 @@ import java.util.Objects;
 public class RoadObjectMetadata {
 
     private final RoadObjectType roadObjectType;
-    private final int version;
+    private final Integer version;
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final LocalDateTime lastModified;
 
-    public RoadObjectMetadata(RoadObjectType roadObjectType, int version, LocalDate startDate, LocalDate endDate, LocalDateTime lastModified) {
+    public RoadObjectMetadata(RoadObjectType roadObjectType, Integer version, LocalDate startDate, LocalDate endDate, LocalDateTime lastModified) {
         this.roadObjectType = roadObjectType;
         this.version = version;
         this.startDate = startDate;
@@ -49,7 +49,7 @@ public class RoadObjectMetadata {
         return roadObjectType;
     }
 
-    public int getVersion() {
+    public Integer getVersion() {
         return version;
     }
 
