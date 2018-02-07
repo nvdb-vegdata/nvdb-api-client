@@ -27,16 +27,18 @@ package no.vegvesen.nvdbapi.client.gson;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.roadnet.*;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 
-public final class LinkParser {
+public final class RoadNetParser {
 
-    private LinkParser() {
+    private RoadNetParser() {
     }
 
     public static Link parseLink(JsonObject obj){
@@ -47,6 +49,18 @@ public final class LinkParser {
         List<LinkPart> linkParts = parseLinkPorts(obj.getAsJsonArray("lenkedeler"));
 
         return new Link(id, ports, linkParts);
+    }
+
+    public static Node parseNode(JsonObject obj){
+        if(obj==null) return null;
+
+        Integer id = parseIntMember(obj, "id");
+        Geometry geometry = GeometryParser.parse(obj.getAsJsonObject("geometri"));
+        LocalDate startDate = parseDateMember(obj, "startdato");
+        LocalDate endDate = parseDateMember(obj, "sluttdato");
+        List<Port> ports = parsePorts(obj.getAsJsonArray("porter"));
+
+        return new Node(id, geometry, startDate, endDate, ports);
     }
 
     private static List<LinkPart> parseLinkPorts(JsonArray obj) {

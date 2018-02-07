@@ -27,9 +27,10 @@ package no.vegvesen.nvdbapi.client.clients;
 
 import com.google.gson.JsonElement;
 import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
-import no.vegvesen.nvdbapi.client.gson.LinkParser;
+import no.vegvesen.nvdbapi.client.gson.RoadNetParser;
 import no.vegvesen.nvdbapi.client.model.Page;
 import no.vegvesen.nvdbapi.client.model.roadnet.Link;
+import no.vegvesen.nvdbapi.client.model.roadnet.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -40,7 +41,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 public class RoadNetClient extends AbstractJerseyClient {
     private static final Logger LOG = LoggerFactory.getLogger(RoadNetClient.class);
@@ -51,15 +51,26 @@ public class RoadNetClient extends AbstractJerseyClient {
 
     public Link getLink(int id) {
         UriBuilder path = endpoint().path("/lenker").path(Integer.toString(id));
-
         WebTarget target = getClient().target(path);
         JsonElement result = JerseyHelper.execute(target);
 
-        return LinkParser.parseLink(result.getAsJsonObject());
+        return RoadNetParser.parseLink(result.getAsJsonObject());
+    }
+
+    public Node getNode(int id) {
+        UriBuilder path = endpoint().path("/noder").path(Integer.toString(id));
+        WebTarget target = getClient().target(path);
+        JsonElement result = JerseyHelper.execute(target);
+
+        return RoadNetParser.parseNode(result.getAsJsonObject());
     }
 
     public LinkResult getLinks() {
         return getLinks(RoadNetRequest.DEFAULT);
+    }
+
+    public NodeResult getNodes() {
+        return getNodes(RoadNetRequest.DEFAULT);
     }
 
     public LinkResult getLinks(RoadNetRequest request) {
@@ -68,14 +79,30 @@ public class RoadNetClient extends AbstractJerseyClient {
         UriBuilder path = endpoint().path("/lenker");
         if (!request.getRegions().isEmpty()) path.queryParam("region", join(request.getRegions()));
         if (!request.getCounties().isEmpty()) path.queryParam("fylke", join(request.getCounties()));
-        if (!request.getMunicipalities().isEmpty()) path.queryParam("kommune", join(request.getMunicipalities()));
         if (!request.getRoadDepartments().isEmpty()) path.queryParam("vegavdeling", join(request.getRoadDepartments()));
+        if (!request.getMunicipalities().isEmpty()) path.queryParam("kommune", join(request.getMunicipalities()));
         request.getBbox().ifPresent(v -> path.queryParam("kartutsnitt", v));
         request.getProjection().ifPresent(v -> path.queryParam("srid", v.getSrid()));
         request.getRoadRefFilter().ifPresent(v -> path.queryParam("vegreferanse", v));
 
         WebTarget target = getClient().target(path);
         return new LinkResult(target, request.getPage());
+    }
+
+    public NodeResult getNodes(RoadNetRequest request) {
+        Objects.requireNonNull(request, "Missing page info argument.");
+
+        UriBuilder path = endpoint().path("/noder");
+        if (!request.getRegions().isEmpty()) path.queryParam("region", join(request.getRegions()));
+        if (!request.getCounties().isEmpty()) path.queryParam("fylke", join(request.getCounties()));
+        if (!request.getRoadDepartments().isEmpty()) path.queryParam("vegavdeling", join(request.getRoadDepartments()));
+        if (!request.getMunicipalities().isEmpty()) path.queryParam("kommune", join(request.getMunicipalities()));
+        request.getBbox().ifPresent(v -> path.queryParam("kartutsnitt", v));
+        request.getProjection().ifPresent(v -> path.queryParam("srid", v.getSrid()));
+        request.getRoadRefFilter().ifPresent(v -> path.queryParam("vegreferanse", v));
+
+        WebTarget target = getClient().target(path);
+        return new NodeResult(target, request.getPage());
     }
 
     private static String join(List<Integer> list) {
@@ -94,7 +121,14 @@ public class RoadNetClient extends AbstractJerseyClient {
     public final class LinkResult extends GenericResultSet<Link> {
 
         protected LinkResult(WebTarget baseTarget, Optional<Page> currentPage) {
-            super(baseTarget, currentPage, LinkParser::parseLink);
+            super(baseTarget, currentPage, RoadNetParser::parseLink);
+        }
+    }
+
+    public final class NodeResult extends GenericResultSet<Node> {
+
+        protected NodeResult(WebTarget baseTarget, Optional<Page> currentPage) {
+            super(baseTarget, currentPage, RoadNetParser::parseNode);
         }
     }
 }
