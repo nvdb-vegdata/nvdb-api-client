@@ -52,15 +52,17 @@ public class TransactionParser {
 
     private static List<RoadObject> parseRoadObjects(JsonArray obj) {
         List<RoadObject> roadObjects = new ArrayList<>();
-        obj.forEach(e -> roadObjects.add(new RoadObject(
-            parseIntMember(e.getAsJsonObject(), "id"),
-            parseRoadObjectMetadata(e.getAsJsonObject().getAsJsonObject("metadata")),
-            Type.from(parseStringMember(e.getAsJsonObject(), "transaksjonstype_tekst")))));
-
+        if(obj != null) {
+            obj.forEach(e -> roadObjects.add(new RoadObject(
+                parseIntMember(e.getAsJsonObject(), "id"),
+                parseRoadObjectMetadata(e.getAsJsonObject().getAsJsonObject("metadata")),
+                Type.from(parseStringMember(e.getAsJsonObject(), "transaksjonstype_tekst")))));
+        }
         return roadObjects;
     }
 
     private static RoadObjectMetadata parseRoadObjectMetadata(JsonObject obj) {
+        if(obj==null) return null;
         Integer version = parseIntMember(obj, "versjon");
         LocalDate startDate = parseDateMember(obj, "startdato");
         LocalDate endDate = parseDateMember(obj, "sluttdato");
@@ -70,6 +72,7 @@ public class TransactionParser {
     }
 
     private static RoadObjectType parseRoadObjectType(JsonObject obj) {
+        if(obj==null) return null;
         int id = parseIntMember(obj, "id");
         String name = parseStringMember(obj, "navn");
 
