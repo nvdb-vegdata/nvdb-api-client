@@ -54,7 +54,6 @@ public class TransactionParser {
         List<RoadObject> roadObjects = new ArrayList<>();
         obj.forEach(e -> roadObjects.add(new RoadObject(
             parseIntMember(e.getAsJsonObject(), "id"),
-            parseStringMember(e.getAsJsonObject(), "href"),
             parseRoadObjectMetadata(e.getAsJsonObject().getAsJsonObject("metadata")),
             Type.from(parseStringMember(e.getAsJsonObject(), "transaksjonstype_tekst")))));
 

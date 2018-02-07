@@ -30,23 +30,17 @@ import java.util.Objects;
 public class RoadObject {
 
     private final int id;
-    private final String href;
     private final RoadObjectMetadata roadObjectMetadata;
     private final Type type;
 
-    public RoadObject(int id, String href, RoadObjectMetadata roadObjectMetadata, Type type) {
+    public RoadObject(int id, RoadObjectMetadata roadObjectMetadata, Type type) {
         this.id = id;
-        this.href = href;
         this.roadObjectMetadata = roadObjectMetadata;
         this.type = type;
     }
 
     public int getId() {
         return id;
-    }
-
-    public String getHref() {
-        return href;
     }
 
     public RoadObjectMetadata getRoadObjectMetadata() {
@@ -63,7 +57,6 @@ public class RoadObject {
         if (o == null || getClass() != o.getClass()) return false;
         RoadObject that = (RoadObject) o;
         return getId() == that.getId() &&
-            Objects.equals(getHref(), that.getHref()) &&
             Objects.equals(getRoadObjectMetadata(), that.getRoadObjectMetadata()) &&
             getType() == that.getType();
     }
@@ -71,14 +64,13 @@ public class RoadObject {
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), getHref(), getRoadObjectMetadata(), getType());
+        return Objects.hash(getId(), getRoadObjectMetadata(), getType());
     }
 
     @Override
     public String toString() {
         return "RoadObject{" +
             "id=" + id +
-            ", href='" + href + '\'' +
             ", roadObjectMetadata=" + roadObjectMetadata +
             ", type=" + type +
             '}';
