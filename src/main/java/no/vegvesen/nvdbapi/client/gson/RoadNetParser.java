@@ -72,8 +72,6 @@ public final class RoadNetParser {
             TopologyLevel.from(parseIntMember(p.getAsJsonObject(), "topologinivå")),
             parseIntMember(p.getAsJsonObject(), "startport"),
             parseIntMember(p.getAsJsonObject(), "sluttport"),
-            parseDoubleMember(p.getAsJsonObject(), "startposisjon"),
-            parseDoubleMember(p.getAsJsonObject(), "sluttposisjon"),
             parseIntMember(p.getAsJsonObject(), "kommune"),
             parseDoubleMember(p.getAsJsonObject(), "lengde"),
             SosiMedium.from(parseStringMember(p.getAsJsonObject(), "medium")),
@@ -111,7 +109,12 @@ public final class RoadNetParser {
         List<Port> ports = new ArrayList<>();
         if (obj != null) {
             obj.forEach(p ->
-                ports.add(new Port(parseIntMember(p.getAsJsonObject(), "id"), new PortConnection(parseIntMember(p.getAsJsonObject(), "tilkobling.portid"), parseIntMember(p.getAsJsonObject(), "tilkobling.nodeid")))));
+                ports.add(new Port(parseIntMember(p.getAsJsonObject(), "id"),
+                    parseDoubleMember(p.getAsJsonObject(), "startposisjon"),
+                    parseDoubleMember(p.getAsJsonObject(), "sluttposisjon"),
+                    new PortConnection(parseIntMember(p.getAsJsonObject(), "tilkobling.portid"),
+                        parseIntMember(p.getAsJsonObject(), "tilkobling.nodeid"),
+                        NetElementType.from(parseIntMember(p.getAsJsonObject(), "tilkobling.netelementtype"))))));
         }
         return ports;
     }

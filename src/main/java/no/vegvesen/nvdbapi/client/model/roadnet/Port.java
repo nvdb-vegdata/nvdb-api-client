@@ -30,10 +30,14 @@ import java.util.Objects;
 public class Port {
 
     private final Integer id;
+    private final Double startPosition;
+    private final Double endPosition;
     private final PortConnection portConnection;
 
-    public Port(Integer id, PortConnection portConnection) {
+    public Port(Integer id, Double startPosition, Double endPosition, PortConnection portConnection) {
         this.id = id;
+        this.startPosition = startPosition;
+        this.endPosition = endPosition;
         this.portConnection = portConnection;
     }
 
@@ -45,25 +49,37 @@ public class Port {
         return portConnection;
     }
 
+    public Double getStartPosition() {
+        return startPosition;
+    }
+
+    public Double getEndPosition() {
+        return endPosition;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Port port = (Port) o;
         return Objects.equals(getId(), port.getId()) &&
+            Objects.equals(getStartPosition(), port.getStartPosition()) &&
+            Objects.equals(getEndPosition(), port.getEndPosition()) &&
             Objects.equals(getPortConnection(), port.getPortConnection());
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), getPortConnection());
+        return Objects.hash(getId(), getStartPosition(), getEndPosition(), getPortConnection());
     }
 
     @Override
     public String toString() {
         return "Port{" +
             "id=" + id +
+            ", startPosition=" + startPosition +
+            ", endPosition=" + endPosition +
             ", portConnection=" + portConnection +
             '}';
     }

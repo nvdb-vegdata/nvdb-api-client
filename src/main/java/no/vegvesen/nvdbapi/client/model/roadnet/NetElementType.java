@@ -25,54 +25,29 @@
 
 package no.vegvesen.nvdbapi.client.model.roadnet;
 
-import java.util.Objects;
+import java.util.Arrays;
 
-public class PortConnection {
+public enum NetElementType {
+    NODE(50001, "Node"),
+    LENKE(50002, "Lenke");
 
-    private final Integer portId;
-    private final Integer nodeId;
-    private final NetElementType netElementType;
+    private final int value;
+    private final String description;
 
-    public PortConnection(Integer portId, Integer nodeId, NetElementType netElementType) {
-        this.portId = portId;
-        this.nodeId = nodeId;
-        this.netElementType = netElementType;
+    NetElementType(int value, String description) {
+        this.value = value;
+        this.description = description;
     }
 
-    public Integer getPortId() {
-        return portId;
+    public int getValue() {
+        return value;
     }
 
-    public Integer getNodeId() {
-        return nodeId;
+    public String getDescription() {
+        return description;
     }
 
-    public NetElementType getNetElementType() {
-        return netElementType;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        PortConnection that = (PortConnection) o;
-        return Objects.equals(getPortId(), that.getPortId()) &&
-            Objects.equals(getNodeId(), that.getNodeId()) &&
-            getNetElementType() == that.getNetElementType();
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(getPortId(), getNodeId(), getNetElementType());
-    }
-
-    @Override
-    public String toString() {
-        return "PortConnection{" +
-            "portId=" + portId +
-            ", nodeId=" + nodeId +
-            ", netElementType=" + netElementType +
-            '}';
+    public static NetElementType from(int val) {
+        return Arrays.stream(NetElementType.values()).filter(v -> v.getValue() == val).findAny().orElse(null);
     }
 }

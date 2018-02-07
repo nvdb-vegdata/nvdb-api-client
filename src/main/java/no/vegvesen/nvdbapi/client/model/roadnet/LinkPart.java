@@ -39,8 +39,6 @@ public class LinkPart {
     private final TopologyLevel topologyLevel;
     private final Integer startPort;
     private final Integer endPort;
-    private final Double startPosition;
-    private final Double endPosition;
     private final Integer municipality;
     private final Double length;
     private final SosiMedium sosiMedium;
@@ -52,17 +50,13 @@ public class LinkPart {
     private final LocalDate startDate;
     private final LocalDate endDate;
 
-    public LinkPart(Integer partId, Boolean isConnectionLink, Boolean isDetailed, TopologyLevel topologyLevel, Integer startPort, Integer endPort,
-                    Double startPosition, Double endPosition, Integer municipality, Double length, SosiMedium sosiMedium, Ltema ltema,
-                    CenterLineProjection centerLineProjection, TypeRoad typeRoad, Geometry geometry, List<String> fields, LocalDate startDate, LocalDate endDate) {
+    public LinkPart(Integer partId, Boolean isConnectionLink, Boolean isDetailed, TopologyLevel topologyLevel, Integer startPort, Integer endPort, Integer municipality, Double length, SosiMedium sosiMedium, Ltema ltema, CenterLineProjection centerLineProjection, TypeRoad typeRoad, Geometry geometry, List<String> fields, LocalDate startDate, LocalDate endDate) {
         this.partId = partId;
         this.isConnectionLink = isConnectionLink;
         this.isDetailed = isDetailed;
         this.topologyLevel = topologyLevel;
         this.startPort = startPort;
         this.endPort = endPort;
-        this.startPosition = startPosition;
-        this.endPosition = endPosition;
         this.municipality = municipality;
         this.length = length;
         this.sosiMedium = sosiMedium;
@@ -97,14 +91,6 @@ public class LinkPart {
 
     public Integer getEndPort() {
         return endPort;
-    }
-
-    public Double getStartPosition() {
-        return startPosition;
-    }
-
-    public Double getEndPosition() {
-        return endPosition;
     }
 
     public Integer getMunicipality() {
@@ -158,8 +144,6 @@ public class LinkPart {
             getTopologyLevel() == linkPart.getTopologyLevel() &&
             Objects.equals(getStartPort(), linkPart.getStartPort()) &&
             Objects.equals(getEndPort(), linkPart.getEndPort()) &&
-            Objects.equals(getStartPosition(), linkPart.getStartPosition()) &&
-            Objects.equals(getEndPosition(), linkPart.getEndPosition()) &&
             Objects.equals(getMunicipality(), linkPart.getMunicipality()) &&
             Objects.equals(getLength(), linkPart.getLength()) &&
             getSosiMedium() == linkPart.getSosiMedium() &&
@@ -175,7 +159,7 @@ public class LinkPart {
     @Override
     public int hashCode() {
 
-        return Objects.hash(getPartId(), isConnectionLink, isDetailed, getTopologyLevel(), getStartPort(), getEndPort(), getStartPosition(), getEndPosition(), getMunicipality(), getLength(), getSosiMedium(), getLtema(), getCenterLineProjection(), getTypeRoad(), getGeometry(), getFields(), getStartDate(), getEndDate());
+        return Objects.hash(getPartId(), isConnectionLink, isDetailed, getTopologyLevel(), getStartPort(), getEndPort(), getMunicipality(), getLength(), getSosiMedium(), getLtema(), getCenterLineProjection(), getTypeRoad(), getGeometry(), getFields(), getStartDate(), getEndDate());
     }
 
     @Override
@@ -187,8 +171,6 @@ public class LinkPart {
             ", topologyLevel=" + topologyLevel +
             ", startPort=" + startPort +
             ", endPort=" + endPort +
-            ", startPosition=" + startPosition +
-            ", endPosition=" + endPosition +
             ", municipality=" + municipality +
             ", length=" + length +
             ", sosiMedium=" + sosiMedium +
