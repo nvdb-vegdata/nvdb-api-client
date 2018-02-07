@@ -25,55 +25,46 @@
 
 package no.vegvesen.nvdbapi.client.model.roadnet;
 
-import java.util.List;
 import java.util.Objects;
 
-public class Link {
+public class Port {
 
     private final Integer id;
-    private final List<Port> ports;
-    private final List<LinkPart> linkParts;
+    private final PortConnection portConnection;
 
-    public Link(Integer id, List<Port> ports, List<LinkPart> linkParts) {
+    public Port(Integer id, PortConnection portConnection) {
         this.id = id;
-        this.ports = ports;
-        this.linkParts = linkParts;
+        this.portConnection = portConnection;
     }
 
     public Integer getId() {
         return id;
     }
 
-    public List<Port> getPorts() {
-        return ports;
-    }
-
-    public List<LinkPart> getLinkParts() {
-        return linkParts;
+    public PortConnection getPortConnection() {
+        return portConnection;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Link link = (Link) o;
-        return Objects.equals(getId(), link.getId()) &&
-            Objects.equals(getPorts(), link.getPorts()) &&
-            Objects.equals(getLinkParts(), link.getLinkParts());
+        Port port = (Port) o;
+        return Objects.equals(getId(), port.getId()) &&
+            Objects.equals(getPortConnection(), port.getPortConnection());
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), getPorts(), getLinkParts());
+        return Objects.hash(getId(), getPortConnection());
     }
 
     @Override
     public String toString() {
-        return "Link{" +
+        return "Port{" +
             "id=" + id +
-            ", ports=" + ports +
-            ", linkParts=" + linkParts +
+            ", portConnection=" + portConnection +
             '}';
     }
 }

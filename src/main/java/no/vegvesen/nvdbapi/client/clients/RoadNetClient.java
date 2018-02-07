@@ -49,14 +49,13 @@ public class RoadNetClient extends AbstractJerseyClient {
         super(baseUrl, client);
     }
 
-    public List<Link> getLinks(int id) {
+    public Link getLink(int id) {
         UriBuilder path = endpoint().path("/lenker").path(Integer.toString(id));
 
         WebTarget target = getClient().target(path);
         JsonElement result = JerseyHelper.execute(target);
-        return StreamSupport.stream(result.getAsJsonArray().spliterator(), false)
-                            .map(e -> LinkParser.parse(e.getAsJsonObject()))
-                            .collect(Collectors.toList());
+
+        return LinkParser.parseLink(result.getAsJsonObject());
     }
 
     public LinkResult getLinks() {
@@ -95,7 +94,7 @@ public class RoadNetClient extends AbstractJerseyClient {
     public final class LinkResult extends GenericResultSet<Link> {
 
         protected LinkResult(WebTarget baseTarget, Optional<Page> currentPage) {
-            super(baseTarget, currentPage, LinkParser::parse);
+            super(baseTarget, currentPage, LinkParser::parseLink);
         }
     }
 }

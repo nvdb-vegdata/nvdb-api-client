@@ -25,55 +25,53 @@
 
 package no.vegvesen.nvdbapi.client.model.roadnet;
 
-import java.util.List;
 import java.util.Objects;
 
-public class Link {
+public class CenterLineProjection {
+    private final Integer linkId;
+    private final Double startPosition;
+    private final Double endPosition;
 
-    private final Integer id;
-    private final List<Port> ports;
-    private final List<LinkPart> linkParts;
-
-    public Link(Integer id, List<Port> ports, List<LinkPart> linkParts) {
-        this.id = id;
-        this.ports = ports;
-        this.linkParts = linkParts;
+    public CenterLineProjection(Integer linkId, Double startPosition, Double endPosition) {
+        this.linkId = linkId;
+        this.startPosition = startPosition;
+        this.endPosition = endPosition;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getLinkId() {
+        return linkId;
     }
 
-    public List<Port> getPorts() {
-        return ports;
+    public Double getStartPosition() {
+        return startPosition;
     }
 
-    public List<LinkPart> getLinkParts() {
-        return linkParts;
+    public Double getEndPosition() {
+        return endPosition;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Link link = (Link) o;
-        return Objects.equals(getId(), link.getId()) &&
-            Objects.equals(getPorts(), link.getPorts()) &&
-            Objects.equals(getLinkParts(), link.getLinkParts());
+        CenterLineProjection that = (CenterLineProjection) o;
+        return Objects.equals(getLinkId(), that.getLinkId()) &&
+            Objects.equals(getStartPosition(), that.getStartPosition()) &&
+            Objects.equals(getEndPosition(), that.getEndPosition());
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), getPorts(), getLinkParts());
+        return Objects.hash(getLinkId(), getStartPosition(), getEndPosition());
     }
 
     @Override
     public String toString() {
-        return "Link{" +
-            "id=" + id +
-            ", ports=" + ports +
-            ", linkParts=" + linkParts +
+        return "CenterLineProjection{" +
+            "linkId=" + linkId +
+            ", startPosition=" + startPosition +
+            ", endPosition=" + endPosition +
             '}';
     }
 }

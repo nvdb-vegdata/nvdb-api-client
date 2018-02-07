@@ -25,55 +25,29 @@
 
 package no.vegvesen.nvdbapi.client.model.roadnet;
 
-import java.util.List;
-import java.util.Objects;
+import java.util.Arrays;
 
-public class Link {
+public enum TypeRoad {
+    trapp("Trapp"),
+    fortau("Fortau"),
+    gangOgSykkelveg("Gang- og sykkelveg"),
+    bilferje("Bilferje"),
+    sykkelveg("Sykkelveg"),
+    kanalisertVeg("Kanalisert veg"),
+    enkelBilveg("Enkel bilveg"),
+    rundkjøring("Rundkjøring");
 
-    private final Integer id;
-    private final List<Port> ports;
-    private final List<LinkPart> linkParts;
+    private final String description;
 
-    public Link(Integer id, List<Port> ports, List<LinkPart> linkParts) {
-        this.id = id;
-        this.ports = ports;
-        this.linkParts = linkParts;
+    TypeRoad(String description) {
+        this.description = description;
     }
 
-    public Integer getId() {
-        return id;
+    public String getDescription() {
+        return description;
     }
 
-    public List<Port> getPorts() {
-        return ports;
-    }
-
-    public List<LinkPart> getLinkParts() {
-        return linkParts;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Link link = (Link) o;
-        return Objects.equals(getId(), link.getId()) &&
-            Objects.equals(getPorts(), link.getPorts()) &&
-            Objects.equals(getLinkParts(), link.getLinkParts());
-    }
-
-    @Override
-    public int hashCode() {
-
-        return Objects.hash(getId(), getPorts(), getLinkParts());
-    }
-
-    @Override
-    public String toString() {
-        return "Link{" +
-            "id=" + id +
-            ", ports=" + ports +
-            ", linkParts=" + linkParts +
-            '}';
+    public static TypeRoad from(String name) {
+        return Arrays.stream(values()).filter(v -> v.name().equalsIgnoreCase(name)).findAny().orElse(null);
     }
 }

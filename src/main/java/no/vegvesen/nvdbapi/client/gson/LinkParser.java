@@ -25,16 +25,12 @@
 
 package no.vegvesen.nvdbapi.client.gson;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.model.Geometry;
-import no.vegvesen.nvdbapi.client.model.roadnet.Link;
-import no.vegvesen.nvdbapi.client.model.roadnet.Ltema;
-import no.vegvesen.nvdbapi.client.model.roadnet.SosiMedium;
-import no.vegvesen.nvdbapi.client.model.roadnet.TopologyLevel;
-import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
+import no.vegvesen.nvdbapi.client.model.roadnet.*;
 
-import java.time.LocalDate;
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 
@@ -43,43 +39,66 @@ public final class LinkParser {
     private LinkParser() {
     }
 
-    public static Link parse(JsonObject obj) {
-        // Metadata
-        LocalDate fromDate = parseDateMember(obj, "metadata.startdato"), toDate = parseDateMember(obj, "metadata.sluttdato");
+    public static Link parseLink(JsonObject obj){
+        if(obj==null) return null;
 
-        long id = parseLongMember(obj, "veglenkeid");
-        Double start = parseDoubleMember(obj, "startposisjon"), end = parseDoubleMember(obj, "sluttposisjon");
-        String startNode = parseStringMember(obj, "startnode"), endNode = parseStringMember(obj, "sluttnode");
+        Integer id = parseIntMember(obj, "id");
+        List<Port> ports = parsePorts(obj.getAsJsonArray("porter"));
+        List<LinkPart> linkParts = parseLinkPorts(obj.getAsJsonArray("lenkedeler"));
 
-        boolean isConnectionLink = parseBooleanMember(obj, "konnekteringslenke");
-
-        SosiMedium medium = Optional.ofNullable(parseStringMember(obj, "medium")).map(SosiMedium::from).orElse(null);
-        Ltema ltema = Optional.ofNullable(parseIntMember(obj, "temakode")).map(Ltema::from).orElse(null);
-        TopologyLevel level = Optional.ofNullable(parseIntMember(obj, "topologinivå")).map(TopologyLevel::from).orElse(null);
-
-        // Areas
-        Integer municipality = parseIntMember(obj, "kommune");
-        Integer region = parseIntMember(obj, "region");
-        Integer county = parseIntMember(obj, "fylke");
-        Integer roadDepartment = parseIntMember(obj, "vegavdeling");
-
-        // Geometry
-        Geometry geo = null;
-        if (obj.has("geometri")) {
-            geo = GeometryParser.parse(obj.getAsJsonObject("geometri"));
-        }
-
-        RoadRef roadRef = null;
-        if (obj.has("vegreferanse")) {
-            roadRef = RoadRefParser.parse(obj.getAsJsonObject("vegreferanse"));
-        }
-
-        Long superLinkId = null;
-        if(obj.has("foreldrelenkeid")) {
-            superLinkId = parseLongMember(obj, "foreldrelenkeid");
-        }
-
-        return new Link(id, superLinkId, start, end, startNode, endNode, fromDate, toDate, medium, ltema, level, region, county, municipality, roadDepartment, geo, roadRef, isConnectionLink);
+        return new Link(id, ports, linkParts);
     }
 
+    private static List<LinkPart> parseLinkPorts(JsonArray obj) {
+        List<LinkPart> linkParts = new ArrayList<>();
+        obj.forEach(p -> linkParts.add(new LinkPart(
+            parseIntMember(p.getAsJsonObject(), "id"),
+            parseBooleanMember(p.getAsJsonObject(), "konnekteringslenke"),
+            parseBooleanMember(p.getAsJsonObject(), "detaljert"),
+            TopologyLevel.from(parseIntMember(p.getAsJsonObject(), "topologinivå")),
+            parseIntMember(p.getAsJsonObject(), "startport"),
+            parseIntMember(p.getAsJsonObject(), "sluttport"),
+            parseDoubleMember(p.getAsJsonObject(), "startposisjon"),
+            parseDoubleMember(p.getAsJsonObject(), "sluttposisjon"),
+            parseIntMember(p.getAsJsonObject(), "kommune"),
+            parseDoubleMember(p.getAsJsonObject(), "lengde"),
+            SosiMedium.from(parseStringMember(p.getAsJsonObject(), "medium")),
+            Ltema.from(parseIntMember(p.getAsJsonObject(), "temakode")),
+            parseCenterLineProjection(p.getAsJsonObject().getAsJsonObject("senterlinjeprojeksjon")),
+            TypeRoad.from(parseStringMember(p.getAsJsonObject(), "typeVeg")),
+            GeometryParser.parse(p.getAsJsonObject().getAsJsonObject("geometri")),
+            parseFields(p.getAsJsonObject().getAsJsonArray("felt")),
+            parseDateMember(p.getAsJsonObject(), "startdato"),
+            parseDateMember(p.getAsJsonObject(), "sluttdato")
+        )));
+
+        return linkParts;
+    }
+
+    private static List<String> parseFields(JsonArray obj) {
+        List<String> fields = new ArrayList<>();
+        if (obj != null) {
+            obj.forEach(p -> fields.add(p.toString()));
+        }
+        return fields;
+    }
+
+    private static CenterLineProjection parseCenterLineProjection(JsonObject obj) {
+        if (obj == null) return null;
+
+        Integer linkId = parseIntMember(obj, "lenkeid");
+        Double startPosition = parseDoubleMember(obj, "startposisjon");
+        Double endPosition = parseDoubleMember(obj, "sluttposisjon");
+
+        return new CenterLineProjection(linkId, startPosition, endPosition);
+    }
+
+    private static List<Port> parsePorts(JsonArray obj) {
+        List<Port> ports = new ArrayList<>();
+        if (obj != null) {
+            obj.forEach(p ->
+                ports.add(new Port(parseIntMember(p.getAsJsonObject(), "id"), new PortConnection(parseIntMember(p.getAsJsonObject(), "tilkobling.portid"), parseIntMember(p.getAsJsonObject(), "tilkobling.nodeid")))));
+        }
+        return ports;
+    }
 }
