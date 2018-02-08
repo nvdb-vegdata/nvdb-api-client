@@ -250,4 +250,12 @@ public final class RoadObjectParser {
 
         return new Statistics(numFound, length);
     }
+
+    public static RoadObjectType parseRoadObjectType(JsonObject obj){
+        if(obj == null) return null;
+        Integer id = parseIntMember(obj, "id");
+        String name = parseStringMember(obj, "navn");
+
+        return new RoadObjectType(id, name, parseStatistics(obj.getAsJsonObject("statistikk")));
+    }
 }

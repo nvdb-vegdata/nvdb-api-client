@@ -37,6 +37,7 @@ import no.vegvesen.nvdbapi.client.model.datakatalog.DataType;
 import no.vegvesen.nvdbapi.client.model.datakatalog.Datakatalog;
 import no.vegvesen.nvdbapi.client.model.roadobjects.Attribute;
 import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObject;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObjectType;
 import no.vegvesen.nvdbapi.client.model.roadobjects.Statistics;
 import no.vegvesen.nvdbapi.client.util.ArgUtil;
 import org.slf4j.Logger;
@@ -95,6 +96,17 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
     public RoadObjectsResult getRoadObjects(int featureTypeId) {
         return getRoadObjects(featureTypeId, RoadObjectRequest.DEFAULT);
+    }
+
+    public List<RoadObjectType> getRoadObjectTypes(){
+        List<RoadObjectType> roadObjectTypes = new ArrayList<>();
+        UriBuilder path = start().path("/vegobjekter");
+        WebTarget target = getClient().target(path);
+
+        JsonArray e = JerseyHelper.execute(target).getAsJsonArray();
+        e.forEach(p -> roadObjectTypes.add(RoadObjectParser.parseRoadObjectType(p.getAsJsonObject())));
+
+        return roadObjectTypes;
     }
 
     /**
