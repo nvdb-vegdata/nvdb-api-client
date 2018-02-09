@@ -10,6 +10,7 @@ apply from: "gradle/repositories.gradle"
 apply from: "gradle/publish.gradle"
 
 group = "no.vegvesen.nvdb"
+rootProject.name = "NVDB API Client"
 
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
