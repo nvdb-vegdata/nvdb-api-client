@@ -31,6 +31,7 @@ import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseIntMember;
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseStringMember;
 
+//TODO: Oppdater parse-metoden og fjern getDefault() når det er klart til å ta i bruk ny vegreferanse
 public final class RoadRefParser {
     private RoadRefParser() {}
 
@@ -63,5 +64,10 @@ public final class RoadRefParser {
 
             return RoadRef.merged(county, municipality, category, status, number, fromHp, toHp, fromMeter, toMeter, shortName);
         }
+    }
+
+
+    public static RoadRef getDefault() {
+        return RoadRef.point(18, 0, "E", "V", 6, 23, 17084, "1800 Ev6 hp23 m17084-17117");
     }
 }

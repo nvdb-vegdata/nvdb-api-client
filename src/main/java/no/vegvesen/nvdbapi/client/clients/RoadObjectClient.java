@@ -177,6 +177,43 @@ public class RoadObjectClient extends AbstractJerseyClient {
         return new ChangesResult(datakatalog.getDataTypeMap(), typeId, target, Optional.ofNullable(page));
     }
 
+    public List<RoadObject> getRoadObjectVersions(int featureTypeId, long featureId) {
+        return getRoadObjectVersions(featureTypeId, featureId, RoadObjectRequest.DEFAULT);
+    }
+
+    public List<RoadObject> getRoadObjectVersions(int featureTypeId, long featureId, RoadObjectRequest roadObjectRequest) {
+        List<RoadObject> roadObjects = new ArrayList<>();
+        UriBuilder path = start()
+            .path(String.format("/vegobjekter/%d/%d/versjoner", featureTypeId, featureId));
+
+        logger.debug("Invoking {}", path);
+        applyRequestParameters(path, convert(roadObjectRequest));
+
+        WebTarget target = getClient().target(path);
+
+        JsonArray e = JerseyHelper.execute(target).getAsJsonArray();
+        e.forEach(p -> roadObjects.add(RoadObjectParser.parse(datakatalog.getDataTypeMap(), p.getAsJsonObject())));
+
+        return roadObjects;
+    }
+
+    public RoadObject getVersion(int featureTypeId, long featureId, int version){
+        return getVersion(featureTypeId, featureId, version, RoadObjectRequest.DEFAULT);
+    }
+
+    public RoadObject getVersion(int featureTypeId, long featureId, int version, RoadObjectRequest roadObjectRequest){
+        UriBuilder path = start()
+            .path(String.format("/vegobjekter/%d/%d/%d", featureTypeId, featureId, version));
+
+        logger.debug("Invoking {}", path);
+        applyRequestParameters(path, convert(roadObjectRequest));
+
+        WebTarget target = getClient().target(path);
+
+        JsonObject obj = JerseyHelper.execute(target).getAsJsonObject();
+        return RoadObjectParser.parse(datakatalog.getDataTypeMap(), obj);
+    }
+
     private static void applyRequestParameters(UriBuilder path, MultivaluedMap<String, String> params) {
         params.forEach((k, values) -> path.queryParam(k, (Object[]) values.toArray(new String[0])));
     }
