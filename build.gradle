@@ -16,11 +16,11 @@ targetCompatibility = "1.8"
 [compileJava, compileTestJava]*.options*.encoding = "UTF-8"
 
 dependencies {
-    api "com.google.code.gson:gson:2.8.0"
+    api "com.google.code.gson:gson:2.8.2"
     api "org.slf4j:slf4j-api:1.7.25"
 
-    api "org.glassfish.jersey.core:jersey-client:2.25.1"
-    api "org.glassfish.jersey.connectors:jersey-apache-connector:2.25.1"
+    api "org.glassfish.jersey.core:jersey-client:2.26"
+    api "org.glassfish.jersey.connectors:jersey-apache-connector:2.6"
 
     testImplementation "junit:junit:4.12"
     testRuntimeOnly 'ch.qos.logback:logback-site:1.2.2'
