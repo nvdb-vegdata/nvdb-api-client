@@ -30,12 +30,12 @@ import java.util.Objects;
 public class PortConnection {
 
     private final Integer portId;
-    private final Integer nodeId;
+    private final Integer netElementId;
     private final NetElementType netElementType;
 
-    public PortConnection(Integer portId, Integer nodeId, NetElementType netElementType) {
+    public PortConnection(Integer portId, Integer netElementId, NetElementType netElementType) {
         this.portId = portId;
-        this.nodeId = nodeId;
+        this.netElementId = netElementId;
         this.netElementType = netElementType;
     }
 
@@ -43,8 +43,8 @@ public class PortConnection {
         return portId;
     }
 
-    public Integer getNodeId() {
-        return nodeId;
+    public Integer getNetElementId() {
+        return netElementId;
     }
 
     public NetElementType getNetElementType() {
@@ -57,21 +57,21 @@ public class PortConnection {
         if (o == null || getClass() != o.getClass()) return false;
         PortConnection that = (PortConnection) o;
         return Objects.equals(getPortId(), that.getPortId()) &&
-            Objects.equals(getNodeId(), that.getNodeId()) &&
+            Objects.equals(getNetElementId(), that.getNetElementId()) &&
             getNetElementType() == that.getNetElementType();
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getPortId(), getNodeId(), getNetElementType());
+        return Objects.hash(getPortId(), getNetElementId(), getNetElementType());
     }
 
     @Override
     public String toString() {
         return "PortConnection{" +
             "portId=" + portId +
-            ", nodeId=" + nodeId +
+            ", netElementId=" + netElementId +
             ", netElementType=" + netElementType +
             '}';
     }
