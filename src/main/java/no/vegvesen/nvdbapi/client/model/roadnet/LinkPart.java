@@ -41,6 +41,8 @@ public class LinkPart {
     private final Integer endPort;
     private final Integer municipality;
     private final Double length;
+    private final Integer measureMethod;
+    private final LocalDate measureDate;
     private final SosiMedium sosiMedium;
     private final Ltema ltema;
     private final CenterLineProjection centerLineProjection;
@@ -50,7 +52,7 @@ public class LinkPart {
     private final LocalDate startDate;
     private final LocalDate endDate;
 
-    public LinkPart(Integer partId, Boolean isConnectionLink, Boolean isDetailed, TopologyLevel topologyLevel, Integer startPort, Integer endPort, Integer municipality, Double length, SosiMedium sosiMedium, Ltema ltema, CenterLineProjection centerLineProjection, TypeRoad typeRoad, Geometry geometry, List<String> fields, LocalDate startDate, LocalDate endDate) {
+    public LinkPart(Integer partId, Boolean isConnectionLink, Boolean isDetailed, TopologyLevel topologyLevel, Integer startPort, Integer endPort, Integer municipality, Double length, Integer measureMethod, LocalDate measureDate, SosiMedium sosiMedium, Ltema ltema, CenterLineProjection centerLineProjection, TypeRoad typeRoad, Geometry geometry, List<String> fields, LocalDate startDate, LocalDate endDate) {
         this.partId = partId;
         this.isConnectionLink = isConnectionLink;
         this.isDetailed = isDetailed;
@@ -59,6 +61,8 @@ public class LinkPart {
         this.endPort = endPort;
         this.municipality = municipality;
         this.length = length;
+        this.measureMethod = measureMethod;
+        this.measureDate = measureDate;
         this.sosiMedium = sosiMedium;
         this.ltema = ltema;
         this.centerLineProjection = centerLineProjection;
@@ -146,6 +150,8 @@ public class LinkPart {
             Objects.equals(getEndPort(), linkPart.getEndPort()) &&
             Objects.equals(getMunicipality(), linkPart.getMunicipality()) &&
             Objects.equals(getLength(), linkPart.getLength()) &&
+            Objects.equals(measureMethod, linkPart.measureMethod) &&
+            Objects.equals(measureDate, linkPart.measureDate) &&
             getSosiMedium() == linkPart.getSosiMedium() &&
             getLtema() == linkPart.getLtema() &&
             Objects.equals(getCenterLineProjection(), linkPart.getCenterLineProjection()) &&
@@ -159,7 +165,7 @@ public class LinkPart {
     @Override
     public int hashCode() {
 
-        return Objects.hash(getPartId(), isConnectionLink, isDetailed, getTopologyLevel(), getStartPort(), getEndPort(), getMunicipality(), getLength(), getSosiMedium(), getLtema(), getCenterLineProjection(), getTypeRoad(), getGeometry(), getFields(), getStartDate(), getEndDate());
+        return Objects.hash(getPartId(), isConnectionLink, isDetailed, getTopologyLevel(), getStartPort(), getEndPort(), getMunicipality(), getLength(), measureMethod, measureDate, getSosiMedium(), getLtema(), getCenterLineProjection(), getTypeRoad(), getGeometry(), getFields(), getStartDate(), getEndDate());
     }
 
     @Override
@@ -173,6 +179,8 @@ public class LinkPart {
             ", endPort=" + endPort +
             ", municipality=" + municipality +
             ", length=" + length +
+            ", measureMethod=" + measureMethod +
+            ", measureDate=" + measureDate +
             ", sosiMedium=" + sosiMedium +
             ", ltema=" + ltema +
             ", centerLineProjection=" + centerLineProjection +

@@ -30,14 +30,13 @@ import java.util.Objects;
 public class Port {
 
     private final Integer id;
-    private final Double startPosition;
-    private final Double endPosition;
-    private final PortConnection portConnection;
 
-    public Port(Integer id, Double startPosition, Double endPosition, PortConnection portConnection) {
+    private final Double linkPosition;
+
+    private final PortConnection portConnection;
+    public Port(Integer id, Double linkPosition, PortConnection portConnection) {
         this.id = id;
-        this.startPosition = startPosition;
-        this.endPosition = endPosition;
+        this.linkPosition = linkPosition;
         this.portConnection = portConnection;
     }
 
@@ -45,16 +44,12 @@ public class Port {
         return id;
     }
 
+    public Double getLinkPosition() {
+        return linkPosition;
+    }
+
     public PortConnection getPortConnection() {
         return portConnection;
-    }
-
-    public Double getStartPosition() {
-        return startPosition;
-    }
-
-    public Double getEndPosition() {
-        return endPosition;
     }
 
     @Override
@@ -63,23 +58,21 @@ public class Port {
         if (o == null || getClass() != o.getClass()) return false;
         Port port = (Port) o;
         return Objects.equals(getId(), port.getId()) &&
-            Objects.equals(getStartPosition(), port.getStartPosition()) &&
-            Objects.equals(getEndPosition(), port.getEndPosition()) &&
+            Objects.equals(getLinkPosition(), port.getLinkPosition()) &&
             Objects.equals(getPortConnection(), port.getPortConnection());
     }
 
     @Override
     public int hashCode() {
 
-        return Objects.hash(getId(), getStartPosition(), getEndPosition(), getPortConnection());
+        return Objects.hash(getId(), getLinkPosition(), getPortConnection());
     }
 
     @Override
     public String toString() {
         return "Port{" +
             "id=" + id +
-            ", startPosition=" + startPosition +
-            ", endPosition=" + endPosition +
+            ", linkPosition=" + linkPosition +
             ", portConnection=" + portConnection +
             '}';
     }
