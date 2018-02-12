@@ -28,25 +28,24 @@ package no.vegvesen.nvdbapi.client.clients;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
 import no.vegvesen.nvdbapi.client.gson.ChangesParser;
 import no.vegvesen.nvdbapi.client.gson.RoadObjectParser;
 import no.vegvesen.nvdbapi.client.model.Change;
 import no.vegvesen.nvdbapi.client.model.Page;
 import no.vegvesen.nvdbapi.client.model.datakatalog.DataType;
 import no.vegvesen.nvdbapi.client.model.datakatalog.Datakatalog;
-import no.vegvesen.nvdbapi.client.model.roadobjects.Attribute;
-import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObject;
-import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObjectType;
-import no.vegvesen.nvdbapi.client.model.roadobjects.Statistics;
+import no.vegvesen.nvdbapi.client.model.roadobjects.*;
 import no.vegvesen.nvdbapi.client.util.ArgUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
+import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -55,6 +54,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static no.vegvesen.nvdbapi.client.clients.RoadObjectRequestBuilder.convert;
+import static no.vegvesen.nvdbapi.client.clients.util.JerseyHelper.*;
 
 public class RoadObjectClient extends AbstractJerseyClient {
     private static final Logger logger = LoggerFactory.getLogger(RoadObjectClient.class);
@@ -74,7 +74,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
                 .path(String.format("/vegobjekter/%d/%d/egenskaper/%d", featureTypeId, featureId, attributeTypeId));
         logger.debug("Invoking {}", path);
         WebTarget target = getClient().target(path);
-        JsonElement e = JerseyHelper.execute(target);
+        JsonElement e = execute(target);
         return RoadObjectParser.parseAttribute(datakatalog.getDataTypeMap(), e.getAsJsonObject());
     }
 
@@ -90,7 +90,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
         logger.debug("Invoking {}", path);
         WebTarget target = getClient().target(path);
 
-        JsonElement e = JerseyHelper.execute(target);
+        JsonElement e = execute(target);
         return RoadObjectParser.parseStatistics(e.getAsJsonObject());
     }
 
@@ -103,7 +103,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
         UriBuilder path = start().path("/vegobjekter");
         WebTarget target = getClient().target(path);
 
-        JsonArray e = JerseyHelper.execute(target).getAsJsonArray();
+        JsonArray e = execute(target).getAsJsonArray();
         e.forEach(p -> roadObjectTypes.add(RoadObjectParser.parseRoadObjectType(p.getAsJsonObject())));
 
         return roadObjectTypes;
@@ -156,7 +156,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
         WebTarget target = getClient().target(path);
 
-        JsonObject obj = JerseyHelper.execute(target).getAsJsonObject();
+        JsonObject obj = execute(target).getAsJsonObject();
         return RoadObjectParser.parse(datakatalog.getDataTypeMap(), obj);
     }
 
@@ -191,17 +191,17 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
         WebTarget target = getClient().target(path);
 
-        JsonArray e = JerseyHelper.execute(target).getAsJsonArray();
+        JsonArray e = execute(target).getAsJsonArray();
         e.forEach(p -> roadObjects.add(RoadObjectParser.parse(datakatalog.getDataTypeMap(), p.getAsJsonObject())));
 
         return roadObjects;
     }
 
-    public RoadObject getVersion(int featureTypeId, long featureId, int version){
-        return getVersion(featureTypeId, featureId, version, RoadObjectRequest.DEFAULT);
+    public RoadObject getRoadObjectVersion(int featureTypeId, long featureId, int version){
+        return getRoadObjectVersion(featureTypeId, featureId, version, RoadObjectRequest.DEFAULT);
     }
 
-    public RoadObject getVersion(int featureTypeId, long featureId, int version, RoadObjectRequest roadObjectRequest){
+    public RoadObject getRoadObjectVersion(int featureTypeId, long featureId, int version, RoadObjectRequest roadObjectRequest){
         UriBuilder path = start()
             .path(String.format("/vegobjekter/%d/%d/%d", featureTypeId, featureId, version));
 
@@ -210,8 +210,31 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
         WebTarget target = getClient().target(path);
 
-        JsonObject obj = JerseyHelper.execute(target).getAsJsonObject();
+        JsonObject obj = execute(target).getAsJsonObject();
         return RoadObjectParser.parse(datakatalog.getDataTypeMap(), obj);
+    }
+
+    public RoadObjectAttribute getBinaryAttributeRoadObject(int featureTypeId, long featureId, int version, int attributeId){
+        UriBuilder path = start()
+            .path(String.format("/vegobjekter/%d/%d/%d/egenskaper/%d/binaer", featureTypeId, featureId, version, attributeId));
+
+        logger.debug("Invoking {}", path);
+        WebTarget target = getClient().target(path);
+
+        Invocation invocation = target.request().accept(MEDIA_TYPE).buildGet();
+        Response response = execute(invocation, Response.class);
+
+        if (!isSuccess(response)) {
+            throw parseError(response);
+        }
+
+        List<String> contentTypes = new ArrayList<>();
+        for(Object o : response.getHeaders().get("Content-Type")){
+            contentTypes.add(o.toString());
+        }
+        InputStream inputStream = response.readEntity(InputStream.class);
+
+        return new RoadObjectAttribute(contentTypes, inputStream);
     }
 
     private static void applyRequestParameters(UriBuilder path, MultivaluedMap<String, String> params) {
@@ -224,7 +247,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
         logger.debug("Invoking {}", path);
         WebTarget target = getClient().target(path);
 
-        JsonArray array = JerseyHelper.execute(target).getAsJsonArray();
+        JsonArray array = execute(target).getAsJsonArray();
         return StreamSupport.stream(array.spliterator(), false)
                 .map(JsonElement::getAsJsonObject)
                 .map(o -> RoadObjectParser.parseAttribute(datakatalog.getDataTypeMap(), o))
