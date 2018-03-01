@@ -113,9 +113,13 @@ public final class RoadNetParser {
             obj.forEach(p ->
                 ports.add(new Port(parseIntMember(p.getAsJsonObject(), "id"),
                     parseDoubleMember(p.getAsJsonObject(), "lenkeposisjon"),
-                    new PortConnection(parseIntMember(p.getAsJsonObject(), "tilkobling.portid"),
+                    p.getAsJsonObject().getAsJsonObject("tilkobling") == null
+                        ? null
+                        : new PortConnection(parseIntMember(p.getAsJsonObject(), "tilkobling.portid"),
                         parseIntMember(p.getAsJsonObject(), "tilkobling.netelementid"),
                         NetElementType.from(parseIntMember(p.getAsJsonObject(), "tilkobling.netelementtype"))))));
+
+
         }
         return ports;
     }

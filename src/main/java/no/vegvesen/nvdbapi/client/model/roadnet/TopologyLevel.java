@@ -48,7 +48,8 @@ public enum TopologyLevel {
         return description;
     }
 
-    public static TopologyLevel from(int val) {
-       return Arrays.stream(TopologyLevel.values()).filter(v -> v.apiValue == val).findAny().orElse(null);
+    public static TopologyLevel from(Integer val) {
+        if(val == null) return null;
+        return Arrays.stream(TopologyLevel.values()).filter(v -> v.apiValue == val).findAny().orElse(null);
     }
 }
