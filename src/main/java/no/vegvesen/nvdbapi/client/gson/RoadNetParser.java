@@ -26,6 +26,7 @@
 package no.vegvesen.nvdbapi.client.gson;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.roadnet.*;
@@ -34,6 +35,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Objects.isNull;
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 
 public final class RoadNetParser {
@@ -66,24 +68,24 @@ public final class RoadNetParser {
     private static List<LinkPart> parseLinkPorts(JsonArray obj) {
         List<LinkPart> linkParts = new ArrayList<>();
         obj.forEach(p -> linkParts.add(new LinkPart(
-            parseIntMember(p.getAsJsonObject(), "id"),
-            parseBooleanMember(p.getAsJsonObject(), "konnekteringslenke"),
-            parseBooleanMember(p.getAsJsonObject(), "detaljert"),
-            TopologyLevel.from(parseIntMember(p.getAsJsonObject(), "topologinivå")),
-            parseIntMember(p.getAsJsonObject(), "startport"),
-            parseIntMember(p.getAsJsonObject(), "sluttport"),
-            parseIntMember(p.getAsJsonObject(), "kommune"),
-            parseDoubleMember(p.getAsJsonObject(), "lengde"),
-            parseIntMember(p.getAsJsonObject(), "måleMetode"),
-            parseDateMember(p.getAsJsonObject(), "måleDato"),
-            SosiMedium.from(parseStringMember(p.getAsJsonObject(), "medium")),
-            Ltema.from(parseIntMember(p.getAsJsonObject(), "temakode")),
-            parseCenterLineProjection(p.getAsJsonObject().getAsJsonObject("senterlinjeprojeksjon")),
-            TypeRoad.from(parseStringMember(p.getAsJsonObject(), "typeVeg")),
-            GeometryParser.parse(p.getAsJsonObject().getAsJsonObject("geometri")),
-            parseFields(p.getAsJsonObject().getAsJsonArray("felt")),
-            parseDateMember(p.getAsJsonObject(), "startdato"),
-            parseDateMember(p.getAsJsonObject(), "sluttdato")
+                parseIntMember(p.getAsJsonObject(), "id"),
+                parseBooleanMember(p.getAsJsonObject(), "konnekteringslenke"),
+                parseBooleanMember(p.getAsJsonObject(), "detaljert"),
+                TopologyLevel.from(parseIntMember(p.getAsJsonObject(), "topologinivå")),
+                parseIntMember(p.getAsJsonObject(), "startport"),
+                parseIntMember(p.getAsJsonObject(), "sluttport"),
+                parseIntMember(p.getAsJsonObject(), "kommune"),
+                parseDoubleMember(p.getAsJsonObject(), "lengde"),
+                parseIntMember(p.getAsJsonObject(), "måleMetode"),
+                parseDateMember(p.getAsJsonObject(), "måleDato"),
+                SosiMedium.from(parseStringMember(p.getAsJsonObject(), "medium")),
+                Ltema.from(parseIntMember(p.getAsJsonObject(), "temakode")),
+                parseCenterLineProjection(p.getAsJsonObject().getAsJsonObject("senterlinjeprojeksjon")),
+                TypeRoad.from(parseStringMember(p.getAsJsonObject(), "typeVeg")),
+                GeometryParser.parse(p.getAsJsonObject().getAsJsonObject("geometri")),
+                parseFields(p.getAsJsonObject().getAsJsonArray("felt")),
+                parseDateMember(p.getAsJsonObject(), "startdato"),
+                parseDateMember(p.getAsJsonObject(), "sluttdato")
         )));
 
         return linkParts;
@@ -111,16 +113,25 @@ public final class RoadNetParser {
         List<Port> ports = new ArrayList<>();
         if (obj != null) {
             obj.forEach(p ->
-                ports.add(new Port(parseIntMember(p.getAsJsonObject(), "id"),
-                    parseDoubleMember(p.getAsJsonObject(), "lenkeposisjon"),
-                    p.getAsJsonObject().getAsJsonObject("tilkobling") == null
-                        ? null
-                        : new PortConnection(parseIntMember(p.getAsJsonObject(), "tilkobling.portid"),
-                        parseIntMember(p.getAsJsonObject(), "tilkobling.netelementid"),
-                        NetElementType.from(parseIntMember(p.getAsJsonObject(), "tilkobling.netelementtype"))))));
-
-
+                    ports.add(new Port(
+                            parseIntMember(p.getAsJsonObject(), "id"),
+                            parseDoubleMember(p.getAsJsonObject(), "lenkeposisjon"),
+                            getTilkobling(p))));
         }
         return ports;
+    }
+
+    private static PortConnection getTilkobling(JsonElement p) {
+        return p.getAsJsonObject().getAsJsonObject("tilkobling") == null
+                ? null
+                : new PortConnection(parseIntMember(p.getAsJsonObject(), "tilkobling.portid"),
+                parseIntMember(p.getAsJsonObject(), "tilkobling.netelementid"),
+                NetelementType(p));
+    }
+
+    private static NetElementType NetelementType(JsonElement p) {
+        Integer val = parseIntMember(p.getAsJsonObject(), "tilkobling.netelementtype");
+        if(isNull(val)) return null;
+        return NetElementType.from(val);
     }
 }
