@@ -75,6 +75,7 @@ public final class RoadNetParser {
                 parseIntMember(p.getAsJsonObject(), "startport"),
                 parseIntMember(p.getAsJsonObject(), "sluttport"),
                 parseIntMember(p.getAsJsonObject(), "kommune"),
+                parseIntMember(p.getAsJsonObject(), "kommune_geometri"),
                 parseDoubleMember(p.getAsJsonObject(), "lengde"),
                 parseIntMember(p.getAsJsonObject(), "måleMetode"),
                 parseDateMember(p.getAsJsonObject(), "måleDato"),
