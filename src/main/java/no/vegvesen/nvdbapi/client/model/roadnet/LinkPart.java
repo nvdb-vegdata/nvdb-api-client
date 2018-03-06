@@ -40,6 +40,7 @@ public class LinkPart {
     private final Integer startPort;
     private final Integer endPort;
     private final Integer municipality;
+    private final Integer municipalityGeometry;
     private final Double length;
     private final Integer measureMethod;
     private final LocalDate measureDate;
@@ -52,7 +53,7 @@ public class LinkPart {
     private final LocalDate startDate;
     private final LocalDate endDate;
 
-    public LinkPart(Integer partId, Boolean isConnectionLink, Boolean isDetailed, TopologyLevel topologyLevel, Integer startPort, Integer endPort, Integer municipality, Double length, Integer measureMethod, LocalDate measureDate, SosiMedium sosiMedium, Ltema ltema, CenterLineProjection centerLineProjection, TypeRoad typeRoad, Geometry geometry, List<String> fields, LocalDate startDate, LocalDate endDate) {
+    public LinkPart(Integer partId, Boolean isConnectionLink, Boolean isDetailed, TopologyLevel topologyLevel, Integer startPort, Integer endPort, Integer municipality, Integer municipalityGeometry, Double length, Integer measureMethod, LocalDate measureDate, SosiMedium sosiMedium, Ltema ltema, CenterLineProjection centerLineProjection, TypeRoad typeRoad, Geometry geometry, List<String> fields, LocalDate startDate, LocalDate endDate) {
         this.partId = partId;
         this.isConnectionLink = isConnectionLink;
         this.isDetailed = isDetailed;
@@ -60,6 +61,7 @@ public class LinkPart {
         this.startPort = startPort;
         this.endPort = endPort;
         this.municipality = municipality;
+        this.municipalityGeometry = municipalityGeometry;
         this.length = length;
         this.measureMethod = measureMethod;
         this.measureDate = measureDate;
@@ -137,6 +139,18 @@ public class LinkPart {
         return endDate;
     }
 
+    public Integer getMunicipalityGeometry() {
+        return municipalityGeometry;
+    }
+
+    public Integer getMeasureMethod() {
+        return measureMethod;
+    }
+
+    public LocalDate getMeasureDate() {
+        return measureDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -149,9 +163,10 @@ public class LinkPart {
             Objects.equals(getStartPort(), linkPart.getStartPort()) &&
             Objects.equals(getEndPort(), linkPart.getEndPort()) &&
             Objects.equals(getMunicipality(), linkPart.getMunicipality()) &&
+            Objects.equals(getMunicipalityGeometry(), linkPart.getMunicipalityGeometry()) &&
             Objects.equals(getLength(), linkPart.getLength()) &&
-            Objects.equals(measureMethod, linkPart.measureMethod) &&
-            Objects.equals(measureDate, linkPart.measureDate) &&
+            Objects.equals(getMeasureMethod(), linkPart.getMeasureMethod()) &&
+            Objects.equals(getMeasureDate(), linkPart.getMeasureDate()) &&
             getSosiMedium() == linkPart.getSosiMedium() &&
             getLtema() == linkPart.getLtema() &&
             Objects.equals(getCenterLineProjection(), linkPart.getCenterLineProjection()) &&
@@ -165,7 +180,7 @@ public class LinkPart {
     @Override
     public int hashCode() {
 
-        return Objects.hash(getPartId(), isConnectionLink, isDetailed, getTopologyLevel(), getStartPort(), getEndPort(), getMunicipality(), getLength(), measureMethod, measureDate, getSosiMedium(), getLtema(), getCenterLineProjection(), getTypeRoad(), getGeometry(), getFields(), getStartDate(), getEndDate());
+        return Objects.hash(getPartId(), isConnectionLink, isDetailed, getTopologyLevel(), getStartPort(), getEndPort(), getMunicipality(), getMunicipalityGeometry(), getLength(), getMeasureMethod(), getMeasureDate(), getSosiMedium(), getLtema(), getCenterLineProjection(), getTypeRoad(), getGeometry(), getFields(), getStartDate(), getEndDate());
     }
 
     @Override
@@ -178,6 +193,7 @@ public class LinkPart {
             ", startPort=" + startPort +
             ", endPort=" + endPort +
             ", municipality=" + municipality +
+            ", municipalityGeometry=" + municipalityGeometry +
             ", length=" + length +
             ", measureMethod=" + measureMethod +
             ", measureDate=" + measureDate +
