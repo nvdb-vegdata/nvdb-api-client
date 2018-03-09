@@ -84,6 +84,12 @@ public final class ClientFactory implements AutoCloseable {
         clients.add(c);
         return c;
     }
+    public SegmentedRoadNetClient createSegmentedRoadNetService() {
+        assertIsOpen();
+        SegmentedRoadNetClient c = new SegmentedRoadNetClient(baseUrl, createClient(getDatakatalog().getVersion().getVersion()));
+        clients.add(c);
+        return c;
+    }
 
     private void assertIsOpen() {
         if (isClosed) {
