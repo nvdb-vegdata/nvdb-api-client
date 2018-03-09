@@ -43,7 +43,7 @@ public final class PlacementParser {
     private PlacementParser() {}
 
     public static RoadPlacement parsePlacement(JsonObject obj) {
-        RoadRef roadRef = RoadRefParser.getDefault();
+        RoadRef roadRef = new RoadRef(-123);
         RefLinkPosition refLink = ShortRefLinkParser.parseShortRefLink(obj.getAsJsonObject("veglenke"));
         Geometry point = GeometryParser.parse(obj.getAsJsonObject("geometri"));
 

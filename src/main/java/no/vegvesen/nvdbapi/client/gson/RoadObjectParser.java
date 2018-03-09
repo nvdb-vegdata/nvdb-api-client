@@ -123,7 +123,9 @@ public final class RoadObjectParser {
         JsonArray refs = obj.getAsJsonArray("vegreferanser");
         List<RoadRef> roadRefs = Collections.emptyList();
         if (refs != null) {
-            roadRefs = StreamSupport.stream(refs.spliterator(), false).map(e -> RoadRefParser.getDefault()).collect(Collectors.toList());
+            roadRefs = StreamSupport.stream(refs.spliterator(), false)
+                    .map(e -> new RoadRef(-123))
+                    .collect(Collectors.toList());
         }
 
         List<Placement> placements = Collections.emptyList();
@@ -165,7 +167,7 @@ public final class RoadObjectParser {
 
         RoadRef ref = null;
         if (obj.has("vegreferanse")) {
-            ref = RoadRefParser.getDefault();
+            ref = new RoadRef(-123);
         }
 
         Integer length = parseIntMember(obj, "strekningslengde");
