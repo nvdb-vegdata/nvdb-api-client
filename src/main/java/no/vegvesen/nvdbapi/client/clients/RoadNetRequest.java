@@ -41,6 +41,8 @@ public class RoadNetRequest {
     private final List<Integer> counties;
     private final List<Integer> municipalities;
     private final List<Integer> roadDepartments;
+    private final List<Integer> topologyLevel;
+    private final List<Integer> superId;
     private final Optional<Projection> projection;
     private final Optional<String> bbox;
 
@@ -51,6 +53,8 @@ public class RoadNetRequest {
         counties = b.counties;
         municipalities = b.municipalities;
         roadDepartments = b.roadDepartments;
+        topologyLevel = b.topologyLevel;
+        this.superId = b.superId;
         projection = b.projection;
         bbox = b.bbox;
     }
@@ -83,6 +87,14 @@ public class RoadNetRequest {
         return roadDepartments;
     }
 
+    public List<Integer> getTopologyLevel() {
+        return topologyLevel;
+    }
+
+    public List<Integer> getSuperId() {
+        return superId;
+    }
+
     public Optional<String> getBbox() {
         return bbox;
     }
@@ -98,6 +110,8 @@ public class RoadNetRequest {
         private List<Integer> counties = Collections.emptyList();
         private List<Integer> municipalities = Collections.emptyList();
         private List<Integer> roadDepartments = Collections.emptyList();
+        private List<Integer> topologyLevel = Collections.emptyList();
+        private List<Integer> superId = Collections.emptyList();
         private Optional<String> bbox = Optional.empty();
         private Optional<Projection> projection = Optional.empty();
 
@@ -150,6 +164,16 @@ public class RoadNetRequest {
 
         public Builder withRoadDepartments(List<Integer> roadDepartments) {
             this.roadDepartments = Optional.ofNullable(roadDepartments).orElse(Collections.emptyList());
+            return this;
+        }
+
+        public Builder withTopologyLevel(List<Integer> topologyLevel) {
+            this.topologyLevel = Optional.ofNullable(topologyLevel).orElse(Collections.emptyList());
+            return this;
+        }
+
+        public Builder withSuperId(List<Integer> superId) {
+            this.superId = Optional.ofNullable(superId).orElse(Collections.emptyList());
             return this;
         }
 

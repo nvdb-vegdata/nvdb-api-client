@@ -79,6 +79,8 @@ public class RoadNetClient extends AbstractJerseyClient {
         UriBuilder path = endpoint().path("/lenker");
         if (!request.getRegions().isEmpty()) path.queryParam("region", join(request.getRegions()));
         if (!request.getCounties().isEmpty()) path.queryParam("fylke", join(request.getCounties()));
+        if (!request.getTopologyLevel().isEmpty()) path.queryParam("topologiniva", join(request.getTopologyLevel()));
+        if (!request.getSuperId().isEmpty()) path.queryParam("superid", join(request.getSuperId()));
         if (!request.getRoadDepartments().isEmpty()) path.queryParam("vegavdeling", join(request.getRoadDepartments()));
         if (!request.getMunicipalities().isEmpty()) path.queryParam("kommune", join(request.getMunicipalities()));
         request.getBbox().ifPresent(v -> path.queryParam("kartutsnitt", v));
