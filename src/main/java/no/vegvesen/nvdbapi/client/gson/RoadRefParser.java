@@ -36,38 +36,9 @@ public final class RoadRefParser {
     private RoadRefParser() {}
 
     public static RoadRef parse(JsonObject obj) {
-        Integer county = parseIntMember(obj, "fylke");
-        Integer municipality = parseIntMember(obj, "kommune");
+        Integer stretch = parseIntMember(obj, "strekning");
 
-        String category = parseStringMember(obj, "kategori");
-        String status = parseStringMember(obj, "status");
-        Integer number = parseIntMember(obj, "nummer");
-        String shortName = parseStringMember(obj, "kortform");
-
-        if (obj.has("hp")) {
-            Integer hp = parseIntMember(obj, "hp");
-            if (obj.has("fra_meter")) {
-                Integer fromMeter = parseIntMember(obj, "fra_meter");
-                Integer toMeter = parseIntMember(obj, "til_meter");
-
-                return RoadRef.stretch(county, municipality, category, status, number, hp, fromMeter, toMeter, shortName);
-            } else {
-                Integer meter = parseIntMember(obj, "meter");
-
-                return RoadRef.point(county, municipality, category, status, number, hp, meter, shortName);
-            }
-        } else {
-            Integer fromHp = parseIntMember(obj, "fra_hp");
-            Integer toHp = parseIntMember(obj, "til_hp");
-            Integer fromMeter = parseIntMember(obj, "fra_meter");
-            Integer toMeter = parseIntMember(obj, "til_meter");
-
-            return RoadRef.merged(county, municipality, category, status, number, fromHp, toHp, fromMeter, toMeter, shortName);
-        }
+        return new RoadRef(stretch);
     }
 
-
-    public static RoadRef getDefault() {
-        return RoadRef.point(18, 0, "E", "V", 6, 23, 17084, "1800 Ev6 hp23 m17084-17117");
-    }
 }

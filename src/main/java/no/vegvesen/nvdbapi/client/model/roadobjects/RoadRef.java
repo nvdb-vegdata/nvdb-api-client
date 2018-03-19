@@ -28,90 +28,10 @@ package no.vegvesen.nvdbapi.client.model.roadobjects;
 import java.util.Objects;
 
 public class RoadRef {
-    private final Integer county;
-    private final Integer municipality;
+    private final Integer stretch;
 
-    private final String category;
-    private final String status;
-    private final int number;
-    private final int fromHp;
-    private final Integer toHp;
-    private final int fromMeter;
-    private final Integer toMeter;
-    private final String shortName;
-
-    private RoadRef(Integer county, Integer municipality, String category, String status, int number, int fromHp, Integer toHp, int fromMeter, Integer toMeter, String shortName) {
-        this.county = county;
-        this.municipality = municipality;
-        this.category = category;
-        this.status = status;
-        this.number = number;
-        this.fromHp = fromHp;
-        this.toHp = toHp;
-        this.fromMeter = fromMeter;
-        this.toMeter = toMeter;
-        this.shortName = shortName;
-    }
-
-    public static RoadRef merged(Integer county, Integer municipality, String category, String status, int number, int fromHp, Integer toHp, int fromMeter, Integer toMeter, String shortName) {
-        return new RoadRef(county, municipality, category, status, number, fromHp, toHp, fromMeter, toMeter, shortName);
-    }
-
-    public static RoadRef stretch(Integer county, Integer municipality, String category, String status, int number, int hp, int fromMeter, Integer toMeter, String shortName) {
-        return new RoadRef(county, municipality, category, status, number, hp, hp, fromMeter, toMeter, shortName);
-    }
-
-    public static RoadRef point(int county, int municipality, String roadCategory, String roadStatus, int roadNumber, int hp, int meter, String shortName) {
-        return new RoadRef(county, municipality, roadCategory, roadStatus, roadNumber, hp, null, meter, null, shortName);
-    }
-
-    public boolean isPoint() {
-        return toHp == null && toMeter == null;
-    }
-
-    public Integer getCounty() {
-        return county;
-    }
-
-    public Integer getMunicipality() {
-        return municipality;
-    }
-
-    public String getCategory() {
-        return category;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public int getNumber() {
-        return number;
-    }
-
-    public int getFromHp() {
-        return fromHp;
-    }
-
-    public Integer getToHp() {
-        return toHp;
-    }
-
-    public int getFromMeter() {
-        return fromMeter;
-    }
-
-    public Integer getToMeter() {
-        return toMeter;
-    }
-
-    public String getShortName() {
-        return shortName;
-    }
-
-    @Override
-    public String toString() {
-        return getShortName();
+    public RoadRef(Integer stretch) {
+        this.stretch = stretch;
     }
 
     @Override
@@ -119,20 +39,11 @@ public class RoadRef {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RoadRef roadRef = (RoadRef) o;
-        return number == roadRef.number &&
-                fromHp == roadRef.fromHp &&
-                fromMeter == roadRef.fromMeter &&
-                Objects.equals(county, roadRef.county) &&
-                Objects.equals(municipality, roadRef.municipality) &&
-                Objects.equals(category, roadRef.category) &&
-                Objects.equals(status, roadRef.status) &&
-                Objects.equals(toHp, roadRef.toHp) &&
-                Objects.equals(toMeter, roadRef.toMeter) &&
-                Objects.equals(shortName, roadRef.shortName);
+        return Objects.equals(stretch, roadRef.stretch);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(county, municipality, category, status, number, fromHp, toHp, fromMeter, toMeter, shortName);
+        return Objects.hash(stretch);
     }
 }
