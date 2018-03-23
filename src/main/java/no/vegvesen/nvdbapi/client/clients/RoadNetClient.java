@@ -86,6 +86,8 @@ public class RoadNetClient extends AbstractJerseyClient {
         request.getBbox().ifPresent(v -> path.queryParam("kartutsnitt", v));
         request.getProjection().ifPresent(v -> path.queryParam("srid", v.getSrid()));
         request.getRoadRefFilter().ifPresent(v -> path.queryParam("vegreferanse", v));
+        request.getContractArea().ifPresent(v -> path.queryParam("kontraktsomrade", v));
+        request.getNationalRoute().ifPresent(v -> path.queryParam("riksvegrute", v));
 
         WebTarget target = getClient().target(path);
         return new LinkResult(target, request.getPage());

@@ -45,6 +45,8 @@ public class RoadNetRequest {
     private final List<Integer> superId;
     private final Optional<Projection> projection;
     private final Optional<String> bbox;
+    private final Optional<String> contractArea;
+    private final Optional<String> nationalRoute;
 
     private RoadNetRequest(Builder b) {
         page = b.page;
@@ -57,6 +59,8 @@ public class RoadNetRequest {
         this.superId = b.superId;
         projection = b.projection;
         bbox = b.bbox;
+        contractArea = b.contractArea;
+        nationalRoute = b.nationalRoute;
     }
 
     public static Builder newBuilder() {
@@ -103,6 +107,14 @@ public class RoadNetRequest {
         return projection;
     }
 
+    public Optional<String> getContractArea() {
+        return contractArea;
+    }
+
+    public Optional<String> getNationalRoute() {
+        return nationalRoute;
+    }
+
     public static class Builder {
         private Optional<Page> page = Optional.empty();
         private Optional<String> roadRefFilter = Optional.empty();
@@ -114,6 +126,8 @@ public class RoadNetRequest {
         private List<Integer> superId = Collections.emptyList();
         private Optional<String> bbox = Optional.empty();
         private Optional<Projection> projection = Optional.empty();
+        private Optional<String> contractArea = Optional.empty();
+        private Optional<String> nationalRoute = Optional.empty();
 
         private Builder() {
         }
@@ -189,6 +203,16 @@ public class RoadNetRequest {
 
         public Builder withProjection(Projection projection) {
             this.projection = Optional.ofNullable(projection);
+            return this;
+        }
+
+        public Builder withContractArea(String contractArea) {
+            this.contractArea = Optional.ofNullable(contractArea);
+            return this;
+        }
+
+        public Builder withNationalRoute(String nationalRoute) {
+            this.nationalRoute = Optional.ofNullable(nationalRoute);
             return this;
         }
     }
