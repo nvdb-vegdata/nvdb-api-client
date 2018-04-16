@@ -214,9 +214,9 @@ public class RoadObjectClient extends AbstractJerseyClient {
         return RoadObjectParser.parse(datakatalog.getDataTypeMap(), obj);
     }
 
-    public RoadObjectAttribute getBinaryAttributeRoadObject(int featureTypeId, long featureId, int version, int attributeId){
+    public RoadObjectAttribute getBinaryAttributeRoadObject(int featureTypeId, long featureId, int version, int attributeId, int blobId){
         UriBuilder path = start()
-            .path(String.format("/vegobjekter/%d/%d/%d/egenskaper/%d/binaer", featureTypeId, featureId, version, attributeId));
+            .path(String.format("/vegobjekter/%d/%d/%d/egenskaper/%d/%d/binaer", featureTypeId, featureId, version, attributeId, blobId));
 
         logger.debug("Invoking {}", path);
         WebTarget target = getClient().target(path);
