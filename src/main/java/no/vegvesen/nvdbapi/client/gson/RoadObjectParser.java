@@ -226,8 +226,11 @@ public final class RoadObjectParser {
         int dataTypeId = parseIntMember(obj, "datatype");
         DataType dataType = dataTypes.get(dataTypeId);
         Object value = parseAttributeValue(obj, "verdi", dataType.getJavaType());
+        String href = parseStringMember(obj, "href");
+        String blobFormat = parseStringMember(obj, "blob_format");
+        Integer blobId = parseIntMember(obj, "blob_id");
 
-        return new Attribute(id, name, dataType, value, Optional.ofNullable(enumId));
+        return new Attribute(id, name, dataType, value, Optional.ofNullable(enumId), Optional.ofNullable(href), Optional.ofNullable(blobId), Optional.ofNullable(blobFormat));
     }
 
     private static Association parseAssociation(Map<Integer, DataType> dataTypes, JsonObject obj) {

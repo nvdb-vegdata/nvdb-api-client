@@ -36,13 +36,19 @@ public class Attribute {
     private final DataType datatype;
     private final Object value;
     private final Optional<Integer> enumId;
+    private final Optional<String> href;
+    private final Optional<Integer> blobId;
+    private final Optional<String> blobFormat;
 
-    public Attribute(int typeId, String typeName, DataType datatype, Object value, Optional<Integer> enumId) {
+    public Attribute(int typeId, String typeName, DataType datatype, Object value, Optional<Integer> enumId, Optional<String> href, Optional<Integer> blobId, Optional<String> blobFormat) {
         this.typeId = typeId;
         this.typeName = typeName;
         this.datatype = datatype;
         this.value = value;
         this.enumId = enumId;
+        this.href = href;
+        this.blobId = blobId;
+        this.blobFormat = blobFormat;
     }
 
     public int getTypeId() {
@@ -59,6 +65,18 @@ public class Attribute {
 
     public Object getValue() {
         return value;
+    }
+
+    public Optional<String> getHref() {
+        return href;
+    }
+
+    public Optional<Integer> getBlobId() {
+        return blobId;
+    }
+
+    public Optional<String> getBlobFormat() {
+        return blobFormat;
     }
 
     public int intValue() {
@@ -96,15 +114,18 @@ public class Attribute {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Attribute attribute = (Attribute) o;
-        return typeId == attribute.typeId &&
-                Objects.equals(typeName, attribute.typeName) &&
-                Objects.equals(datatype, attribute.datatype) &&
-                Objects.equals(value, attribute.value) &&
-                Objects.equals(enumId, attribute.enumId);
+        return getTypeId() == attribute.getTypeId() &&
+            Objects.equals(getTypeName(), attribute.getTypeName()) &&
+            Objects.equals(getDatatype(), attribute.getDatatype()) &&
+            Objects.equals(getValue(), attribute.getValue()) &&
+            Objects.equals(getEnumId(), attribute.getEnumId()) &&
+            Objects.equals(getHref(), attribute.getHref()) &&
+            Objects.equals(getBlobId(), attribute.getBlobId()) &&
+            Objects.equals(getBlobFormat(), attribute.getBlobFormat());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(typeId, typeName, datatype, value, enumId);
+        return Objects.hash(getTypeId(), getTypeName(), getDatatype(), getValue(), getEnumId(), getHref(), getBlobId(), getBlobFormat());
     }
 }
