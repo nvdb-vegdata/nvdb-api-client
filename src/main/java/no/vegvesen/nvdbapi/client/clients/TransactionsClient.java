@@ -34,6 +34,9 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 import java.util.Optional;
 
+import static java.util.Objects.nonNull;
+import static no.vegvesen.nvdbapi.client.clients.RoadNetClient.join;
+
 public class TransactionsClient extends AbstractJerseyClient {
 
     protected TransactionsClient(String baseUrl, Client client) {
@@ -41,17 +44,18 @@ public class TransactionsClient extends AbstractJerseyClient {
     }
 
     public TransacionsResult getTransactions() {
-        UriBuilder url = start().path("/transaksjoner");
-        WebTarget target = getClient().target(url);
-
-        return new TransacionsResult(target, Optional.of(Page.count(1000)));
+        return getTransactions(TransactionsRequest.DEFAULT);
     }
 
-    public TransacionsResult getTransactions(Page page) {
+    public TransacionsResult getTransactions(TransactionsRequest request) {
         UriBuilder url = start().path("/transaksjoner");
-        WebTarget target = getClient().target(url);
 
-        return new TransacionsResult(target, Optional.ofNullable(page));
+        if(request.getIder().size() > 0) url.queryParam("ider", join(request.getIder()));
+        if(nonNull(request.getFromDate())) url.queryParam("fromDate", request.getFromDate());
+        if(nonNull(request.getToDate())) url.queryParam("toDate", request.getToDate());
+
+        WebTarget target = getClient().target(url);
+        return new TransacionsResult(target, Optional.ofNullable(request.getPage()));
     }
 
     public static class TransacionsResult extends GenericResultSet<Transaction>{

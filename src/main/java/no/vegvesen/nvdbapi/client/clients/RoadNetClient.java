@@ -109,7 +109,7 @@ public class RoadNetClient extends AbstractJerseyClient {
         return new NodeResult(target, request.getPage());
     }
 
-    private static String join(List<Integer> list) {
+    protected static String join(List<Integer> list) {
         if (list == null) {
             return null;
         }
