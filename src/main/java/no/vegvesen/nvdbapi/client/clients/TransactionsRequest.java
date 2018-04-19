@@ -28,7 +28,7 @@ package no.vegvesen.nvdbapi.client.clients;
 
 import no.vegvesen.nvdbapi.client.model.Page;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -38,14 +38,14 @@ public class TransactionsRequest {
 
     private final Page page;
     private final List<Integer> ider;
-    private final LocalDate fromDate;
-    private final LocalDate toDate;
+    private final LocalDateTime from;
+    private final LocalDateTime to;
 
     private TransactionsRequest(Builder b){
         this.page = b.page;
         this.ider = b.ider;
-        this.fromDate = b.fromDate;
-        this.toDate = b.toDate;
+        this.from = b.from;
+        this.to = b.to;
     }
 
     public static Builder newBuilder() {
@@ -60,20 +60,20 @@ public class TransactionsRequest {
         return ider;
     }
 
-    public LocalDate getFromDate() {
-        return fromDate;
+    public LocalDateTime getFrom() {
+        return from;
     }
 
-    public LocalDate getToDate() {
-        return toDate;
+    public LocalDateTime getTo() {
+        return to;
     }
 
     public static class Builder{
 
         private Page page = Page.count(1000);
         private List<Integer> ider = Collections.emptyList();
-        private LocalDate fromDate = null;
-        private LocalDate toDate = null;
+        private LocalDateTime from = null;
+        private LocalDateTime to = null;
 
         public TransactionsRequest build() {
             return new TransactionsRequest(this);
@@ -89,13 +89,13 @@ public class TransactionsRequest {
             return this;
         }
 
-        public Builder withFromDate(LocalDate fromDate){
-            this.fromDate = fromDate;
+        public Builder withFrom(LocalDateTime from){
+            this.from = from;
             return this;
         }
 
-        public Builder withToDate(LocalDate toDate){
-            this.toDate = toDate;
+        public Builder withTo(LocalDateTime to){
+            this.to = to;
             return this;
         }
     }

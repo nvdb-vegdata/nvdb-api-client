@@ -51,8 +51,8 @@ public class TransactionsClient extends AbstractJerseyClient {
         UriBuilder url = start().path("/transaksjoner");
 
         if(request.getIder().size() > 0) url.queryParam("ider", join(request.getIder()));
-        if(nonNull(request.getFromDate())) url.queryParam("fromDate", request.getFromDate());
-        if(nonNull(request.getToDate())) url.queryParam("toDate", request.getToDate());
+        if(nonNull(request.getFrom())) url.queryParam("fra", request.getFrom());
+        if(nonNull(request.getTo())) url.queryParam("til", request.getTo());
 
         WebTarget target = getClient().target(url);
         return new TransacionsResult(target, Optional.ofNullable(request.getPage()));
