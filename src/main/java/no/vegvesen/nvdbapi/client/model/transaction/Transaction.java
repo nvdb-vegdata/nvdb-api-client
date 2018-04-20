@@ -25,18 +25,19 @@
 
 package no.vegvesen.nvdbapi.client.model.transaction;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 public class Transaction {
 
     private final TransactionId transactionId;
+    private final Integer taskTypeId;
     private final String userId;
     private final List<RoadObject> roadObjects;
 
-    public Transaction(TransactionId transactionId, String userId, List<RoadObject> roadObjects) {
+    public Transaction(TransactionId transactionId, Integer taskTypeId, String userId, List<RoadObject> roadObjects) {
         this.transactionId = transactionId;
+        this.taskTypeId = taskTypeId;
         this.userId = userId;
         this.roadObjects = roadObjects;
     }
@@ -53,12 +54,17 @@ public class Transaction {
         return roadObjects;
     }
 
+    public Integer getTaskTypeId() {
+        return taskTypeId;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Transaction that = (Transaction) o;
         return Objects.equals(getTransactionId(), that.getTransactionId()) &&
+            Objects.equals(getTaskTypeId(), that.getTaskTypeId()) &&
             Objects.equals(getUserId(), that.getUserId()) &&
             Objects.equals(getRoadObjects(), that.getRoadObjects());
     }
@@ -66,13 +72,14 @@ public class Transaction {
     @Override
     public int hashCode() {
 
-        return Objects.hash(getTransactionId(), getUserId(), getRoadObjects());
+        return Objects.hash(getTransactionId(), getTaskTypeId(), getUserId(), getRoadObjects());
     }
 
     @Override
     public String toString() {
         return "Transaction{" +
             "transactionId=" + transactionId +
+            ", taskTypeId=" + taskTypeId +
             ", userId='" + userId + '\'' +
             ", roadObjects=" + roadObjects +
             '}';

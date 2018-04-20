@@ -30,20 +30,22 @@ import java.util.Objects;
 
 public class TransactionId {
 
-    private final Integer id;
-    private final LocalDateTime date;
+    private final Integer taskId;
+    private final LocalDateTime dateTime;
 
-    public TransactionId(Integer id, LocalDateTime date) {
-        this.id = id;
-        this.date = date;
+    public TransactionId(Integer taskId, LocalDateTime dateTime) {
+        this.taskId = taskId;
+        this.dateTime = dateTime;
     }
 
-    public Integer getId() {
-        return id;
+    public Integer getTaskId() {
+        return taskId;
     }
 
-    public LocalDateTime getDate() {
-        return date;
+
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
     }
 
     @Override
@@ -51,20 +53,21 @@ public class TransactionId {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TransactionId that = (TransactionId) o;
-        return getId() == that.getId() &&
-            Objects.equals(getDate(), that.getDate());
+        return Objects.equals(getTaskId(), that.getTaskId()) &&
+            Objects.equals(getDateTime(), that.getDateTime());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getDate());
+
+        return Objects.hash(getTaskId(), getDateTime());
     }
 
     @Override
     public String toString() {
         return "TransactionId{" +
-            "id=" + id +
-            ", date=" + date +
+            "taskId=" + taskId +
+            ", dateTime=" + dateTime +
             '}';
     }
 }
