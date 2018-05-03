@@ -27,7 +27,7 @@ package no.vegvesen.nvdbapi.client.model.datakatalog;
 
 import java.util.Set;
 
-public class DoubleAttributeType extends AbstractEnumAttributeType {
+public class DoubleAttributeType extends AbstractEnumAttributeType<DoubleEnumValue> {
     private final Double defaultvalue;
     private final Double minValue;
     private final Double maxValue;
@@ -38,9 +38,16 @@ public class DoubleAttributeType extends AbstractEnumAttributeType {
     private final Unit unit;
 
     public DoubleAttributeType(AttributeCommonProperties props,
-                               AttributeTypeParameters parameters, Double defaultvalue, Double minValue, Double maxValue,
-                               Double absMinValue, Double absMaxValue, Integer fieldLength, Integer decimalCount, Unit unit,
-                               Set<EnumValue> values) {
+                               AttributeTypeParameters parameters,
+                               Double defaultvalue,
+                               Double minValue,
+                               Double maxValue,
+                               Double absMinValue,
+                               Double absMaxValue,
+                               Integer fieldLength,
+                               Integer decimalCount,
+                               Unit unit,
+                               Set<DoubleEnumValue> values) {
         super(props, parameters, values);
         this.defaultvalue = defaultvalue;
         this.minValue = minValue;
