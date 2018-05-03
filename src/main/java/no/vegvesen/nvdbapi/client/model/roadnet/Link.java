@@ -33,11 +33,19 @@ public class Link {
     private final Integer id;
     private final List<Port> ports;
     private final List<LinkPart> linkParts;
+    private final double length;
+    private final boolean fixedLength;
 
-    public Link(Integer id, List<Port> ports, List<LinkPart> linkParts) {
+    public Link(Integer id,
+                List<Port> ports,
+                List<LinkPart> linkParts,
+                double length,
+                boolean fixedLength) {
         this.id = id;
         this.ports = ports;
         this.linkParts = linkParts;
+        this.length = length;
+        this.fixedLength = fixedLength;
     }
 
     public Integer getId() {
@@ -52,28 +60,39 @@ public class Link {
         return linkParts;
     }
 
+    public double getLength() {
+        return length;
+    }
+
+    public boolean getFixedLength() {
+        return fixedLength;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Link link = (Link) o;
-        return Objects.equals(getId(), link.getId()) &&
-            Objects.equals(getPorts(), link.getPorts()) &&
-            Objects.equals(getLinkParts(), link.getLinkParts());
+        return Double.compare(link.length, length) == 0 &&
+                fixedLength == link.fixedLength &&
+                Objects.equals(id, link.id) &&
+                Objects.equals(ports, link.ports) &&
+                Objects.equals(linkParts, link.linkParts);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(getId(), getPorts(), getLinkParts());
+        return Objects.hash(id, ports, linkParts, length, fixedLength);
     }
 
     @Override
     public String toString() {
         return "Link{" +
-            "id=" + id +
-            ", ports=" + ports +
-            ", linkParts=" + linkParts +
-            '}';
+                "id=" + id +
+                ", ports=" + ports +
+                ", linkParts=" + linkParts +
+                ", length=" + length +
+                ", fixedLength=" + fixedLength +
+                '}';
     }
 }

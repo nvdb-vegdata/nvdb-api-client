@@ -40,8 +40,7 @@ import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 
 public final class RoadNetParser {
 
-    private RoadNetParser() {
-    }
+    private RoadNetParser() { }
 
     public static Link parseLink(JsonObject obj){
         if(obj==null) return null;
@@ -50,7 +49,9 @@ public final class RoadNetParser {
         List<Port> ports = parsePorts(obj.getAsJsonArray("porter"));
         List<LinkPart> linkParts = parseLinkPorts(obj.getAsJsonArray("lenkedeler"));
 
-        return new Link(id, ports, linkParts);
+        double length = parseDoubleMember(obj, "lengde");
+        boolean fixedLength = parseBooleanMember(obj, "låst_lengde");
+        return new Link(id, ports, linkParts, length, fixedLength);
     }
 
     public static Node parseNode(JsonObject obj){
