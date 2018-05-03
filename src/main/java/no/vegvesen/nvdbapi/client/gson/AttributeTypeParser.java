@@ -108,7 +108,7 @@ public final class AttributeTypeParser {
             case SPATIAL:
                 SpatialType spatialType = determineSpatialType(type);
 
-                return new SpatialAttributeType(props, parameters, spatialType);
+                return new SpatialAttributeType(props, parameters, spatialType, parseIntMember(object, "dimensjoner"));
             case LOCAL_DATE:
                 LocalDate defaultDateValue = parseDateMember(object, "standardverdi"), minDateValue = parseDateMember(object, "min");
                 LocalDate maxDateValue = parseDateMember(object, "maks");
