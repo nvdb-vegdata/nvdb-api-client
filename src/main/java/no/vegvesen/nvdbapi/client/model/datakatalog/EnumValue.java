@@ -28,18 +28,23 @@ package no.vegvesen.nvdbapi.client.model.datakatalog;
 import java.io.Serializable;
 import java.time.LocalDate;
 
-public final class EnumValue implements Serializable {
+public abstract class EnumValue<T> implements Serializable {
     private final Integer id;
     private final Integer sortNumber;
-    private final String name;
+    private final T value;
     private final String shortName;
     private final String description;
     private final LocalDate objectListDate;
 
-    public EnumValue(Integer id, Integer sortNumber, String name, String shortName, String description, LocalDate objectListDate) {
+    public EnumValue(Integer id,
+                     Integer sortNumber,
+                     T value,
+                     String shortName,
+                     String description,
+                     LocalDate objectListDate) {
         this.id = id;
         this.sortNumber = sortNumber;
-        this.name = name;
+        this.value = value;
         this.shortName = shortName;
         this.description = description;
         this.objectListDate = objectListDate;
@@ -53,8 +58,8 @@ public final class EnumValue implements Serializable {
         return sortNumber;
     }
 
-    public String getName() {
-        return name;
+    public T getValue() {
+        return value;
     }
 
     public String getShortName() {

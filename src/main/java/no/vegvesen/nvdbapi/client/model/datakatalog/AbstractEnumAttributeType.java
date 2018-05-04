@@ -29,12 +29,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class AbstractEnumAttributeType extends AttributeType implements EnumAttributeType {
+public abstract class AbstractEnumAttributeType<T extends EnumValue> extends AttributeType implements EnumAttributeType<T> {
 
-    private final Set<EnumValue> values;
+    private final Set<T> values;
 
     protected AbstractEnumAttributeType(AttributeCommonProperties props,
-                                        AttributeTypeParameters parameters, Set<EnumValue> values) {
+                                        AttributeTypeParameters parameters,
+                                        Set<T> values) {
         super(props, parameters);
         this.values = Optional.ofNullable(values).orElse(Collections.emptySet());
     }
@@ -45,28 +46,33 @@ public abstract class AbstractEnumAttributeType extends AttributeType implements
     }
 
     @Override
-    public Set<EnumValue> getValues() {
+    public Set<T> getValues() {
         return values;
     }
 
     @Override
-    public EnumValue getValue(Integer id) {
-        return values().filter(v -> v.getId().equals(id)).findAny().orElse(null);
+    public T getValue(Integer id) {
+        return values()
+                .filter(v -> v.getId().equals(id))
+                .findAny()
+                .orElse(null);
     }
 
     @Override
-    public List<EnumValue> getValueList() {
+    public List<T> getValueList() {
         return new ArrayList<>(values);
     }
 
     @Override
-    public Stream<EnumValue> values() {
+    public Stream<T> values() {
         return values.stream();
     }
 
     @Override
-    public List<EnumValue> getSortedValuesList() {
-        return values.stream().sorted(Comparator.comparing(EnumValue::getSortNumber)).collect(Collectors.toList());
+    public List<T> getSortedValuesList() {
+        return values.stream()
+                .sorted(Comparator.comparing(EnumValue::getSortNumber))
+                .collect(Collectors.toList());
     }
 
     @Override

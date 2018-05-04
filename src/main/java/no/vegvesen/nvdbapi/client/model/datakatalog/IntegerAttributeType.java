@@ -27,7 +27,7 @@ package no.vegvesen.nvdbapi.client.model.datakatalog;
 
 import java.util.Set;
 
-public class IntegerAttributeType extends AbstractEnumAttributeType {
+public class IntegerAttributeType extends AbstractEnumAttributeType<IntegerEnumValue> {
     private final Integer defaultvalue;
     private final Integer minValue;
     private final Integer maxValue;
@@ -36,9 +36,16 @@ public class IntegerAttributeType extends AbstractEnumAttributeType {
     private final Integer fieldLength;
     private final Unit unit;
 
-    public IntegerAttributeType(AttributeCommonProperties props, AttributeTypeParameters parameters,
-                                Integer defaultvalue, Integer minValue, Integer maxValue,
-                                Integer absMinValue, Integer absMaxValue, Integer fieldLength, Unit unit, Set<EnumValue> values) {
+    public IntegerAttributeType(AttributeCommonProperties props,
+                                AttributeTypeParameters parameters,
+                                Integer defaultvalue,
+                                Integer minValue,
+                                Integer maxValue,
+                                Integer absMinValue,
+                                Integer absMaxValue,
+                                Integer fieldLength,
+                                Unit unit,
+                                Set<IntegerEnumValue> values) {
         super(props, parameters, values);
         this.defaultvalue = defaultvalue;
         this.minValue = minValue;
