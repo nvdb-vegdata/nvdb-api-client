@@ -92,6 +92,15 @@ public class DatakatalogClient extends AbstractJerseyClient {
                 .collect(Collectors.toList());
     }
 
+    public List<AttributeTypeCategory> getAttributeTypeCategories() {
+        WebTarget target = getClient().target(endpoint()).path("attributtypekategorier");
+        JsonElement units = JerseyHelper.execute(target);
+        return StreamSupport.stream(units.getAsJsonArray().spliterator(), false)
+                .map(JsonElement::getAsJsonObject)
+                .map(AttributeTypeParser::parseCategory)
+                .collect(Collectors.toList());
+    }
+
     public Map<Integer, Unit> getUnitMap() {
         return getUnits().stream()
                          .collect(Collectors.toMap(Unit::getId, Function.identity()));

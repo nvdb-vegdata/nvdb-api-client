@@ -46,7 +46,9 @@ public final class AttributeTypeParser {
         DataType type = typeMap.get(Integer.valueOf(typeId));
 
         Integer id = parseIntMember(object, "id");
+        Integer category = parseIntMember(object, "kategori");
         String name = parseStringMember(object, "navn");
+        String shortname = parseStringMember(object, "kortnavn");
         String description = parseStringMember(object, "beskrivelse");
         Integer sortNumber = parseIntMember(object, "sorteringsnummer");
         String requirementComment = parseStringMember(object, "veiledning");
@@ -57,8 +59,21 @@ public final class AttributeTypeParser {
         LocalDate validFrom = parseDateMember(object, "objektliste_dato");
         AttributeTypeParameters parameters = GuidanceParametersParser.parseAttributeType(object.getAsJsonObject("styringsparametere"));
 
-        AttributeCommonProperties props = new AttributeCommonProperties(id, name, description, type, isList, sortNumber,
-                requirementComment, importance, sosiName, sosiNvdbName, sensitivityLevel, validFrom);
+        AttributeCommonProperties props = new AttributeCommonProperties(
+                id,
+                category,
+                name,
+                shortname,
+                description,
+                type,
+                isList,
+                sortNumber,
+                requirementComment,
+                importance,
+                sosiName,
+                sosiNvdbName,
+                sensitivityLevel,
+                validFrom);
 
         switch (type.getJavaType()) {
             case TEXT:
@@ -106,9 +121,10 @@ public final class AttributeTypeParser {
                             doubleAbsMinValue, doubleAbsMaxValue, fieldLength, decimalCount, unit, values);
                 }
             case SPATIAL:
-                SpatialType spatialType = determineSpatialType(type);
-
-                return new SpatialAttributeType(props, parameters, spatialType, parseIntMember(object, "dimensjoner"));
+                return new SpatialAttributeType(props,
+                        parameters,
+                        determineSpatialType(object),
+                        parseIntMember(object, "dimensjoner"));
             case LOCAL_DATE:
                 LocalDate defaultDateValue = parseDateMember(object, "standardverdi"), minDateValue = parseDateMember(object, "min");
                 LocalDate maxDateValue = parseDateMember(object, "maks");
@@ -135,21 +151,22 @@ public final class AttributeTypeParser {
         }
     }
 
-    private static SpatialType determineSpatialType(DataType dataType) {
-        switch (dataType.getId()) {
-            case 17:
+    private static SpatialType determineSpatialType(JsonObject object) {
+        String type = parseStringMember(object, "geometritype");
+        switch (type) {
+            case "PUNKT":
                 return SpatialType.POINT;
-            case 18:
+            case "LINJE":
                 return SpatialType.LINE_STRING;
-            case 19:
+            case "POLYGON":
                 return SpatialType.POLYGON;
-            case 20:
+            case "KOMPLEKS":
                 return SpatialType.COMPLEX;
-            case 21:
+            case "FLEREPUNKT":
                 return SpatialType.MULTI_POINT;
-            case 22:
+            case "FLERELINJE":
                 return SpatialType.MULTI_LINE_STRING;
-            case 23:
+            case "FLEREPOLYGON":
                 return SpatialType.MULTI_POLYGON;
             default:
                 return SpatialType.UNKNOWN;
@@ -233,5 +250,15 @@ public final class AttributeTypeParser {
             default:
                 return JavaType.UNKNOWN;
         }
+    }
+
+
+    public static AttributeTypeCategory parseCategory(JsonObject obj) {
+        return new AttributeTypeCategory(
+                parseIntMember(obj, "id"),
+                parseStringMember(obj, "navn"),
+                parseStringMember(obj, "kortnavn"),
+                parseStringMember(obj, "beskrivelse"),
+                parseIntMember(obj, "sorteringsnummer"));
     }
 }
