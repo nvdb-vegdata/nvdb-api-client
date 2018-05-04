@@ -30,13 +30,22 @@ import no.vegvesen.nvdbapi.client.model.SpatialType;
 public class SpatialAttributeType extends AttributeType {
 
     private final SpatialType spatialType;
+    private final int dimensions;
 
-    public SpatialAttributeType(AttributeCommonProperties props, AttributeTypeParameters parameters, SpatialType spatialType) {
+    public SpatialAttributeType(AttributeCommonProperties props,
+                                AttributeTypeParameters parameters,
+                                SpatialType spatialType,
+                                int dimensions) {
         super(props, parameters);
         this.spatialType = spatialType;
+        this.dimensions = dimensions;
     }
 
     public SpatialType getSpatialType() {
         return spatialType;
+    }
+
+    public int getDimensions() {
+        return dimensions;
     }
 }

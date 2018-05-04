@@ -29,7 +29,9 @@ import java.time.LocalDate;
 
 public class AttributeCommonProperties {
     private final Integer id;
+    private final Integer category;
     private final String name;
+    private final String shortname;
     private final String description;
     private final DataType type;
     private final boolean isList;
@@ -41,9 +43,24 @@ public class AttributeCommonProperties {
     private final Integer sensitiveLevel;
     private final LocalDate objectListDate;
 
-    public AttributeCommonProperties(Integer id, String name, String description, DataType type, boolean isList, Integer sortNumber, String requirementComment, AttributeType.Importance importance, String sosiName, String sosiNvdbName, Integer sensitiveLevel, LocalDate objectListDate) {
+    public AttributeCommonProperties(Integer id,
+                                     Integer category,
+                                     String name,
+                                     String shortname,
+                                     String description,
+                                     DataType type,
+                                     boolean isList,
+                                     Integer sortNumber,
+                                     String requirementComment,
+                                     AttributeType.Importance importance,
+                                     String sosiName,
+                                     String sosiNvdbName,
+                                     Integer sensitiveLevel,
+                                     LocalDate objectListDate) {
         this.id = id;
+        this.category = category;
         this.name = name;
+        this.shortname = shortname;
         this.description = description;
         this.type = type;
         this.isList = isList;
@@ -102,5 +119,13 @@ public class AttributeCommonProperties {
 
     public LocalDate getObjectListDate() {
         return objectListDate;
+    }
+
+    public Integer getCategory() {
+        return category;
+    }
+
+    public String getShortname() {
+        return shortname;
     }
 }

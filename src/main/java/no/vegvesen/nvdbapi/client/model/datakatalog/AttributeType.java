@@ -47,8 +47,16 @@ public abstract class AttributeType implements Serializable {
         return props.getId();
     }
 
+    public Integer getCategoryId() {
+        return props.getCategory();
+    }
+
     public String getName() {
         return props.getName();
+    }
+
+    public String getShortname() {
+        return props.getShortname();
     }
 
     public String getDescription() {
