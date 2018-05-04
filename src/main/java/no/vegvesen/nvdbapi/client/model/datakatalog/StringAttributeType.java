@@ -27,13 +27,16 @@ package no.vegvesen.nvdbapi.client.model.datakatalog;
 
 import java.util.Set;
 
-public class StringAttributeType extends AbstractEnumAttributeType {
+public class StringAttributeType extends AbstractEnumAttributeType<StringEnumValue> {
 
     private final Integer fieldLength;
     private final String defaultValue;
 
-    public StringAttributeType(AttributeCommonProperties props, AttributeTypeParameters parameters,
-                               String defaultValue, Integer fieldLength, Set<EnumValue> values) {
+    public StringAttributeType(AttributeCommonProperties props,
+                               AttributeTypeParameters parameters,
+                               String defaultValue,
+                               Integer fieldLength,
+                               Set<StringEnumValue> values) {
         super(props, parameters, values);
         this.defaultValue = defaultValue;
         this.fieldLength = fieldLength;

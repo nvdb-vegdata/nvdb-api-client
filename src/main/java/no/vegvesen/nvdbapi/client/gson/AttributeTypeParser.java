@@ -31,19 +31,17 @@ import no.vegvesen.nvdbapi.client.model.SpatialType;
 import no.vegvesen.nvdbapi.client.model.datakatalog.*;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 
 public final class AttributeTypeParser {
-    private AttributeTypeParser() {
-    }
+    private AttributeTypeParser() {  }
 
     public static AttributeType parse(Map<Integer, DataType> typeMap, JsonObject object) {
         int typeId = parseIntMember(object, "datatype");
         boolean isList = parseBooleanMember(object, "liste");
-        DataType type = typeMap.get(Integer.valueOf(typeId));
+        DataType type = typeMap.get(typeId);
 
         Integer id = parseIntMember(object, "id");
         String name = parseStringMember(object, "navn");
@@ -57,75 +55,60 @@ public final class AttributeTypeParser {
         LocalDate validFrom = parseDateMember(object, "objektliste_dato");
         AttributeTypeParameters parameters = GuidanceParametersParser.parseAttributeType(object.getAsJsonObject("styringsparametere"));
 
-        AttributeCommonProperties props = new AttributeCommonProperties(id, name, description, type, isList, sortNumber,
-                requirementComment, importance, sosiName, sosiNvdbName, sensitivityLevel, validFrom);
+        AttributeCommonProperties props = new AttributeCommonProperties(
+                id,
+                name,
+                description,
+                type,
+                isList,
+                sortNumber,
+                requirementComment,
+                importance,
+                sosiName,
+                sosiNvdbName,
+                sensitivityLevel,
+                validFrom);
 
         switch (type.getJavaType()) {
             case TEXT:
-                Set<EnumValue> values = parseEnumValues(object);
-                Integer fieldLength = parseIntMember(object, "feltlengde");
-                String textDefaultValue = parseStringMember(object, "standardverdi");
-
-                return new StringAttributeType(props, parameters, textDefaultValue, fieldLength, values);
+                return parseStringAttributeType(object, parameters, props);
             case CHARACTER:
-                Character charDefValue = Optional.ofNullable(parseStringMember(object, "standardverdi")).map(s -> s.charAt(0)).orElse(null);
-
-                return new CharacterAttributeType(props, parameters, charDefValue);
+                return new CharacterAttributeType(props,
+                        parameters,
+                        Optional.ofNullable(parseStringMember(object, "standardverdi"))
+                                .map(s -> s.charAt(0))
+                                .orElse(null));
             case BOOLEAN:
-                Boolean boolDefaultValue = parseBooleanMember(object, "standardverdi");
-                return new BooleanAttributeType(props, parameters, boolDefaultValue);
+                return new BooleanAttributeType(props, parameters, parseBooleanMember(object, "standardverdi"));
             case NUMBER:
-                values = parseEnumValues(object);
-                fieldLength = parseIntMember(object, "feltlengde");
-
-                boolean isDouble = false;
-                if (object.has("desimaler")) {
-                    int decimalCount = parseIntMember(object, "desimaler");
-                    isDouble = decimalCount > 0;
-                }
+                boolean isDouble = object.has("desimaler")
+                        && parseIntMember(object, "desimaler") > 0;
 
                 if (!isDouble) {
-                    Integer intDefValue = parseIntMember(object, "standardverdi");
-                    Integer intMinValue = parseIntMember(object, "min_anbefalt"), intMaxValue = parseIntMember(object, "maks_anbefalt");
-                    Integer intAbsMinValue = parseIntMember(object, "min"), intAbsMaxValue = parseIntMember(object, "maks");
-                    Unit unit = object.has("enhet") ? parseUnit(object.getAsJsonObject("enhet")) : null;
-
-                    return new IntegerAttributeType(props, parameters, intDefValue, intMinValue, intMaxValue, intAbsMinValue,
-                            intAbsMaxValue, fieldLength, unit, values);
+                    return parseIntegerAttributeType(object, parameters, props);
                 } else {
-                    values = parseEnumValues(object);
-
-                    fieldLength = parseIntMember(object, "feltlengde");
-                    Integer decimalCount = parseIntMember(object, "desimaler");
-                    Double doubleDefValue = parseDoubleMember(object, "standardverdi");
-                    Double doubleMinValue = parseDoubleMember(object, "min_anbefalt"), doubleMaxValue = parseDoubleMember(object, "maks_anbefalt");
-                    Double doubleAbsMinValue = parseDoubleMember(object, "min"), doubleAbsMaxValue = parseDoubleMember(object, "maks");
-                    Unit unit = object.has("enhet") ? parseUnit(object.getAsJsonObject("enhet")) : null;
-
-                    return new DoubleAttributeType(props, parameters, doubleDefValue, doubleMinValue, doubleMaxValue,
-                            doubleAbsMinValue, doubleAbsMaxValue, fieldLength, decimalCount, unit, values);
+                    return parseDoubleAttributeType(object, parameters, props);
                 }
             case SPATIAL:
-                SpatialType spatialType = determineSpatialType(type);
-
-                return new SpatialAttributeType(props, parameters, spatialType);
+                return new SpatialAttributeType(props, parameters, determineSpatialType(type));
             case LOCAL_DATE:
-                LocalDate defaultDateValue = parseDateMember(object, "standardverdi"), minDateValue = parseDateMember(object, "min");
-                LocalDate maxDateValue = parseDateMember(object, "maks");
-
-                return new DateAttributeType(props, parameters, defaultDateValue, minDateValue, maxDateValue);
+                return new DateAttributeType(props,
+                        parameters,
+                        parseDateMember(object, "standardverdi"),
+                        parseDateMember(object, "min"),
+                        parseDateMember(object, "maks"));
             case SHORT_DATE:
-                Integer intDefValue = parseIntMember(object, "standardverdi");
-                Integer intMinValue = parseIntMember(object, "min_anbefalt");
-                Integer intMaxValue = parseIntMember(object, "maks_anbefalt");
-
-                return new ShortDateAttributeType(props, parameters, intDefValue, intMinValue, intMaxValue);
+                return new ShortDateAttributeType(props,
+                        parameters,
+                        parseIntMember(object, "standardverdi"),
+                        parseIntMember(object, "min_anbefalt"),
+                        parseIntMember(object, "maks_anbefalt"));
             case LOCAL_TIME:
-                LocalTime defaultTimeValue = parseTimeMember(object, "standardverdi");
-                LocalTime minTimeValue = parseTimeMember(object, "min_anbefalt");
-                LocalTime maxTimeValue = parseTimeMember(object, "maks_anbefalt");
-
-                return new TimeAttributeType(props, parameters, defaultTimeValue, minTimeValue, maxTimeValue);
+                return new TimeAttributeType(props,
+                        parameters,
+                        parseTimeMember(object, "standardverdi"),
+                        parseTimeMember(object, "min_anbefalt"),
+                        parseTimeMember(object, "maks_anbefalt"));
             case BINARY:
                 return new BinaryObjectAttributeType(props, parameters);
             case STRUCTURE:
@@ -133,6 +116,35 @@ public final class AttributeTypeParser {
             default:
                 throw new UnsupportedOperationException("Unrecognized data type" + type);
         }
+    }
+
+    private static AttributeType parseDoubleAttributeType(JsonObject object, AttributeTypeParameters parameters, AttributeCommonProperties props) {
+        Integer decimalCount = parseIntMember(object, "desimaler");
+        Double doubleDefValue = parseDoubleMember(object, "standardverdi");
+        Double doubleMinValue = parseDoubleMember(object, "min_anbefalt"), doubleMaxValue = parseDoubleMember(object, "maks_anbefalt");
+        Double doubleAbsMinValue = parseDoubleMember(object, "min"), doubleAbsMaxValue = parseDoubleMember(object, "maks");
+        Unit unit = object.has("enhet") ? parseUnit(object.getAsJsonObject("enhet")) : null;
+
+        return new DoubleAttributeType(props, parameters, doubleDefValue, doubleMinValue, doubleMaxValue,
+                doubleAbsMinValue, doubleAbsMaxValue, parseIntMember(object, "feltlengde"), decimalCount, unit, parseEnumValues(object));
+    }
+
+    private static AttributeType parseIntegerAttributeType(JsonObject object, AttributeTypeParameters parameters, AttributeCommonProperties props) {
+        Integer intDefValue = parseIntMember(object, "standardverdi");
+        Integer intMinValue = parseIntMember(object, "min_anbefalt"), intMaxValue = parseIntMember(object, "maks_anbefalt");
+        Integer intAbsMinValue = parseIntMember(object, "min"), intAbsMaxValue = parseIntMember(object, "maks");
+        Unit unit = object.has("enhet") ? parseUnit(object.getAsJsonObject("enhet")) : null;
+
+        return new IntegerAttributeType(props, parameters, intDefValue, intMinValue, intMaxValue, intAbsMinValue,
+                intAbsMaxValue, parseIntMember(object, "feltlengde"), unit, parseEnumValues(object));
+    }
+
+    private static AttributeType parseStringAttributeType(JsonObject object, AttributeTypeParameters parameters, AttributeCommonProperties props) {
+        Set<StringEnumValue> values = parseEnumValues(object);
+        Integer fieldLength = parseIntMember(object, "feltlengde");
+        String textDefaultValue = parseStringMember(object, "standardverdi");
+
+        return new StringAttributeType(props, parameters, textDefaultValue, fieldLength, values);
     }
 
     private static SpatialType determineSpatialType(DataType dataType) {
@@ -156,25 +168,62 @@ public final class AttributeTypeParser {
         }
     }
 
-    private static Set<EnumValue> parseEnumValues(JsonObject obj) {
+    private static <T extends EnumValue> Set<T> parseEnumValues(JsonObject obj) {
         if (!obj.has("tillatte_verdier")) {
             return Collections.emptySet();
         }
-        Set<EnumValue> values = new HashSet<>();
+        Set<T> values = new HashSet<>();
         JsonArray array = obj.get("tillatte_verdier").getAsJsonArray();
         array.forEach(e -> {
-            JsonObject object = e.getAsJsonObject();
+            JsonObject allowedValue = e.getAsJsonObject();
 
-            Integer id = parseIntMember(object, "id");
-            String shortValue = parseStringMember(object, "kortnavn");
-            String value = parseStringMember(object, "navn");
-            String description = parseStringMember(object, "beskrivelse");
-            Integer sortNumber = parseIntMember(object, "sorteringsnummer");
-            LocalDate objectListDate = parseDateMember(object, "objektliste_dato");
+            Integer id = parseIntMember(allowedValue, "id");
+            String shortValue = parseStringMember(allowedValue, "kortnavn");
 
-            values.add(new EnumValue(id, sortNumber, value, shortValue, description, objectListDate));
+            String description = parseStringMember(allowedValue, "beskrivelse");
+            Integer sortNumber = parseIntMember(allowedValue, "sorteringsnummer");
+            LocalDate objectListDate = parseDateMember(allowedValue, "objektliste_dato");
+            String type = parseStringMember(allowedValue, "type");
+
+
+            values.add(
+                    createEnumValue(
+                            allowedValue,
+                            type,
+                            id,
+                            sortNumber,
+                            shortValue,
+                            description,
+                            objectListDate
+                    ));
         });
         return values;
+    }
+
+    @SuppressWarnings("unchecked")
+    private static <T extends EnumValue> T createEnumValue(JsonObject obj,
+                                                           String type,
+                                                           Integer id,
+                                                           Integer sortNumber,
+                                                           String shortValue,
+                                                           String description,
+                                                           LocalDate objectListDate) {
+        switch (type) {
+            case "Streng":
+                return (T) new StringEnumValue(id,
+                        sortNumber, parseStringMember(obj, "verdi"),
+                        shortValue, description, objectListDate);
+            case "Heltall":
+                return (T) new IntegerEnumValue(id,
+                        sortNumber, parseIntMember(obj, "verdi"),
+                        shortValue, description, objectListDate);
+            case "Flyttall":
+                return (T) new DoubleEnumValue(id,
+                        sortNumber, parseDoubleMember(obj, "verdi"),
+                        shortValue, description, objectListDate);
+            default:
+                throw new IllegalArgumentException("Could not handle enum value of type " + type);
+        }
     }
 
     public static Unit parseUnit(JsonObject obj) {

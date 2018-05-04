@@ -29,17 +29,17 @@ import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Stream;
 
-public interface EnumAttributeType extends Serializable {
+public interface EnumAttributeType<T extends EnumValue> extends Serializable {
 
-    EnumValue getValue(Integer id);
+    T getValue(Integer id);
 
-    Set<EnumValue> getValues();
+    Set<T> getValues();
 
-    List<EnumValue> getValueList();
+    List<T> getValueList();
 
-    Stream<EnumValue> values();
+    Stream<T> values();
 
-    List<EnumValue> getSortedValuesList();
+    List<T> getSortedValuesList();
 
     /**
      * @return The number of enum alternatives.
