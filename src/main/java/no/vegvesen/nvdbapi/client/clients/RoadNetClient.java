@@ -30,6 +30,7 @@ import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
 import no.vegvesen.nvdbapi.client.gson.RoadNetParser;
 import no.vegvesen.nvdbapi.client.model.Page;
 import no.vegvesen.nvdbapi.client.model.roadnet.Link;
+import no.vegvesen.nvdbapi.client.model.roadnet.NetElementWrapper;
 import no.vegvesen.nvdbapi.client.model.roadnet.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -73,10 +74,51 @@ public class RoadNetClient extends AbstractJerseyClient {
         return getNodes(RoadNetRequest.DEFAULT);
     }
 
+    public NetElementResult getNetElements() {
+        return getNetElements(RoadNetRequest.DEFAULT);
+    }
+
     public LinkResult getLinks(RoadNetRequest request) {
         Objects.requireNonNull(request, "Missing page info argument.");
 
         UriBuilder path = endpoint().path("/lenker");
+        addParameters(request, path);
+
+        WebTarget target = getClient().target(path);
+        return new LinkResult(target, request.getPage());
+    }
+
+    public NodeResult getNodes(RoadNetRequest request) {
+        Objects.requireNonNull(request, "Missing page info argument.");
+
+        UriBuilder path = endpoint().path("/noder");
+        addParameters(request, path);
+
+        WebTarget target = getClient().target(path);
+        return new NodeResult(target, request.getPage());
+    }
+
+    public NetElementResult getNetElements(RoadNetRequest request) {
+        Objects.requireNonNull(request, "Missing page info argument.");
+
+        UriBuilder path = endpoint().path("/elementer");
+        addParameters(request, path);
+
+        WebTarget target = getClient().target(path);
+        return new NetElementResult(target, request.getPage());
+    }
+
+    protected static String join(List<Integer> list) {
+        if (list == null) {
+            return null;
+        }
+        return list.stream()
+                   .map(Objects::toString)
+                   .collect(Collectors.joining(","));
+    }
+
+
+    private void addParameters(RoadNetRequest request, UriBuilder path) {
         if (!request.getRegions().isEmpty()) path.queryParam("region", join(request.getRegions()));
         if (!request.getCounties().isEmpty()) path.queryParam("fylke", join(request.getCounties()));
         if (!request.getTopologyLevel().isEmpty()) path.queryParam("topologiniva", join(request.getTopologyLevel()));
@@ -88,34 +130,6 @@ public class RoadNetClient extends AbstractJerseyClient {
         request.getRoadRefFilter().ifPresent(v -> path.queryParam("vegreferanse", v));
         request.getContractArea().ifPresent(v -> path.queryParam("kontraktsomrade", v));
         request.getNationalRoute().ifPresent(v -> path.queryParam("riksvegrute", v));
-
-        WebTarget target = getClient().target(path);
-        return new LinkResult(target, request.getPage());
-    }
-
-    public NodeResult getNodes(RoadNetRequest request) {
-        Objects.requireNonNull(request, "Missing page info argument.");
-
-        UriBuilder path = endpoint().path("/noder");
-        if (!request.getRegions().isEmpty()) path.queryParam("region", join(request.getRegions()));
-        if (!request.getCounties().isEmpty()) path.queryParam("fylke", join(request.getCounties()));
-        if (!request.getRoadDepartments().isEmpty()) path.queryParam("vegavdeling", join(request.getRoadDepartments()));
-        if (!request.getMunicipalities().isEmpty()) path.queryParam("kommune", join(request.getMunicipalities()));
-        request.getBbox().ifPresent(v -> path.queryParam("kartutsnitt", v));
-        request.getProjection().ifPresent(v -> path.queryParam("srid", v.getSrid()));
-        request.getRoadRefFilter().ifPresent(v -> path.queryParam("vegreferanse", v));
-
-        WebTarget target = getClient().target(path);
-        return new NodeResult(target, request.getPage());
-    }
-
-    protected static String join(List<Integer> list) {
-        if (list == null) {
-            return null;
-        }
-        return list.stream()
-                   .map(Objects::toString)
-                   .collect(Collectors.joining(","));
     }
 
     private UriBuilder endpoint() {
@@ -133,6 +147,12 @@ public class RoadNetClient extends AbstractJerseyClient {
 
         protected NodeResult(WebTarget baseTarget, Optional<Page> currentPage) {
             super(baseTarget, currentPage, RoadNetParser::parseNode);
+        }
+    }
+    public final class NetElementResult extends GenericResultSet<NetElementWrapper> {
+
+        protected NetElementResult(WebTarget baseTarget, Optional<Page> currentPage) {
+            super(baseTarget, currentPage, RoadNetParser::parseNetElement);
         }
     }
 }

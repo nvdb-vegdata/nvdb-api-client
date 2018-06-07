@@ -136,4 +136,15 @@ public final class RoadNetParser {
         if(isNull(val)) return null;
         return NetElementType.from(val);
     }
+
+    public static NetElementWrapper parseNetElement(JsonObject obj) {
+        if(obj==null) return null;
+        Integer netelementtype = parseIntMember(obj, "netelementtype");
+        if (netelementtype == NetElementType.NODE.getValue()) {
+            return new NetElementWrapper(parseNode(obj));
+        } else if (netelementtype == NetElementType.LENKE.getValue()) {
+            return new NetElementWrapper(parseLink(obj));
+        }
+        throw new RuntimeException("Netelement with type " + netelementtype + " not recognized");
+    }
 }

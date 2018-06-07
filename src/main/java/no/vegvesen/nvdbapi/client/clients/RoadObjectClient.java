@@ -143,10 +143,12 @@ public class RoadObjectClient extends AbstractJerseyClient {
         return Optional.empty();
     }
 
+    // TODO return all versions
     public RoadObject getRoadObject(int featureTypeId, long featureId) {
         return getRoadObject(featureTypeId, featureId, RoadObjectRequest.DEFAULT);
     }
 
+    // TODO remove?
     public RoadObject getRoadObject(int featureTypeId, long featureId, RoadObjectRequest request) {
         UriBuilder path = start()
                 .path(String.format("/vegobjekter/%d/%d", featureTypeId, featureId));
