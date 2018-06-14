@@ -40,7 +40,6 @@ public final class AttributeTypeParser {
 
     public static AttributeType parse(Map<Integer, DataType> typeMap, JsonObject object) {
         int typeId = parseIntMember(object, "datatype");
-        boolean isList = parseBooleanMember(object, "liste");
         DataType type = typeMap.get(typeId);
 
         Integer id = parseIntMember(object, "id");
@@ -64,7 +63,6 @@ public final class AttributeTypeParser {
                 shortname,
                 description,
                 type,
-                isList,
                 sortNumber,
                 requirementComment,
                 importance,
@@ -120,6 +118,13 @@ public final class AttributeTypeParser {
                 return new BinaryObjectAttributeType(props, parameters);
             case STRUCTURE:
                 return new StructureAttributeType(props, parameters);
+            case LIST:
+                AttributeType content = parse(typeMap, object.getAsJsonObject("innhold"));
+                return new ListAttributeType(props,
+                        parameters,
+                        content,
+                        parseIntMember(object, "maksimalt_antall_verdier"),
+                        parseIntMember(object, "minimalt_antall_verdier"));
             default:
                 throw new UnsupportedOperationException("Unrecognized data type" + type);
         }
@@ -287,6 +292,8 @@ public final class AttributeTypeParser {
             case 36:
             case 37:
                 return JavaType.BINARY;
+            case 38:
+                return JavaType.LIST;
             default:
                 return JavaType.UNKNOWN;
         }

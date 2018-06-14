@@ -34,7 +34,6 @@ public class AttributeCommonProperties {
     private final String shortname;
     private final String description;
     private final DataType type;
-    private final boolean isList;
     private final Integer sortNumber;
     private final String requirementComment;
     private final AttributeType.Importance importance;
@@ -49,7 +48,6 @@ public class AttributeCommonProperties {
                                      String shortname,
                                      String description,
                                      DataType type,
-                                     boolean isList,
                                      Integer sortNumber,
                                      String requirementComment,
                                      AttributeType.Importance importance,
@@ -63,7 +61,6 @@ public class AttributeCommonProperties {
         this.shortname = shortname;
         this.description = description;
         this.type = type;
-        this.isList = isList;
         this.sortNumber = sortNumber;
         this.requirementComment = requirementComment;
         this.importance = importance;
@@ -87,10 +84,6 @@ public class AttributeCommonProperties {
 
     public DataType getType() {
         return type;
-    }
-
-    public boolean isList() {
-        return isList;
     }
 
     public Integer getSortNumber() {

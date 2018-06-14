@@ -75,10 +75,6 @@ public abstract class AttributeType implements Serializable {
         return props.getType();
     }
 
-    public boolean isList() {
-        return props.isList();
-    }
-
     public LocalDate getObjectListDate() {
         return props.getObjectListDate();
     }
