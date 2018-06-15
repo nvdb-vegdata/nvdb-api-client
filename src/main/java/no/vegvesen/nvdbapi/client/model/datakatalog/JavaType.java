@@ -36,5 +36,6 @@ public enum JavaType {
     SPATIAL,
     BINARY,
     STRUCTURE,
+    LIST,
     UNKNOWN
 }
