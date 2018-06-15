@@ -27,6 +27,7 @@ package no.vegvesen.nvdbapi.client.gson;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import no.vegvesen.nvdbapi.client.model.LocationalType;
 import no.vegvesen.nvdbapi.client.model.SpatialType;
 import no.vegvesen.nvdbapi.client.model.datakatalog.*;
 
@@ -91,7 +92,11 @@ public final class AttributeTypeParser {
                 } else {
                     return parseDoubleAttributeType(object, parameters, props);
                 }
-            case SPATIAL:
+            case GEOMETRY:
+                //spatial or locational
+                if(parseStringMember(object, "type").equalsIgnoreCase("stedfesting")){
+                    return new LocationalAttributeType(props, parameters, determineLocationalType(object));
+                }
                 return new SpatialAttributeType(props,
                         parameters,
                         determineSpatialType(object),
@@ -178,6 +183,18 @@ public final class AttributeTypeParser {
                 return SpatialType.MULTI_POLYGON;
             default:
                 return SpatialType.UNKNOWN;
+        }
+    }
+
+    private static LocationalType determineLocationalType(JsonObject object){
+        String type = parseStringMember(object, "geometritype");
+        switch (type){
+            case "LINJE":
+                return LocationalType.LINE;
+            case "PUNKT":
+                return LocationalType.POINT;
+            default:
+                return LocationalType.UNKNOWN;
         }
     }
 
@@ -278,7 +295,7 @@ public final class AttributeTypeParser {
             case 21:
             case 22:
             case 23:
-                return JavaType.SPATIAL;
+                return JavaType.GEOMETRY;
             case 26:
                 return JavaType.STRUCTURE;
             case 28:

@@ -67,14 +67,20 @@ public final class FeatureTypeParser {
             parentsArray.forEach(e -> parents.add(AssociationTypeParser.parse(e.getAsJsonObject())));
         }
 
-        FeatureType.PlacementType placementType = FeatureType.PlacementType.from(parseStringMember(obj, "stedfesting"));
+        String placementPath = obj.has("stedfesting.innhold") ? "stedfesting.innhold.geometritype" : "stedfesting.geometritype";
+        FeatureType.PlacementType placementType = FeatureType.PlacementType.from(parseStringMember(obj, placementPath));
+
+        AttributeType locationalAttribute = null;
+        if(obj.has("stedfesting")){
+            locationalAttribute = AttributeTypeParser.parse(dataTypes, obj.getAsJsonObject("stedfesting"));
+        }
 
         FeatureTypeParameters parameters = null;
         if (obj.has("styringsparametere")) {
             parameters = GuidanceParametersParser.parseFeatureType(obj.getAsJsonObject("styringsparametere"));
         }
 
-        return new FeatureType(id, name, description, attributeTypes, parents, children, instructions, sosiName, sosiNvdbName, sortNumber, objectListDate, placementType, parameters);
+        return new FeatureType(id, name, description, attributeTypes, parents, children, instructions, sosiName, sosiNvdbName, sortNumber, objectListDate, placementType, parameters, locationalAttribute);
     }
 
     public static FeatureTypeCategory parseCategory(JsonObject obj) {
