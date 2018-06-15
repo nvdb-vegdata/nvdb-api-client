@@ -92,15 +92,28 @@ public final class AttributeTypeParser {
                 } else {
                     return parseDoubleAttributeType(object, parameters, props);
                 }
-            case GEOMETRY:
-                //spatial or locational
-                if(parseStringMember(object, "type").equalsIgnoreCase("stedfesting")){
-                    return new LocationalAttributeType(props, parameters, determineLocationalType(object));
-                }
-                return new SpatialAttributeType(props,
+            case GEOMETRY: //spatial or locational
+
+                if (parseStringMember(object, "type").equalsIgnoreCase("stedfesting")) {
+                    Boolean overlapp = parseBooleanMember(object, "overlapp");
+                    String laneRelevant = parseStringMember(object, "kjørefeltrelevant");
+                    String sideposRelevant = parseStringMember(object, "sideposrelevant");
+                    Boolean heightRelevant = parseBooleanMember(object, "høyderelevant");
+                    Boolean dirRelevant = parseBooleanMember(object, "retningsrelevant");
+                    Boolean movable = parseBooleanMember(object, "flyttbar");
+                    String ajourholdi = parseStringMember(object, "ajourholdi");
+                    String ajourholdsplitt = parseStringMember(object, "ajourholdsplitt");
+                    Double supplyLength = parseDoubleMember(object, "suppleringslengde");
+                    String dekningsgrad = parseStringMember(object, "dekningsgrad");
+                    return new LocationalAttributeType(props, parameters, determineLocationalType(object),
+                        overlapp, laneRelevant, sideposRelevant, heightRelevant, dirRelevant, movable,
+                        ajourholdi, ajourholdsplitt, supplyLength, dekningsgrad);
+                } else {
+                    return new SpatialAttributeType(props,
                         parameters,
                         determineSpatialType(object),
                         parseIntMember(object, "dimensjoner"));
+                }
             case LOCAL_DATE:
                 return new DateAttributeType(props,
                         parameters,
