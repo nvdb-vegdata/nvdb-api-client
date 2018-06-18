@@ -43,6 +43,7 @@ public class RoadNetRequest {
     private final List<Integer> roadDepartments;
     private final List<Integer> topologyLevel;
     private final List<Integer> superId;
+    private final List<Integer> id;
     private final Optional<Projection> projection;
     private final Optional<String> bbox;
     private final Optional<String> contractArea;
@@ -61,6 +62,7 @@ public class RoadNetRequest {
         bbox = b.bbox;
         contractArea = b.contractArea;
         nationalRoute = b.nationalRoute;
+        id = b.id;
     }
 
     public static Builder newBuilder() {
@@ -113,6 +115,10 @@ public class RoadNetRequest {
 
     public Optional<String> getNationalRoute() {
         return nationalRoute;
+    }
+
+    public List<Integer> getId() {
+        return id;
     }
 
     public static class Builder {

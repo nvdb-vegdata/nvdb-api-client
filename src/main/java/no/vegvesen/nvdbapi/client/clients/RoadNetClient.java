@@ -125,6 +125,7 @@ public class RoadNetClient extends AbstractJerseyClient {
         if (!request.getSuperId().isEmpty()) path.queryParam("superid", join(request.getSuperId()));
         if (!request.getRoadDepartments().isEmpty()) path.queryParam("vegavdeling", join(request.getRoadDepartments()));
         if (!request.getMunicipalities().isEmpty()) path.queryParam("kommune", join(request.getMunicipalities()));
+        if (!request.getId().isEmpty()) path.queryParam("id", join(request.getId()));
         request.getBbox().ifPresent(v -> path.queryParam("kartutsnitt", v));
         request.getProjection().ifPresent(v -> path.queryParam("srid", v.getSrid()));
         request.getRoadRefFilter().ifPresent(v -> path.queryParam("vegreferanse", v));
