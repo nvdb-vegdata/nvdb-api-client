@@ -45,8 +45,9 @@ public final class FeatureType implements Serializable {
     private final List<AssociationType> parents;
     private final List<AssociationType> children;
     private final FeatureTypeParameters parameters;
+    private final AttributeType locationalAttribute;
 
-    public FeatureType(Integer id, String name, String description, List<AttributeType> attributeTypes, List<AssociationType> parents, List<AssociationType> children, String instructions, String sosiName, String sosiNvdbName, Integer sortNumber, LocalDate objectListDate, PlacementType placementType, FeatureTypeParameters featureTypeParameters) {
+    public FeatureType(Integer id, String name, String description, List<AttributeType> attributeTypes, List<AssociationType> parents, List<AssociationType> children, String instructions, String sosiName, String sosiNvdbName, Integer sortNumber, LocalDate objectListDate, PlacementType placementType, FeatureTypeParameters featureTypeParameters, AttributeType locationalAttribute) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -60,6 +61,7 @@ public final class FeatureType implements Serializable {
         this.children = Optional.ofNullable(children).orElse(Collections.emptyList());
         this.parents = Optional.ofNullable(parents).orElse(Collections.emptyList());
         this.attributeTypes = Optional.ofNullable(attributeTypes).orElse(Collections.emptyList());
+        this.locationalAttribute = locationalAttribute;
     }
 
     public Integer getId() {
@@ -100,6 +102,10 @@ public final class FeatureType implements Serializable {
 
     public String getSosiName() {
         return sosiName;
+    }
+
+    public AttributeType getLocationalAttribute() {
+        return locationalAttribute;
     }
 
     public AssociationType getAssociationType(Integer id) {
