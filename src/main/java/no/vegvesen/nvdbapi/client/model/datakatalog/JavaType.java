@@ -33,7 +33,7 @@ public enum JavaType {
     LOCAL_DATE,
     LOCAL_TIME,
     SHORT_DATE,
-    SPATIAL,
+    GEOMETRY,
     BINARY,
     STRUCTURE,
     LIST,

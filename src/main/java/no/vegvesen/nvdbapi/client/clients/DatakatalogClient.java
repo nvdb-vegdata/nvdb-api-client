@@ -196,6 +196,7 @@ public class DatakatalogClient extends AbstractJerseyClient {
         ATTRIBUTES("egenskapstyper"),
         ASSOCIATIONS("relasjonstyper"),
         GUIDANCE_PARAMETERS("styringsparametere"),
+        LOCATIONAL("stedfesting"),
         ALL("alle");
 
         private final String value;
