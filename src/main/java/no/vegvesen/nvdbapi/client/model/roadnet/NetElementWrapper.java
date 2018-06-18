@@ -9,7 +9,7 @@ public class NetElementWrapper {
     private final Object netelement;
 
     public NetElementWrapper(Object netelement) {
-        this.netelement = Objects.nonNull(netelement);
+        this.netelement = Objects.requireNonNull(netelement);
         boolean notLinkOrNode = !(Link.class.isInstance(netelement) || Node.class.isInstance(netelement));
         if(notLinkOrNode) {
             throw new IllegalArgumentException("Not link or node");
