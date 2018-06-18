@@ -124,6 +124,7 @@ public class RoadNetRequest {
         private List<Integer> roadDepartments = Collections.emptyList();
         private List<Integer> topologyLevel = Collections.emptyList();
         private List<Integer> superId = Collections.emptyList();
+        private List<Integer> id = Collections.emptyList();
         private Optional<String> bbox = Optional.empty();
         private Optional<Projection> projection = Optional.empty();
         private Optional<String> contractArea = Optional.empty();
@@ -188,6 +189,11 @@ public class RoadNetRequest {
 
         public Builder withSuperId(List<Integer> superId) {
             this.superId = Optional.ofNullable(superId).orElse(Collections.emptyList());
+            return this;
+        }
+
+        public Builder withId(List<Integer> id) {
+            this.id = Optional.ofNullable(id).orElse(Collections.emptyList());
             return this;
         }
 
