@@ -40,8 +40,8 @@ public final class AssociationTypeParser {
 
     public static AssociationType parse(JsonObject object) {
 
-        if (object.has("listeid")) {
-            Integer listId = parseIntMember(object, "listeid");
+        if (object.has("innhold")) {
+            Integer listId = parseIntMember(object, "id");
             Integer maxNumber = parseIntMember(object, "maksimalt_antall_verdier");
             Integer minNumber = parseIntMember(object, "minimalt_antall_verdier");
 
