@@ -40,23 +40,46 @@ public final class AssociationTypeParser {
 
     public static AssociationType parse(JsonObject object) {
 
-        Integer id = parseIntMember(object, "id");
-        LocalDate validFrom = parseDateMember(object, "objektliste_dato");
+        if (object.has("listeid")) {
+            Integer listId = parseIntMember(object, "listeid");
+            Integer maxNumber = parseIntMember(object, "maksimalt_antall_verdier");
+            Integer minNumber = parseIntMember(object, "minimalt_antall_verdier");
 
-        AssociationType.InsideParent insideParent =
-                Optional.ofNullable(parseStringMember(object, "innenfor_mor"))
-                .map(AssociationType.InsideParent::from).orElse(null);
-        AssociationType.Affiliation affiliation =
-                Optional.ofNullable(parseStringMember(object, "relasjonstype"))
-                .map(AssociationType.Affiliation::from).orElse(null);
-        Integer featureTypeId = null;
-        if (object.has("type")) {
-            featureTypeId = parseIntMember(object.getAsJsonObject("type"), "id");
+            JsonObject content = object.getAsJsonObject("innhold");
+
+            Integer id = parseIntMember(content, "id");
+            LocalDate validFrom = parseDateMember(content, "objektliste_dato");
+
+            AssociationType.InsideParent insideParent =
+                    Optional.ofNullable(parseStringMember(content, "innenfor_mor"))
+                            .map(AssociationType.InsideParent::from).orElse(null);
+            AssociationType.Affiliation affiliation =
+                    Optional.ofNullable(parseStringMember(content, "relasjonstype"))
+                            .map(AssociationType.Affiliation::from).orElse(null);
+            Integer featureTypeId = null;
+            if (content.has("type")) {
+                featureTypeId = parseIntMember(content.getAsJsonObject("type"), "id");
+            }
+
+
+
+            return new AssociationType(id, featureTypeId, insideParent, affiliation, validFrom, listId, maxNumber, minNumber);
+        } else {
+            Integer id = parseIntMember(object, "id");
+            LocalDate validFrom = parseDateMember(object, "objektliste_dato");
+
+            AssociationType.InsideParent insideParent =
+                    Optional.ofNullable(parseStringMember(object, "innenfor_mor"))
+                    .map(AssociationType.InsideParent::from).orElse(null);
+            AssociationType.Affiliation affiliation =
+                    Optional.ofNullable(parseStringMember(object, "relasjonstype"))
+                    .map(AssociationType.Affiliation::from).orElse(null);
+            Integer featureTypeId = null;
+            if (object.has("type")) {
+                featureTypeId = parseIntMember(object.getAsJsonObject("type"), "id");
+            }
+
+            return new AssociationType(id, featureTypeId, insideParent, affiliation, validFrom, null, null, null);
         }
-
-
-        return new AssociationType(id, featureTypeId, insideParent, affiliation, validFrom);
     }
-
-
 }
