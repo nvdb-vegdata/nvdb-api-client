@@ -36,13 +36,23 @@ public class AssociationType implements Serializable {
     private final Affiliation affiliation;
     private final LocalDate validFrom;
 
+    // List associations
+    private Integer listId;
+    private Integer maxNumber;
+    private Integer minNumber;
+
     public AssociationType(Integer id, Integer featureTypeId, InsideParent insideParent, Affiliation affiliation,
-                           LocalDate validFrom) {
+                           LocalDate validFrom, Integer listId, Integer maxNumber, Integer minNumber) {
         this.id = id;
         this.featureTypeId = featureTypeId;
         this.insideParent = insideParent;
         this.affiliation = affiliation;
         this.validFrom = validFrom;
+
+        // List associations
+        this.listId = listId;
+        this.maxNumber = maxNumber;
+        this.minNumber = minNumber;
     }
 
     public Integer getId() {
@@ -60,6 +70,12 @@ public class AssociationType implements Serializable {
     public InsideParent getInsideParent() {
         return insideParent;
     }
+
+    public Integer getListId() { return listId; }
+
+    public Integer getMaxNumber() { return maxNumber; }
+
+    public Integer getMinNumber() { return minNumber; }
 
     public Affiliation getAffiliation() {
         return affiliation;
