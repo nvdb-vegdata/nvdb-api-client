@@ -94,7 +94,7 @@ public final class AttributeTypeParser {
                 }
             case GEOMETRY: //spatial or locational
 
-                if (parseStringMember(object, "type").equalsIgnoreCase("stedfesting")) {
+                if (parseStringMember(object, "egenskapstype").equalsIgnoreCase("stedfesting")) {
                     Boolean overlapp = parseBooleanMember(object, "overlapp");
                     String laneRelevant = parseStringMember(object, "kjørefeltrelevant");
                     String sideposRelevant = parseStringMember(object, "sideposrelevant");
