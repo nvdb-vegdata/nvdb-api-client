@@ -252,7 +252,7 @@ public final class AttributeTypeParser {
                                                            String description,
                                                            LocalDate objectListDate) {
         switch (type) {
-            case "Streng":
+            case "Tekst":
                 return (T) new StringEnumValue(id,
                         sortNumber, parseStringMember(obj, "verdi"),
                         shortValue, description, objectListDate);
