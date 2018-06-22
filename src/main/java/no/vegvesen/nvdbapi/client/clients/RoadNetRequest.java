@@ -48,6 +48,7 @@ public class RoadNetRequest {
     private final Optional<String> bbox;
     private final Optional<String> contractArea;
     private final Optional<String> nationalRoute;
+    private final Optional<String> bpolygon;
 
     private RoadNetRequest(Builder b) {
         page = b.page;
@@ -60,6 +61,7 @@ public class RoadNetRequest {
         this.superId = b.superId;
         projection = b.projection;
         bbox = b.bbox;
+        bpolygon = b.bpolygon;
         contractArea = b.contractArea;
         nationalRoute = b.nationalRoute;
         id = b.id;
@@ -121,7 +123,12 @@ public class RoadNetRequest {
         return id;
     }
 
+    public Optional<String> getBpolygon() {
+        return bpolygon;
+    }
+
     public static class Builder {
+        private Optional<String> bpolygon = Optional.empty();
         private Optional<Page> page = Optional.empty();
         private Optional<String> roadRefFilter = Optional.empty();
         private List<Integer> regions = Collections.emptyList();
@@ -143,6 +150,10 @@ public class RoadNetRequest {
             return new RoadNetRequest(this);
         }
 
+        public Builder withBoundingPolygon(String boundingPolygon) {
+            this.bpolygon = Optional.ofNullable(boundingPolygon);
+            return this;
+        }
         public Builder withPage(Page page) {
             this.page = Optional.ofNullable(page);
             return this;
@@ -210,6 +221,11 @@ public class RoadNetRequest {
 
         public Builder withBbox(String bbox) {
             this.bbox = Optional.ofNullable(bbox);
+            return this;
+        }
+
+        public Builder withBpolygon(String bpolygon) {
+            this.bpolygon = Optional.ofNullable(bpolygon);
             return this;
         }
 

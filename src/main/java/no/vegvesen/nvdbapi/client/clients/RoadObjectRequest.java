@@ -41,6 +41,7 @@ public class RoadObjectRequest {
     private final Integer distanceTolerance;
     private final String attributeFilter;
     private final String bbox;
+    private final String bpolygon;
     private final String roadRefFilter;
     private final String refLinkFilter;
     private final Set<RoadObjectClient.Include> includes;
@@ -63,6 +64,7 @@ public class RoadObjectRequest {
         distanceTolerance = b.distanceTolerance;
         attributeFilter = b.attributeFilter;
         bbox = b.bbox;
+        bpolygon = b.bpolygon;
         roadRefFilter = b.roadRefFilter;
         refLinkFilter = b.refLinkFilter;
         overlapFilters = b.overlapFilters;
@@ -116,6 +118,10 @@ public class RoadObjectRequest {
 
     public Optional<String> getBbox() {
         return Optional.ofNullable(bbox);
+    }
+
+    public Optional<String> getBpolygon() {
+        return Optional.ofNullable(bpolygon);
     }
 
     public Optional<String> getRoadRefFilter() {
@@ -175,6 +181,7 @@ public class RoadObjectRequest {
         b.withIncludes(includes);
         b.withAttributeFilter(attributeFilter);
         b.withBbox(bbox);
+        b.withBpolygon(bpolygon);
         b.withRoadRefFilter(roadRefFilter);
         b.withRefLinkFilter(refLinkFilter);
         overlapFilters.forEach(of -> b.addOverlapFilter(of.filter, of.typeId));
@@ -196,6 +203,7 @@ public class RoadObjectRequest {
         private Set<RoadObjectClient.IncludeGeometry> includeGeometries = Collections.emptySet();
         private String attributeFilter = null;
         private String bbox = null;
+        private String bpolygon = null;
         private String roadRefFilter = null;
         private String refLinkFilter = null;
         private List<OverlapFilter> overlapFilters = new ArrayList<>();
@@ -282,6 +290,11 @@ public class RoadObjectRequest {
 
         public Builder withBbox(String bbox) {
             this.bbox = bbox;
+            return this;
+        }
+
+        public Builder withBpolygon(String bpolygon) {
+            this.bpolygon = bpolygon;
             return this;
         }
 

@@ -37,16 +37,19 @@ public final class Municipality implements Serializable {
     private final int number;
     private final String name;
     private final Optional<Geometry> boundingBox;
+    private final Optional<Geometry> boundingPolygon;
     private final Optional<Geometry> centerPoint;
     private final int region;
     private final int county;
     private final int roadDepartment;
 
-    public Municipality(RoadObjectId id, int number, String name, int county, int region, Geometry boundingBox, Geometry centerPoint, int roadDepartment) {
+
+    public Municipality(RoadObjectId id, int number, String name, int county, int region, Geometry boundingBox, Geometry boundingPolygon, Geometry centerPoint, int roadDepartment) {
         this.id = Optional.ofNullable(id);
         this.number = number;
         this.name = name;
         this.boundingBox = Optional.ofNullable(boundingBox);
+        this.boundingPolygon = Optional.ofNullable(boundingPolygon);
         this.centerPoint = Optional.ofNullable(centerPoint);
         this.region = region;
         this.county = county;
@@ -73,6 +76,10 @@ public final class Municipality implements Serializable {
         return centerPoint;
     }
 
+    public Optional<Geometry> getBoundingPolygon() {
+        return boundingPolygon;
+    }
+
     public int getRegion() {
         return region;
     }
@@ -97,11 +104,12 @@ public final class Municipality implements Serializable {
                 Objects.equals(id, that.id) &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(boundingBox, that.boundingBox) &&
+                Objects.equals(boundingPolygon, that.boundingPolygon) &&
                 Objects.equals(centerPoint, that.centerPoint);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, number, name, boundingBox, centerPoint, region, county, roadDepartment);
+        return Objects.hash(id, number, name, boundingBox, boundingPolygon, centerPoint, region, county, roadDepartment);
     }
 }

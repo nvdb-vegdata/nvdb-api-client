@@ -144,6 +144,9 @@ public class AreaClient extends AbstractJerseyClient {
         if (includeBoundingbox) {
             inkluder.add("kartutsnitt");
         }
+        if (includeBoundingbox) {
+            inkluder.add("polygon");
+        }
 
         if (includeCenterPoint) {
             inkluder.add("senterpunkt");
