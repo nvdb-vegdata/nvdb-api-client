@@ -168,7 +168,7 @@ public final class FeatureType implements Serializable {
         NONE("INGEN"),
         POINT("PUNKT"),
         LINE("LINJE"),
-        TURN("SVINGERESTRIKSJON"),
+        TURN("SVING"),
         MULTI_POINT("MULTIPUNKT");
 
         private final String name;
