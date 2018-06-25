@@ -168,6 +168,7 @@ public final class FeatureType implements Serializable {
         NONE("INGEN"),
         POINT("PUNKT"),
         LINE("LINJE"),
+        TURN("SVINGERESTRIKSJON"),
         MULTI_POINT("MULTIPUNKT");
 
         private final String name;
@@ -196,7 +197,10 @@ public final class FeatureType implements Serializable {
         }
 
         public static Relevant from(String text) {
-            return Arrays.asList(values()).stream().filter(s -> s.name.equalsIgnoreCase(text)).findAny().orElse(null);
+            return Arrays.stream(values())
+                    .filter(s -> s.name.equalsIgnoreCase(text))
+                    .findAny()
+                    .orElse(null);
         }
     }
 
