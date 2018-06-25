@@ -216,7 +216,10 @@ public final class FeatureType implements Serializable {
         }
 
         public static Survivability from(String text) {
-            return Arrays.asList(values()).stream().filter(s -> s.name.equalsIgnoreCase(text)).findAny().orElse(null);
+            return Arrays.stream(values())
+                    .filter(s -> s.name.equalsIgnoreCase(text))
+                    .findAny()
+                    .orElse(null);
         }
     }
 
@@ -232,7 +235,10 @@ public final class FeatureType implements Serializable {
         }
 
         public static Splitability from(String text) {
-            return Arrays.asList(values()).stream().filter(s -> s.name.equalsIgnoreCase(text)).findAny().orElse(null);
+            return Arrays.stream(values())
+                    .filter(s -> s.name.equalsIgnoreCase(text))
+                    .findAny()
+                    .orElse(null);
         }
     }
 }
