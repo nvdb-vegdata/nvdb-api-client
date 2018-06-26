@@ -6,6 +6,7 @@ scmVersion {
     tag {
         prefix = 'nvdb-api-client'
     }
+    versionCreator = {version, position -> "${version}${versionBranch}"}
 }
 
 allprojects {
