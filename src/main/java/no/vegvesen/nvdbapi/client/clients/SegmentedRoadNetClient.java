@@ -72,6 +72,7 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         if (!request.getMunicipalities().isEmpty()) path.queryParam("kommune", join(request.getMunicipalities()));
         if (!request.getRoadDepartments().isEmpty()) path.queryParam("vegavdeling", join(request.getRoadDepartments()));
         request.getBbox().ifPresent(v -> path.queryParam("kartutsnitt", v));
+        request.getBpolygon().ifPresent(v -> path.queryParam("polygon", v));
         request.getProjection().ifPresent(v -> path.queryParam("srid", v.getSrid()));
         request.getRoadRefFilter().ifPresent(v -> path.queryParam("vegreferanse", v));
 

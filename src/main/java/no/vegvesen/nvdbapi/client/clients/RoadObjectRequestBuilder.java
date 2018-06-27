@@ -46,7 +46,7 @@ class RoadObjectRequestBuilder {
         getIncludeArgument(request.getIncludes()).ifPresent(v -> map.putSingle("inkluder", v));
         getIncludeGeometriesArgument(request.getIncludeGeometries()).ifPresent(v -> map.putSingle("inkludergeometri", v));
         request.getAttributeFilter().ifPresent(v -> map.putSingle("egenskap", v));
-        request.getBbox().ifPresent(v -> map.putSingle("kartutsnitt", v));
+        request.getBpolygon().ifPresent(v -> map.putSingle("polygon", v));
         request.getRoadRefFilter().ifPresent(v -> map.putSingle("vegreferanse", v));
         request.getRefLinkFilter().ifPresent(v -> map.putSingle("veglenke", v));
         flatten(request.getMunicipalities()).ifPresent(v -> map.putSingle("kommune", v));
