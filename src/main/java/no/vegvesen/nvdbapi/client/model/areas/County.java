@@ -38,15 +38,13 @@ public final class County implements Serializable {
     private final String name;
     private final Optional<Geometry> boundingBox;
     private final Optional<Geometry> centerPoint;
-    private final Optional<Geometry> boundingPolygon;
     private final int region;
 
-    public County(RoadObjectId id, int number, String name, Geometry boundingBox, Geometry boundingPolygon, Geometry centerPoint, int region) {
+    public County(RoadObjectId id, int number, String name, Geometry boundingBox, Geometry centerPoint, int region) {
         this.id = Optional.ofNullable(id);
         this.number = number;
         this.name = name;
         this.boundingBox = Optional.ofNullable(boundingBox);
-        this.boundingPolygon = Optional.ofNullable(boundingPolygon);
         this.centerPoint = Optional.ofNullable(centerPoint);
         this.region = region;
     }
@@ -67,10 +65,6 @@ public final class County implements Serializable {
         return boundingBox;
     }
 
-    public Optional<Geometry> getBoundingPolygon() {
-        return boundingPolygon;
-    }
-
     public Optional<Geometry> getCenterPoint() {
         return centerPoint;
     }
@@ -89,12 +83,11 @@ public final class County implements Serializable {
                 Objects.equals(id, county.id) &&
                 Objects.equals(name, county.name) &&
                 Objects.equals(boundingBox, county.boundingBox) &&
-                Objects.equals(boundingPolygon, county.boundingPolygon) &&
                 Objects.equals(centerPoint, county.centerPoint);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, number, name, boundingBox, boundingPolygon, centerPoint, region);
+        return Objects.hash(id, number, name, boundingBox, centerPoint, region);
     }
 }
