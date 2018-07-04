@@ -38,14 +38,12 @@ public final class Region implements Serializable {
     private final String name;
     private final Optional<Geometry> boundingBox;
     private final Optional<Geometry> centerPoint;
-    private final Optional<Geometry> boundingPolygon;
 
-    public Region(RoadObjectId id, int number, String name, Geometry boundingBox, Geometry boundingPolygon , Geometry centerPoint) {
+    public Region(RoadObjectId id, int number, String name, Geometry boundingBox, Geometry centerPoint) {
         this.id = Optional.ofNullable(id);
         this.number = number;
         this.name = name;
         this.boundingBox = Optional.ofNullable(boundingBox);
-        this.boundingPolygon = Optional.ofNullable(boundingPolygon);
         this.centerPoint = Optional.ofNullable(centerPoint);
     }
 
@@ -69,9 +67,6 @@ public final class Region implements Serializable {
         return centerPoint;
     }
 
-    public Optional<Geometry> getBoundingPolygon() {
-        return boundingPolygon;
-    }
 
     @Override
     public boolean equals(Object o) {
@@ -82,12 +77,11 @@ public final class Region implements Serializable {
                 Objects.equals(id, region.id) &&
                 Objects.equals(name, region.name) &&
                 Objects.equals(boundingBox, region.boundingBox) &&
-                Objects.equals(boundingPolygon, region.boundingPolygon) &&
                 Objects.equals(centerPoint, region.centerPoint);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, number, name, boundingBox, boundingPolygon, centerPoint);
+        return Objects.hash(id, number, name, boundingBox, centerPoint);
     }
 }
