@@ -28,9 +28,7 @@ package no.vegvesen.nvdbapi.client.gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.model.Direction;
-import no.vegvesen.nvdbapi.client.model.Geometry;
-import no.vegvesen.nvdbapi.client.model.SidePosition;
+import no.vegvesen.nvdbapi.client.model.*;
 import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
 import no.vegvesen.nvdbapi.client.model.areas.Route;
 import no.vegvesen.nvdbapi.client.model.roadobjects.*;
@@ -241,7 +239,17 @@ public final class RoadObjectParser {
         String blobFormat = parseStringMember(obj, "blob_format");
         Integer blobId = parseIntMember(obj, "blob_id");
 
-        return new Attribute(id, name, dataType, value, Optional.ofNullable(enumId), Optional.ofNullable(href), Optional.ofNullable(blobId), Optional.ofNullable(blobFormat));
+        GeometryAttributes geometryAttributes = getGeometryAttributes(obj);
+        Quality quality = getQuality(obj);
+
+        Geometry attribGeometry = null;
+        if (Objects.nonNull(quality)) {
+            // Quality must be set to add geometry to an attribute
+            attribGeometry = new Geometry((String) value, Projection.UTM33, quality, false, true, geometryAttributes);
+        }
+
+        return new Attribute(id, name, dataType, value, Optional.ofNullable(enumId), Optional.ofNullable(href),
+                Optional.ofNullable(blobId), Optional.ofNullable(blobFormat), Optional.ofNullable(attribGeometry));
     }
 
     private static Association parseAssociation(Map<Integer, DataType> dataTypes, JsonObject obj) {
@@ -274,4 +282,43 @@ public final class RoadObjectParser {
 
         return new RoadObjectType(id, name, parseStatistics(obj.getAsJsonObject("statistikk")));
     }
+
+    private static GeometryAttributes getGeometryAttributes(JsonObject obj) {
+        Optional<JsonElement> geometryElement = getNode(obj, "geometriattributt");
+        if (geometryElement.isPresent()) {
+            JsonObject json = (JsonObject) geometryElement.get();
+            return new GeometryAttributes(
+                    parseDateMember(json, "datafangstdato"),
+                    parseDateMember(json, "verifiseringsdato"),
+                    parseDateMember(json, "oppdateringsdato"),
+                    parseStringMember(json, "prosesshistorikk"),
+                    parseIntMember(json, "kommune"),
+                    parseIntMember(json, "medium"),
+                    parseIntMember(json, "sosinavn"),
+                    parseIntMember(json, "temakode"),
+                    parseBooleanMember(json, "referansegeometri"),
+                    parseDoubleMember(json, "lengde"),
+                    parseIntMember(json, "høydereferanse"));
+        } else {
+            return null;
+        }
+    }
+
+    private static Quality getQuality(JsonObject obj) {
+        Optional<JsonElement> qualityElement = getNode(obj, "kvalitet");
+        if (qualityElement.isPresent()) {
+            JsonObject json = (JsonObject) qualityElement.get();
+            return new Quality(
+                    parseIntMember(json, "målemetode"),
+                    parseIntMember(json, "nøyaktighet"),
+                    parseIntMember(json, "målemetodeHøyde"),
+                    parseIntMember(json, "nøyaktighetHøyde"),
+                    parseIntMember(json, "maksimaltAvvik"),
+                    parseIntMember(json, "synbarhet"),
+                    parseDateMember(json, "verifiseringsdato"));
+        } else {
+            return null;
+        }
+    }
+
 }

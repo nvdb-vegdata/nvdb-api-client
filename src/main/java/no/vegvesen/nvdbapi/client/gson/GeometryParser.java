@@ -28,6 +28,7 @@ package no.vegvesen.nvdbapi.client.gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.Geometry;
+import no.vegvesen.nvdbapi.client.model.GeometryAttributes;
 import no.vegvesen.nvdbapi.client.model.Projection;
 import no.vegvesen.nvdbapi.client.model.Quality;
 
@@ -49,6 +50,7 @@ public final class GeometryParser {
         boolean isSimplified = Optional.ofNullable(parseBooleanMember(obj, "forenklet")).orElse(false);
         boolean isOwnGeometry = Optional.ofNullable(parseBooleanMember(obj, "egengeometri")).orElse(false);
         Quality quality = null;
+        GeometryAttributes geometryAttributes = null;
         if (obj.has("kvalitet")) {
             int method = parseIntMember(obj, "kvalitet.metode");
             Integer accuracy = parseIntMember(obj, "kvalitet.nøyaktighet");
@@ -60,7 +62,22 @@ public final class GeometryParser {
             quality = new Quality(method, accuracy, heightMethod, heightAccuracy, tolerance, visibility, verifiedDate);
         }
 
-        return new Geometry(wkt, srid, quality, isSimplified, isOwnGeometry);
+        if (obj.has("geometriattributt")) {
+            geometryAttributes = new GeometryAttributes(
+                    parseDateMember(obj,"geometriattributt.datafangstdato"),
+                    parseDateMember(obj,"geometriattributt.verifiseringsdato"),
+                    parseDateMember(obj,"geometriattributt.oppdateringsdato"),
+                    parseStringMember(obj, "geometriattributt.prosesshistorikk"),
+                    parseIntMember(obj, "geometriattributt.kommune_geometri"),
+                    parseIntMember(obj, "geometriattributt.medium"),
+                    parseIntMember(obj, "geometriattributt.sosinavn"),
+                    parseIntMember(obj, "geometriattributt.temakode"),
+                    parseBooleanMember(obj, "geometriattributt.referansegeometri"),
+                    parseDoubleMember(obj, "geometriattributt.lengde"),
+                    parseIntMember(obj, "geometriattributt.høydereferanse"));
+        }
+
+        return new Geometry(wkt, srid, quality, isSimplified, isOwnGeometry, geometryAttributes);
     }
 
     static Projection parseProjection(JsonElement e) {

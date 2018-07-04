@@ -31,14 +31,14 @@ import java.util.Optional;
 
 public class Quality {
     private final Optional<LocalDate> verifiedDate;
-    private final int method;
+    private final Integer method;
     private final Integer accuracy;
-    private final int visibility;
+    private final Integer visibility;
     private final Integer heightMethod;
-    private final int heightAccuracy;
-    private final int tolerance;
+    private final Integer heightAccuracy;
+    private final Integer tolerance;
 
-    public Quality(int method, Integer accuracy, Integer heightMethod, int heightAccuracy, int tolerance, int visibility, LocalDate verifiedDate) {
+    public Quality(Integer method, Integer accuracy, Integer heightMethod, Integer heightAccuracy, Integer tolerance, Integer visibility, LocalDate verifiedDate) {
         this.verifiedDate = Optional.ofNullable(verifiedDate);
         this.method = method;
         this.accuracy = accuracy;
@@ -52,27 +52,27 @@ public class Quality {
         return verifiedDate;
     }
 
-    public int getMethod() {
+    public Integer getMethod() {
         return method;
     }
 
-    public int getAccuracy() {
+    public Integer getAccuracy() {
         return accuracy;
     }
 
-    public int getVisibility() {
+    public Integer getVisibility() {
         return visibility;
     }
 
-    public int getHeightMethod() {
+    public Integer getHeightMethod() {
         return heightMethod;
     }
 
-    public int getHeightAccuracy() {
+    public Integer getHeightAccuracy() {
         return heightAccuracy;
     }
 
-    public int getTolerance() {
+    public Integer getTolerance() {
         return tolerance;
     }
 
@@ -81,10 +81,10 @@ public class Quality {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Quality quality = (Quality) o;
-        return method == quality.method &&
-                visibility == quality.visibility &&
-                heightAccuracy == quality.heightAccuracy &&
-                tolerance == quality.tolerance &&
+        return Objects.equals(method,quality.method) &&
+                Objects.equals(visibility, quality.visibility) &&
+                Objects.equals(heightAccuracy,quality.heightAccuracy) &&
+                Objects.equals(tolerance, quality.tolerance) &&
                 Objects.equals(verifiedDate, quality.verifiedDate) &&
                 Objects.equals(accuracy, quality.accuracy) &&
                 Objects.equals(heightMethod, quality.heightMethod);
