@@ -62,20 +62,18 @@ public final class GeometryParser {
             quality = new Quality(method, accuracy, heightMethod, heightAccuracy, tolerance, visibility, verifiedDate);
         }
 
-        if (obj.has("geometriattributt")) {
-            geometryAttributes = new GeometryAttributes(
-                    parseDateMember(obj,"geometriattributt.datafangstdato"),
-                    parseDateMember(obj,"geometriattributt.verifiseringsdato"),
-                    parseDateMember(obj,"geometriattributt.oppdateringsdato"),
-                    parseStringMember(obj, "geometriattributt.prosesshistorikk"),
-                    parseIntMember(obj, "geometriattributt.kommune_geometri"),
-                    parseIntMember(obj, "geometriattributt.medium"),
-                    parseIntMember(obj, "geometriattributt.sosinavn"),
-                    parseIntMember(obj, "geometriattributt.temakode"),
-                    parseBooleanMember(obj, "geometriattributt.referansegeometri"),
-                    parseDoubleMember(obj, "geometriattributt.lengde"),
-                    parseIntMember(obj, "geometriattributt.høydereferanse"));
-        }
+        geometryAttributes = new GeometryAttributes(
+            parseDateMember(obj,"datafangstdato"),
+            parseDateMember(obj,"verifiseringsdato"),
+            parseDateMember(obj,"oppdateringsdato"),
+            parseStringMember(obj, "prosesshistorikk"),
+            parseIntMember(obj, "kommune"),
+            parseIntMember(obj, "medium"),
+            parseIntMember(obj, "sosinavn"),
+            parseIntMember(obj, "temakode"),
+            parseBooleanMember(obj, "referansegeometri"),
+            parseDoubleMember(obj, "lengde"),
+            parseIntMember(obj, "høydereferanse"));
 
         return new Geometry(wkt, srid, quality, isSimplified, isOwnGeometry, geometryAttributes);
     }
