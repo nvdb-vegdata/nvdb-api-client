@@ -50,7 +50,6 @@ public final class GeometryParser {
         boolean isSimplified = Optional.ofNullable(parseBooleanMember(obj, "forenklet")).orElse(false);
         boolean isOwnGeometry = Optional.ofNullable(parseBooleanMember(obj, "egengeometri")).orElse(false);
         Quality quality = null;
-        GeometryAttributes geometryAttributes = null;
         if (obj.has("kvalitet")) {
             int method = parseIntMember(obj, "kvalitet.metode");
             Integer accuracy = parseIntMember(obj, "kvalitet.nøyaktighet");
@@ -62,13 +61,13 @@ public final class GeometryParser {
             quality = new Quality(method, accuracy, heightMethod, heightAccuracy, tolerance, visibility, verifiedDate);
         }
 
-        geometryAttributes = new GeometryAttributes(
+        GeometryAttributes geometryAttributes = new GeometryAttributes(
             parseDateMember(obj,"datafangstdato"),
             parseDateMember(obj,"verifiseringsdato"),
             parseDateMember(obj,"oppdateringsdato"),
             parseStringMember(obj, "prosesshistorikk"),
             parseIntMember(obj, "kommune"),
-            parseIntMember(obj, "medium"),
+            parseStringMember(obj, "medium"),
             parseIntMember(obj, "sosinavn"),
             parseIntMember(obj, "temakode"),
             parseBooleanMember(obj, "referansegeometri"),

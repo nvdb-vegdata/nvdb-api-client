@@ -9,14 +9,14 @@ public class GeometryAttributes {
     private final LocalDate updatedDate;      //
     private final String processHistory;      //
     private final Integer municipality;       //               Read by: roadnet
-    private final Integer medium;             //               Read by: roadnet
+    private final String medium;             //               Read by: roadnet
     private final Integer objectCode;         // (sosi name)
     private final Integer classCode;          // (ltema)       Read by: roadnet
     private final Boolean referenceGeometry;  //
     private final Double length;              //               Read by: roadnet & roadobject
     private final Integer heightRef;          //               Read by: roadnet
 
-    public GeometryAttributes(LocalDate capturedDate, LocalDate verifiedDate, LocalDate updatedDate, String processHistory, Integer municipality, Integer medium, Integer objectCode, Integer classCode, Boolean referenceGeometry, Double length, Integer heightRef) {
+    public GeometryAttributes(LocalDate capturedDate, LocalDate verifiedDate, LocalDate updatedDate, String processHistory, Integer municipality, String medium, Integer objectCode, Integer classCode, Boolean referenceGeometry, Double length, Integer heightRef) {
         this.capturedDate = capturedDate;
         this.verifiedDate = verifiedDate;
         this.updatedDate = updatedDate;
@@ -50,7 +50,7 @@ public class GeometryAttributes {
         return municipality;
     }
 
-    public Integer getMedium() {
+    public String getMedium() {
         return medium;
     }
 

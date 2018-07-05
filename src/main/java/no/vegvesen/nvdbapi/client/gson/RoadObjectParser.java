@@ -293,7 +293,7 @@ public final class RoadObjectParser {
                     parseDateMember(json, "oppdateringsdato"),
                     parseStringMember(json, "prosesshistorikk"),
                     parseIntMember(json, "kommune"),
-                    parseIntMember(json, "medium"),
+                    parseStringMember(json, "medium"),
                     parseIntMember(json, "sosinavn"),
                     parseIntMember(json, "temakode"),
                     parseBooleanMember(json, "referansegeometri"),
