@@ -90,12 +90,11 @@ public class Geometry {
                 isOwnGeometry == geometry.isOwnGeometry &&
                 Objects.equals(wkt, geometry.wkt) &&
                 Objects.equals(projection, geometry.projection) &&
-                Objects.equals(geometryAttributes, geometry.geometryAttributes) &&
                 Objects.equals(quality, geometry.quality);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(wkt, projection, quality, isSimplified, isOwnGeometry, geometryAttributes);
+        return Objects.hash(wkt, projection, quality, isSimplified, isOwnGeometry);
     }
 }
