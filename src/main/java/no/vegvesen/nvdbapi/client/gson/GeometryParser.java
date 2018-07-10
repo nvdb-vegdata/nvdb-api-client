@@ -28,6 +28,7 @@ package no.vegvesen.nvdbapi.client.gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.Geometry;
+import no.vegvesen.nvdbapi.client.model.GeometryAttributes;
 import no.vegvesen.nvdbapi.client.model.Projection;
 import no.vegvesen.nvdbapi.client.model.Quality;
 
@@ -60,7 +61,20 @@ public final class GeometryParser {
             quality = new Quality(method, accuracy, heightMethod, heightAccuracy, tolerance, visibility, verifiedDate);
         }
 
-        return new Geometry(wkt, srid, quality, isSimplified, isOwnGeometry);
+        GeometryAttributes geometryAttributes = new GeometryAttributes(
+            parseDateMember(obj,"datafangstdato"),
+            parseDateMember(obj,"verifiseringsdato"),
+            parseDateMember(obj,"oppdateringsdato"),
+            parseStringMember(obj, "prosesshistorikk"),
+            parseIntMember(obj, "kommune"),
+            parseStringMember(obj, "medium"),
+            parseIntMember(obj, "sosinavn"),
+            parseIntMember(obj, "temakode"),
+            parseBooleanMember(obj, "referansegeometri"),
+            parseDoubleMember(obj, "lengde"),
+            parseIntMember(obj, "høydereferanse"));
+
+        return new Geometry(wkt, srid, quality, isSimplified, isOwnGeometry, geometryAttributes);
     }
 
     static Projection parseProjection(JsonElement e) {

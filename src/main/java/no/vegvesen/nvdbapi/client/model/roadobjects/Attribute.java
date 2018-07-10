@@ -25,6 +25,7 @@
 
 package no.vegvesen.nvdbapi.client.model.roadobjects;
 
+import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.datakatalog.DataType;
 
 import java.util.Objects;
@@ -39,8 +40,11 @@ public class Attribute {
     private final Optional<String> href;
     private final Optional<Integer> blobId;
     private final Optional<String> blobFormat;
+    private final Optional<Geometry> geometry;
 
-    public Attribute(int typeId, String typeName, DataType datatype, Object value, Optional<Integer> enumId, Optional<String> href, Optional<Integer> blobId, Optional<String> blobFormat) {
+    public Attribute(int typeId, String typeName, DataType datatype, Object value, Optional<Integer> enumId,
+                     Optional<String> href, Optional<Integer> blobId, Optional<String> blobFormat,
+                     Optional<Geometry> geometry) {
         this.typeId = typeId;
         this.typeName = typeName;
         this.datatype = datatype;
@@ -49,6 +53,11 @@ public class Attribute {
         this.href = href;
         this.blobId = blobId;
         this.blobFormat = blobFormat;
+        this.geometry = geometry;
+    }
+
+    public Optional<Geometry> getGeometry() {
+        return geometry;
     }
 
     public int getTypeId() {
