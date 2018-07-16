@@ -26,8 +26,10 @@
 package no.vegvesen.nvdbapi.client.model.roadobjects;
 
 import no.vegvesen.nvdbapi.client.model.Direction;
+import no.vegvesen.nvdbapi.client.model.HeightLevel;
 import no.vegvesen.nvdbapi.client.model.SidePosition;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Placement {
@@ -36,14 +38,22 @@ public class Placement {
     private final double endPosition;
     private final Direction direction;
     private final SidePosition sidePos;
-    private final String lane;
+    private final HeightLevel heightLevel;
+    private final List<String> lane;
 
-    public Placement(int netElementId, double startPosition, double endPosition, Direction direction, SidePosition sidePos, String lane) {
+    public Placement(int netElementId,
+                     double startPosition,
+                     double endPosition,
+                     Direction direction,
+                     SidePosition sidePos,
+                     HeightLevel heightLevel,
+                     List<String> lane) {
         this.netElementId = netElementId;
         this.startPosition = startPosition;
         this.endPosition = endPosition;
         this.direction = direction;
         this.sidePos = sidePos;
+        this.heightLevel = heightLevel;
         this.lane = lane;
     }
 
@@ -71,8 +81,12 @@ public class Placement {
         return startPosition == endPosition;
     }
 
-    public String getLane() {
+    public List<String> getLane() {
         return lane;
+    }
+
+    public HeightLevel getHeightLevel() {
+        return heightLevel;
     }
 
     @Override
@@ -85,12 +99,13 @@ public class Placement {
                 Double.compare(placement.endPosition, endPosition) == 0 &&
                 direction == placement.direction &&
                 sidePos == placement.sidePos &&
+                heightLevel == placement.heightLevel &&
                 Objects.equals(lane, placement.lane);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(netElementId, startPosition, endPosition, direction, sidePos, lane);
+        return Objects.hash(netElementId, startPosition, endPosition, direction, sidePos, heightLevel, lane);
     }
 
     @Override
@@ -101,7 +116,8 @@ public class Placement {
                 ", endPosition=" + endPosition +
                 ", direction=" + direction +
                 ", sidePos=" + sidePos +
-                ", lane='" + lane + '\'' +
+                ", heightLevel=" + heightLevel +
+                ", lane=" + lane +
                 '}';
     }
 }

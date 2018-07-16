@@ -47,7 +47,10 @@ public enum SidePosition {
     }
 
     public static SidePosition from(String apiValue) {
-        return Arrays.stream(values()).filter(d -> d.apiValue.equalsIgnoreCase(apiValue)).findAny().orElse(null);
+        return Arrays.stream(values())
+                .filter(d -> d.apiValue.equalsIgnoreCase(apiValue))
+                .findAny()
+                .orElse(null);
     }
 
 }

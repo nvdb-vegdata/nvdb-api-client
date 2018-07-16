@@ -43,7 +43,14 @@ public final class Municipality implements Serializable {
     private final int roadDepartment;
 
 
-    public Municipality(RoadObjectId id, int number, String name, int county, int region, Geometry boundingBox, Geometry centerPoint, int roadDepartment) {
+    public Municipality(RoadObjectId id,
+                        int number,
+                        String name,
+                        int county,
+                        int region,
+                        Geometry boundingBox,
+                        Geometry centerPoint,
+                        int roadDepartment) {
         this.id = Optional.ofNullable(id);
         this.number = number;
         this.name = name;

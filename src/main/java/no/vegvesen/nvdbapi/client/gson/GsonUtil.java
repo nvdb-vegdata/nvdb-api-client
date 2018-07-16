@@ -116,6 +116,16 @@ public final class GsonUtil {
                 .orElse(null);
     }
 
+    public static List<String> parseStringListMember(JsonObject obj, String path) {
+        return getNode(obj, path)
+                .map(JsonElement::getAsJsonArray)
+                .map(a -> StreamSupport.stream(a.spliterator(), false)
+                        .map(JsonElement::getAsString)
+                        .collect(Collectors.toList()))
+                .orElse(Collections.emptyList());
+
+    }
+
     public static List<Integer> parseIntListMember(JsonObject obj, String path) {
         return getNode(obj, path)
                 .map(JsonElement::getAsJsonArray)
@@ -160,7 +170,7 @@ public final class GsonUtil {
     public static Optional<JsonElement> getNode(JsonObject start, String path) {
         Optional<JsonElement> temp = Optional.ofNullable(start);
 
-        List<String> elements = Arrays.asList(path.split("\\."));
+        String[] elements = path.split("\\.");
         for (String p : elements) {
             if (!temp.isPresent()) {
                 return temp;

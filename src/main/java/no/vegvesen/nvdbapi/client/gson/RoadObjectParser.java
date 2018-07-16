@@ -195,10 +195,17 @@ public final class RoadObjectParser {
             endPos = parseDoubleMember(obj, "til_posisjon");
         }
 
-        Direction dir = Optional.of(parseStringMember(obj, "retning")).map(Direction::from).orElse(null);
+        Direction dir = Optional.of(parseStringMember(obj, "retning"))
+                .map(Direction::from)
+                .orElse(null);
         SidePosition sidePos = Optional.ofNullable(parseStringMember(obj, "sideposisjon")).map(SidePosition::from).orElse(null);
-        String lane = parseStringMember(obj, "felt");
-        return new Placement(netElementId, startPos, endPos, dir, sidePos, lane);
+        List<String> lane = parseStringListMember(obj, "felt");
+
+        HeightLevel heightLevel = Optional.ofNullable(parseStringMember(obj, "høyde"))
+                .map(HeightLevel::from)
+                .orElse(null);
+
+        return new Placement(netElementId, startPos, endPos, dir, sidePos, heightLevel, lane);
     }
 
     private static List<RoadRefFilter> parseRoadRefFilter(JsonObject object) {
