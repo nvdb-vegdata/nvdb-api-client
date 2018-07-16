@@ -97,7 +97,7 @@ public class DatakatalogClient extends AbstractJerseyClient {
     }
 
     public List<AttributeTypeCategory> getAttributeTypeCategories() {
-        WebTarget target = getClient().target(endpoint()).path("attributtypekategorier");
+        WebTarget target = getClient().target(endpoint()).path("egenskapstypekategorier");
         JsonElement units = JerseyHelper.execute(target);
         return StreamSupport.stream(units.getAsJsonArray().spliterator(), false)
                 .map(JsonElement::getAsJsonObject)
