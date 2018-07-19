@@ -40,6 +40,7 @@ class RoadObjectRequestBuilder {
 
         // Single parameters
         request.getSegmented().ifPresent(v -> map.putSingle("segmentering", Boolean.toString(v)));
+        request.getAllVersions().ifPresent(v -> map.putSingle("alle_versjoner", Boolean.toString(v)));
         request.getProjection().ifPresent(v -> map.putSingle("srid", Integer.toString(v.getSrid())));
         request.getDistanceTolerance().ifPresent(v -> map.putSingle("geometritoleranse", Integer.toString(v)));
         request.getDepth().ifPresent(v -> map.putSingle("dybde", v));

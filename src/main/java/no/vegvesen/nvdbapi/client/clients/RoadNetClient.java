@@ -140,20 +140,20 @@ public class RoadNetClient extends AbstractJerseyClient {
 
     public final class LinkResult extends GenericResultSet<Link> {
 
-        protected LinkResult(WebTarget baseTarget, Optional<Page> currentPage) {
+        protected LinkResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, RoadNetParser::parseLink);
         }
     }
 
     public final class NodeResult extends GenericResultSet<Node> {
 
-        protected NodeResult(WebTarget baseTarget, Optional<Page> currentPage) {
+        protected NodeResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, RoadNetParser::parseNode);
         }
     }
     public final class NetElementResult extends GenericResultSet<NetElementWrapper> {
 
-        protected NetElementResult(WebTarget baseTarget, Optional<Page> currentPage) {
+        protected NetElementResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, RoadNetParser::parseNetElement);
         }
     }

@@ -71,8 +71,8 @@ public class RoadNetRequest {
         return new Builder();
     }
 
-    public Optional<Page> getPage() {
-        return page;
+    public Page getPage() {
+        return page.orElse(Page.defaults());
     }
 
     public Optional<String> getRoadRefFilter() {
