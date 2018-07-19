@@ -12,6 +12,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.function.Consumer;
 
+/**
+ * TODO implement a better version
+ */
 class PaginatingSpliterator<T> implements Spliterator<T> {
     private static final Logger log = LoggerFactory.getLogger(PaginatingSpliterator.class);
     private static final Object DUMMY = new Object();
@@ -24,27 +27,31 @@ class PaginatingSpliterator<T> implements Spliterator<T> {
         log.debug("Creating PaginatingSpliterator with page size {}", pageSize);
         executorService.execute(() -> {
             log.debug("Starting consumer");
-            while (resultSet.hasNext()) {
-                log.debug("resultSet.hasNext()");
-                List<T> next = resultSet.next();
-                for (T o : next) {
-                    try {
-                        log.debug("Trying to put {}", o);
-                        queue.put(o);
-                        log.debug("Put {}", o);
-                    } catch (InterruptedException e) {
-                        throw Throwables.propagate(e);
-                    }
-                }
-                log.debug("Done resultSet.hasNext()");
-            }
-            log.debug("No more results");
             try {
-                queue.put((T) DUMMY);
-            } catch (InterruptedException e) {
-                throw Throwables.propagate(e);
+                while (resultSet.hasNext()) {
+                    log.debug("resultSet.hasNext()");
+                    List<T> next = resultSet.next();
+                    for (T o : next) {
+                        try {
+                            log.debug("Trying to put {}", o);
+                            queue.put(o);
+                            log.debug("Put {}", o);
+                        } catch (InterruptedException e) {
+                            throw Throwables.propagate(e);
+                        }
+                    }
+                    log.debug("Done resultSet.hasNext()");
+                }
+                log.debug("No more results");
+
+            } finally {
+                isDone.set(true);
+                try {
+                    queue.put((T) DUMMY);
+                } catch (InterruptedException e) {
+                    log.error("Interupted in finally", e);
+                }
             }
-            isDone.set(true);
         });
     }
 
