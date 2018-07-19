@@ -96,30 +96,29 @@ public class GenericResultSet<T> implements ResultSet<T> {
         String json = response.readEntity(String.class);
         JsonObject currentResponse = new JsonParser().parse(json).getAsJsonObject();
 
-        int pageSizeParam = GsonUtil.parseIntMember(currentResponse, "metadata.returnert");
-        logger.debug("Page size returned was {}.", pageSizeParam);
+        int numReturned = GsonUtil.parseIntMember(currentResponse, "metadata.returnert");
+        logger.debug("Page size returned was {}.", numReturned);
 
         if (logger.isTraceEnabled()){
             logger.trace("Response: {}", currentResponse.toString());
         }
-        List<JsonObject> l = StreamSupport.stream(currentResponse.getAsJsonArray("objekter").spliterator(), false)
-                                           .map(JsonElement::getAsJsonObject)
-                                           .collect(Collectors.toList());
 
         // Prepare next request
         String nextToken = GsonUtil.getNode(currentResponse, "metadata.neste.start")
                                    .map(JsonElement::getAsString)
                                    .orElse(null);
-        logger.debug("last token: {} next token: {}",token, nextToken);
+        logger.debug("last token: {} next token: {}", token, nextToken);
         // no next page if last token and next token are equal
-        hasNext = nextToken != null && (token == null || !nextToken.equals(token));
+        hasNext = nextToken != null && (!nextToken.equals(token));
         token = nextToken;
-        currentPage = Page.subPage(pageSizeParam, token);
-        logger.debug("Got {} features.", l.size());
+        currentPage = currentPage.withStart(token);
+
         if (!hasNext) {
             logger.debug("Result set exhausted.");
         }
-        return l.stream()
+        return StreamSupport
+                .stream(currentResponse.getAsJsonArray("objekter").spliterator(), false)
+                .map(JsonElement::getAsJsonObject)
                 .map(parser)
                 .collect(Collectors.toList());
     }

@@ -43,7 +43,7 @@ public final class Page {
     }
 
     public static Page defaults() {
-        return new Page(null, Optional.empty());
+        return new Page(1000, Optional.empty());
     }
 
     public static Page subPage(int count, String start) {
@@ -51,7 +51,7 @@ public final class Page {
     }
 
     public static Page subPage(int count, Integer start) {
-        return new Page(count, Optional.ofNullable(start).map(s -> s.toString()).orElse(null));
+        return new Page(count, Optional.ofNullable(start).map(Object::toString).orElse(null));
     }
 
     public static Page count(Integer count) {
