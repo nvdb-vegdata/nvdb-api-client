@@ -41,7 +41,6 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -56,10 +55,10 @@ public class GenericResultSet<T> implements ResultSet<T> {
     private String token;
     private boolean hasNext = true;
 
-    protected GenericResultSet(WebTarget baseTarget, Optional<Page> currentPage, Function<JsonObject, T> parser) {
+    protected GenericResultSet(WebTarget baseTarget, Page currentPage, Function<JsonObject, T> parser) {
         this.baseTarget = baseTarget;
         this.parser = parser;
-        this.currentPage = currentPage.orElse(null);
+        this.currentPage = currentPage;
     }
 
     public List<T> getAll() {
@@ -67,6 +66,7 @@ public class GenericResultSet<T> implements ResultSet<T> {
     }
 
     public Stream<T> stream() {
+        // TODO better implementation fetching next page in the background
         return getAll().stream();
     }
 
