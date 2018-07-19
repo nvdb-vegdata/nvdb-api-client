@@ -96,7 +96,9 @@ public class GenericResultSet<T> implements ResultSet<T> {
         String json = response.readEntity(String.class);
         JsonObject currentResponse = new JsonParser().parse(json).getAsJsonObject();
 
+        int numTotal = GsonUtil.parseIntMember(currentResponse, "metadata.antall");
         int numReturned = GsonUtil.parseIntMember(currentResponse, "metadata.returnert");
+        logger.debug("Result size returned was {}.", numTotal);
         logger.debug("Page size returned was {}.", numReturned);
 
         if (logger.isTraceEnabled()){
