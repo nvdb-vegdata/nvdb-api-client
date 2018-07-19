@@ -39,12 +39,15 @@ import java.net.URLDecoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public abstract class AbstractJerseyClient implements AutoCloseable, Serializable {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final String baseUrl;
     private final Client client;
     private boolean isClosed;
+    static final ExecutorService executorService = Executors.newSingleThreadExecutor();
 
     protected AbstractJerseyClient(String baseUrl, Client client) {
         this.baseUrl = baseUrl;
@@ -116,7 +119,7 @@ public abstract class AbstractJerseyClient implements AutoCloseable, Serializabl
         if (isClosed) {
             return;
         }
-
+        executorService.shutdown();
         client.close();
         isClosed = true;
     }

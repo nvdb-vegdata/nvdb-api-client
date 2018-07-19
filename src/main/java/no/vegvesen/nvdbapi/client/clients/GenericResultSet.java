@@ -66,8 +66,17 @@ public class GenericResultSet<T> implements ResultSet<T> {
     }
 
     public Stream<T> stream() {
-        // TODO better implementation fetching next page in the background
         return getAll().stream();
+    }
+
+    /**
+     * Experimental!
+     * Returns stream fetching next page in the background.
+     * @return Stream with the results
+     */
+    public Stream<T> stream2() {
+        return StreamSupport.stream(new PaginatingSpliterator<>(
+                AbstractJerseyClient.executorService, this, currentPage.getCount()), false);
     }
 
     @Override
