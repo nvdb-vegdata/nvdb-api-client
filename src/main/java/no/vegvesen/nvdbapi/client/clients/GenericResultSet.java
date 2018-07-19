@@ -39,6 +39,8 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -101,9 +103,10 @@ public class GenericResultSet<T> implements ResultSet<T> {
             throw JerseyHelper.parseError(response);
         }
 
-        // Consume and parse response
-        String json = response.readEntity(String.class);
-        JsonObject currentResponse = new JsonParser().parse(json).getAsJsonObject();
+        JsonObject currentResponse =
+                new JsonParser()
+                        .parse(new InputStreamReader((InputStream) response.getEntity()))
+                        .getAsJsonObject();
 
         int numTotal = GsonUtil.parseIntMember(currentResponse, "metadata.antall");
         int numReturned = GsonUtil.parseIntMember(currentResponse, "metadata.returnert");
@@ -116,8 +119,8 @@ public class GenericResultSet<T> implements ResultSet<T> {
 
         // Prepare next request
         String nextToken = GsonUtil.getNode(currentResponse, "metadata.neste.start")
-                                   .map(JsonElement::getAsString)
-                                   .orElse(null);
+                .map(JsonElement::getAsString)
+                .orElse(null);
         logger.debug("last token: {} next token: {}", token, nextToken);
         // no next page if last token and next token are equal
         hasNext = nextToken != null && (!nextToken.equals(token));
