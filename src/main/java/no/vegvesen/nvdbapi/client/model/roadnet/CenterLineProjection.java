@@ -28,17 +28,17 @@ package no.vegvesen.nvdbapi.client.model.roadnet;
 import java.util.Objects;
 
 public class CenterLineProjection {
-    private final Integer linkId;
+    private final long linkId;
     private final Double startPosition;
     private final Double endPosition;
 
-    public CenterLineProjection(Integer linkId, Double startPosition, Double endPosition) {
+    public CenterLineProjection(long linkId, Double startPosition, Double endPosition) {
         this.linkId = linkId;
         this.startPosition = startPosition;
         this.endPosition = endPosition;
     }
 
-    public Integer getLinkId() {
+    public long getLinkId() {
         return linkId;
     }
 

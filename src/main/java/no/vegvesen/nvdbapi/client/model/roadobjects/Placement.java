@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Objects;
 
 public class Placement {
-    private final int netElementId;
+    private final long netElementId;
     private final double startPosition;
     private final double endPosition;
     private final Direction direction;
@@ -41,7 +41,7 @@ public class Placement {
     private final HeightLevel heightLevel;
     private final List<String> lane;
 
-    public Placement(int netElementId,
+    public Placement(long netElementId,
                      double startPosition,
                      double endPosition,
                      Direction direction,
@@ -57,7 +57,7 @@ public class Placement {
         this.lane = lane;
     }
 
-    public int getNetElementId() {
+    public long getNetElementId() {
         return netElementId;
     }
 
