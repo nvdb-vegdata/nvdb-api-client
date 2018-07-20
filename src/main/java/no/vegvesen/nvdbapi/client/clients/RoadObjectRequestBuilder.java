@@ -32,8 +32,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 class RoadObjectRequestBuilder {
-    private RoadObjectRequestBuilder() {
-    }
+    private RoadObjectRequestBuilder() {}
 
     static MultivaluedMap<String, String> convert(RoadObjectRequest request) {
         MultivaluedMap<String, String> map = new MultivaluedHashMap<>();
@@ -48,6 +47,7 @@ class RoadObjectRequestBuilder {
         getIncludeGeometriesArgument(request.getIncludeGeometries()).ifPresent(v -> map.putSingle("inkludergeometri", v));
         request.getAttributeFilter().ifPresent(v -> map.putSingle("egenskap", v));
         request.getBpolygon().ifPresent(v -> map.putSingle("polygon", v));
+        request.getBbox().ifPresent(v -> map.putSingle("kartutsnitt", v));
         request.getRoadRefFilter().ifPresent(v -> map.putSingle("vegreferanse", v));
         request.getRefLinkFilter().ifPresent(v -> map.putSingle("veglenke", v));
         flatten(request.getMunicipalities()).ifPresent(v -> map.putSingle("kommune", v));
