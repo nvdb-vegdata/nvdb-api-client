@@ -39,9 +39,10 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -56,10 +57,10 @@ public class GenericResultSet<T> implements ResultSet<T> {
     private String token;
     private boolean hasNext = true;
 
-    protected GenericResultSet(WebTarget baseTarget, Optional<Page> currentPage, Function<JsonObject, T> parser) {
+    protected GenericResultSet(WebTarget baseTarget, Page currentPage, Function<JsonObject, T> parser) {
         this.baseTarget = baseTarget;
         this.parser = parser;
-        this.currentPage = currentPage.orElse(null);
+        this.currentPage = currentPage;
     }
 
     public List<T> getAll() {
@@ -68,6 +69,16 @@ public class GenericResultSet<T> implements ResultSet<T> {
 
     public Stream<T> stream() {
         return getAll().stream();
+    }
+
+    /**
+     * Experimental!
+     * Returns stream fetching next page in the background.
+     * @return Stream with the results
+     */
+    public Stream<T> stream2() {
+        return StreamSupport.stream(new PaginatingSpliterator<>(
+                AbstractJerseyClient.executorService, this, currentPage.getCount()), false);
     }
 
     @Override
@@ -92,34 +103,36 @@ public class GenericResultSet<T> implements ResultSet<T> {
             throw JerseyHelper.parseError(response);
         }
 
-        // Consume and parse response
-        String json = response.readEntity(String.class);
-        JsonObject currentResponse = new JsonParser().parse(json).getAsJsonObject();
+        JsonObject currentResponse =
+                new JsonParser()
+                        .parse(new InputStreamReader((InputStream) response.getEntity()))
+                        .getAsJsonObject();
 
-        int pageSizeParam = GsonUtil.parseIntMember(currentResponse, "metadata.returnert");
-        logger.debug("Page size returned was {}.", pageSizeParam);
+        int numTotal = GsonUtil.parseIntMember(currentResponse, "metadata.antall");
+        int numReturned = GsonUtil.parseIntMember(currentResponse, "metadata.returnert");
+        logger.debug("Result size returned was {}.", numTotal);
+        logger.debug("Page size returned was {}.", numReturned);
 
         if (logger.isTraceEnabled()){
             logger.trace("Response: {}", currentResponse.toString());
         }
-        List<JsonObject> l = StreamSupport.stream(currentResponse.getAsJsonArray("objekter").spliterator(), false)
-                                           .map(JsonElement::getAsJsonObject)
-                                           .collect(Collectors.toList());
 
         // Prepare next request
         String nextToken = GsonUtil.getNode(currentResponse, "metadata.neste.start")
-                                   .map(JsonElement::getAsString)
-                                   .orElse(null);
-        logger.debug("last token: {} next token: {}",token, nextToken);
+                .map(JsonElement::getAsString)
+                .orElse(null);
+        logger.debug("last token: {} next token: {}", token, nextToken);
         // no next page if last token and next token are equal
-        hasNext = nextToken != null && (token == null || !nextToken.equals(token));
+        hasNext = nextToken != null && (!nextToken.equals(token));
         token = nextToken;
-        currentPage = Page.subPage(pageSizeParam, token);
-        logger.debug("Got {} features.", l.size());
+        currentPage = currentPage.withStart(token);
+
         if (!hasNext) {
             logger.debug("Result set exhausted.");
         }
-        return l.stream()
+        return StreamSupport
+                .stream(currentResponse.getAsJsonArray("objekter").spliterator(), false)
+                .map(JsonElement::getAsJsonObject)
                 .map(parser)
                 .collect(Collectors.toList());
     }

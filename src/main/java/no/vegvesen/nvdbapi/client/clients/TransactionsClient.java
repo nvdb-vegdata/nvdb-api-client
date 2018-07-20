@@ -32,7 +32,6 @@ import no.vegvesen.nvdbapi.client.model.transaction.Transaction;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
-import java.util.Optional;
 
 import static java.util.Objects.nonNull;
 import static no.vegvesen.nvdbapi.client.clients.RoadNetClient.join;
@@ -55,11 +54,11 @@ public class TransactionsClient extends AbstractJerseyClient {
         if(nonNull(request.getTo())) url.queryParam("til", request.getTo());
 
         WebTarget target = getClient().target(url);
-        return new TransacionsResult(target, Optional.ofNullable(request.getPage()));
+        return new TransacionsResult(target, request.getPage());
     }
 
     public static class TransacionsResult extends GenericResultSet<Transaction>{
-        protected TransacionsResult(WebTarget baseTarget, Optional<Page> currentPage) {
+        protected TransacionsResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, TransactionParser::parseTransaction);
         }
     }

@@ -95,7 +95,7 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
 
     public final class SegmentedLinkResult extends GenericResultSet<SegmentedLink> {
 
-        protected SegmentedLinkResult(WebTarget baseTarget, Optional<Page> currentPage) {
+        SegmentedLinkResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, SegmentedLinkParser::parse);
         }
     }

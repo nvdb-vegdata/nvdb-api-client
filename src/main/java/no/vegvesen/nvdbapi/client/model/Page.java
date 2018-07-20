@@ -29,6 +29,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 public final class Page {
+    private static final Page DEFAULT = new Page(1000, Optional.empty());
     private final int count;
     private final Optional<String> start;
 
@@ -43,7 +44,7 @@ public final class Page {
     }
 
     public static Page defaults() {
-        return new Page(null, Optional.empty());
+        return DEFAULT;
     }
 
     public static Page subPage(int count, String start) {
@@ -51,7 +52,7 @@ public final class Page {
     }
 
     public static Page subPage(int count, Integer start) {
-        return new Page(count, Optional.ofNullable(start).map(s -> s.toString()).orElse(null));
+        return new Page(count, Optional.ofNullable(start).map(Object::toString).orElse(null));
     }
 
     public static Page count(Integer count) {

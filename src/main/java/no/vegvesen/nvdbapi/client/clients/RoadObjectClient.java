@@ -132,15 +132,17 @@ public class RoadObjectClient extends AbstractJerseyClient {
         applyRequestParameters(path, convert(request));
         WebTarget target = getClient().target(path);
 
-        return new RoadObjectsResult(target, Optional.ofNullable(request.getPage()), datakatalog);
+        return new RoadObjectsResult(target,
+                request.getPage(),
+                datakatalog);
     }
 
-    private Optional<Page> extractPage(MultivaluedMap<String, String> params) {
+    private Page extractPage(MultivaluedMap<String, String> params) {
         if (params.containsKey("antall")) {
-            return Optional.of(Page.count(Integer.parseInt(params.getFirst("antall"))));
+            return Page.count(Integer.parseInt(params.getFirst("antall")));
         }
 
-        return Optional.empty();
+        return Page.defaults();
     }
 
     // TODO return all versions
@@ -176,7 +178,12 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
         WebTarget target = getClient().target(path);
 
-        return new ChangesResult(datakatalog.getDataTypeMap(), typeId, target, Optional.ofNullable(page));
+        return new ChangesResult(
+                datakatalog.getDataTypeMap(),
+                typeId,
+                target,
+                Optional.ofNullable(page)
+                        .orElse(Page.defaults()));
     }
 
     public List<RoadObject> getRoadObjectVersions(int featureTypeId, long featureId) {
@@ -186,7 +193,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
     public List<RoadObject> getRoadObjectVersions(int featureTypeId, long featureId, RoadObjectRequest roadObjectRequest) {
         List<RoadObject> roadObjects = new ArrayList<>();
         UriBuilder path = start()
-            .path(String.format("/vegobjekter/%d/%d/versjoner", featureTypeId, featureId));
+                .path(String.format("/vegobjekter/%d/%d/versjoner", featureTypeId, featureId));
 
         logger.debug("Invoking {}", path);
         applyRequestParameters(path, convert(roadObjectRequest));
@@ -205,7 +212,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
     public RoadObject getRoadObjectVersion(int featureTypeId, long featureId, int version, RoadObjectRequest roadObjectRequest){
         UriBuilder path = start()
-            .path(String.format("/vegobjekter/%d/%d/%d", featureTypeId, featureId, version));
+                .path(String.format("/vegobjekter/%d/%d/%d", featureTypeId, featureId, version));
 
         logger.debug("Invoking {}", path);
         applyRequestParameters(path, convert(roadObjectRequest));
@@ -218,7 +225,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
     public RoadObjectAttribute getBinaryAttributeRoadObject(int featureTypeId, long featureId, int version, int attributeId, int blobId){
         UriBuilder path = start()
-            .path(String.format("/vegobjekter/%d/%d/%d/egenskaper/%d/%d/binaer", featureTypeId, featureId, version, attributeId, blobId));
+                .path(String.format("/vegobjekter/%d/%d/%d/egenskaper/%d/%d/binaer", featureTypeId, featureId, version, attributeId, blobId));
 
         logger.debug("Invoking {}", path);
         WebTarget target = getClient().target(path);
@@ -310,7 +317,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
     public static class RoadObjectsResult extends GenericResultSet<RoadObject> {
 
         public RoadObjectsResult(WebTarget baseTarget,
-                                 Optional<Page> currentPage,
+                                 Page currentPage,
                                  Datakatalog datakatalog) {
             super(baseTarget, currentPage, o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o));
         }
@@ -321,7 +328,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
         public ChangesResult(Map<Integer, DataType> dataTypes,
                              int typeId,
                              WebTarget baseTarget,
-                             Optional<Page> currentPage) {
+                             Page currentPage) {
             super(baseTarget, currentPage, obj -> ChangesParser.parse(dataTypes, obj, typeId));
         }
     }
