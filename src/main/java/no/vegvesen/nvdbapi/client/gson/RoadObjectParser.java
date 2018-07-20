@@ -43,8 +43,7 @@ import java.util.stream.StreamSupport;
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 
 public final class RoadObjectParser {
-    private RoadObjectParser() {
-    }
+    private RoadObjectParser() {}
 
     public static RoadObject parse(Map<Integer, DataType> dataTypes, JsonObject obj) {
         Integer id = parseIntMember(obj, "id");
@@ -312,20 +311,25 @@ public final class RoadObjectParser {
     }
 
     private static Quality getQuality(JsonObject obj) {
-        Optional<JsonElement> qualityElement = getNode(obj, "kvalitet");
-        if (qualityElement.isPresent()) {
-            JsonObject json = (JsonObject) qualityElement.get();
-            return new Quality(
-                    parseIntMember(json, "målemetode"),
-                    parseIntMember(json, "nøyaktighet"),
-                    parseIntMember(json, "målemetodeHøyde"),
-                    parseIntMember(json, "nøyaktighetHøyde"),
-                    parseIntMember(json, "maksimaltAvvik"),
-                    parseIntMember(json, "synbarhet"),
-                    parseDateMember(json, "verifiseringsdato"));
-        } else {
-            return null;
-        }
+        return getNode(obj, "kvalitet")
+                .map(JsonElement::getAsJsonObject)
+                .map(qualityElement ->
+                        new Quality(
+                                parseIntMember(qualityElement, "målemetode"),
+                                parseIntMember(qualityElement, "nøyaktighet"),
+                                parseIntMember(qualityElement, "målemetodeHøyde"),
+                                parseIntMember(qualityElement, "nøyaktighetHøyde"),
+                                parseIntMember(qualityElement, "maksimaltAvvik"),
+                                parseIntMember(qualityElement, "synbarhet"),
+                                parseDateMember(qualityElement, "verifiseringsdato")))
+                .orElse(null);
     }
 
+    public static RoadObjectTypeWithStats parseRoadObjectTypeWithStats(JsonObject o) {
+        return new RoadObjectTypeWithStats(
+                o.get("id").getAsInt(),
+                o.get("navn").getAsString(),
+                parseStatistics(o.getAsJsonObject("statistikk"))
+        );
+    }
 }
