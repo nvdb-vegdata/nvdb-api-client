@@ -49,7 +49,7 @@ class RoadObjectRequestBuilder {
         request.getBpolygon().ifPresent(v -> map.putSingle("polygon", v));
         request.getBbox().ifPresent(v -> map.putSingle("kartutsnitt", v));
         request.getRoadRefFilter().ifPresent(v -> map.putSingle("vegreferanse", v));
-        request.getRefLinkFilter().ifPresent(v -> map.putSingle("veglenke", v));
+        request.getRefLinkFilter().ifPresent(v -> map.putSingle("lenkesekvens", v));
         flatten(request.getMunicipalities()).ifPresent(v -> map.putSingle("kommune", v));
         flatten(request.getCounties()).ifPresent(v -> map.putSingle("fylke", v));
         flatten(request.getRegions()).ifPresent(v -> map.putSingle("region", v));
