@@ -184,7 +184,7 @@ public final class RoadObjectParser {
     }
 
     private static Placement parsePlacement(JsonObject obj) {
-        int netElementId = parseIntMember(obj, "veglenkeid");
+        int netElementId = parseIntMember(obj, "lenkesekvens");
 
         double startPos, endPos;
         if (obj.has("posisjon")) {
