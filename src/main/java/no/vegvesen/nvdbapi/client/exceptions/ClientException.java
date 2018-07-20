@@ -35,7 +35,7 @@ public class ClientException extends RuntimeException {
 
     public ClientException(int statusCode, List<ApiError> errors, Throwable cause) {
         super(cause);
-        this.statusCode = Objects.requireNonNull(statusCode);
+        this.statusCode = statusCode;
         this.errors = Objects.requireNonNull(errors);
     }
 
@@ -58,7 +58,9 @@ public class ClientException extends RuntimeException {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("HTTP error ").append(statusCode).append(":\n");
-        errors().forEach(e -> sb.append(String.format("Error %d: %s\n", e.getErrorCode(), e.getErrorMessage())));
+        errors().forEach(e -> sb.append(String
+                .format(
+                        "Error %d: %s %s\n", e.getErrorCode(), e.getErrorMessage(), e.getErrorMessageDetails())));
         return sb.toString();
     }
 }
