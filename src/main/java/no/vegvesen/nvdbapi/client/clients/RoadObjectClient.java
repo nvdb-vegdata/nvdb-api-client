@@ -49,10 +49,12 @@ import java.io.InputStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import static java.util.Arrays.asList;
+import static java.util.stream.Collectors.toList;
+import static no.vegvesen.nvdbapi.client.clients.RoadObjectRequest.DEFAULT;
 import static no.vegvesen.nvdbapi.client.clients.RoadObjectRequestBuilder.convert;
 import static no.vegvesen.nvdbapi.client.clients.util.JerseyHelper.*;
 
@@ -95,7 +97,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
     }
 
     public RoadObjectsResult getRoadObjects(int featureTypeId) {
-        return getRoadObjects(featureTypeId, RoadObjectRequest.DEFAULT);
+        return getRoadObjects(featureTypeId, DEFAULT);
     }
 
     public List<RoadObjectType> getRoadObjectTypes(){
@@ -132,23 +134,23 @@ public class RoadObjectClient extends AbstractJerseyClient {
         applyRequestParameters(path, convert(request));
         WebTarget target = getClient().target(path);
 
-        return new RoadObjectsResult(target, Optional.ofNullable(request.getPage()), datakatalog);
+        return new RoadObjectsResult(target,
+                request.getPage(),
+                datakatalog);
     }
 
-    private Optional<Page> extractPage(MultivaluedMap<String, String> params) {
+    private Page extractPage(MultivaluedMap<String, String> params) {
         if (params.containsKey("antall")) {
-            return Optional.of(Page.count(Integer.parseInt(params.getFirst("antall"))));
+            return Page.count(Integer.parseInt(params.getFirst("antall")));
         }
 
-        return Optional.empty();
+        return Page.defaults();
     }
 
-    // TODO return all versions
     public RoadObject getRoadObject(int featureTypeId, long featureId) {
-        return getRoadObject(featureTypeId, featureId, RoadObjectRequest.DEFAULT);
+        return getRoadObject(featureTypeId, featureId, DEFAULT);
     }
 
-    // TODO remove?
     public RoadObject getRoadObject(int featureTypeId, long featureId, RoadObjectRequest request) {
         UriBuilder path = start()
                 .path(String.format("/vegobjekter/%d/%d", featureTypeId, featureId));
@@ -176,17 +178,21 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
         WebTarget target = getClient().target(path);
 
-        return new ChangesResult(datakatalog.getDataTypeMap(), typeId, target, Optional.ofNullable(page));
+        return new ChangesResult(
+                datakatalog.getDataTypeMap(),
+                typeId,
+                target,
+                Optional.ofNullable(page)
+                        .orElse(Page.defaults()));
     }
 
     public List<RoadObject> getRoadObjectVersions(int featureTypeId, long featureId) {
-        return getRoadObjectVersions(featureTypeId, featureId, RoadObjectRequest.DEFAULT);
+        return getRoadObjectVersions(featureTypeId, featureId, DEFAULT);
     }
 
     public List<RoadObject> getRoadObjectVersions(int featureTypeId, long featureId, RoadObjectRequest roadObjectRequest) {
-        List<RoadObject> roadObjects = new ArrayList<>();
         UriBuilder path = start()
-            .path(String.format("/vegobjekter/%d/%d/versjoner", featureTypeId, featureId));
+                .path(String.format("/vegobjekter/%d/%d/versjoner", featureTypeId, featureId));
 
         logger.debug("Invoking {}", path);
         applyRequestParameters(path, convert(roadObjectRequest));
@@ -194,18 +200,18 @@ public class RoadObjectClient extends AbstractJerseyClient {
         WebTarget target = getClient().target(path);
 
         JsonArray e = execute(target).getAsJsonArray();
-        e.forEach(p -> roadObjects.add(RoadObjectParser.parse(datakatalog.getDataTypeMap(), p.getAsJsonObject())));
-
-        return roadObjects;
+        return StreamSupport.stream(e.spliterator(), false)
+                .map(p -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), p.getAsJsonObject()))
+                .collect(toList());
     }
 
     public RoadObject getRoadObjectVersion(int featureTypeId, long featureId, int version){
-        return getRoadObjectVersion(featureTypeId, featureId, version, RoadObjectRequest.DEFAULT);
+        return getRoadObjectVersion(featureTypeId, featureId, version, DEFAULT);
     }
 
     public RoadObject getRoadObjectVersion(int featureTypeId, long featureId, int version, RoadObjectRequest roadObjectRequest){
         UriBuilder path = start()
-            .path(String.format("/vegobjekter/%d/%d/%d", featureTypeId, featureId, version));
+                .path(String.format("/vegobjekter/%d/%d/%d", featureTypeId, featureId, version));
 
         logger.debug("Invoking {}", path);
         applyRequestParameters(path, convert(roadObjectRequest));
@@ -218,7 +224,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
     public RoadObjectAttribute getBinaryAttributeRoadObject(int featureTypeId, long featureId, int version, int attributeId, int blobId){
         UriBuilder path = start()
-            .path(String.format("/vegobjekter/%d/%d/%d/egenskaper/%d/%d/binaer", featureTypeId, featureId, version, attributeId, blobId));
+                .path(String.format("/vegobjekter/%d/%d/%d/egenskaper/%d/%d/binaer", featureTypeId, featureId, version, attributeId, blobId));
 
         logger.debug("Invoking {}", path);
         WebTarget target = getClient().target(path);
@@ -253,7 +259,23 @@ public class RoadObjectClient extends AbstractJerseyClient {
         return StreamSupport.stream(array.spliterator(), false)
                 .map(JsonElement::getAsJsonObject)
                 .map(o -> RoadObjectParser.parseAttribute(datakatalog.getDataTypeMap(), o))
-                .collect(Collectors.toList());
+                .collect(toList());
+    }
+
+    public List<RoadObjectTypeWithStats> getSummary() {
+        return getSummary(DEFAULT);
+    }
+
+    public List<RoadObjectTypeWithStats> getSummary(RoadObjectRequest request) {
+        UriBuilder path = start().path("/vegobjekter");
+        applyRequestParameters(path, convert(request));
+        WebTarget target = getClient().target(path);
+        logger.debug("Invoking {}", path);
+        JsonArray array = execute(target).getAsJsonArray();
+        return StreamSupport.stream(array.spliterator(), false)
+                .map(JsonElement::getAsJsonObject)
+                .map(RoadObjectParser::parseRoadObjectTypeWithStats)
+                .collect(toList());
     }
 
     public enum Include {
@@ -277,9 +299,9 @@ public class RoadObjectClient extends AbstractJerseyClient {
         }
 
         public static Set<Include> not(Include... without) {
-            return all().stream()
-                    .filter(v -> !Arrays.asList(without).contains(v))
-                    .collect(Collectors.toSet());
+            Set<Include> includes = all();
+            includes.removeAll(asList(without));
+            return includes;
         }
 
         public String stringValue() {
@@ -310,7 +332,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
     public static class RoadObjectsResult extends GenericResultSet<RoadObject> {
 
         public RoadObjectsResult(WebTarget baseTarget,
-                                 Optional<Page> currentPage,
+                                 Page currentPage,
                                  Datakatalog datakatalog) {
             super(baseTarget, currentPage, o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o));
         }
@@ -321,7 +343,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
         public ChangesResult(Map<Integer, DataType> dataTypes,
                              int typeId,
                              WebTarget baseTarget,
-                             Optional<Page> currentPage) {
+                             Page currentPage) {
             super(baseTarget, currentPage, obj -> ChangesParser.parse(dataTypes, obj, typeId));
         }
     }

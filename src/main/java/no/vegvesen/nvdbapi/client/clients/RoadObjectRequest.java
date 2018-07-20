@@ -36,6 +36,7 @@ public class RoadObjectRequest {
 
     private final Page page;
     private final Boolean segmented;
+    private final Boolean allVersions;
     private final String depth;
     private final Projection projection;
     private final Integer distanceTolerance;
@@ -74,6 +75,7 @@ public class RoadObjectRequest {
         roadDepartments = b.roadDepartments;
         contractAreas = b.contractAreas;
         nationalRoutes = b.nationalRoutes;
+        allVersions = b.allVersions;
     }
 
     public static Builder newBuilder() {
@@ -86,6 +88,10 @@ public class RoadObjectRequest {
 
     public Optional<Boolean> getSegmented() {
         return Optional.ofNullable(segmented);
+    }
+
+    public Optional<Boolean> getAllVersions() {
+        return Optional.ofNullable(allVersions);
     }
 
     public Optional<String> getDepth() {
@@ -189,6 +195,7 @@ public class RoadObjectRequest {
         b.withCounties(counties);
         b.withRegions(regions);
         b.withRoadDepartments(roadDepartments);
+        b.withAllVersions(allVersions);
         return b;
     }
 
@@ -196,6 +203,7 @@ public class RoadObjectRequest {
 
         private Page page = Page.count(1000);
         private Boolean segmented;
+        private Boolean allVersions;
         private String depth = null;
         private Projection projection = null;
         private Integer distanceTolerance = null;
@@ -395,6 +403,11 @@ public class RoadObjectRequest {
 
         public Builder withNationalRoutes(String... nationalRoutes) {
             this.nationalRoutes = Arrays.asList(nationalRoutes);
+            return this;
+        }
+
+        public Builder withAllVersions(boolean allVersions) {
+            this.allVersions = allVersions;
             return this;
         }
     }

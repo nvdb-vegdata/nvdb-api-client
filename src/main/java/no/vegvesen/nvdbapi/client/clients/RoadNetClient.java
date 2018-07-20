@@ -51,7 +51,7 @@ public class RoadNetClient extends AbstractJerseyClient {
     }
 
     public Link getLink(int id) {
-        UriBuilder path = endpoint().path("/lenker").path(Integer.toString(id));
+        UriBuilder path = endpoint().path("/lenkesekvenser").path(Integer.toString(id));
         WebTarget target = getClient().target(path);
         JsonElement result = JerseyHelper.execute(target);
 
@@ -81,7 +81,7 @@ public class RoadNetClient extends AbstractJerseyClient {
     public LinkResult getLinks(RoadNetRequest request) {
         Objects.requireNonNull(request, "Missing page info argument.");
 
-        UriBuilder path = endpoint().path("/lenker");
+        UriBuilder path = endpoint().path("/lenkesekvenser");
         addParameters(request, path);
 
         WebTarget target = getClient().target(path);
@@ -140,20 +140,20 @@ public class RoadNetClient extends AbstractJerseyClient {
 
     public final class LinkResult extends GenericResultSet<Link> {
 
-        protected LinkResult(WebTarget baseTarget, Optional<Page> currentPage) {
+        protected LinkResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, RoadNetParser::parseLink);
         }
     }
 
     public final class NodeResult extends GenericResultSet<Node> {
 
-        protected NodeResult(WebTarget baseTarget, Optional<Page> currentPage) {
+        protected NodeResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, RoadNetParser::parseNode);
         }
     }
     public final class NetElementResult extends GenericResultSet<NetElementWrapper> {
 
-        protected NetElementResult(WebTarget baseTarget, Optional<Page> currentPage) {
+        protected NetElementResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, RoadNetParser::parseNetElement);
         }
     }

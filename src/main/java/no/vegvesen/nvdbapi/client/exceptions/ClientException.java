@@ -29,13 +29,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Stream;
 
+import static java.util.Objects.nonNull;
+
 public class ClientException extends RuntimeException {
     private final List<ApiError> errors;
     private final int statusCode;
 
     public ClientException(int statusCode, List<ApiError> errors, Throwable cause) {
         super(cause);
-        this.statusCode = Objects.requireNonNull(statusCode);
+        this.statusCode = statusCode;
         this.errors = Objects.requireNonNull(errors);
     }
 
@@ -58,7 +60,12 @@ public class ClientException extends RuntimeException {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder("HTTP error ").append(statusCode).append(":\n");
-        errors().forEach(e -> sb.append(String.format("Error %d: %s\n", e.getErrorCode(), e.getErrorMessage())));
+        errors().forEach(e -> sb.append(String
+                .format(
+                        "Error %d: %s %s\n",
+                        e.getErrorCode(),
+                        e.getErrorMessage(),
+                        nonNull(e.getErrorMessageDetails()) ? e.getErrorMessageDetails() : "")));
         return sb.toString();
     }
 }

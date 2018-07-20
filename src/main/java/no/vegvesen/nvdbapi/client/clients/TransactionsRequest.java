@@ -70,7 +70,7 @@ public class TransactionsRequest {
 
     public static class Builder{
 
-        private Page page = Page.count(1000);
+        private Page page = Page.defaults();
         private List<Integer> ider = Collections.emptyList();
         private LocalDateTime from = null;
         private LocalDateTime to = null;

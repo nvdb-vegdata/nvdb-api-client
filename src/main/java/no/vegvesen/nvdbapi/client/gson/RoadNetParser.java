@@ -47,7 +47,7 @@ public final class RoadNetParser {
 
         Integer id = parseIntMember(obj, "id");
         List<Port> ports = parsePorts(obj.getAsJsonArray("porter"));
-        List<LinkPart> linkParts = parseLinkPorts(obj.getAsJsonArray("lenkedeler"));
+        List<LinkPart> linkParts = parseLinkPorts(obj.getAsJsonArray("veglenkedeler"));
 
         double length = parseDoubleMember(obj, "lengde");
         boolean fixedLength = parseBooleanMember(obj, "låst_lengde");
@@ -82,7 +82,7 @@ public final class RoadNetParser {
                 parseDateMember(p.getAsJsonObject(), "måleDato"),
                 SosiMedium.from(parseStringMember(p.getAsJsonObject(), "medium")),
                 Ltema.from(parseIntMember(p.getAsJsonObject(), "geometri.temakode")),
-                parseCenterLineProjection(p.getAsJsonObject().getAsJsonObject("senterlinjeprojeksjon")),
+                parseCenterLineProjection(p.getAsJsonObject().getAsJsonObject("superstedfesting")),
                 TypeRoad.from(parseStringMember(p.getAsJsonObject(), "typeVeg")),
                 GeometryParser.parse(p.getAsJsonObject().getAsJsonObject("geometri")),
                 parseFields(p.getAsJsonObject().getAsJsonArray("felt")),
@@ -104,7 +104,7 @@ public final class RoadNetParser {
     private static CenterLineProjection parseCenterLineProjection(JsonObject obj) {
         if (obj == null) return null;
 
-        Integer linkId = parseIntMember(obj, "lenkeid");
+        Long linkId = parseLongMember(obj, "lenkesekvens");
         Double startPosition = parseDoubleMember(obj, "startposisjon");
         Double endPosition = parseDoubleMember(obj, "sluttposisjon");
 

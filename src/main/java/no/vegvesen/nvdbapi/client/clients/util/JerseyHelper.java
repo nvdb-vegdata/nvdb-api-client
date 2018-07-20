@@ -81,8 +81,8 @@ public class JerseyHelper {
             throw parseError(response);
         }
 
-        String body = response.readEntity(String.class);
-        return new JsonParser().parse(new StringReader(body));
+        return new JsonParser().parse(
+                new InputStreamReader((InputStream) response.getEntity()));
     }
 
     public static <T> T execute(Invocation inv, GenericType<T> responseType) {
