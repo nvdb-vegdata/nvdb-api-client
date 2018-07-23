@@ -30,13 +30,13 @@ import java.util.Objects;
 
 public class Link {
 
-    private final Integer id;
+    private final long id;
     private final List<Port> ports;
     private final List<LinkPart> linkParts;
     private final double length;
     private final boolean fixedLength;
 
-    public Link(Integer id,
+    public Link(long id,
                 List<Port> ports,
                 List<LinkPart> linkParts,
                 double length,
@@ -48,7 +48,7 @@ public class Link {
         this.fixedLength = fixedLength;
     }
 
-    public Integer getId() {
+    public long getId() {
         return id;
     }
 
