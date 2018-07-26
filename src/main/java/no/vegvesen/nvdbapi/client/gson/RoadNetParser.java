@@ -44,16 +44,16 @@ public final class RoadNetParser {
 
     private RoadNetParser() { }
 
-    public static Link parseLink(JsonObject obj){
+    public static LinkSequence parseLink(JsonObject obj){
         if(obj==null) return null;
 
         long id = parseLongMember(obj, "id");
         List<Port> ports = parsePorts(obj.getAsJsonArray("porter"));
-        List<LinkPart> linkParts = parseLinkPorts(obj.getAsJsonArray("lenker"));
+        List<Link> links = parseLinkPorts(obj.getAsJsonArray("lenker"));
 
         double length = parseDoubleMember(obj, "lengde");
         boolean fixedLength = parseBooleanMember(obj, "låst_lengde");
-        return new Link(id, ports, linkParts, length, fixedLength);
+        return new LinkSequence(id, ports, links, length, fixedLength);
     }
 
     public static Node parseNode(JsonObject obj){
@@ -68,10 +68,10 @@ public final class RoadNetParser {
         return new Node(id, geometry, startDate, endDate, ports);
     }
 
-    private static List<LinkPart> parseLinkPorts(JsonArray obj) {
+    private static List<Link> parseLinkPorts(JsonArray obj) {
         return StreamSupport
                 .stream(obj.spliterator(), false)
-                .map(p -> new LinkPart(
+                .map(p -> new Link(
                         parseIntMember(p.getAsJsonObject(), "id"),
                         parseBooleanMember(p.getAsJsonObject(), "konnekteringslenke"),
                         parseBooleanMember(p.getAsJsonObject(), "detaljert"),
@@ -86,7 +86,8 @@ public final class RoadNetParser {
                         SosiMedium.from(parseStringMember(p.getAsJsonObject(), "medium")),
                         Ltema.from(parseIntMember(p.getAsJsonObject(), "geometri.temakode")),
                         parseCenterLineProjection(p.getAsJsonObject().getAsJsonObject("superstedfesting")),
-                        TypeRoad.from(parseStringMember(p.getAsJsonObject(), "typeVeg")),
+                        parseStringMember(p.getAsJsonObject(), "typeVeg"),
+                        parseStringMember(p.getAsJsonObject(), "detaljnivå"),
                         GeometryParser.parse(p.getAsJsonObject().getAsJsonObject("geometri")),
                         parseFields(p.getAsJsonObject().getAsJsonArray("felt")),
                         parseDateMember(p.getAsJsonObject(), "startdato"),

@@ -25,47 +25,140 @@
 
 package no.vegvesen.nvdbapi.client.model.roadnet;
 
+import no.vegvesen.nvdbapi.client.model.Geometry;
+
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 
 public class Link {
 
-    private final long id;
-    private final List<Port> ports;
-    private final List<LinkPart> linkParts;
-    private final double length;
-    private final boolean fixedLength;
+    private final Integer partId;
+    private final Boolean isConnectionLink;
+    private final Boolean isDetailed;
+    private final TopologyLevel topologyLevel;
+    private final Integer startPort;
+    private final Integer endPort;
+    private final Integer municipality;
+    private final Integer municipalityGeometry;
+    private final Double length;
+    private final Integer measureMethod;
+    private final LocalDate measureDate;
+    private final SosiMedium sosiMedium;
+    private final Ltema ltema;
+    private final CenterLineProjection centerLineProjection;
+    private final String typeRoad;
+    private final String detailLevel;
+    private final Geometry geometry;
+    private final List<String> fields;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
 
-    public Link(long id,
-                List<Port> ports,
-                List<LinkPart> linkParts,
-                double length,
-                boolean fixedLength) {
-        this.id = id;
-        this.ports = ports;
-        this.linkParts = linkParts;
+    public Link(Integer partId, Boolean isConnectionLink, Boolean isDetailed, TopologyLevel topologyLevel,
+                Integer startPort, Integer endPort, Integer municipality, Integer municipalityGeometry, Double length,
+                Integer measureMethod, LocalDate measureDate, SosiMedium sosiMedium, Ltema ltema,
+                CenterLineProjection centerLineProjection, String typeRoad, String detailLevel, Geometry geometry, List<String> fields,
+                LocalDate startDate, LocalDate endDate) {
+        this.partId = partId;
+        this.isConnectionLink = isConnectionLink;
+        this.isDetailed = isDetailed;
+        this.topologyLevel = topologyLevel;
+        this.startPort = startPort;
+        this.endPort = endPort;
+        this.municipality = municipality;
+        this.municipalityGeometry = municipalityGeometry;
         this.length = length;
-        this.fixedLength = fixedLength;
+        this.measureMethod = measureMethod;
+        this.measureDate = measureDate;
+        this.sosiMedium = sosiMedium;
+        this.ltema = ltema;
+        this.centerLineProjection = centerLineProjection;
+        this.typeRoad = typeRoad;
+        this.detailLevel = detailLevel;
+        this.geometry = geometry;
+        this.fields = fields;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
-    public long getId() {
-        return id;
+    public Integer getPartId() {
+        return partId;
     }
 
-    public List<Port> getPorts() {
-        return ports;
+    public Boolean getConnectionLink() {
+        return isConnectionLink;
     }
 
-    public List<LinkPart> getLinkParts() {
-        return linkParts;
+    public Boolean getDetailed() {
+        return isDetailed;
     }
 
-    public double getLength() {
+    public TopologyLevel getTopologyLevel() {
+        return topologyLevel;
+    }
+
+    public Integer getStartPort() {
+        return startPort;
+    }
+
+    public Integer getEndPort() {
+        return endPort;
+    }
+
+    public Integer getMunicipality() {
+        return municipality;
+    }
+
+    public Double getLength() {
         return length;
     }
 
-    public boolean getFixedLength() {
-        return fixedLength;
+    public SosiMedium getSosiMedium() {
+        return sosiMedium;
+    }
+
+    public Ltema getLtema() {
+        return ltema;
+    }
+
+    public CenterLineProjection getCenterLineProjection() {
+        return centerLineProjection;
+    }
+
+    public String getTypeRoad() {
+        return typeRoad;
+    }
+
+    public Geometry getGeometry() {
+        return geometry;
+    }
+
+    public List<String> getFields() {
+        return fields;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public Integer getMunicipalityGeometry() {
+        return municipalityGeometry;
+    }
+
+    public Integer getMeasureMethod() {
+        return measureMethod;
+    }
+
+    public LocalDate getMeasureDate() {
+        return measureDate;
+    }
+
+    public String getDetailLevel() {
+        return detailLevel;
     }
 
     @Override
@@ -73,26 +166,55 @@ public class Link {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Link link = (Link) o;
-        return Double.compare(link.length, length) == 0 &&
-                fixedLength == link.fixedLength &&
-                Objects.equals(id, link.id) &&
-                Objects.equals(ports, link.ports) &&
-                Objects.equals(linkParts, link.linkParts);
+        return Objects.equals(getPartId(), link.getPartId()) &&
+            Objects.equals(isConnectionLink, link.isConnectionLink) &&
+            Objects.equals(isDetailed, link.isDetailed) &&
+            getTopologyLevel() == link.getTopologyLevel() &&
+            Objects.equals(getStartPort(), link.getStartPort()) &&
+            Objects.equals(getEndPort(), link.getEndPort()) &&
+            Objects.equals(getMunicipality(), link.getMunicipality()) &&
+            Objects.equals(getMunicipalityGeometry(), link.getMunicipalityGeometry()) &&
+            Objects.equals(getLength(), link.getLength()) &&
+            Objects.equals(getMeasureMethod(), link.getMeasureMethod()) &&
+            Objects.equals(getMeasureDate(), link.getMeasureDate()) &&
+            getSosiMedium() == link.getSosiMedium() &&
+            getLtema() == link.getLtema() &&
+            Objects.equals(getCenterLineProjection(), link.getCenterLineProjection()) &&
+            getTypeRoad() == link.getTypeRoad() &&
+            Objects.equals(getGeometry(), link.getGeometry()) &&
+            Objects.equals(getFields(), link.getFields()) &&
+            Objects.equals(getStartDate(), link.getStartDate()) &&
+            Objects.equals(getEndDate(), link.getEndDate());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, ports, linkParts, length, fixedLength);
+
+        return Objects.hash(getPartId(), isConnectionLink, isDetailed, getTopologyLevel(), getStartPort(), getEndPort(), getMunicipality(), getMunicipalityGeometry(), getLength(), getMeasureMethod(), getMeasureDate(), getSosiMedium(), getLtema(), getCenterLineProjection(), getTypeRoad(), getGeometry(), getFields(), getStartDate(), getEndDate());
     }
 
     @Override
     public String toString() {
         return "Link{" +
-                "id=" + id +
-                ", ports=" + ports +
-                ", linkParts=" + linkParts +
-                ", length=" + length +
-                ", fixedLength=" + fixedLength +
-                '}';
+            "partId=" + partId +
+            ", isConnectionLink=" + isConnectionLink +
+            ", isDetailed=" + isDetailed +
+            ", topologyLevel=" + topologyLevel +
+            ", startPort=" + startPort +
+            ", endPort=" + endPort +
+            ", municipality=" + municipality +
+            ", municipalityGeometry=" + municipalityGeometry +
+            ", length=" + length +
+            ", measureMethod=" + measureMethod +
+            ", measureDate=" + measureDate +
+            ", sosiMedium=" + sosiMedium +
+            ", ltema=" + ltema +
+            ", centerLineProjection=" + centerLineProjection +
+            ", typeRoad=" + typeRoad +
+            ", geometry=" + geometry +
+            ", fields=" + fields +
+            ", startDate=" + startDate +
+            ", endDate=" + endDate +
+            '}';
     }
 }
