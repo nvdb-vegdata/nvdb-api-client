@@ -29,7 +29,7 @@ import com.google.gson.JsonElement;
 import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
 import no.vegvesen.nvdbapi.client.gson.RoadNetParser;
 import no.vegvesen.nvdbapi.client.model.Page;
-import no.vegvesen.nvdbapi.client.model.roadnet.Link;
+import no.vegvesen.nvdbapi.client.model.roadnet.LinkSequence;
 import no.vegvesen.nvdbapi.client.model.roadnet.NetElementWrapper;
 import no.vegvesen.nvdbapi.client.model.roadnet.Node;
 import org.slf4j.Logger;
@@ -40,7 +40,6 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class RoadNetClient extends AbstractJerseyClient {
@@ -50,7 +49,7 @@ public class RoadNetClient extends AbstractJerseyClient {
         super(baseUrl, client);
     }
 
-    public Link getLink(int id) {
+    public LinkSequence getLinkSequence(int id) {
         UriBuilder path = endpoint().path("/lenkesekvenser").path(Integer.toString(id));
         WebTarget target = getClient().target(path);
         JsonElement result = JerseyHelper.execute(target);
@@ -66,8 +65,8 @@ public class RoadNetClient extends AbstractJerseyClient {
         return RoadNetParser.parseNode(result.getAsJsonObject());
     }
 
-    public LinkResult getLinks() {
-        return getLinks(RoadNetRequest.DEFAULT);
+    public LinkResult getLinkSequences() {
+        return getLinkSequences(RoadNetRequest.DEFAULT);
     }
 
     public NodeResult getNodes() {
@@ -78,7 +77,7 @@ public class RoadNetClient extends AbstractJerseyClient {
         return getNetElements(RoadNetRequest.DEFAULT);
     }
 
-    public LinkResult getLinks(RoadNetRequest request) {
+    public LinkResult getLinkSequences(RoadNetRequest request) {
         Objects.requireNonNull(request, "Missing page info argument.");
 
         UriBuilder path = endpoint().path("/lenkesekvenser");
@@ -138,7 +137,7 @@ public class RoadNetClient extends AbstractJerseyClient {
         return start().path("vegnett");
     }
 
-    public final class LinkResult extends GenericResultSet<Link> {
+    public final class LinkResult extends GenericResultSet<LinkSequence> {
 
         protected LinkResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, RoadNetParser::parseLink);
