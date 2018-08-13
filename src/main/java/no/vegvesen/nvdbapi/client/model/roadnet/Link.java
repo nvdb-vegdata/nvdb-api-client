@@ -47,8 +47,8 @@ public class Link {
     private final SosiMedium sosiMedium;
     private final Ltema ltema;
     private final CenterLineProjection centerLineProjection;
-    private final String typeRoad;
-    private final String detailLevel;
+    private final Integer typeRoad;
+    private final Integer detailLevel;
     private final Geometry geometry;
     private final List<String> fields;
     private final LocalDate startDate;
@@ -57,7 +57,7 @@ public class Link {
     public Link(Integer partId, Boolean isConnectionLink, Boolean isDetailed, TopologyLevel topologyLevel,
                 Integer startPort, Integer endPort, Integer municipality, Integer municipalityGeometry, Double length,
                 Integer measureMethod, LocalDate measureDate, SosiMedium sosiMedium, Ltema ltema,
-                CenterLineProjection centerLineProjection, String typeRoad, String detailLevel, Geometry geometry, List<String> fields,
+                CenterLineProjection centerLineProjection, Integer typeRoad, Integer detailLevel, Geometry geometry, List<String> fields,
                 LocalDate startDate, LocalDate endDate) {
         this.partId = partId;
         this.isConnectionLink = isConnectionLink;
@@ -125,7 +125,7 @@ public class Link {
         return centerLineProjection;
     }
 
-    public String getTypeRoad() {
+    public Integer getTypeRoad() {
         return typeRoad;
     }
 
@@ -157,7 +157,7 @@ public class Link {
         return measureDate;
     }
 
-    public String getDetailLevel() {
+    public Integer getDetailLevel() {
         return detailLevel;
     }
 
