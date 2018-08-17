@@ -26,6 +26,7 @@
 package no.vegvesen.nvdbapi.client.model.roadnet;
 
 import no.vegvesen.nvdbapi.client.model.Geometry;
+import no.vegvesen.nvdbapi.client.model.roadobjects.Placement;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -46,7 +47,7 @@ public class Link {
     private final LocalDate measureDate;
     private final SosiMedium sosiMedium;
     private final Ltema ltema;
-    private final CenterLineProjection centerLineProjection;
+    private final Placement centerLineProjection;
     private final Integer typeRoad;
     private final Integer detailLevel;
     private final Geometry geometry;
@@ -57,7 +58,7 @@ public class Link {
     public Link(Integer partId, Boolean isConnectionLink, Boolean isDetailed, TopologyLevel topologyLevel,
                 Integer startPort, Integer endPort, Integer municipality, Integer municipalityGeometry, Double length,
                 Integer measureMethod, LocalDate measureDate, SosiMedium sosiMedium, Ltema ltema,
-                CenterLineProjection centerLineProjection, Integer typeRoad, Integer detailLevel, Geometry geometry, List<String> fields,
+                Placement centerLineProjection, Integer typeRoad, Integer detailLevel, Geometry geometry, List<String> fields,
                 LocalDate startDate, LocalDate endDate) {
         this.partId = partId;
         this.isConnectionLink = isConnectionLink;
@@ -121,7 +122,7 @@ public class Link {
         return ltema;
     }
 
-    public CenterLineProjection getCenterLineProjection() {
+    public Placement getCenterLineProjection() {
         return centerLineProjection;
     }
 
@@ -180,7 +181,7 @@ public class Link {
             getSosiMedium() == link.getSosiMedium() &&
             getLtema() == link.getLtema() &&
             Objects.equals(getCenterLineProjection(), link.getCenterLineProjection()) &&
-            getTypeRoad() == link.getTypeRoad() &&
+                getTypeRoad().equals(link.getTypeRoad()) &&
             Objects.equals(getGeometry(), link.getGeometry()) &&
             Objects.equals(getFields(), link.getFields()) &&
             Objects.equals(getStartDate(), link.getStartDate()) &&
@@ -190,7 +191,10 @@ public class Link {
     @Override
     public int hashCode() {
 
-        return Objects.hash(getPartId(), isConnectionLink, isDetailed, getTopologyLevel(), getStartPort(), getEndPort(), getMunicipality(), getMunicipalityGeometry(), getLength(), getMeasureMethod(), getMeasureDate(), getSosiMedium(), getLtema(), getCenterLineProjection(), getTypeRoad(), getGeometry(), getFields(), getStartDate(), getEndDate());
+        return Objects.hash(getPartId(), isConnectionLink, isDetailed, getTopologyLevel(),
+                getStartPort(), getEndPort(), getMunicipality(), getMunicipalityGeometry(), getLength(),
+                getMeasureMethod(), getMeasureDate(), getSosiMedium(), getLtema(), getCenterLineProjection(),
+                getTypeRoad(), getGeometry(), getFields(), getStartDate(), getEndDate());
     }
 
     @Override
