@@ -39,8 +39,8 @@ import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 public final class AttributeTypeParser {
     private AttributeTypeParser() {  }
 
-    public static AttributeType parse(Map<Integer, DataType> typeMap, JsonObject object) {
-        int typeId = parseIntMember(object, "datatype");
+    public static AttributeType parse(Map<String, DataType> typeMap, JsonObject object) {
+        String typeId = parseStringMember(object, "datatype");
         DataType type = typeMap.get(typeId);
 
         Integer id = parseIntMember(object, "id");
@@ -52,7 +52,7 @@ public final class AttributeTypeParser {
         String requirementComment = parseStringMember(object, "veiledning");
         String sosiName = parseStringMember(object, "sosinavn");
         String sosiNvdbName = parseStringMember(object, "sosinvdbnavn");
-        AttributeType.Importance importance = AttributeType.Importance.from(parseIntMember(object, "viktighet"));
+        AttributeType.Importance importance = AttributeType.Importance.from(parseStringMember(object, "viktighet"));
         Integer sensitivityLevel = parseIntMember(object, "sensitivitet");
         LocalDate validFrom = parseDateMember(object, "objektliste_dato");
         AttributeTypeParameters parameters = GuidanceParametersParser.parseAttributeType(object.getAsJsonObject("styringsparametere"));

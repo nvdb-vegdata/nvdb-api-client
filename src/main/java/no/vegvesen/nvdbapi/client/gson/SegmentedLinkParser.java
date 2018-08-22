@@ -52,7 +52,7 @@ public final class SegmentedLinkParser {
 
         SosiMedium medium = Optional.ofNullable(parseStringMember(obj, "medium")).map(SosiMedium::from).orElse(null);
         Ltema ltema = Optional.ofNullable(parseIntMember(obj, "temakode")).map(Ltema::from).orElse(null);
-        TopologyLevel level = Optional.ofNullable(parseIntMember(obj, "topologinivå")).map(TopologyLevel::from).orElse(null);
+        TopologyLevel level = Optional.ofNullable(parseStringMember(obj, "topologinivå")).map(TopologyLevel::fromValue).orElse(null);
 
         // Areas
         Integer municipality = parseIntMember(obj, "kommune");

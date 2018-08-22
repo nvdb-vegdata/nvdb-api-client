@@ -27,6 +27,7 @@ package no.vegvesen.nvdbapi.client.clients;
 
 import no.vegvesen.nvdbapi.client.model.Page;
 import no.vegvesen.nvdbapi.client.model.Projection;
+import no.vegvesen.nvdbapi.client.model.roadnet.TopologyLevel;
 
 import java.util.Collections;
 import java.util.List;
@@ -41,7 +42,7 @@ public class RoadNetRequest {
     private final List<Integer> counties;
     private final List<Integer> municipalities;
     private final List<Integer> roadDepartments;
-    private final List<Integer> topologyLevel;
+    private final List<TopologyLevel> topologyLevel;
     private final List<Integer> superId;
     private final List<Integer> id;
     private final Optional<Projection> projection;
@@ -95,7 +96,7 @@ public class RoadNetRequest {
         return roadDepartments;
     }
 
-    public List<Integer> getTopologyLevel() {
+    public List<TopologyLevel> getTopologyLevel() {
         return topologyLevel;
     }
 
@@ -135,7 +136,7 @@ public class RoadNetRequest {
         private List<Integer> counties = Collections.emptyList();
         private List<Integer> municipalities = Collections.emptyList();
         private List<Integer> roadDepartments = Collections.emptyList();
-        private List<Integer> topologyLevel = Collections.emptyList();
+        private List<TopologyLevel> topologyLevel = Collections.emptyList();
         private List<Integer> superId = Collections.emptyList();
         private List<Integer> id = Collections.emptyList();
         private Optional<String> bbox = Optional.empty();
@@ -199,7 +200,7 @@ public class RoadNetRequest {
             return this;
         }
 
-        public Builder withTopologyLevel(List<Integer> topologyLevel) {
+        public Builder withTopologyLevel(List<TopologyLevel> topologyLevel) {
             this.topologyLevel = Optional.ofNullable(topologyLevel).orElse(Collections.emptyList());
             return this;
         }

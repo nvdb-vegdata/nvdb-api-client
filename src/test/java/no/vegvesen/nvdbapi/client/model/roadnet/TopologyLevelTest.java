@@ -9,13 +9,8 @@ import static org.junit.Assert.*;
 public class TopologyLevelTest {
 
     @Test
-    public void fromNull() {
-        TopologyLevel.from(null);
-    }
-
-    @Test
     public void happyDay() {
-        TopologyLevel from = TopologyLevel.from(1);
+        TopologyLevel from = TopologyLevel.fromValue("Kjørebane");
         assertThat(from.getDescription(), is(KJOREBANE.getDescription()));
     }
 }

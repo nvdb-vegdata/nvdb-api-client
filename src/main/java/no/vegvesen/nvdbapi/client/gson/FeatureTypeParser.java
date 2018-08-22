@@ -40,7 +40,7 @@ public final class FeatureTypeParser {
     private FeatureTypeParser() {
     }
 
-    public static FeatureType parse(Map<Integer, DataType> dataTypes, JsonObject obj) {
+    public static FeatureType parse(Map<String, DataType> dataTypes, JsonObject obj) {
         Integer id = parseIntMember(obj, "id");
         String name = parseStringMember(obj, "navn");
         String description = parseStringMember(obj, "beskrivelse");

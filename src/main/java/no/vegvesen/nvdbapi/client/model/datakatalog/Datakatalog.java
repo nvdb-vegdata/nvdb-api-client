@@ -25,19 +25,22 @@
 
 package no.vegvesen.nvdbapi.client.model.datakatalog;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class Datakatalog {
     private final List<FeatureType> featureTypes;
     private final Version version;
     private final List<Unit> units;
-    private final Map<Integer, DataType> dataTypes;
+    private final Map<String, DataType> dataTypes;
 
-    public Datakatalog(Version version, List<FeatureType> featureTypes, List<Unit> units, Map<Integer, DataType> dataTypes) {
+    public Datakatalog(Version version,
+                       List<FeatureType> featureTypes,
+                       List<Unit> units,
+                       Map<String, DataType> dataTypes) {
         this.version = version;
         this.featureTypes = featureTypes;
         this.units = units;
@@ -49,10 +52,10 @@ public class Datakatalog {
     }
 
     public List<DataType> getDataTypes() {
-        return dataTypes.entrySet().stream().map(kvp -> kvp.getValue()).collect(Collectors.toList());
+        return new ArrayList<>(this.dataTypes.values());
     }
 
-    public Map<Integer, DataType> getDataTypeMap() {
+    public Map<String, DataType> getDataTypeMap() {
         return dataTypes;
     }
 
