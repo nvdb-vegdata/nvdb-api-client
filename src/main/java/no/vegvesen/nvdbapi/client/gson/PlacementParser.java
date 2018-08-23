@@ -28,21 +28,25 @@ package no.vegvesen.nvdbapi.client.gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.model.Geometry;
-import no.vegvesen.nvdbapi.client.model.Position;
-import no.vegvesen.nvdbapi.client.model.RefLinkPosition;
-import no.vegvesen.nvdbapi.client.model.RoadPlacement;
+import no.vegvesen.nvdbapi.client.model.*;
+import no.vegvesen.nvdbapi.client.model.roadobjects.Placement;
 import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import static java.util.Objects.isNull;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseDoubleMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseLongMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseStringMember;
 
 public final class PlacementParser {
 
     private PlacementParser() {}
 
-    public static RoadPlacement parsePlacement(JsonObject obj) {
+    private static RoadPlacement parseRoadPlacement(JsonObject obj) {
         RoadRef roadRef = new RoadRef(-123);
         RefLinkPosition refLink = ShortRefLinkParser.parseShortRefLink(obj.getAsJsonObject("veglenke"));
         Geometry point = GeometryParser.parse(obj.getAsJsonObject("geometri"));
@@ -51,7 +55,7 @@ public final class PlacementParser {
     }
 
     public static Position.Result parsePosition(JsonObject obj) {
-        RoadPlacement placement = parsePlacement(obj);
+        RoadPlacement placement = parseRoadPlacement(obj);
         Double distance = obj.getAsJsonPrimitive("avstand").getAsDouble();
 
         return new Position.Result(placement, distance);
@@ -64,4 +68,30 @@ public final class PlacementParser {
                                 .collect(Collectors.toList());
     }
 
+    static Placement parsePlacement(JsonObject obj) {
+        if(isNull(obj)) return null;
+        long netElementId = parseLongMember(obj, "lenkesekvens");
+
+        double startPos, endPos;
+        if (obj.has("relativPosisjon")) {
+            startPos = endPos = parseDoubleMember(obj, "relativPosisjon");
+        } else {
+            startPos = parseDoubleMember(obj, "startposisjon");
+            endPos = parseDoubleMember(obj, "sluttposisjon");
+        }
+
+        Direction dir = Optional.of(parseStringMember(obj, "retning"))
+                .map(Direction::from)
+                .orElse(null);
+        SidePosition sidePos = Optional.ofNullable(parseStringMember(obj, "sideposisjon"))
+                .map(SidePosition::from)
+                .orElse(null);
+        String lane = parseStringMember(obj, "felt");
+
+        HeightLevel heightLevel = Optional.ofNullable(parseStringMember(obj, "høyde"))
+                .map(HeightLevel::from)
+                .orElse(null);
+
+        return new Placement(netElementId, startPos, endPos, dir, sidePos, heightLevel, lane);
+    }
 }
