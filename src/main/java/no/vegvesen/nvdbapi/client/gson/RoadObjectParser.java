@@ -141,7 +141,7 @@ public final class RoadObjectParser {
         if (placementsArray != null) {
             placements = StreamSupport.stream(placementsArray.spliterator(), false)
                     .map(JsonElement::getAsJsonObject)
-                    .map(RoadObjectParser::parsePlacement)
+                    .map(PlacementParser::parsePlacement)
                     .collect(Collectors.toList());
         }
 
@@ -164,7 +164,7 @@ public final class RoadObjectParser {
     }
 
     private static Segment parseSegment(JsonObject obj) {
-        Placement placement = parsePlacement(obj.getAsJsonObject("stedfesting"));
+        Placement placement = PlacementParser.parsePlacement(obj.getAsJsonObject("stedfesting"));
 
         Geometry geo = GeometryParser.parse(obj.getAsJsonObject("geometri"));
 
@@ -181,30 +181,6 @@ public final class RoadObjectParser {
         Integer length = parseIntMember(obj, "strekningslengde");
 
         return new Segment(geo, municipality, county, region, department, placement, ref, length);
-    }
-
-    private static Placement parsePlacement(JsonObject obj) {
-        long netElementId = parseLongMember(obj, "lenkesekvens");
-
-        double startPos, endPos;
-        if (obj.has("posisjon")) {
-            startPos = endPos = parseDoubleMember(obj, "posisjon");
-        } else {
-            startPos = parseDoubleMember(obj, "fra_posisjon");
-            endPos = parseDoubleMember(obj, "til_posisjon");
-        }
-
-        Direction dir = Optional.of(parseStringMember(obj, "retning"))
-                .map(Direction::from)
-                .orElse(null);
-        SidePosition sidePos = Optional.ofNullable(parseStringMember(obj, "sideposisjon")).map(SidePosition::from).orElse(null);
-        List<String> lane = parseStringListMember(obj, "felt");
-
-        HeightLevel heightLevel = Optional.ofNullable(parseStringMember(obj, "høyde"))
-                .map(HeightLevel::from)
-                .orElse(null);
-
-        return new Placement(netElementId, startPos, endPos, dir, sidePos, heightLevel, lane);
     }
 
     private static List<RoadRefFilter> parseRoadRefFilter(JsonObject object) {

@@ -104,16 +104,6 @@ public final class RoadNetParser {
         return fields;
     }
 
-    private static CenterLineProjection parseCenterLineProjection(JsonObject obj) {
-        if (obj == null) return null;
-
-        Long linkId = parseLongMember(obj, "lenkesekvens");
-        Double startPosition = parseDoubleMember(obj, "startposisjon");
-        Double endPosition = parseDoubleMember(obj, "sluttposisjon");
-
-        return new CenterLineProjection(linkId, startPosition, endPosition);
-    }
-
     private static List<Port> parsePorts(JsonArray obj) {
         List<Port> ports = new ArrayList<>();
         if (obj != null) {

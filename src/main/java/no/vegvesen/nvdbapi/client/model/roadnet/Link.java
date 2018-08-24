@@ -26,6 +26,7 @@
 package no.vegvesen.nvdbapi.client.model.roadnet;
 
 import no.vegvesen.nvdbapi.client.model.Geometry;
+import no.vegvesen.nvdbapi.client.model.roadobjects.Placement;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -121,7 +122,7 @@ public class Link {
         return ltema;
     }
 
-    public CenterLineProjection getCenterLineProjection() {
+    public Placement getCenterLineProjection() {
         return centerLineProjection;
     }
 
