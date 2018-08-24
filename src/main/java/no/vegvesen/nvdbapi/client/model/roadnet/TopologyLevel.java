@@ -25,22 +25,20 @@
 
 package no.vegvesen.nvdbapi.client.model.roadnet;
 
-import java.util.Arrays;
-
 public enum TopologyLevel {
-    VEGTRASE(0, "Vegtrase"),
-    KJOREBANE(1, "Kjørebane"),
-    KJOREFELT(2, "Kjørefelt");
+    VEGTRASE("vegtrase", "Vegtrasé"),
+    KJOREBANE("kjørebane", "Kjørebane"),
+    KJOREFELT("kjørefelt", "Kjørefelt");
 
-    private final int apiValue;
+    private final String apiValue;
     private final String description;
 
-    TopologyLevel(int apiValue, String description) {
+    TopologyLevel(String apiValue, String description) {
         this.apiValue = apiValue;
         this.description = description;
     }
 
-    public int getApiValue() {
+    public String getApiValue() {
         return apiValue;
     }
 
@@ -48,8 +46,13 @@ public enum TopologyLevel {
         return description;
     }
 
-    public static TopologyLevel from(Integer val) {
+    public static TopologyLevel fromValue(String val) {
         if(val == null) return null;
-        return Arrays.stream(TopologyLevel.values()).filter(v -> v.apiValue == val).findAny().orElse(null);
+        switch (val) {
+            case "Vegtrasé": return VEGTRASE;
+            case "Kjørebane": return KJOREBANE;
+            case "Kjørefelt": return KJOREFELT;
+            default: return null;
+        }
     }
 }

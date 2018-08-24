@@ -340,7 +340,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
     public static class ChangesResult extends GenericResultSet<Change> {
 
-        public ChangesResult(Map<Integer, DataType> dataTypes,
+        public ChangesResult(Map<String, DataType> dataTypes,
                              int typeId,
                              WebTarget baseTarget,
                              Page currentPage) {

@@ -45,7 +45,7 @@ import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 public final class RoadObjectParser {
     private RoadObjectParser() {}
 
-    public static RoadObject parse(Map<Integer, DataType> dataTypes, JsonObject obj) {
+    public static RoadObject parse(Map<String, DataType> dataTypes, JsonObject obj) {
         Integer id = parseIntMember(obj, "id");
 
         Integer typeId = parseIntMember(obj, "metadata.type.id");
@@ -210,11 +210,11 @@ public final class RoadObjectParser {
                 .collect(Collectors.toList());
     }
 
-    public static Attribute parseAttribute(Map<Integer, DataType> dataTypes, JsonObject obj) {
+    public static Attribute parseAttribute(Map<String, DataType> dataTypes, JsonObject obj) {
         Integer id = parseIntMember(obj, "id");
         String name = parseStringMember(obj, "navn");
         Integer enumId = parseIntMember(obj, "enum_id");
-        int dataTypeId = parseIntMember(obj, "datatype");
+        String dataTypeId = parseStringMember(obj, "datatype");
         DataType dataType = dataTypes.get(dataTypeId);
         Object value = parseAttributeValue(obj, "verdi", dataType.getJavaType());
         String href = parseStringMember(obj, "href");
@@ -234,7 +234,7 @@ public final class RoadObjectParser {
                 Optional.ofNullable(blobId), Optional.ofNullable(blobFormat), Optional.ofNullable(attribGeometry));
     }
 
-    private static Association parseAssociation(Map<Integer, DataType> dataTypes, JsonObject obj) {
+    private static Association parseAssociation(Map<String, DataType> dataTypes, JsonObject obj) {
         Integer typeId = parseIntMember(obj, "type.id");
         JsonArray objects = obj.get("vegobjekter").getAsJsonArray();
         Set<RoadObject> roadObjects = StreamSupport.stream(objects.spliterator(), false).map(e -> {

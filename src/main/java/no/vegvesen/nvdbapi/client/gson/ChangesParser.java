@@ -39,7 +39,7 @@ public class ChangesParser {
     private ChangesParser() {
     }
 
-    public static Change parse(Map<Integer, DataType> dataTypes, JsonObject obj, int typeId) {
+    public static Change parse(Map<String, DataType> dataTypes, JsonObject obj, int typeId) {
 
         Change.Type type = Change.Type.from(parseStringMember(obj, "type"));
 

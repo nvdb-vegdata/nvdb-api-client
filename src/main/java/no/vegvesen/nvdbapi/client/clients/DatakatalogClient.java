@@ -40,7 +40,6 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -50,7 +49,7 @@ import static java.util.Objects.isNull;
 public class DatakatalogClient extends AbstractJerseyClient {
     private static final Logger LOG = LoggerFactory.getLogger(DatakatalogClient.class);
 
-    private Map<Integer, DataType> dataTypes;
+    private Map<String, DataType> dataTypes;
 
     protected DatakatalogClient(String baseUrl, Client client) {
         super(baseUrl, client);
@@ -73,9 +72,9 @@ public class DatakatalogClient extends AbstractJerseyClient {
                 .collect(Collectors.toList());
     }
 
-    public Map<Integer, DataType> getDataTypeMap() {
+    public Map<String, DataType> getDataTypeMap() {
         return getDataTypes().stream()
-                             .collect(Collectors.toMap(DataType::getId, Function.identity()));
+                             .collect(Collectors.toMap(DataType::getName, Function.identity()));
     }
 
     public List<Unit> getUnits() {
@@ -127,7 +126,7 @@ public class DatakatalogClient extends AbstractJerseyClient {
     public Datakatalog getDatakalog() {
         Version v = getVersion();
         List<Unit> units = getUnits();
-        Map<Integer, DataType> dataTypes = getDataTypeMap();
+        Map<String, DataType> dataTypes = getDataTypeMap();
 
         List<FeatureType> featureTypes = getFeatureTypes(Include.ALL);
         return new Datakatalog(v, featureTypes, units, dataTypes);

@@ -32,6 +32,7 @@ import no.vegvesen.nvdbapi.client.model.Page;
 import no.vegvesen.nvdbapi.client.model.roadnet.LinkSequence;
 import no.vegvesen.nvdbapi.client.model.roadnet.NetElementWrapper;
 import no.vegvesen.nvdbapi.client.model.roadnet.Node;
+import no.vegvesen.nvdbapi.client.model.roadnet.TopologyLevel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -107,20 +108,26 @@ public class RoadNetClient extends AbstractJerseyClient {
         return new NetElementResult(target, request.getPage());
     }
 
-    protected static String join(List<Integer> list) {
+    protected static String join(List<?> list) {
         if (list == null) {
             return null;
         }
         return list.stream()
-                   .map(Objects::toString)
-                   .collect(Collectors.joining(","));
+                .map(Objects::toString)
+                .collect(Collectors.joining(","));
     }
 
 
     private void addParameters(RoadNetRequest request, UriBuilder path) {
         if (!request.getRegions().isEmpty()) path.queryParam("region", join(request.getRegions()));
         if (!request.getCounties().isEmpty()) path.queryParam("fylke", join(request.getCounties()));
-        if (!request.getTopologyLevel().isEmpty()) path.queryParam("topologiniva", join(request.getTopologyLevel()));
+        if (!request.getTopologyLevel().isEmpty()) {
+            path.queryParam("topologiniva",
+                    join(request.getTopologyLevel()
+                            .stream()
+                            .map(TopologyLevel::getApiValue)
+                            .collect(Collectors.toList())));
+        }
         if (!request.getSuperId().isEmpty()) path.queryParam("superid", join(request.getSuperId()));
         if (!request.getRoadDepartments().isEmpty()) path.queryParam("vegavdeling", join(request.getRoadDepartments()));
         if (!request.getMunicipalities().isEmpty()) path.queryParam("kommune", join(request.getMunicipalities()));

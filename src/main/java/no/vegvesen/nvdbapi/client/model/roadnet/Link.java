@@ -43,13 +43,13 @@ public class Link {
     private final Integer municipality;
     private final Integer municipalityGeometry;
     private final Double length;
-    private final Integer measureMethod;
+    private final String measureMethod;
     private final LocalDate measureDate;
     private final SosiMedium sosiMedium;
     private final Ltema ltema;
-    private final Placement centerLineProjection;
-    private final Integer typeRoad;
-    private final Integer detailLevel;
+    private final CenterLineProjection centerLineProjection;
+    private final String typeRoad;
+    private final String detailLevel;
     private final Geometry geometry;
     private final List<String> fields;
     private final LocalDate startDate;
@@ -57,8 +57,8 @@ public class Link {
 
     public Link(Integer partId, Boolean isConnectionLink, Boolean isDetailed, TopologyLevel topologyLevel,
                 Integer startPort, Integer endPort, Integer municipality, Integer municipalityGeometry, Double length,
-                Integer measureMethod, LocalDate measureDate, SosiMedium sosiMedium, Ltema ltema,
-                Placement centerLineProjection, Integer typeRoad, Integer detailLevel, Geometry geometry, List<String> fields,
+                String measureMethod, LocalDate measureDate, SosiMedium sosiMedium, Ltema ltema,
+                CenterLineProjection centerLineProjection, String typeRoad, String detailLevel, Geometry geometry, List<String> fields,
                 LocalDate startDate, LocalDate endDate) {
         this.partId = partId;
         this.isConnectionLink = isConnectionLink;
@@ -126,7 +126,7 @@ public class Link {
         return centerLineProjection;
     }
 
-    public Integer getTypeRoad() {
+    public String getTypeRoad() {
         return typeRoad;
     }
 
@@ -150,7 +150,7 @@ public class Link {
         return municipalityGeometry;
     }
 
-    public Integer getMeasureMethod() {
+    public String getMeasureMethod() {
         return measureMethod;
     }
 
@@ -158,7 +158,7 @@ public class Link {
         return measureDate;
     }
 
-    public Integer getDetailLevel() {
+    public String getDetailLevel() {
         return detailLevel;
     }
 
@@ -167,34 +167,33 @@ public class Link {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Link link = (Link) o;
-        return Objects.equals(getPartId(), link.getPartId()) &&
-            Objects.equals(isConnectionLink, link.isConnectionLink) &&
-            Objects.equals(isDetailed, link.isDetailed) &&
-            getTopologyLevel() == link.getTopologyLevel() &&
-            Objects.equals(getStartPort(), link.getStartPort()) &&
-            Objects.equals(getEndPort(), link.getEndPort()) &&
-            Objects.equals(getMunicipality(), link.getMunicipality()) &&
-            Objects.equals(getMunicipalityGeometry(), link.getMunicipalityGeometry()) &&
-            Objects.equals(getLength(), link.getLength()) &&
-            Objects.equals(getMeasureMethod(), link.getMeasureMethod()) &&
-            Objects.equals(getMeasureDate(), link.getMeasureDate()) &&
-            getSosiMedium() == link.getSosiMedium() &&
-            getLtema() == link.getLtema() &&
-            Objects.equals(getCenterLineProjection(), link.getCenterLineProjection()) &&
-                getTypeRoad().equals(link.getTypeRoad()) &&
-            Objects.equals(getGeometry(), link.getGeometry()) &&
-            Objects.equals(getFields(), link.getFields()) &&
-            Objects.equals(getStartDate(), link.getStartDate()) &&
-            Objects.equals(getEndDate(), link.getEndDate());
+        return Objects.equals(partId, link.partId) &&
+                Objects.equals(isConnectionLink, link.isConnectionLink) &&
+                Objects.equals(isDetailed, link.isDetailed) &&
+                topologyLevel == link.topologyLevel &&
+                Objects.equals(startPort, link.startPort) &&
+                Objects.equals(endPort, link.endPort) &&
+                Objects.equals(municipality, link.municipality) &&
+                Objects.equals(municipalityGeometry, link.municipalityGeometry) &&
+                Objects.equals(length, link.length) &&
+                Objects.equals(measureMethod, link.measureMethod) &&
+                Objects.equals(measureDate, link.measureDate) &&
+                sosiMedium == link.sosiMedium &&
+                ltema == link.ltema &&
+                Objects.equals(centerLineProjection, link.centerLineProjection) &&
+                Objects.equals(typeRoad, link.typeRoad) &&
+                Objects.equals(detailLevel, link.detailLevel) &&
+                Objects.equals(geometry, link.geometry) &&
+                Objects.equals(fields, link.fields) &&
+                Objects.equals(startDate, link.startDate) &&
+                Objects.equals(endDate, link.endDate);
     }
 
     @Override
     public int hashCode() {
-
-        return Objects.hash(getPartId(), isConnectionLink, isDetailed, getTopologyLevel(),
-                getStartPort(), getEndPort(), getMunicipality(), getMunicipalityGeometry(), getLength(),
-                getMeasureMethod(), getMeasureDate(), getSosiMedium(), getLtema(), getCenterLineProjection(),
-                getTypeRoad(), getGeometry(), getFields(), getStartDate(), getEndDate());
+        return Objects.hash(partId, isConnectionLink, isDetailed, topologyLevel, startPort, endPort, municipality,
+                municipalityGeometry, length, measureMethod, measureDate, sosiMedium, ltema, centerLineProjection,
+                typeRoad, detailLevel, geometry, fields, startDate, endDate);
     }
 
     @Override

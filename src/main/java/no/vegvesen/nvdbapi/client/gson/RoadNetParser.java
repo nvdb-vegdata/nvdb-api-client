@@ -71,31 +71,28 @@ public final class RoadNetParser {
     private static List<Link> parseLinkPorts(JsonArray obj) {
         return StreamSupport
                 .stream(obj.spliterator(), false)
-                .map(p -> {
-                    JsonObject object = p.getAsJsonObject();
-                    return new Link(
-                            parseIntMember(object, "id"),
-                            parseBooleanMember(object, "konnekteringslenke"),
-                            parseBooleanMember(object, "detaljert"),
-                            TopologyLevel.from(parseIntMember(object, "topologinivå")),
-                            parseIntMember(object, "startport"),
-                            parseIntMember(object, "sluttport"),
-                            parseIntMember(object, "geometri.kommune"),
-                            parseIntMember(object, "geometri.kommune"),
-                            parseDoubleMember(object, "geometri.lengde"),
-                            parseIntMember(object, "måleMetode"),
-                            parseDateMember(object, "måleDato"),
-                            SosiMedium.from(parseStringMember(object, "medium")),
-                            Ltema.from(parseIntMember(object, "geometri.temakode")),
-                            PlacementParser.parsePlacement(object.getAsJsonObject("superstedfesting")),
-                            parseIntMember(object, "typeVeg"),
-                            parseIntMember(object, "detaljnivå"),
-                            GeometryParser.parse(object.getAsJsonObject("geometri")),
-                            parseFields(object.getAsJsonArray("felt")),
-                            parseDateMember(object, "startdato"),
-                            parseDateMember(object, "sluttdato")
-                    );
-                })
+                .map(p -> new Link(
+                        parseIntMember(p.getAsJsonObject(), "id"),
+                        parseBooleanMember(p.getAsJsonObject(), "konnekteringslenke"),
+                        parseBooleanMember(p.getAsJsonObject(), "detaljert"),
+                        TopologyLevel.fromValue(parseStringMember(p.getAsJsonObject(), "topologinivå")),
+                        parseIntMember(p.getAsJsonObject(), "startport"),
+                        parseIntMember(p.getAsJsonObject(), "sluttport"),
+                        parseIntMember(p.getAsJsonObject(), "geometri.kommune"),
+                        parseIntMember(p.getAsJsonObject(), "geometri.kommune"),
+                        parseDoubleMember(p.getAsJsonObject(), "geometri.lengde"),
+                        parseStringMember(p.getAsJsonObject(), "måleMetode"),
+                        parseDateMember(p.getAsJsonObject(), "måleDato"),
+                        SosiMedium.from(parseStringMember(p.getAsJsonObject(), "medium")),
+                        Ltema.from(parseIntMember(p.getAsJsonObject(), "geometri.temakode")),
+                        parseCenterLineProjection(p.getAsJsonObject().getAsJsonObject("superstedfesting")),
+                        parseStringMember(p.getAsJsonObject(), "typeVeg"),
+                        parseStringMember(p.getAsJsonObject(), "detaljnivå"),
+                        GeometryParser.parse(p.getAsJsonObject().getAsJsonObject("geometri")),
+                        parseFields(p.getAsJsonObject().getAsJsonArray("felt")),
+                        parseDateMember(p.getAsJsonObject(), "startdato"),
+                        parseDateMember(p.getAsJsonObject(), "sluttdato")
+                ))
                 .collect(toList());
     }
 
