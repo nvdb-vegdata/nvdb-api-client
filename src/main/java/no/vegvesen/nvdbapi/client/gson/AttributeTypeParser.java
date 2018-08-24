@@ -96,13 +96,13 @@ public final class AttributeTypeParser {
 
                 if (parseStringMember(object, "egenskapstype").equalsIgnoreCase("stedfesting")) {
                     Boolean overlapp = parseBooleanMember(object, "overlapp");
-                    String laneRelevant = parseStringMember(object, "kjørefeltrelevant");
-                    String sideposRelevant = parseStringMember(object, "sideposrelevant");
-                    Boolean heightRelevant = parseBooleanMember(object, "høyderelevant");
-                    Boolean dirRelevant = parseBooleanMember(object, "retningsrelevant");
+                    String laneRelevant = parseStringMember(object, "kjørefelt_relevant");
+                    String sideposRelevant = parseStringMember(object, "sideposisjon_relevant");
+                    Boolean heightRelevant = parseBooleanMember(object, "høyde_relevant");
+                    Boolean dirRelevant = parseBooleanMember(object, "retning_relevant");
                     Boolean movable = parseBooleanMember(object, "flyttbar");
-                    String ajourholdi = parseStringMember(object, "ajourholdi");
-                    String ajourholdsplitt = parseStringMember(object, "ajourholdsplitt");
+                    String ajourholdi = parseStringMember(object, "ajourhold_i");
+                    String ajourholdsplitt = parseStringMember(object, "ajourhold_splitt");
                     Double supplyLength = parseDoubleMember(object, "suppleringslengde");
                     String dekningsgrad = parseStringMember(object, "dekningsgrad");
                     return new LocationalAttributeType(props, parameters, determineLocationalType(object),
