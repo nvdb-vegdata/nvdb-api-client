@@ -143,6 +143,16 @@ public final class AttributeTypeParser {
                         content,
                         parseIntMember(object, "maksimalt_antall_verdier"),
                         parseIntMember(object, "minimalt_antall_verdier"));
+            case ASSOCIATION:
+                return new AssociationRoleType(props,
+                        parameters,
+                        parseIntMember(object, "tilknytning"),
+                        parseIntMember(object, "vegobjekttypeid"),
+                        parseIntMember(object, "innenfor_mor"),
+                        parseDateMember(object, "startdato"),
+                        parseDateMember(object, "sluttdato"),
+                        parseIntMember(object, "assosiasjonskrav"),
+                        parseStringMember(object, "assosiasjonskravkommentar"));
             default:
                 throw new UnsupportedOperationException("Unrecognized data type" + type);
         }
@@ -324,6 +334,8 @@ public final class AttributeTypeParser {
                 return JavaType.BINARY;
             case 38:
                 return JavaType.LIST;
+            case 39:
+                return JavaType.ASSOCIATION;
             default:
                 return JavaType.UNKNOWN;
         }

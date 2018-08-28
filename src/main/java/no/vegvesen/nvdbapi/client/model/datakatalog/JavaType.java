@@ -37,5 +37,6 @@ public enum JavaType {
     BINARY,
     STRUCTURE,
     LIST,
+    ASSOCIATION,
     UNKNOWN
 }
