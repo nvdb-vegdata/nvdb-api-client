@@ -8,7 +8,8 @@ public class DoubleEnumValue extends EnumValue<Double> {
                            Double value,
                            String shortName,
                            String description,
-                           LocalDate objectListDate) {
-        super(id, sortNumber, value, shortName, description, objectListDate);
+                           LocalDate objectListDate,
+                           boolean isDefault) {
+        super(id, sortNumber, value, shortName, description, objectListDate, isDefault);
     }
 }
