@@ -29,6 +29,7 @@ import no.vegvesen.nvdbapi.client.model.Direction;
 import no.vegvesen.nvdbapi.client.model.HeightLevel;
 import no.vegvesen.nvdbapi.client.model.SidePosition;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Placement {
@@ -38,7 +39,7 @@ public class Placement {
     private final Direction direction;
     private final SidePosition sidePos;
     private final HeightLevel heightLevel;
-    private final String lane;
+    private final List<String> lane;
 
     public Placement(long netElementId,
                      double startPosition,
@@ -46,7 +47,7 @@ public class Placement {
                      Direction direction,
                      SidePosition sidePos,
                      HeightLevel heightLevel,
-                     String lane) {
+                     List<String> lane) {
         this.netElementId = netElementId;
         this.startPosition = startPosition;
         this.endPosition = endPosition;
@@ -80,7 +81,7 @@ public class Placement {
         return startPosition == endPosition;
     }
 
-    public String getLane() {
+    public List<String> getLane() {
         return lane;
     }
 
