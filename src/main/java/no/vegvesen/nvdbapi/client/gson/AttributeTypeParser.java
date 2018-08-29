@@ -117,13 +117,13 @@ public final class AttributeTypeParser {
                     Double supplyLength = parseDoubleMember(object, "suppleringslengde");
                     String dekningsgrad = parseStringMember(object, "dekningsgrad");
                     return new LocationalAttributeType(props, parameters, determineLocationalType(object),
-                        overlapp, laneRelevant, sideposRelevant, heightRelevant, dirRelevant, movable,
-                        ajourholdi, ajourholdsplitt, supplyLength, dekningsgrad);
+                            overlapp, laneRelevant, sideposRelevant, heightRelevant, dirRelevant, movable,
+                            ajourholdi, ajourholdsplitt, supplyLength, dekningsgrad);
                 } else {
                     return new SpatialAttributeType(props,
-                        parameters,
-                        determineSpatialType(object),
-                        parseIntMember(object, "dimensjoner"));
+                            parameters,
+                            determineSpatialType(object),
+                            parseIntMember(object, "dimensjoner"));
                 }
             case LOCAL_DATE:
                 return new DateAttributeType(props,
@@ -183,8 +183,19 @@ public final class AttributeTypeParser {
         Double doubleAbsMinValue = parseDoubleMember(object, "min"), doubleAbsMaxValue = parseDoubleMember(object, "maks");
         Unit unit = object.has("enhet") ? parseUnit(object.getAsJsonObject("enhet")) : null;
 
-        return new DoubleAttributeType(props, parameters, doubleDefValue, doubleMinValue, doubleMaxValue,
-                doubleAbsMinValue, doubleAbsMaxValue, parseIntMember(object, "feltlengde"), decimalCount, unit, parseEnumValues(object));
+        return new DoubleAttributeType(
+                props,
+                parameters,
+                doubleDefValue,
+                doubleMinValue,
+                doubleMaxValue,
+                doubleAbsMinValue,
+                doubleAbsMaxValue,
+                parseIntMember(object, "feltlengde"),
+                decimalCount,
+                unit,
+                parseEnumValues(object),
+                parseBooleanMember(object, "fortegnsendring_snu"));
     }
 
     private static AttributeType parseIntegerAttributeType(JsonObject object, AttributeTypeParameters parameters, AttributeCommonProperties props) {
@@ -193,8 +204,18 @@ public final class AttributeTypeParser {
         Integer intAbsMinValue = parseIntMember(object, "min"), intAbsMaxValue = parseIntMember(object, "maks");
         Unit unit = object.has("enhet") ? parseUnit(object.getAsJsonObject("enhet")) : null;
 
-        return new IntegerAttributeType(props, parameters, intDefValue, intMinValue, intMaxValue, intAbsMinValue,
-                intAbsMaxValue, parseIntMember(object, "feltlengde"), unit, parseEnumValues(object));
+        return new IntegerAttributeType(
+                props,
+                parameters,
+                intDefValue,
+                intMinValue,
+                intMaxValue,
+                intAbsMinValue,
+                intAbsMaxValue,
+                parseIntMember(object, "feltlengde"),
+                unit,
+                parseEnumValues(object),
+                parseBooleanMember(object, "fortegnsendring_snu"));
     }
 
     private static AttributeType parseStringAttributeType(JsonObject object, AttributeTypeParameters parameters, AttributeCommonProperties props) {
