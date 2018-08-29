@@ -77,7 +77,7 @@ public class RoadPlacementClient extends AbstractJerseyClient {
      */
     @Deprecated
     public RoadPlacement getRoadPlacement(RefLinkRequest request) {
-        return getResults("lenkesekvens", request.getQueryParam(), null).orElse(null);
+        return getResults("veglenkesekvens", request.getQueryParam(), null).orElse(null);
     }
 
     /**
@@ -89,7 +89,7 @@ public class RoadPlacementClient extends AbstractJerseyClient {
      */
     @Deprecated
     public RoadPlacement getRoadPlacement(RefLinkRequest request, Projection projection) {
-        return getResults("lenkesekvens", request.getQueryParam(), projection).orElse(null);
+        return getResults("veglenkesekvens", request.getQueryParam(), projection).orElse(null);
     }
 
     /**
@@ -107,7 +107,7 @@ public class RoadPlacementClient extends AbstractJerseyClient {
      * @return {@code Optional<RoadPlacement>} if query had result, otherwise {@code Optional.empty()}
      */
     public Optional<RoadPlacement> findPlacement(RefLinkRequest request) {
-        return getResults("lenkesekvens", request.getQueryParam(), request.getProjection().orElse(null));
+        return getResults("veglenkesekvens", request.getQueryParam(), request.getProjection().orElse(null));
     }
 
     public List<RoadPlacementBulkResult> getRoadPlacementsInBulk(List<RoadRefRequest> requests, Projection projection) {
@@ -117,7 +117,7 @@ public class RoadPlacementClient extends AbstractJerseyClient {
 
     public List<RoadPlacementBulkResult> getRoadPlacementsInBulkFromReflinks(List<RefLinkRequest> requests, Projection projection) {
         String queryParam = requests.stream().map(RefLinkRequest::getQueryParam).collect(Collectors.joining(","));
-        return getRoadPlacementsInBatch("lenkesekvenser", queryParam, projection);
+        return getRoadPlacementsInBatch("veglenkesekvenser", queryParam, projection);
     }
 
     private List<RoadPlacementBulkResult> getRoadPlacementsInBatch(String paramName, String queryParam, Projection projection) {

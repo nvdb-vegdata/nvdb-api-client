@@ -49,7 +49,7 @@ public final class RoadNetParser {
 
         long id = parseLongMember(obj, "id");
         List<Port> ports = parsePorts(obj.getAsJsonArray("porter"));
-        List<Link> links = parseLinkPorts(obj.getAsJsonArray("lenker"));
+        List<Link> links = parseLinkPorts(obj.getAsJsonArray("veglenker"));
 
         double length = parseDoubleMember(obj, "lengde");
         boolean fixedLength = parseBooleanMember(obj, "låst_lengde");

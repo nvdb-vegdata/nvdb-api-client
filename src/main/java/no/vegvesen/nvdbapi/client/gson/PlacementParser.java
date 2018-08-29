@@ -70,7 +70,7 @@ public final class PlacementParser {
 
     static Placement parsePlacement(JsonObject obj) {
         if(isNull(obj)) return null;
-        long netElementId = parseLongMember(obj, "lenkesekvens");
+        long netElementId = parseLongMember(obj, "veglenkesekvens");
 
         double startPos, endPos;
         if (obj.has("relativPosisjon")) {

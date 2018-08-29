@@ -51,7 +51,7 @@ public class RoadNetClient extends AbstractJerseyClient {
     }
 
     public LinkSequence getLinkSequence(int id) {
-        UriBuilder path = endpoint().path("/lenkesekvenser").path(Integer.toString(id));
+        UriBuilder path = endpoint().path("/veglenkesekvenser").path(Integer.toString(id));
         WebTarget target = getClient().target(path);
         JsonElement result = JerseyHelper.execute(target);
 
@@ -81,7 +81,7 @@ public class RoadNetClient extends AbstractJerseyClient {
     public LinkResult getLinkSequences(RoadNetRequest request) {
         Objects.requireNonNull(request, "Missing page info argument.");
 
-        UriBuilder path = endpoint().path("/lenkesekvenser");
+        UriBuilder path = endpoint().path("/veglenkesekvenser");
         addParameters(request, path);
 
         WebTarget target = getClient().target(path);

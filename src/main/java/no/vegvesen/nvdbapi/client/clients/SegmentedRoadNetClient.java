@@ -50,7 +50,7 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
     }
 
     public List<SegmentedLink> getLinks(int id) {
-        UriBuilder path = endpoint().path("/lenkesekvenser/segmentert").path(Integer.toString(id));
+        UriBuilder path = endpoint().path("/veglenkesekvenser/segmentert").path(Integer.toString(id));
 
         WebTarget target = getClient().target(path);
         JsonElement result = JerseyHelper.execute(target);
@@ -66,7 +66,7 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
     public SegmentedLinkResult getLinks(RoadNetRequest request) {
         Objects.requireNonNull(request, "Missing page info argument.");
 
-        UriBuilder path = endpoint().path("/lenkesekvenser/segmentert");
+        UriBuilder path = endpoint().path("/veglenkesekvenser/segmentert");
         if (!request.getRegions().isEmpty()) path.queryParam("region", join(request.getRegions()));
         if (!request.getCounties().isEmpty()) path.queryParam("fylke", join(request.getCounties()));
         if (!request.getMunicipalities().isEmpty()) path.queryParam("kommune", join(request.getMunicipalities()));
