@@ -32,13 +32,16 @@ public class TimeAttributeType extends AttributeType {
     private final LocalTime defaultvalue;
     private final LocalTime minValue;
     private final LocalTime maxValue;
+    private final String format;
 
     public TimeAttributeType(AttributeCommonProperties props, AttributeTypeParameters parameters,
-                             LocalTime defaultvalue, LocalTime minValue, LocalTime maxValue) {
+                             LocalTime defaultvalue, LocalTime minValue, LocalTime maxValue,
+                             String format) {
         super(props, parameters);
         this.defaultvalue = defaultvalue;
         this.minValue = minValue;
         this.maxValue = maxValue;
+        this.format = format;
     }
 
     public LocalTime getDefaultvalue() {
@@ -51,5 +54,9 @@ public class TimeAttributeType extends AttributeType {
 
     public LocalTime getMaxValue() {
         return maxValue;
+    }
+
+    public String getFormat() {
+        return format;
     }
 }

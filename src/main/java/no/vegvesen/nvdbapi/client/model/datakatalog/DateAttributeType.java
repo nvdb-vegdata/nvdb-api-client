@@ -31,13 +31,16 @@ public class DateAttributeType extends AttributeType {
     private final LocalDate defaultValue;
     private final LocalDate minValue;
     private final LocalDate maxValue;
+    private final String format;
 
     public DateAttributeType(AttributeCommonProperties props, AttributeTypeParameters parameters,
-                             LocalDate defaultValue, LocalDate minValue, LocalDate maxValue) {
+                             LocalDate defaultValue, LocalDate minValue, LocalDate maxValue,
+                             String format) {
         super(props, parameters);
         this.defaultValue = defaultValue;
         this.minValue = minValue;
         this.maxValue = maxValue;
+        this.format = format;
     }
 
     public LocalDate getDefaultValue() {
@@ -50,5 +53,9 @@ public class DateAttributeType extends AttributeType {
 
     public LocalDate getMaxValue() {
         return maxValue;
+    }
+
+    public String getFormat() {
+        return format;
     }
 }

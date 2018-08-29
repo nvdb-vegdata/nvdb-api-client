@@ -29,14 +29,17 @@ public class ShortDateAttributeType extends AttributeType {
     private final Integer defaultvalue;
     private final Integer minValue;
     private final Integer maxValue;
+    private final String format;
 
     public ShortDateAttributeType(AttributeCommonProperties props,
                                   AttributeTypeParameters parameters,
-                                  Integer defaultvalue, Integer minValue, Integer maxValue) {
+                                  Integer defaultvalue, Integer minValue, Integer maxValue,
+                                  String format) {
         super(props, parameters);
         this.defaultvalue = defaultvalue;
         this.minValue = minValue;
         this.maxValue = maxValue;
+        this.format = format;
     }
 
     public Integer getDefaultvalue() {
@@ -49,5 +52,9 @@ public class ShortDateAttributeType extends AttributeType {
 
     public Integer getMaxValue() {
         return maxValue;
+    }
+
+    public String getFormat() {
+        return format;
     }
 }

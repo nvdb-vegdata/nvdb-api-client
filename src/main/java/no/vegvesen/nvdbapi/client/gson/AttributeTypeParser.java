@@ -130,19 +130,22 @@ public final class AttributeTypeParser {
                         parameters,
                         parseDateMember(object, "standardverdi"),
                         parseDateMember(object, "min"),
-                        parseDateMember(object, "maks"));
+                        parseDateMember(object, "maks"),
+                        parseStringMember(object, "format"));
             case SHORT_DATE:
                 return new ShortDateAttributeType(props,
                         parameters,
                         parseIntMember(object, "standardverdi"),
                         parseIntMember(object, "min_anbefalt"),
-                        parseIntMember(object, "maks_anbefalt"));
+                        parseIntMember(object, "maks_anbefalt"),
+                        parseStringMember(object, "format"));
             case LOCAL_TIME:
                 return new TimeAttributeType(props,
                         parameters,
                         parseTimeMember(object, "standardverdi"),
                         parseTimeMember(object, "min_anbefalt"),
-                        parseTimeMember(object, "maks_anbefalt"));
+                        parseTimeMember(object, "maks_anbefalt"),
+                        parseStringMember(object, "format"));
             case BINARY:
                 return new BinaryObjectAttributeType(
                         props,
@@ -199,7 +202,12 @@ public final class AttributeTypeParser {
         Integer fieldLength = parseIntMember(object, "feltlengde");
         String textDefaultValue = parseStringMember(object, "standardverdi");
 
-        return new StringAttributeType(props, parameters, textDefaultValue, fieldLength, values);
+        return new StringAttributeType(props,
+                parameters,
+                textDefaultValue,
+                fieldLength,
+                values,
+                parseStringMember(object, "format"));
     }
 
     private static SpatialType determineSpatialType(JsonObject object) {

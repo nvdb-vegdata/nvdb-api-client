@@ -31,15 +31,18 @@ public class StringAttributeType extends AbstractEnumAttributeType<StringEnumVal
 
     private final Integer fieldLength;
     private final String defaultValue;
+    private final String format;
 
     public StringAttributeType(AttributeCommonProperties props,
                                AttributeTypeParameters parameters,
                                String defaultValue,
                                Integer fieldLength,
-                               Set<StringEnumValue> values) {
+                               Set<StringEnumValue> values,
+                               String format) {
         super(props, parameters, values);
         this.defaultValue = defaultValue;
         this.fieldLength = fieldLength;
+        this.format = format;
     }
 
     public String getDefaultValue() {
@@ -48,5 +51,9 @@ public class StringAttributeType extends AbstractEnumAttributeType<StringEnumVal
 
     public Integer getFieldLength() {
         return fieldLength;
+    }
+
+    public String getFormat() {
+        return format;
     }
 }
