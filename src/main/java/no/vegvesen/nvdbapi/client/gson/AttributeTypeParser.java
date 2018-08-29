@@ -112,18 +112,20 @@ public final class AttributeTypeParser {
                     Boolean heightRelevant = parseBooleanMember(object, "høyde_relevant");
                     Boolean dirRelevant = parseBooleanMember(object, "retning_relevant");
                     Boolean movable = parseBooleanMember(object, "flyttbar");
+                    Boolean insideparent = parseBooleanMember(object, "innenfor_mor");
                     String ajourholdi = parseStringMember(object, "ajourhold_i");
                     String ajourholdsplitt = parseStringMember(object, "ajourhold_splitt");
                     Double supplyLength = parseDoubleMember(object, "suppleringslengde");
                     String dekningsgrad = parseStringMember(object, "dekningsgrad");
                     return new LocationalAttributeType(props, parameters, determineLocationalType(object),
                             overlapp, laneRelevant, sideposRelevant, heightRelevant, dirRelevant, movable,
-                            ajourholdi, ajourholdsplitt, supplyLength, dekningsgrad);
+                            ajourholdi, ajourholdsplitt, supplyLength, dekningsgrad, insideparent);
                 } else {
                     return new SpatialAttributeType(props,
                             parameters,
                             determineSpatialType(object),
-                            parseIntMember(object, "dimensjoner"));
+                            parseIntMember(object, "dimensjoner"),
+                            parseBooleanMember(object, "innenfor_mor"));
                 }
             case LOCAL_DATE:
                 return new DateAttributeType(props,
@@ -309,15 +311,18 @@ public final class AttributeTypeParser {
             case "Tekst":
                 return (T) new StringEnumValue(id,
                         sortNumber, parseStringMember(obj, "verdi"),
-                        shortValue, description, objectListDate);
+                        shortValue, description, objectListDate,
+                        parseBooleanMember(obj, "standardverdi"));
             case "Heltall":
                 return (T) new IntegerEnumValue(id,
                         sortNumber, parseIntMember(obj, "verdi"),
-                        shortValue, description, objectListDate);
+                        shortValue, description, objectListDate,
+                        parseBooleanMember(obj, "standardverdi"));
             case "Flyttall":
                 return (T) new DoubleEnumValue(id,
                         sortNumber, parseDoubleMember(obj, "verdi"),
-                        shortValue, description, objectListDate);
+                        shortValue, description, objectListDate,
+                        parseBooleanMember(obj, "standardverdi"));
             default:
                 throw new IllegalArgumentException("Could not handle enum value of type " + type);
         }

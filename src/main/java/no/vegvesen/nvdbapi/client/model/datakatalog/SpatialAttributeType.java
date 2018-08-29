@@ -31,14 +31,17 @@ public class SpatialAttributeType extends AttributeType {
 
     private final SpatialType spatialType;
     private final int dimensions;
+    private final boolean insideparent;
 
     public SpatialAttributeType(AttributeCommonProperties props,
                                 AttributeTypeParameters parameters,
                                 SpatialType spatialType,
-                                int dimensions) {
+                                int dimensions,
+                                boolean insideparent) {
         super(props, parameters);
         this.spatialType = spatialType;
         this.dimensions = dimensions;
+        this.insideparent = insideparent;
     }
 
     public SpatialType getSpatialType() {
@@ -47,5 +50,9 @@ public class SpatialAttributeType extends AttributeType {
 
     public int getDimensions() {
         return dimensions;
+    }
+
+    public boolean isInsideparent() {
+        return insideparent;
     }
 }
