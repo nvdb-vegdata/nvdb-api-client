@@ -31,15 +31,22 @@ public class StringAttributeType extends AbstractEnumAttributeType<StringEnumVal
 
     private final Integer fieldLength;
     private final String defaultValue;
+    private final String format;
+    private final boolean isdirectionsensitive;
+    private final boolean isextentsensitive;
 
     public StringAttributeType(AttributeCommonProperties props,
                                AttributeTypeParameters parameters,
                                String defaultValue,
                                Integer fieldLength,
-                               Set<StringEnumValue> values) {
+                               Set<StringEnumValue> values,
+                               String format, boolean isdirectionsensitive, boolean isextentsensitive) {
         super(props, parameters, values);
         this.defaultValue = defaultValue;
         this.fieldLength = fieldLength;
+        this.format = format;
+        this.isdirectionsensitive = isdirectionsensitive;
+        this.isextentsensitive = isextentsensitive;
     }
 
     public String getDefaultValue() {
@@ -48,5 +55,17 @@ public class StringAttributeType extends AbstractEnumAttributeType<StringEnumVal
 
     public Integer getFieldLength() {
         return fieldLength;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public boolean isIsdirectionsensitive() {
+        return isdirectionsensitive;
+    }
+
+    public boolean isIsextentsensitive() {
+        return isextentsensitive;
     }
 }

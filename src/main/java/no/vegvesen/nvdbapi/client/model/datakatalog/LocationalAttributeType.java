@@ -15,12 +15,14 @@ public class LocationalAttributeType extends AttributeType {
     private final String ajourholdsplitt;
     private final Double supplyLength;
     private final String dekningsgrad;
+    private final boolean insideparent;
+
 
     public LocationalAttributeType(AttributeCommonProperties props, AttributeTypeParameters parameters,
                                    LocationalType locationalType, Boolean overlapp, String laneRelevant,
                                    String sideposRelevant, Boolean heightRelevant, Boolean dirRelevant,
                                    Boolean movable, String ajourholdi, String ajourholdsplitt,
-                                   Double supplyLength, String dekningsgrad) {
+                                   Double supplyLength, String dekningsgrad, boolean insideparent) {
         super(props, parameters);
         this.locationalType = locationalType;
         this.overlapp = overlapp;
@@ -33,6 +35,7 @@ public class LocationalAttributeType extends AttributeType {
         this.ajourholdsplitt = ajourholdsplitt;
         this.supplyLength = supplyLength;
         this.dekningsgrad = dekningsgrad;
+        this.insideparent = insideparent;
     }
 
     public LocationalType getLocationalType() {
@@ -77,5 +80,9 @@ public class LocationalAttributeType extends AttributeType {
 
     public String getDekningsgrad() {
         return dekningsgrad;
+    }
+
+    public boolean isInsideparent() {
+        return insideparent;
     }
 }

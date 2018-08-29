@@ -36,6 +36,9 @@ public class DoubleAttributeType extends AbstractEnumAttributeType<DoubleEnumVal
     private final Integer fieldLength;
     private final Integer decimalCount;
     private final Unit unit;
+    private final Boolean complementarysign;
+    private final boolean isdirectionsensitive;
+    private final boolean isextentsensitive;
 
     public DoubleAttributeType(AttributeCommonProperties props,
                                AttributeTypeParameters parameters,
@@ -47,7 +50,8 @@ public class DoubleAttributeType extends AbstractEnumAttributeType<DoubleEnumVal
                                Integer fieldLength,
                                Integer decimalCount,
                                Unit unit,
-                               Set<DoubleEnumValue> values) {
+                               Set<DoubleEnumValue> values,
+                               Boolean complementarysign, boolean isdirectionsensitive, boolean isextentsensitive) {
         super(props, parameters, values);
         this.defaultvalue = defaultvalue;
         this.minValue = minValue;
@@ -57,6 +61,9 @@ public class DoubleAttributeType extends AbstractEnumAttributeType<DoubleEnumVal
         this.fieldLength = fieldLength;
         this.decimalCount = decimalCount;
         this.unit = unit;
+        this.complementarysign = complementarysign;
+        this.isdirectionsensitive = isdirectionsensitive;
+        this.isextentsensitive = isextentsensitive;
     }
 
     public Double getDefaultvalue() {
@@ -89,5 +96,17 @@ public class DoubleAttributeType extends AbstractEnumAttributeType<DoubleEnumVal
 
     public Unit getUnit() {
         return unit;
+    }
+
+    public Boolean getComplementarysign() {
+        return complementarysign;
+    }
+
+    public boolean isIsdirectionsensitive() {
+        return isdirectionsensitive;
+    }
+
+    public boolean isIsextentsensitive() {
+        return isextentsensitive;
     }
 }

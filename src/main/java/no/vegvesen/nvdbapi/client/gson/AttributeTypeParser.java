@@ -55,6 +55,7 @@ public final class AttributeTypeParser {
         AttributeType.Importance importance = AttributeType.Importance.from(parseStringMember(object, "viktighet"));
         Integer sensitivityLevel = parseIntMember(object, "sensitivitet");
         LocalDate validFrom = parseDateMember(object, "objektliste_dato");
+        LocalDate validTo = parseDateMember(object, "slutt_dato");
         AttributeTypeParameters parameters = GuidanceParametersParser.parseAttributeType(object.getAsJsonObject("styringsparametere"));
 
         AttributeCommonProperties props = new AttributeCommonProperties(
@@ -70,7 +71,19 @@ public final class AttributeTypeParser {
                 sosiName,
                 sosiNvdbName,
                 sensitivityLevel,
-                validFrom);
+                validFrom,
+                validTo,
+                parseBooleanMember(object, "skrivebeskyttet"),
+                parseStringMember(object, "ledetekst"),
+                parseIntMember(object, "komplementær_egenskapstype"),
+                parseStringMember(object, "grunnrissreferanse"),
+                parseStringMember(object, "høydereferanse"),
+                parseStringMember(object, "sosi_referanse"),
+                parseBooleanMember(object, "referansegeometri_tilstrekkelig"),
+                parseIntMember(object, "høydereferanse_tall"),
+                parseDoubleMember(object, "nøyaktighetskrav_grunnriss"),
+                parseDoubleMember(object, "nøyaktighetskrav_høyde"),
+                parseStringListMember(object, "tilleggskrav"));
 
         switch (type.getJavaType()) {
             case TEXT:
@@ -80,9 +93,13 @@ public final class AttributeTypeParser {
                         parameters,
                         Optional.ofNullable(parseStringMember(object, "standardverdi"))
                                 .map(s -> s.charAt(0))
-                                .orElse(null));
+                                .orElse(null),
+                        parseBooleanMember(object, "ajourhold_snu"),
+                        parseBooleanMember(object, "lengdeavhengig_verdi"));
             case BOOLEAN:
-                return new BooleanAttributeType(props, parameters, parseBooleanMember(object, "standardverdi"));
+                return new BooleanAttributeType(props, parameters, parseBooleanMember(object, "standardverdi"),
+                        parseBooleanMember(object, "ajourhold_snu"),
+                        parseBooleanMember(object, "lengdeavhengig_verdi"));
             case NUMBER:
                 boolean isDouble = object.has("desimaler")
                         && parseIntMember(object, "desimaler") > 0;
@@ -101,39 +118,55 @@ public final class AttributeTypeParser {
                     Boolean heightRelevant = parseBooleanMember(object, "høyde_relevant");
                     Boolean dirRelevant = parseBooleanMember(object, "retning_relevant");
                     Boolean movable = parseBooleanMember(object, "flyttbar");
+                    Boolean insideparent = parseBooleanMember(object, "innenfor_mor");
                     String ajourholdi = parseStringMember(object, "ajourhold_i");
                     String ajourholdsplitt = parseStringMember(object, "ajourhold_splitt");
                     Double supplyLength = parseDoubleMember(object, "suppleringslengde");
                     String dekningsgrad = parseStringMember(object, "dekningsgrad");
                     return new LocationalAttributeType(props, parameters, determineLocationalType(object),
-                        overlapp, laneRelevant, sideposRelevant, heightRelevant, dirRelevant, movable,
-                        ajourholdi, ajourholdsplitt, supplyLength, dekningsgrad);
+                            overlapp, laneRelevant, sideposRelevant, heightRelevant, dirRelevant, movable,
+                            ajourholdi, ajourholdsplitt, supplyLength, dekningsgrad, insideparent);
                 } else {
                     return new SpatialAttributeType(props,
-                        parameters,
-                        determineSpatialType(object),
-                        parseIntMember(object, "dimensjoner"));
+                            parameters,
+                            determineSpatialType(object),
+                            parseIntMember(object, "dimensjoner"),
+                            parseBooleanMember(object, "innenfor_mor"));
                 }
             case LOCAL_DATE:
                 return new DateAttributeType(props,
                         parameters,
                         parseDateMember(object, "standardverdi"),
                         parseDateMember(object, "min"),
-                        parseDateMember(object, "maks"));
+                        parseDateMember(object, "maks"),
+                        parseStringMember(object, "format"),
+                        parseBooleanMember(object, "ajourhold_snu"),
+                        parseBooleanMember(object, "lengdeavhengig_verdi"));
             case SHORT_DATE:
                 return new ShortDateAttributeType(props,
                         parameters,
                         parseIntMember(object, "standardverdi"),
                         parseIntMember(object, "min_anbefalt"),
-                        parseIntMember(object, "maks_anbefalt"));
+                        parseIntMember(object, "maks_anbefalt"),
+                        parseStringMember(object, "format"),
+                        parseBooleanMember(object, "ajourhold_snu"),
+                        parseBooleanMember(object, "lengdeavhengig_verdi"));
             case LOCAL_TIME:
                 return new TimeAttributeType(props,
                         parameters,
                         parseTimeMember(object, "standardverdi"),
                         parseTimeMember(object, "min_anbefalt"),
-                        parseTimeMember(object, "maks_anbefalt"));
+                        parseTimeMember(object, "maks_anbefalt"),
+                        parseStringMember(object, "format"),
+                        parseBooleanMember(object, "ajourhold_snu"),
+                        parseBooleanMember(object, "lengdeavhengig_verdi"));
             case BINARY:
-                return new BinaryObjectAttributeType(props, parameters);
+                return new BinaryObjectAttributeType(
+                        props,
+                        parameters,
+                        parseStringMember(object, "mediatype"),
+                        parseBooleanMember(object, "ajourhold_snu"),
+                        parseBooleanMember(object, "lengdeavhengig_verdi"));
             case STRUCTURE:
                 return new StructureAttributeType(props, parameters);
             case LIST:
@@ -143,6 +176,16 @@ public final class AttributeTypeParser {
                         content,
                         parseIntMember(object, "maksimalt_antall_verdier"),
                         parseIntMember(object, "minimalt_antall_verdier"));
+            case ASSOCIATION:
+                return new AssociationRoleType(props,
+                        parameters,
+                        parseIntMember(object, "tilknytning"),
+                        parseIntMember(object, "vegobjekttypeid"),
+                        parseIntMember(object, "innenfor_mor"),
+                        parseDateMember(object, "startdato"),
+                        parseDateMember(object, "sluttdato"),
+                        parseIntMember(object, "assosiasjonskrav"),
+                        parseStringMember(object, "assosiasjonskravkommentar"));
             default:
                 throw new UnsupportedOperationException("Unrecognized data type" + type);
         }
@@ -155,8 +198,21 @@ public final class AttributeTypeParser {
         Double doubleAbsMinValue = parseDoubleMember(object, "min"), doubleAbsMaxValue = parseDoubleMember(object, "maks");
         Unit unit = object.has("enhet") ? parseUnit(object.getAsJsonObject("enhet")) : null;
 
-        return new DoubleAttributeType(props, parameters, doubleDefValue, doubleMinValue, doubleMaxValue,
-                doubleAbsMinValue, doubleAbsMaxValue, parseIntMember(object, "feltlengde"), decimalCount, unit, parseEnumValues(object));
+        return new DoubleAttributeType(
+                props,
+                parameters,
+                doubleDefValue,
+                doubleMinValue,
+                doubleMaxValue,
+                doubleAbsMinValue,
+                doubleAbsMaxValue,
+                parseIntMember(object, "feltlengde"),
+                decimalCount,
+                unit,
+                parseEnumValues(object),
+                parseBooleanMember(object, "fortegnsendring_snu"),
+                parseBooleanMember(object, "ajourhold_snu"),
+                parseBooleanMember(object, "lengdeavhengig_verdi"));
     }
 
     private static AttributeType parseIntegerAttributeType(JsonObject object, AttributeTypeParameters parameters, AttributeCommonProperties props) {
@@ -165,8 +221,20 @@ public final class AttributeTypeParser {
         Integer intAbsMinValue = parseIntMember(object, "min"), intAbsMaxValue = parseIntMember(object, "maks");
         Unit unit = object.has("enhet") ? parseUnit(object.getAsJsonObject("enhet")) : null;
 
-        return new IntegerAttributeType(props, parameters, intDefValue, intMinValue, intMaxValue, intAbsMinValue,
-                intAbsMaxValue, parseIntMember(object, "feltlengde"), unit, parseEnumValues(object));
+        return new IntegerAttributeType(
+                props,
+                parameters,
+                intDefValue,
+                intMinValue,
+                intMaxValue,
+                intAbsMinValue,
+                intAbsMaxValue,
+                parseIntMember(object, "feltlengde"),
+                unit,
+                parseEnumValues(object),
+                parseBooleanMember(object, "fortegnsendring_snu"),
+                parseBooleanMember(object, "ajourhold_snu"),
+                parseBooleanMember(object, "lengdeavhengig_verdi"));
     }
 
     private static AttributeType parseStringAttributeType(JsonObject object, AttributeTypeParameters parameters, AttributeCommonProperties props) {
@@ -174,7 +242,14 @@ public final class AttributeTypeParser {
         Integer fieldLength = parseIntMember(object, "feltlengde");
         String textDefaultValue = parseStringMember(object, "standardverdi");
 
-        return new StringAttributeType(props, parameters, textDefaultValue, fieldLength, values);
+        return new StringAttributeType(props,
+                parameters,
+                textDefaultValue,
+                fieldLength,
+                values,
+                parseStringMember(object, "format"),
+                parseBooleanMember(object, "ajourhold_snu"),
+                parseBooleanMember(object, "lengdeavhengig_verdi"));
     }
 
     private static SpatialType determineSpatialType(JsonObject object) {
@@ -255,15 +330,18 @@ public final class AttributeTypeParser {
             case "Tekst":
                 return (T) new StringEnumValue(id,
                         sortNumber, parseStringMember(obj, "verdi"),
-                        shortValue, description, objectListDate);
+                        shortValue, description, objectListDate,
+                        parseBooleanMember(obj, "standardverdi"));
             case "Heltall":
                 return (T) new IntegerEnumValue(id,
                         sortNumber, parseIntMember(obj, "verdi"),
-                        shortValue, description, objectListDate);
+                        shortValue, description, objectListDate,
+                        parseBooleanMember(obj, "standardverdi"));
             case "Flyttall":
                 return (T) new DoubleEnumValue(id,
                         sortNumber, parseDoubleMember(obj, "verdi"),
-                        shortValue, description, objectListDate);
+                        shortValue, description, objectListDate,
+                        parseBooleanMember(obj, "standardverdi"));
             default:
                 throw new IllegalArgumentException("Could not handle enum value of type " + type);
         }
@@ -324,6 +402,8 @@ public final class AttributeTypeParser {
                 return JavaType.BINARY;
             case 38:
                 return JavaType.LIST;
+            case 39:
+                return JavaType.ASSOCIATION;
             default:
                 return JavaType.UNKNOWN;
         }

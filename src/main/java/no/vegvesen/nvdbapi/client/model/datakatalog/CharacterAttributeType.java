@@ -28,14 +28,26 @@ package no.vegvesen.nvdbapi.client.model.datakatalog;
 public class CharacterAttributeType extends AttributeType {
 
     private final Character defaultValue;
+    private final boolean isdirectionsensitive;
+    private final boolean isextentsensitive;
 
     public CharacterAttributeType(AttributeCommonProperties props, AttributeTypeParameters parameters,
-                                  Character defaultValue) {
+                                  Character defaultValue, boolean isdirectionsensitive, boolean isextentsensitive) {
         super(props, parameters);
         this.defaultValue = defaultValue;
+        this.isdirectionsensitive = isdirectionsensitive;
+        this.isextentsensitive = isextentsensitive;
     }
 
     public Character getDefaultValue() {
         return defaultValue;
+    }
+
+    public boolean isIsdirectionsensitive() {
+        return isdirectionsensitive;
+    }
+
+    public boolean isIsextentsensitive() {
+        return isextentsensitive;
     }
 }

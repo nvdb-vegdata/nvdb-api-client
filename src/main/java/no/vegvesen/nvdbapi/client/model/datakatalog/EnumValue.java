@@ -35,19 +35,22 @@ public abstract class EnumValue<T> implements Serializable {
     private final String shortName;
     private final String description;
     private final LocalDate objectListDate;
+    private final boolean isDefault;
 
     public EnumValue(Integer id,
                      Integer sortNumber,
                      T value,
                      String shortName,
                      String description,
-                     LocalDate objectListDate) {
+                     LocalDate objectListDate,
+                     boolean isDefault) {
         this.id = id;
         this.sortNumber = sortNumber;
         this.value = value;
         this.shortName = shortName;
         this.description = description;
         this.objectListDate = objectListDate;
+        this.isDefault = isDefault;
     }
 
     public Integer getId() {
@@ -72,5 +75,9 @@ public abstract class EnumValue<T> implements Serializable {
 
     public LocalDate getObjectListDate() {
         return objectListDate;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
     }
 }

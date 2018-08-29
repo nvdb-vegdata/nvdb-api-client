@@ -29,14 +29,21 @@ public class ShortDateAttributeType extends AttributeType {
     private final Integer defaultvalue;
     private final Integer minValue;
     private final Integer maxValue;
+    private final String format;
+    private final boolean isdirectionsensitive;
+    private final boolean isextentsensitive;
 
     public ShortDateAttributeType(AttributeCommonProperties props,
                                   AttributeTypeParameters parameters,
-                                  Integer defaultvalue, Integer minValue, Integer maxValue) {
+                                  Integer defaultvalue, Integer minValue, Integer maxValue,
+                                  String format, boolean isdirectionsensitive, boolean isextentsensitive) {
         super(props, parameters);
         this.defaultvalue = defaultvalue;
         this.minValue = minValue;
         this.maxValue = maxValue;
+        this.format = format;
+        this.isdirectionsensitive = isdirectionsensitive;
+        this.isextentsensitive = isextentsensitive;
     }
 
     public Integer getDefaultvalue() {
@@ -49,5 +56,17 @@ public class ShortDateAttributeType extends AttributeType {
 
     public Integer getMaxValue() {
         return maxValue;
+    }
+
+    public String getFormat() {
+        return format;
+    }
+
+    public boolean isIsdirectionsensitive() {
+        return isdirectionsensitive;
+    }
+
+    public boolean isIsextentsensitive() {
+        return isextentsensitive;
     }
 }

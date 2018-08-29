@@ -47,7 +47,30 @@ public final class FeatureType implements Serializable {
     private final FeatureTypeParameters parameters;
     private final AttributeType locationalAttribute;
 
-    public FeatureType(Integer id, String name, String description, List<AttributeType> attributeTypes, List<AssociationType> parents, List<AssociationType> children, String instructions, String sosiName, String sosiNvdbName, Integer sortNumber, LocalDate objectListDate, PlacementType placementType, FeatureTypeParameters featureTypeParameters, AttributeType locationalAttribute) {
+    private final String status;
+    private final String mainCategory;
+    private final boolean coverage;
+    private final boolean simpleversionon;
+    private final String additionalInformasion;
+
+    public FeatureType(Integer id,
+                       String name,
+                       String description,
+                       List<AttributeType> attributeTypes,
+                       List<AssociationType> parents,
+                       List<AssociationType> children,
+                       String instructions, String sosiName,
+                       String sosiNvdbName,
+                       Integer sortNumber,
+                       LocalDate objectListDate,
+                       PlacementType placementType,
+                       FeatureTypeParameters featureTypeParameters,
+                       AttributeType locationalAttribute,
+                       String status,
+                       String mainCategory,
+                       boolean coverage,
+                       boolean simpleversionon,
+                       String additionalInformasion) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -62,6 +85,11 @@ public final class FeatureType implements Serializable {
         this.parents = Optional.ofNullable(parents).orElse(Collections.emptyList());
         this.attributeTypes = Optional.ofNullable(attributeTypes).orElse(Collections.emptyList());
         this.locationalAttribute = locationalAttribute;
+        this.status = status;
+        this.mainCategory = mainCategory;
+        this.coverage = coverage;
+        this.simpleversionon = simpleversionon;
+        this.additionalInformasion = additionalInformasion;
     }
 
     public Integer getId() {
@@ -162,6 +190,26 @@ public final class FeatureType implements Serializable {
      */
     public Stream<AttributeType> sortedAttributeTypes() {
         return attributeTypes().sorted(Comparator.comparing(AttributeType::getSortNumber));
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public String getMainCategory() {
+        return mainCategory;
+    }
+
+    public boolean isCoverage() {
+        return coverage;
+    }
+
+    public boolean isSimpleversionon() {
+        return simpleversionon;
+    }
+
+    public String getAdditionalInformasion() {
+        return additionalInformasion;
     }
 
     public enum PlacementType {

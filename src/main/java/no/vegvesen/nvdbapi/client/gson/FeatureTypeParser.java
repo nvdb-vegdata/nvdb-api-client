@@ -80,7 +80,25 @@ public final class FeatureTypeParser {
             parameters = GuidanceParametersParser.parseFeatureType(obj.getAsJsonObject("styringsparametere"));
         }
 
-        return new FeatureType(id, name, description, attributeTypes, parents, children, instructions, sosiName, sosiNvdbName, sortNumber, objectListDate, placementType, parameters, locationalAttribute);
+        return new FeatureType(id,
+                name,
+                description,
+                attributeTypes,
+                parents,
+                children,
+                instructions,
+                sosiName,
+                sosiNvdbName,
+                sortNumber,
+                objectListDate,
+                placementType,
+                parameters,
+                locationalAttribute,
+                parseStringMember(obj, "status"),
+                parseStringMember(obj, "hovedkategori"),
+                parseBooleanMember(obj, "dekning"),
+                parseBooleanMember(obj, "simpleversionon"),
+                parseStringMember(obj, "tilleggsinformasjon"));
     }
 
     public static FeatureTypeCategory parseCategory(JsonObject obj) {
