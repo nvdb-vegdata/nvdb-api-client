@@ -36,6 +36,8 @@ public class IntegerAttributeType extends AbstractEnumAttributeType<IntegerEnumV
     private final Integer fieldLength;
     private final Unit unit;
     private final Boolean complementarysign;
+    private final boolean isdirectionsensitive;
+    private final boolean isextentsensitive;
 
     public IntegerAttributeType(AttributeCommonProperties props,
                                 AttributeTypeParameters parameters,
@@ -47,7 +49,7 @@ public class IntegerAttributeType extends AbstractEnumAttributeType<IntegerEnumV
                                 Integer fieldLength,
                                 Unit unit,
                                 Set<IntegerEnumValue> values,
-                                Boolean complementarysign) {
+                                Boolean complementarysign, boolean isdirectionsensitive, boolean isextentsensitive) {
         super(props, parameters, values);
         this.defaultvalue = defaultvalue;
         this.minValue = minValue;
@@ -57,6 +59,8 @@ public class IntegerAttributeType extends AbstractEnumAttributeType<IntegerEnumV
         this.fieldLength = fieldLength;
         this.unit = unit;
         this.complementarysign = complementarysign;
+        this.isdirectionsensitive = isdirectionsensitive;
+        this.isextentsensitive = isextentsensitive;
     }
 
     public Integer getDefaultvalue() {
@@ -89,5 +93,13 @@ public class IntegerAttributeType extends AbstractEnumAttributeType<IntegerEnumV
 
     public Boolean getComplementarysign() {
         return complementarysign;
+    }
+
+    public boolean isIsdirectionsensitive() {
+        return isdirectionsensitive;
+    }
+
+    public boolean isIsextentsensitive() {
+        return isextentsensitive;
     }
 }

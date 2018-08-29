@@ -27,14 +27,26 @@ package no.vegvesen.nvdbapi.client.model.datakatalog;
 
 public class BooleanAttributeType extends AttributeType {
     private final Boolean defaultValue;
+    private final boolean isdirectionsensitive;
+    private final boolean isextentsensitive;
 
     public BooleanAttributeType(AttributeCommonProperties props,
-                                AttributeTypeParameters parameters, Boolean defaultValue) {
+                                AttributeTypeParameters parameters, Boolean defaultValue, boolean isdirectionsensitive, boolean isextentsensitive) {
         super(props, parameters);
         this.defaultValue = defaultValue;
+        this.isdirectionsensitive = isdirectionsensitive;
+        this.isextentsensitive = isextentsensitive;
     }
 
     public Boolean getDefaultValue() {
         return defaultValue;
+    }
+
+    public boolean isIsdirectionsensitive() {
+        return isdirectionsensitive;
+    }
+
+    public boolean isIsextentsensitive() {
+        return isextentsensitive;
     }
 }

@@ -32,15 +32,19 @@ public class DateAttributeType extends AttributeType {
     private final LocalDate minValue;
     private final LocalDate maxValue;
     private final String format;
+    private final boolean isdirectionsensitive;
+    private final boolean isextentsensitive;
 
     public DateAttributeType(AttributeCommonProperties props, AttributeTypeParameters parameters,
                              LocalDate defaultValue, LocalDate minValue, LocalDate maxValue,
-                             String format) {
+                             String format, boolean isdirectionsensitive, boolean isextentsensitive) {
         super(props, parameters);
         this.defaultValue = defaultValue;
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.format = format;
+        this.isdirectionsensitive = isdirectionsensitive;
+        this.isextentsensitive = isextentsensitive;
     }
 
     public LocalDate getDefaultValue() {
@@ -57,5 +61,13 @@ public class DateAttributeType extends AttributeType {
 
     public String getFormat() {
         return format;
+    }
+
+    public boolean isIsdirectionsensitive() {
+        return isdirectionsensitive;
+    }
+
+    public boolean isIsextentsensitive() {
+        return isextentsensitive;
     }
 }

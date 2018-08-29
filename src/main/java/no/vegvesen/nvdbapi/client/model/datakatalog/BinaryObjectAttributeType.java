@@ -28,16 +28,28 @@ package no.vegvesen.nvdbapi.client.model.datakatalog;
 public class BinaryObjectAttributeType extends AttributeType {
 
     private final String blobformat;
+    private final boolean isdirectionsensitive;
+    private final boolean isextentsensitive;
 
     public BinaryObjectAttributeType(AttributeCommonProperties props,
                                      AttributeTypeParameters parameters,
-                                     String blobformat) {
+                                     String blobformat, boolean isdirectionsensitive, boolean isextentsensitive) {
         super(props, parameters);
         this.blobformat = blobformat;
+        this.isdirectionsensitive = isdirectionsensitive;
+        this.isextentsensitive = isextentsensitive;
     }
 
     public String getBlobformat() {
 
         return blobformat;
+    }
+
+    public boolean isIsdirectionsensitive() {
+        return isdirectionsensitive;
+    }
+
+    public boolean isIsextentsensitive() {
+        return isextentsensitive;
     }
 }

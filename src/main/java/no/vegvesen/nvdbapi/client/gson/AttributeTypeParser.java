@@ -55,6 +55,7 @@ public final class AttributeTypeParser {
         AttributeType.Importance importance = AttributeType.Importance.from(parseStringMember(object, "viktighet"));
         Integer sensitivityLevel = parseIntMember(object, "sensitivitet");
         LocalDate validFrom = parseDateMember(object, "objektliste_dato");
+        LocalDate validTo = parseDateMember(object, "slutt_dato");
         AttributeTypeParameters parameters = GuidanceParametersParser.parseAttributeType(object.getAsJsonObject("styringsparametere"));
 
         AttributeCommonProperties props = new AttributeCommonProperties(
@@ -71,6 +72,7 @@ public final class AttributeTypeParser {
                 sosiNvdbName,
                 sensitivityLevel,
                 validFrom,
+                validTo,
                 parseBooleanMember(object, "skrivebeskyttet"),
                 parseStringMember(object, "ledetekst"),
                 parseIntMember(object, "komplementær_egenskapstype"),
@@ -91,9 +93,13 @@ public final class AttributeTypeParser {
                         parameters,
                         Optional.ofNullable(parseStringMember(object, "standardverdi"))
                                 .map(s -> s.charAt(0))
-                                .orElse(null));
+                                .orElse(null),
+                        parseBooleanMember(object, "ajourhold_snu"),
+                        parseBooleanMember(object, "lengdeavhengig_verdi"));
             case BOOLEAN:
-                return new BooleanAttributeType(props, parameters, parseBooleanMember(object, "standardverdi"));
+                return new BooleanAttributeType(props, parameters, parseBooleanMember(object, "standardverdi"),
+                        parseBooleanMember(object, "ajourhold_snu"),
+                        parseBooleanMember(object, "lengdeavhengig_verdi"));
             case NUMBER:
                 boolean isDouble = object.has("desimaler")
                         && parseIntMember(object, "desimaler") > 0;
@@ -133,27 +139,34 @@ public final class AttributeTypeParser {
                         parseDateMember(object, "standardverdi"),
                         parseDateMember(object, "min"),
                         parseDateMember(object, "maks"),
-                        parseStringMember(object, "format"));
+                        parseStringMember(object, "format"),
+                        parseBooleanMember(object, "ajourhold_snu"),
+                        parseBooleanMember(object, "lengdeavhengig_verdi"));
             case SHORT_DATE:
                 return new ShortDateAttributeType(props,
                         parameters,
                         parseIntMember(object, "standardverdi"),
                         parseIntMember(object, "min_anbefalt"),
                         parseIntMember(object, "maks_anbefalt"),
-                        parseStringMember(object, "format"));
+                        parseStringMember(object, "format"),
+                        parseBooleanMember(object, "ajourhold_snu"),
+                        parseBooleanMember(object, "lengdeavhengig_verdi"));
             case LOCAL_TIME:
                 return new TimeAttributeType(props,
                         parameters,
                         parseTimeMember(object, "standardverdi"),
                         parseTimeMember(object, "min_anbefalt"),
                         parseTimeMember(object, "maks_anbefalt"),
-                        parseStringMember(object, "format"));
+                        parseStringMember(object, "format"),
+                        parseBooleanMember(object, "ajourhold_snu"),
+                        parseBooleanMember(object, "lengdeavhengig_verdi"));
             case BINARY:
                 return new BinaryObjectAttributeType(
                         props,
                         parameters,
-                        parseStringMember(object, "mediatype")
-                );
+                        parseStringMember(object, "mediatype"),
+                        parseBooleanMember(object, "ajourhold_snu"),
+                        parseBooleanMember(object, "lengdeavhengig_verdi"));
             case STRUCTURE:
                 return new StructureAttributeType(props, parameters);
             case LIST:
@@ -197,7 +210,9 @@ public final class AttributeTypeParser {
                 decimalCount,
                 unit,
                 parseEnumValues(object),
-                parseBooleanMember(object, "fortegnsendring_snu"));
+                parseBooleanMember(object, "fortegnsendring_snu"),
+                parseBooleanMember(object, "ajourhold_snu"),
+                parseBooleanMember(object, "lengdeavhengig_verdi"));
     }
 
     private static AttributeType parseIntegerAttributeType(JsonObject object, AttributeTypeParameters parameters, AttributeCommonProperties props) {
@@ -217,7 +232,9 @@ public final class AttributeTypeParser {
                 parseIntMember(object, "feltlengde"),
                 unit,
                 parseEnumValues(object),
-                parseBooleanMember(object, "fortegnsendring_snu"));
+                parseBooleanMember(object, "fortegnsendring_snu"),
+                parseBooleanMember(object, "ajourhold_snu"),
+                parseBooleanMember(object, "lengdeavhengig_verdi"));
     }
 
     private static AttributeType parseStringAttributeType(JsonObject object, AttributeTypeParameters parameters, AttributeCommonProperties props) {
@@ -230,7 +247,9 @@ public final class AttributeTypeParser {
                 textDefaultValue,
                 fieldLength,
                 values,
-                parseStringMember(object, "format"));
+                parseStringMember(object, "format"),
+                parseBooleanMember(object, "ajourhold_snu"),
+                parseBooleanMember(object, "lengdeavhengig_verdi"));
     }
 
     private static SpatialType determineSpatialType(JsonObject object) {

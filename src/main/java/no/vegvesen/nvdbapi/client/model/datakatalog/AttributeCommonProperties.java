@@ -43,6 +43,7 @@ public class AttributeCommonProperties {
     private final String sosiNvdbName;
     private final Integer sensitiveLevel;
     private final LocalDate objectListDate;
+    private final LocalDate validTo;
     private final boolean readOnly;
     private final String caption;
     private final Integer complementaryattrtypeid;
@@ -68,6 +69,7 @@ public class AttributeCommonProperties {
                                      String sosiNvdbName,
                                      Integer sensitiveLevel,
                                      LocalDate objectListDate,
+                                     LocalDate validTo,
                                      boolean readOnly,
                                      String caption,
                                      Integer complementaryattrtypeid,
@@ -92,6 +94,7 @@ public class AttributeCommonProperties {
         this.sosiNvdbName = sosiNvdbName;
         this.sensitiveLevel = sensitiveLevel;
         this.objectListDate = objectListDate;
+        this.validTo = validTo;
         this.readOnly = readOnly;
         this.caption = caption;
         this.complementaryattrtypeid = complementaryattrtypeid;
@@ -201,6 +204,10 @@ public class AttributeCommonProperties {
         return conditionalRequirements;
     }
 
+    public LocalDate getValidTo() {
+        return validTo;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -224,6 +231,7 @@ public class AttributeCommonProperties {
                 Objects.equals(sosiNvdbName, that.sosiNvdbName) &&
                 Objects.equals(sensitiveLevel, that.sensitiveLevel) &&
                 Objects.equals(objectListDate, that.objectListDate) &&
+                Objects.equals(validTo, that.validTo) &&
                 Objects.equals(caption, that.caption) &&
                 Objects.equals(complementaryattrtypeid, that.complementaryattrtypeid) &&
                 Objects.equals(planviewreftext, that.planviewreftext) &&
@@ -235,10 +243,11 @@ public class AttributeCommonProperties {
     @Override
     public int hashCode() {
         return Objects.hash(id, category, name, shortname, description, type, sortNumber, requirementComment,
-                importance, sosiName, sosiNvdbName, sensitiveLevel, objectListDate, readOnly, caption,
+                importance, sosiName, sosiNvdbName, sensitiveLevel, objectListDate, validTo, readOnly, caption,
                 complementaryattrtypeid, planviewreftext, heightreftext, referencesosi, referencegeometry, reqheightref,
                 reqaccuracyplan, reqaccuracyheight, conditionalRequirements);
     }
+
 
     @Override
     public String toString() {
