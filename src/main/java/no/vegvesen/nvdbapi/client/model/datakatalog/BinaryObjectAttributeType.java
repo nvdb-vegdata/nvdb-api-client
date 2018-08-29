@@ -27,7 +27,17 @@ package no.vegvesen.nvdbapi.client.model.datakatalog;
 
 public class BinaryObjectAttributeType extends AttributeType {
 
-    public BinaryObjectAttributeType(AttributeCommonProperties props, AttributeTypeParameters parameters) {
+    private final String blobformat;
+
+    public BinaryObjectAttributeType(AttributeCommonProperties props,
+                                     AttributeTypeParameters parameters,
+                                     String blobformat) {
         super(props, parameters);
+        this.blobformat = blobformat;
+    }
+
+    public String getBlobformat() {
+
+        return blobformat;
     }
 }

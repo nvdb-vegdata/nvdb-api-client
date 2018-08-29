@@ -26,6 +26,8 @@
 package no.vegvesen.nvdbapi.client.model.datakatalog;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
 
 public class AttributeCommonProperties {
     private final Integer id;
@@ -41,6 +43,17 @@ public class AttributeCommonProperties {
     private final String sosiNvdbName;
     private final Integer sensitiveLevel;
     private final LocalDate objectListDate;
+    private final boolean readOnly;
+    private final String caption;
+    private final Integer complementaryattrtypeid;
+    private final String planviewreftext;
+    private final String heightreftext;
+    private final String referencesosi;
+    private final boolean referencegeometry;
+    private final int reqheightref;
+    private final double reqaccuracyplan;
+    private final double reqaccuracyheight;
+    private final List<String> conditionalRequirements;
 
     public AttributeCommonProperties(Integer id,
                                      Integer category,
@@ -54,7 +67,18 @@ public class AttributeCommonProperties {
                                      String sosiName,
                                      String sosiNvdbName,
                                      Integer sensitiveLevel,
-                                     LocalDate objectListDate) {
+                                     LocalDate objectListDate,
+                                     boolean readOnly,
+                                     String caption,
+                                     Integer complementaryattrtypeid,
+                                     String planviewreftext,
+                                     String heightreftext,
+                                     String referencesosi,
+                                     boolean referencegeometry,
+                                     int reqheightref,
+                                     double reqaccuracyplan,
+                                     double reqaccuracyheight,
+                                     List<String> conditionalRequirements) {
         this.id = id;
         this.category = category;
         this.name = name;
@@ -68,6 +92,17 @@ public class AttributeCommonProperties {
         this.sosiNvdbName = sosiNvdbName;
         this.sensitiveLevel = sensitiveLevel;
         this.objectListDate = objectListDate;
+        this.readOnly = readOnly;
+        this.caption = caption;
+        this.complementaryattrtypeid = complementaryattrtypeid;
+        this.planviewreftext = planviewreftext;
+        this.heightreftext = heightreftext;
+        this.referencesosi = referencesosi;
+        this.referencegeometry = referencegeometry;
+        this.reqheightref = reqheightref;
+        this.reqaccuracyplan = reqaccuracyplan;
+        this.reqaccuracyheight = reqaccuracyheight;
+        this.conditionalRequirements = conditionalRequirements;
     }
 
     public Integer getId() {
@@ -120,5 +155,118 @@ public class AttributeCommonProperties {
 
     public String getShortname() {
         return shortname;
+    }
+
+    public boolean isReadOnly() {
+        return readOnly;
+    }
+
+    public String getCaption() {
+        return caption;
+    }
+
+    public Integer getComplementaryattrtypeid() {
+        return complementaryattrtypeid;
+    }
+
+    public String getPlanviewreftext() {
+        return planviewreftext;
+    }
+
+    public String getHeightreftext() {
+        return heightreftext;
+    }
+
+    public String getReferencesosi() {
+        return referencesosi;
+    }
+
+    public boolean isReferencegeometry() {
+        return referencegeometry;
+    }
+
+    public int getReqheightref() {
+        return reqheightref;
+    }
+
+    public double getReqaccuracyplan() {
+        return reqaccuracyplan;
+    }
+
+    public double getReqaccuracyheight() {
+        return reqaccuracyheight;
+    }
+
+    public List<String> getConditionalRequirements() {
+        return conditionalRequirements;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AttributeCommonProperties that = (AttributeCommonProperties) o;
+        return readOnly == that.readOnly &&
+                referencegeometry == that.referencegeometry &&
+                reqheightref == that.reqheightref &&
+                Double.compare(that.reqaccuracyplan, reqaccuracyplan) == 0 &&
+                Double.compare(that.reqaccuracyheight, reqaccuracyheight) == 0 &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(category, that.category) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(shortname, that.shortname) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(type, that.type) &&
+                Objects.equals(sortNumber, that.sortNumber) &&
+                Objects.equals(requirementComment, that.requirementComment) &&
+                importance == that.importance &&
+                Objects.equals(sosiName, that.sosiName) &&
+                Objects.equals(sosiNvdbName, that.sosiNvdbName) &&
+                Objects.equals(sensitiveLevel, that.sensitiveLevel) &&
+                Objects.equals(objectListDate, that.objectListDate) &&
+                Objects.equals(caption, that.caption) &&
+                Objects.equals(complementaryattrtypeid, that.complementaryattrtypeid) &&
+                Objects.equals(planviewreftext, that.planviewreftext) &&
+                Objects.equals(heightreftext, that.heightreftext) &&
+                Objects.equals(referencesosi, that.referencesosi) &&
+                Objects.equals(conditionalRequirements, that.conditionalRequirements);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, category, name, shortname, description, type, sortNumber, requirementComment,
+                importance, sosiName, sosiNvdbName, sensitiveLevel, objectListDate, readOnly, caption,
+                complementaryattrtypeid, planviewreftext, heightreftext, referencesosi, referencegeometry, reqheightref,
+                reqaccuracyplan, reqaccuracyheight, conditionalRequirements);
+    }
+
+    @Override
+    public String toString() {
+        return "AttributeCommonProperties{" +
+                "id=" + id +
+                ", category=" + category +
+                ", name='" + name + '\'' +
+                ", shortname='" + shortname + '\'' +
+                ", description='" + description + '\'' +
+                ", type=" + type +
+                ", sortNumber=" + sortNumber +
+                ", requirementComment='" + requirementComment + '\'' +
+                ", importance=" + importance +
+                ", sosiName='" + sosiName + '\'' +
+                ", sosiNvdbName='" + sosiNvdbName + '\'' +
+                ", sensitiveLevel=" + sensitiveLevel +
+                ", objectListDate=" + objectListDate +
+                ", readOnly=" + readOnly +
+                ", caption='" + caption + '\'' +
+                ", complementaryattrtypeid=" + complementaryattrtypeid +
+                ", planviewreftext='" + planviewreftext + '\'' +
+                ", heightreftext='" + heightreftext + '\'' +
+                ", referencesosi='" + referencesosi + '\'' +
+                ", referencegeometry=" + referencegeometry +
+                ", reqheightref=" + reqheightref +
+                ", reqaccuracyplan=" + reqaccuracyplan +
+                ", reqaccuracyheight=" + reqaccuracyheight +
+                ", conditionalRequirements=" + conditionalRequirements +
+                '}';
     }
 }

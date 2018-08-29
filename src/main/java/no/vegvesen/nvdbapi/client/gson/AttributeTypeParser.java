@@ -70,7 +70,18 @@ public final class AttributeTypeParser {
                 sosiName,
                 sosiNvdbName,
                 sensitivityLevel,
-                validFrom);
+                validFrom,
+                parseBooleanMember(object, "skrivebeskyttet"),
+                parseStringMember(object, "ledetekst"),
+                parseIntMember(object, "komplementær_egenskapstype"),
+                parseStringMember(object, "grunnrissreferanse"),
+                parseStringMember(object, "høydereferanse"),
+                parseStringMember(object, "sosi_referanse"),
+                parseBooleanMember(object, "referansegeometri_tilstrekkelig"),
+                parseIntMember(object, "høydereferanse_tall"),
+                parseDoubleMember(object, "nøyaktighetskrav_grunnriss"),
+                parseDoubleMember(object, "nøyaktighetskrav_høyde"),
+                parseStringListMember(object, "tilleggskrav"));
 
         switch (type.getJavaType()) {
             case TEXT:
@@ -133,7 +144,11 @@ public final class AttributeTypeParser {
                         parseTimeMember(object, "min_anbefalt"),
                         parseTimeMember(object, "maks_anbefalt"));
             case BINARY:
-                return new BinaryObjectAttributeType(props, parameters);
+                return new BinaryObjectAttributeType(
+                        props,
+                        parameters,
+                        parseStringMember(object, "mediatype")
+                );
             case STRUCTURE:
                 return new StructureAttributeType(props, parameters);
             case LIST:
