@@ -38,9 +38,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static java.util.Objects.isNull;
-import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseDoubleMember;
-import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseLongMember;
-import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseStringMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 
 public final class PlacementParser {
 
@@ -86,7 +84,7 @@ public final class PlacementParser {
         SidePosition sidePos = Optional.ofNullable(parseStringMember(obj, "sideposisjon"))
                 .map(SidePosition::from)
                 .orElse(null);
-        String lane = parseStringMember(obj, "felt");
+        List<String> lane = parseStringListMember(obj, "felt");
 
         HeightLevel heightLevel = Optional.ofNullable(parseStringMember(obj, "høyde"))
                 .map(HeightLevel::from)
