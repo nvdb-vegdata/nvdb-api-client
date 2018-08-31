@@ -73,7 +73,7 @@ public final class SegmentedLinkParser {
 
         Long superLinkId = null;
         if(obj.has("superstedfesting")) {
-            superLinkId = parseLongMember(obj, "superstedfesting.lenkesekvens");
+            superLinkId = parseLongMember(obj, "superstedfesting.veglenkesekvens");
         }
 
         return new SegmentedLink(id, superLinkId, start, end, startNode, endNode, fromDate, toDate,

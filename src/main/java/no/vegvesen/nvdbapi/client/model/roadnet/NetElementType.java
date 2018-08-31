@@ -29,7 +29,7 @@ import java.util.Arrays;
 
 public enum NetElementType {
     NODE(50001, "Node"),
-    LENKE(50002, "Lenke");
+    LENKE(50002, "Veglenkesekvens");
 
     private final int value;
     private final String description;
