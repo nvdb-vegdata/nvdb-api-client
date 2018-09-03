@@ -51,6 +51,7 @@ class RoadObjectRequestBuilder {
         request.getRoadRefFilter().ifPresent(v -> map.putSingle("vegreferanse", v));
         request.getRefLinkFilter().ifPresent(v -> map.putSingle("veglenkesekvens", v));
         flatten(request.getMunicipalities()).ifPresent(v -> map.putSingle("kommune", v));
+        flatten(request.getRoadobjectIds()).ifPresent(v -> map.putSingle("id", v));
         flatten(request.getCounties()).ifPresent(v -> map.putSingle("fylke", v));
         flatten(request.getRegions()).ifPresent(v -> map.putSingle("region", v));
         flatten(request.getRoadDepartments()).ifPresent(v -> map.putSingle("vegavdeling", v));
