@@ -36,9 +36,9 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -54,9 +54,13 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
 
         WebTarget target = getClient().target(path);
         JsonElement result = JerseyHelper.execute(target);
-        return StreamSupport.stream(result.getAsJsonArray().spliterator(), false)
-                            .map(e -> SegmentedLinkParser.parse(e.getAsJsonObject()))
-                            .collect(Collectors.toList());
+        if (result.isJsonArray()) {
+            return StreamSupport.stream(result.getAsJsonArray().spliterator(), false)
+                    .map(e -> SegmentedLinkParser.parse(e.getAsJsonObject()))
+                    .collect(Collectors.toList());
+        } else {
+            return Collections.singletonList(SegmentedLinkParser.parse(result.getAsJsonObject()));
+        }
     }
 
     public SegmentedLinkResult getLinks() {
