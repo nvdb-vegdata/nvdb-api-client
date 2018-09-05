@@ -54,6 +54,7 @@ public class RoadObjectRequest {
     private final List<Integer> roadDepartments;
     private final List<String> contractAreas;
     private final List<String> nationalRoutes;
+    private final List<Integer> roadobjectIds;
 
     private RoadObjectRequest(Builder b) {
         page = b.page;
@@ -76,6 +77,7 @@ public class RoadObjectRequest {
         contractAreas = b.contractAreas;
         nationalRoutes = b.nationalRoutes;
         allVersions = b.allVersions;
+        roadobjectIds = b.roadobjectIds;
     }
 
     public static Builder newBuilder() {
@@ -162,6 +164,10 @@ public class RoadObjectRequest {
         return nationalRoutes;
     }
 
+    public List<Integer> getRoadobjectIds() {
+        return roadobjectIds;
+    }
+
     /**
      * This method strips any parameters that are not supported by the API
      * for statistics requests
@@ -196,6 +202,7 @@ public class RoadObjectRequest {
         b.withRegions(regions);
         b.withRoadDepartments(roadDepartments);
         b.withAllVersions(allVersions);
+        b.withIds(roadobjectIds);
         return b;
     }
 
@@ -221,6 +228,7 @@ public class RoadObjectRequest {
         private List<Integer> roadDepartments = Collections.emptyList();
         private List<String> contractAreas = Collections.emptyList();
         private List<String> nationalRoutes = Collections.emptyList();
+        private List<Integer> roadobjectIds = Collections.emptyList();
 
         private Builder() {
         }
@@ -408,6 +416,11 @@ public class RoadObjectRequest {
 
         public Builder withAllVersions(boolean allVersions) {
             this.allVersions = allVersions;
+            return this;
+        }
+
+        public Builder withIds(List<Integer> roadobjectIds) {
+            this.roadobjectIds = roadobjectIds;
             return this;
         }
     }
