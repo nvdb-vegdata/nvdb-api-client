@@ -54,7 +54,7 @@ public class RoadObjectRequest {
     private final List<Integer> roadDepartments;
     private final List<String> contractAreas;
     private final List<String> nationalRoutes;
-    private final List<Integer> roadobjectIds;
+    private final List<Long> roadobjectIds;
 
     private RoadObjectRequest(Builder b) {
         page = b.page;
@@ -164,7 +164,7 @@ public class RoadObjectRequest {
         return nationalRoutes;
     }
 
-    public List<Integer> getRoadobjectIds() {
+    public List<Long> getRoadobjectIds() {
         return roadobjectIds;
     }
 
@@ -184,25 +184,25 @@ public class RoadObjectRequest {
     }
 
     public Builder toMutable() {
-        Builder b = new Builder();
-        b.withPage(page);
-        b.withSegmented(segmented);
-        b.withDepth(depth);
-        b.withProjection(projection);
-        b.withDistanceTolerance(distanceTolerance);
-        b.withIncludes(includes);
-        b.withAttributeFilter(attributeFilter);
-        b.withBbox(bbox);
-        b.withBpolygon(bpolygon);
-        b.withRoadRefFilter(roadRefFilter);
-        b.withRefLinkFilter(refLinkFilter);
+        Builder b = new Builder()
+                .withPage(page)
+                .withSegmented(segmented)
+                .withDepth(depth)
+                .withProjection(projection)
+                .withDistanceTolerance(distanceTolerance)
+                .withIncludes(includes)
+                .withAttributeFilter(attributeFilter)
+                .withBbox(bbox)
+                .withBpolygon(bpolygon)
+                .withRoadRefFilter(roadRefFilter)
+                .withRefLinkFilter(refLinkFilter)
+                .withMunicipalities(municipalities)
+                .withCounties(counties)
+                .withRegions(regions)
+                .withRoadDepartments(roadDepartments)
+                .withAllVersions(allVersions)
+                .withIds(roadobjectIds);
         overlapFilters.forEach(of -> b.addOverlapFilter(of.filter, of.typeId));
-        b.withMunicipalities(municipalities);
-        b.withCounties(counties);
-        b.withRegions(regions);
-        b.withRoadDepartments(roadDepartments);
-        b.withAllVersions(allVersions);
-        b.withIds(roadobjectIds);
         return b;
     }
 
@@ -228,7 +228,7 @@ public class RoadObjectRequest {
         private List<Integer> roadDepartments = Collections.emptyList();
         private List<String> contractAreas = Collections.emptyList();
         private List<String> nationalRoutes = Collections.emptyList();
-        private List<Integer> roadobjectIds = Collections.emptyList();
+        private List<Long> roadobjectIds = Collections.emptyList();
 
         private Builder() {
         }
@@ -419,7 +419,7 @@ public class RoadObjectRequest {
             return this;
         }
 
-        public Builder withIds(List<Integer> roadobjectIds) {
+        public Builder withIds(List<Long> roadobjectIds) {
             this.roadobjectIds = roadobjectIds;
             return this;
         }
