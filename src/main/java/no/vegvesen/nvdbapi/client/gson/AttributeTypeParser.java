@@ -119,16 +119,12 @@ public final class AttributeTypeParser {
                     String laneRelevant = parseStringMember(object, "kjørefelt_relevant");
                     String sideposRelevant = parseStringMember(object, "sideposisjon_relevant");
                     Boolean heightRelevant = parseBooleanMember(object, "høyde_relevant");
-                    Boolean dirRelevant = parseBooleanMember(object, "retning_relevant");
-                    Boolean movable = parseBooleanMember(object, "flyttbar");
                     Boolean insideparent = parseBooleanMember(object, "innenfor_mor");
                     String ajourholdi = parseStringMember(object, "ajourhold_i");
                     String ajourholdsplitt = parseStringMember(object, "ajourhold_splitt");
-                    Double supplyLength = parseDoubleMember(object, "suppleringslengde");
-                    String dekningsgrad = parseStringMember(object, "dekningsgrad");
                     return new LocationalAttributeType(props, determineLocationalType(object),
-                            overlapp, laneRelevant, sideposRelevant, heightRelevant, dirRelevant, movable,
-                            ajourholdi, ajourholdsplitt, supplyLength, dekningsgrad, insideparent);
+                            overlapp, laneRelevant, sideposRelevant, heightRelevant,
+                            ajourholdi, ajourholdsplitt, insideparent);
                 } else {
                     return new SpatialAttributeType(props,
                             determineSpatialType(object),
@@ -325,17 +321,26 @@ public final class AttributeTypeParser {
                 return (T) new StringEnumValue(id,
                         sortNumber, parseStringMember(obj, "verdi"),
                         shortValue, description, objectListDate,
-                        parseBooleanMember(obj, "standardverdi"));
+                        parseBooleanMember(obj, "standardverdi"),
+                        parseBooleanMember(obj, "kortnavn_brukbar"),
+                        parseIntMember(obj, "kortnavnlengde"),
+                        parseIntMember(obj, "komplementær_enumverdi"));
             case "Heltall":
                 return (T) new IntegerEnumValue(id,
                         sortNumber, parseIntMember(obj, "verdi"),
                         shortValue, description, objectListDate,
-                        parseBooleanMember(obj, "standardverdi"));
+                        parseBooleanMember(obj, "standardverdi"),
+                        parseBooleanMember(obj, "kortnavn_brukbar"),
+                        parseIntMember(obj, "kortnavnlengde"),
+                        parseIntMember(obj, "komplementær_enumverdi"));
             case "Flyttall":
                 return (T) new DoubleEnumValue(id,
                         sortNumber, parseDoubleMember(obj, "verdi"),
                         shortValue, description, objectListDate,
-                        parseBooleanMember(obj, "standardverdi"));
+                        parseBooleanMember(obj, "standardverdi"),
+                        parseBooleanMember(obj, "kortnavn_brukbar"),
+                        parseIntMember(obj, "kortnavnlengde"),
+                        parseIntMember(obj, "komplementær_enumverdi"));
             default:
                 throw new IllegalArgumentException("Could not handle enum value of type " + type);
         }
