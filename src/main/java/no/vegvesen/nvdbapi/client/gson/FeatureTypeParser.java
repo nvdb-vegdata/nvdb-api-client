@@ -75,11 +75,6 @@ public final class FeatureTypeParser {
             locationalAttribute = AttributeTypeParser.parse(dataTypes, obj.getAsJsonObject("stedfesting"));
         }
 
-        FeatureTypeParameters parameters = null;
-        if (obj.has("styringsparametere")) {
-            parameters = GuidanceParametersParser.parseFeatureType(obj.getAsJsonObject("styringsparametere"));
-        }
-
         return new FeatureType(id,
                 name,
                 description,
@@ -92,7 +87,6 @@ public final class FeatureTypeParser {
                 sortNumber,
                 objectListDate,
                 placementType,
-                parameters,
                 locationalAttribute,
                 parseStringMember(obj, "status"),
                 parseStringMember(obj, "hovedkategori"),

@@ -44,7 +44,6 @@ public final class FeatureType implements Serializable {
     private final List<AttributeType> attributeTypes;
     private final List<AssociationType> parents;
     private final List<AssociationType> children;
-    private final FeatureTypeParameters parameters;
     private final AttributeType locationalAttribute;
 
     private final String status;
@@ -64,7 +63,6 @@ public final class FeatureType implements Serializable {
                        Integer sortNumber,
                        LocalDate objectListDate,
                        PlacementType placementType,
-                       FeatureTypeParameters featureTypeParameters,
                        AttributeType locationalAttribute,
                        String status,
                        String mainCategory,
@@ -80,7 +78,6 @@ public final class FeatureType implements Serializable {
         this.sortNumber = sortNumber;
         this.objectListDate = objectListDate;
         this.placementType = placementType;
-        this.parameters = featureTypeParameters;
         this.children = Optional.ofNullable(children).orElse(Collections.emptyList());
         this.parents = Optional.ofNullable(parents).orElse(Collections.emptyList());
         this.attributeTypes = Optional.ofNullable(attributeTypes).orElse(Collections.emptyList());
@@ -102,10 +99,6 @@ public final class FeatureType implements Serializable {
 
     public String getSosiNvdbName() {
         return sosiNvdbName;
-    }
-
-    public FeatureTypeParameters getParameters() {
-        return parameters;
     }
 
     public Integer getSortNumber() {
@@ -171,7 +164,10 @@ public final class FeatureType implements Serializable {
      * @return the attribute type requested or null if not present
      */
     public <T extends AttributeType> T getAttributeType(Integer id, Class<T> clazz) {
-        return Optional.ofNullable(getAttributeType(id)).map(at -> clazz.cast(at)).orElse(null);
+        return Optional.ofNullable(getAttributeType(id))
+                .filter(attr -> clazz.isInstance(attr.getClass()))
+                .map(clazz::cast)
+                .orElse(null);
     }
 
     public List<AttributeType> getAttributeTypes() {
