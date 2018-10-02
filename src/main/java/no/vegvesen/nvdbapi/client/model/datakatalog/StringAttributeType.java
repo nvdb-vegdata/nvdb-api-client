@@ -36,12 +36,11 @@ public class StringAttributeType extends AbstractEnumAttributeType<StringEnumVal
     private final boolean isextentsensitive;
 
     public StringAttributeType(AttributeCommonProperties props,
-                               AttributeTypeParameters parameters,
                                String defaultValue,
                                Integer fieldLength,
                                Set<StringEnumValue> values,
                                String format, boolean isdirectionsensitive, boolean isextentsensitive) {
-        super(props, parameters, values);
+        super(props, values);
         this.defaultValue = defaultValue;
         this.fieldLength = fieldLength;
         this.format = format;

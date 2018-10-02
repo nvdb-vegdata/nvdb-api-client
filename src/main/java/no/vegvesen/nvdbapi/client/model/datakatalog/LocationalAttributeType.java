@@ -18,12 +18,12 @@ public class LocationalAttributeType extends AttributeType {
     private final boolean insideparent;
 
 
-    public LocationalAttributeType(AttributeCommonProperties props, AttributeTypeParameters parameters,
+    public LocationalAttributeType(AttributeCommonProperties props,
                                    LocationalType locationalType, Boolean overlapp, String laneRelevant,
                                    String sideposRelevant, Boolean heightRelevant, Boolean dirRelevant,
                                    Boolean movable, String ajourholdi, String ajourholdsplitt,
                                    Double supplyLength, String dekningsgrad, boolean insideparent) {
-        super(props, parameters);
+        super(props);
         this.locationalType = locationalType;
         this.overlapp = overlapp;
         this.laneRelevant = laneRelevant;

@@ -32,11 +32,9 @@ import java.util.Arrays;
 public abstract class AttributeType implements Serializable {
 
     private final AttributeCommonProperties props;
-    private final AttributeTypeParameters parameters;
 
-    protected AttributeType(AttributeCommonProperties props, AttributeTypeParameters parameters) {
+    protected AttributeType(AttributeCommonProperties props) {
         this.props = props;
-        this.parameters = parameters;
     }
 
     public boolean isEnum() {
@@ -77,10 +75,6 @@ public abstract class AttributeType implements Serializable {
 
     public LocalDate getObjectListDate() {
         return props.getObjectListDate();
-    }
-
-    public AttributeTypeParameters getParameters() {
-        return parameters;
     }
 
     public Integer getSortNumber() {

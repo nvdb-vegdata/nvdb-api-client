@@ -32,9 +32,8 @@ public class BinaryObjectAttributeType extends AttributeType {
     private final boolean isextentsensitive;
 
     public BinaryObjectAttributeType(AttributeCommonProperties props,
-                                     AttributeTypeParameters parameters,
                                      String blobformat, boolean isdirectionsensitive, boolean isextentsensitive) {
-        super(props, parameters);
+        super(props);
         this.blobformat = blobformat;
         this.isdirectionsensitive = isdirectionsensitive;
         this.isextentsensitive = isextentsensitive;

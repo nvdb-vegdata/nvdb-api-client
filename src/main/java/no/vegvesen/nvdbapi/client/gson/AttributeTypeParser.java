@@ -56,7 +56,8 @@ public final class AttributeTypeParser {
         Integer sensitivityLevel = parseIntMember(object, "sensitivitet");
         LocalDate validFrom = parseDateMember(object, "objektliste_dato");
         LocalDate validTo = parseDateMember(object, "slutt_dato");
-        AttributeTypeParameters parameters = GuidanceParametersParser.parseAttributeType(object.getAsJsonObject("styringsparametere"));
+        Boolean derived = parseBooleanMember(object, "avledet");
+        Boolean requiredValue = parseBooleanMember(object, "obligatorisk_verdi");
 
         AttributeCommonProperties props = new AttributeCommonProperties(
                 id,
@@ -83,21 +84,23 @@ public final class AttributeTypeParser {
                 parseIntMember(object, "høydereferanse_tall"),
                 parseDoubleMember(object, "nøyaktighetskrav_grunnriss"),
                 parseDoubleMember(object, "nøyaktighetskrav_høyde"),
-                parseStringListMember(object, "tilleggskrav"));
+                parseStringListMember(object, "tilleggskrav"),
+                derived,
+                requiredValue);
 
         switch (type.getJavaType()) {
             case TEXT:
-                return parseStringAttributeType(object, parameters, props);
+                return parseStringAttributeType(object, props);
             case CHARACTER:
                 return new CharacterAttributeType(props,
-                        parameters,
                         Optional.ofNullable(parseStringMember(object, "standardverdi"))
                                 .map(s -> s.charAt(0))
                                 .orElse(null),
                         parseBooleanMember(object, "ajourhold_snu"),
                         parseBooleanMember(object, "lengdeavhengig_verdi"));
             case BOOLEAN:
-                return new BooleanAttributeType(props, parameters, parseBooleanMember(object, "standardverdi"),
+                return new BooleanAttributeType(props,
+                        parseBooleanMember(object, "standardverdi"),
                         parseBooleanMember(object, "ajourhold_snu"),
                         parseBooleanMember(object, "lengdeavhengig_verdi"));
             case NUMBER:
@@ -105,9 +108,9 @@ public final class AttributeTypeParser {
                         && parseIntMember(object, "desimaler") > 0;
 
                 if (!isDouble) {
-                    return parseIntegerAttributeType(object, parameters, props);
+                    return parseIntegerAttributeType(object, props);
                 } else {
-                    return parseDoubleAttributeType(object, parameters, props);
+                    return parseDoubleAttributeType(object, props);
                 }
             case GEOMETRY: //spatial or locational
 
@@ -123,19 +126,17 @@ public final class AttributeTypeParser {
                     String ajourholdsplitt = parseStringMember(object, "ajourhold_splitt");
                     Double supplyLength = parseDoubleMember(object, "suppleringslengde");
                     String dekningsgrad = parseStringMember(object, "dekningsgrad");
-                    return new LocationalAttributeType(props, parameters, determineLocationalType(object),
+                    return new LocationalAttributeType(props, determineLocationalType(object),
                             overlapp, laneRelevant, sideposRelevant, heightRelevant, dirRelevant, movable,
                             ajourholdi, ajourholdsplitt, supplyLength, dekningsgrad, insideparent);
                 } else {
                     return new SpatialAttributeType(props,
-                            parameters,
                             determineSpatialType(object),
                             parseIntMember(object, "dimensjoner"),
                             parseBooleanMember(object, "innenfor_mor"));
                 }
             case LOCAL_DATE:
                 return new DateAttributeType(props,
-                        parameters,
                         parseDateMember(object, "standardverdi"),
                         parseDateMember(object, "min"),
                         parseDateMember(object, "maks"),
@@ -144,7 +145,6 @@ public final class AttributeTypeParser {
                         parseBooleanMember(object, "lengdeavhengig_verdi"));
             case SHORT_DATE:
                 return new ShortDateAttributeType(props,
-                        parameters,
                         parseIntMember(object, "standardverdi"),
                         parseIntMember(object, "min_anbefalt"),
                         parseIntMember(object, "maks_anbefalt"),
@@ -153,7 +153,6 @@ public final class AttributeTypeParser {
                         parseBooleanMember(object, "lengdeavhengig_verdi"));
             case LOCAL_TIME:
                 return new TimeAttributeType(props,
-                        parameters,
                         parseTimeMember(object, "standardverdi"),
                         parseTimeMember(object, "min_anbefalt"),
                         parseTimeMember(object, "maks_anbefalt"),
@@ -163,22 +162,19 @@ public final class AttributeTypeParser {
             case BINARY:
                 return new BinaryObjectAttributeType(
                         props,
-                        parameters,
                         parseStringMember(object, "mediatype"),
                         parseBooleanMember(object, "ajourhold_snu"),
                         parseBooleanMember(object, "lengdeavhengig_verdi"));
             case STRUCTURE:
-                return new StructureAttributeType(props, parameters);
+                return new StructureAttributeType(props);
             case LIST:
                 AttributeType content = parse(typeMap, object.getAsJsonObject("innhold"));
                 return new ListAttributeType(props,
-                        parameters,
                         content,
                         parseIntMember(object, "maksimalt_antall_verdier"),
                         parseIntMember(object, "minimalt_antall_verdier"));
             case ASSOCIATION:
                 return new AssociationRoleType(props,
-                        parameters,
                         parseIntMember(object, "tilknytning"),
                         parseIntMember(object, "vegobjekttypeid"),
                         parseIntMember(object, "innenfor_mor"),
@@ -191,7 +187,7 @@ public final class AttributeTypeParser {
         }
     }
 
-    private static AttributeType parseDoubleAttributeType(JsonObject object, AttributeTypeParameters parameters, AttributeCommonProperties props) {
+    private static AttributeType parseDoubleAttributeType(JsonObject object, AttributeCommonProperties props) {
         Integer decimalCount = parseIntMember(object, "desimaler");
         Double doubleDefValue = parseDoubleMember(object, "standardverdi");
         Double doubleMinValue = parseDoubleMember(object, "min_anbefalt"), doubleMaxValue = parseDoubleMember(object, "maks_anbefalt");
@@ -200,7 +196,6 @@ public final class AttributeTypeParser {
 
         return new DoubleAttributeType(
                 props,
-                parameters,
                 doubleDefValue,
                 doubleMinValue,
                 doubleMaxValue,
@@ -215,7 +210,7 @@ public final class AttributeTypeParser {
                 parseBooleanMember(object, "lengdeavhengig_verdi"));
     }
 
-    private static AttributeType parseIntegerAttributeType(JsonObject object, AttributeTypeParameters parameters, AttributeCommonProperties props) {
+    private static AttributeType parseIntegerAttributeType(JsonObject object, AttributeCommonProperties props) {
         Integer intDefValue = parseIntMember(object, "standardverdi");
         Integer intMinValue = parseIntMember(object, "min_anbefalt"), intMaxValue = parseIntMember(object, "maks_anbefalt");
         Integer intAbsMinValue = parseIntMember(object, "min"), intAbsMaxValue = parseIntMember(object, "maks");
@@ -223,7 +218,6 @@ public final class AttributeTypeParser {
 
         return new IntegerAttributeType(
                 props,
-                parameters,
                 intDefValue,
                 intMinValue,
                 intMaxValue,
@@ -237,13 +231,13 @@ public final class AttributeTypeParser {
                 parseBooleanMember(object, "lengdeavhengig_verdi"));
     }
 
-    private static AttributeType parseStringAttributeType(JsonObject object, AttributeTypeParameters parameters, AttributeCommonProperties props) {
+    private static AttributeType parseStringAttributeType(JsonObject object, AttributeCommonProperties props) {
         Set<StringEnumValue> values = parseEnumValues(object);
         Integer fieldLength = parseIntMember(object, "feltlengde");
         String textDefaultValue = parseStringMember(object, "standardverdi");
 
-        return new StringAttributeType(props,
-                parameters,
+        return new StringAttributeType(
+                props,
                 textDefaultValue,
                 fieldLength,
                 values,

@@ -41,7 +41,6 @@ public class DoubleAttributeType extends AbstractEnumAttributeType<DoubleEnumVal
     private final boolean isextentsensitive;
 
     public DoubleAttributeType(AttributeCommonProperties props,
-                               AttributeTypeParameters parameters,
                                Double defaultvalue,
                                Double minValue,
                                Double maxValue,
@@ -52,7 +51,7 @@ public class DoubleAttributeType extends AbstractEnumAttributeType<DoubleEnumVal
                                Unit unit,
                                Set<DoubleEnumValue> values,
                                Boolean complementarysign, boolean isdirectionsensitive, boolean isextentsensitive) {
-        super(props, parameters, values);
+        super(props, values);
         this.defaultvalue = defaultvalue;
         this.minValue = minValue;
         this.maxValue = maxValue;

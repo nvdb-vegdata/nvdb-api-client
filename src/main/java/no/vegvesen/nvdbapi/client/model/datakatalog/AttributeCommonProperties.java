@@ -55,6 +55,8 @@ public class AttributeCommonProperties {
     private final double reqaccuracyplan;
     private final double reqaccuracyheight;
     private final List<String> conditionalRequirements;
+    private final Boolean derived;
+    private final Boolean required;
 
     public AttributeCommonProperties(Integer id,
                                      Integer category,
@@ -80,7 +82,9 @@ public class AttributeCommonProperties {
                                      int reqheightref,
                                      double reqaccuracyplan,
                                      double reqaccuracyheight,
-                                     List<String> conditionalRequirements) {
+                                     List<String> conditionalRequirements,
+                                     Boolean derived,
+                                     Boolean required) {
         this.id = id;
         this.category = category;
         this.name = name;
@@ -106,6 +110,8 @@ public class AttributeCommonProperties {
         this.reqaccuracyplan = reqaccuracyplan;
         this.reqaccuracyheight = reqaccuracyheight;
         this.conditionalRequirements = conditionalRequirements;
+        this.derived = derived;
+        this.required = required;
     }
 
     public Integer getId() {
@@ -208,6 +214,14 @@ public class AttributeCommonProperties {
         return validTo;
     }
 
+    public Boolean getDerived() {
+        return derived;
+    }
+
+    public Boolean getRequired() {
+        return required;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -237,7 +251,9 @@ public class AttributeCommonProperties {
                 Objects.equals(planviewreftext, that.planviewreftext) &&
                 Objects.equals(heightreftext, that.heightreftext) &&
                 Objects.equals(referencesosi, that.referencesosi) &&
-                Objects.equals(conditionalRequirements, that.conditionalRequirements);
+                Objects.equals(conditionalRequirements, that.conditionalRequirements) &&
+                Objects.equals(derived, that.derived) &&
+                Objects.equals(required, that.required);
     }
 
     @Override
@@ -245,9 +261,8 @@ public class AttributeCommonProperties {
         return Objects.hash(id, category, name, shortname, description, type, sortNumber, requirementComment,
                 importance, sosiName, sosiNvdbName, sensitiveLevel, objectListDate, validTo, readOnly, caption,
                 complementaryattrtypeid, planviewreftext, heightreftext, referencesosi, referencegeometry, reqheightref,
-                reqaccuracyplan, reqaccuracyheight, conditionalRequirements);
+                reqaccuracyplan, reqaccuracyheight, conditionalRequirements, derived, required);
     }
-
 
     @Override
     public String toString() {
@@ -265,6 +280,7 @@ public class AttributeCommonProperties {
                 ", sosiNvdbName='" + sosiNvdbName + '\'' +
                 ", sensitiveLevel=" + sensitiveLevel +
                 ", objectListDate=" + objectListDate +
+                ", validTo=" + validTo +
                 ", readOnly=" + readOnly +
                 ", caption='" + caption + '\'' +
                 ", complementaryattrtypeid=" + complementaryattrtypeid +
@@ -276,6 +292,8 @@ public class AttributeCommonProperties {
                 ", reqaccuracyplan=" + reqaccuracyplan +
                 ", reqaccuracyheight=" + reqaccuracyheight +
                 ", conditionalRequirements=" + conditionalRequirements +
+                ", derived=" + derived +
+                ", required=" + required +
                 '}';
     }
 }

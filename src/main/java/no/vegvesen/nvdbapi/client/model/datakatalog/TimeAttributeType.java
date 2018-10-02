@@ -36,10 +36,10 @@ public class TimeAttributeType extends AttributeType {
     private final boolean isdirectionsensitive;
     private final boolean isextentsensitive;
 
-    public TimeAttributeType(AttributeCommonProperties props, AttributeTypeParameters parameters,
+    public TimeAttributeType(AttributeCommonProperties props,
                              LocalTime defaultvalue, LocalTime minValue, LocalTime maxValue,
                              String format, boolean isdirectionsensitive, boolean isextentsensitive) {
-        super(props, parameters);
+        super(props);
         this.defaultvalue = defaultvalue;
         this.minValue = minValue;
         this.maxValue = maxValue;

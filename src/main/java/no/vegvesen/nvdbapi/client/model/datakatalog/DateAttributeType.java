@@ -35,10 +35,10 @@ public class DateAttributeType extends AttributeType {
     private final boolean isdirectionsensitive;
     private final boolean isextentsensitive;
 
-    public DateAttributeType(AttributeCommonProperties props, AttributeTypeParameters parameters,
+    public DateAttributeType(AttributeCommonProperties props,
                              LocalDate defaultValue, LocalDate minValue, LocalDate maxValue,
                              String format, boolean isdirectionsensitive, boolean isextentsensitive) {
-        super(props, parameters);
+        super(props);
         this.defaultValue = defaultValue;
         this.minValue = minValue;
         this.maxValue = maxValue;

@@ -12,10 +12,10 @@ public class AssociationRoleType extends AttributeType {
     private final int associationRequirement;
     private final String associationRequirementComment;
 
-    public AssociationRoleType(AttributeCommonProperties props, AttributeTypeParameters parameters, int affiliation,
+    public AssociationRoleType(AttributeCommonProperties props, int affiliation,
                                int featureTypeId, int insideParent, LocalDate startDate, LocalDate endDate,
                                int associationRequirement, String associationRequirementComment) {
-        super(props, parameters);
+        super(props);
         this.affiliation = affiliation;
         this.featureTypeId = featureTypeId;
         this.insideParent = insideParent;

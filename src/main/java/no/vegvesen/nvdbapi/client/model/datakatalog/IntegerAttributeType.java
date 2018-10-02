@@ -40,7 +40,6 @@ public class IntegerAttributeType extends AbstractEnumAttributeType<IntegerEnumV
     private final boolean isextentsensitive;
 
     public IntegerAttributeType(AttributeCommonProperties props,
-                                AttributeTypeParameters parameters,
                                 Integer defaultvalue,
                                 Integer minValue,
                                 Integer maxValue,
@@ -50,7 +49,7 @@ public class IntegerAttributeType extends AbstractEnumAttributeType<IntegerEnumV
                                 Unit unit,
                                 Set<IntegerEnumValue> values,
                                 Boolean complementarysign, boolean isdirectionsensitive, boolean isextentsensitive) {
-        super(props, parameters, values);
+        super(props, values);
         this.defaultvalue = defaultvalue;
         this.minValue = minValue;
         this.maxValue = maxValue;

@@ -7,10 +7,9 @@ public class ListAttributeType extends AttributeType {
     private AttributeType content;
 
     public ListAttributeType(AttributeCommonProperties props,
-                             AttributeTypeParameters parameters,
                              AttributeType content,
                              Integer min, Integer max) {
-        super(props, parameters);
+        super(props);
         this.min = min;
         this.max = max;
         this.content = content;

@@ -34,9 +34,8 @@ public abstract class AbstractEnumAttributeType<T extends EnumValue> extends Att
     private final Set<T> values;
 
     protected AbstractEnumAttributeType(AttributeCommonProperties props,
-                                        AttributeTypeParameters parameters,
                                         Set<T> values) {
-        super(props, parameters);
+        super(props);
         this.values = Optional.ofNullable(values).orElse(Collections.emptySet());
     }
 

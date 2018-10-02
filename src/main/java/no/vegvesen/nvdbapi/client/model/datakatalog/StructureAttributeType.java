@@ -27,8 +27,8 @@ package no.vegvesen.nvdbapi.client.model.datakatalog;
 
 public class StructureAttributeType extends AttributeType {
 
-    public StructureAttributeType(AttributeCommonProperties props, AttributeTypeParameters parameters) {
-        super(props, parameters);
+    public StructureAttributeType(AttributeCommonProperties props) {
+        super(props);
     }
 }
 

@@ -31,8 +31,10 @@ public class BooleanAttributeType extends AttributeType {
     private final boolean isextentsensitive;
 
     public BooleanAttributeType(AttributeCommonProperties props,
-                                AttributeTypeParameters parameters, Boolean defaultValue, boolean isdirectionsensitive, boolean isextentsensitive) {
-        super(props, parameters);
+                                Boolean defaultValue,
+                                boolean isdirectionsensitive,
+                                boolean isextentsensitive) {
+        super(props);
         this.defaultValue = defaultValue;
         this.isdirectionsensitive = isdirectionsensitive;
         this.isextentsensitive = isextentsensitive;

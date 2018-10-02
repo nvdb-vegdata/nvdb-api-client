@@ -34,10 +34,9 @@ public class ShortDateAttributeType extends AttributeType {
     private final boolean isextentsensitive;
 
     public ShortDateAttributeType(AttributeCommonProperties props,
-                                  AttributeTypeParameters parameters,
                                   Integer defaultvalue, Integer minValue, Integer maxValue,
                                   String format, boolean isdirectionsensitive, boolean isextentsensitive) {
-        super(props, parameters);
+        super(props);
         this.defaultvalue = defaultvalue;
         this.minValue = minValue;
         this.maxValue = maxValue;

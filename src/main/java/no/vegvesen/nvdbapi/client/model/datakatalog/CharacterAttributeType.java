@@ -31,9 +31,9 @@ public class CharacterAttributeType extends AttributeType {
     private final boolean isdirectionsensitive;
     private final boolean isextentsensitive;
 
-    public CharacterAttributeType(AttributeCommonProperties props, AttributeTypeParameters parameters,
+    public CharacterAttributeType(AttributeCommonProperties props,
                                   Character defaultValue, boolean isdirectionsensitive, boolean isextentsensitive) {
-        super(props, parameters);
+        super(props);
         this.defaultValue = defaultValue;
         this.isdirectionsensitive = isdirectionsensitive;
         this.isextentsensitive = isextentsensitive;
