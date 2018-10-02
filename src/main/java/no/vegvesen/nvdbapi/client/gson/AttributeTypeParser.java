@@ -115,7 +115,7 @@ public final class AttributeTypeParser {
             case GEOMETRY: //spatial or locational
 
                 if (parseStringMember(object, "egenskapstype").equalsIgnoreCase("stedfesting")) {
-                    Boolean overlapp = parseBooleanMember(object, "overlapp");
+                    Boolean overlapp = parseBooleanMember(object, "overlapp_ok");
                     String laneRelevant = parseStringMember(object, "kjørefelt_relevant");
                     String sideposRelevant = parseStringMember(object, "sideposisjon_relevant");
                     Boolean heightRelevant = parseBooleanMember(object, "høyde_relevant");
@@ -124,7 +124,8 @@ public final class AttributeTypeParser {
                     String ajourholdsplitt = parseStringMember(object, "ajourhold_splitt");
                     return new LocationalAttributeType(props, determineLocationalType(object),
                             overlapp, laneRelevant, sideposRelevant, heightRelevant,
-                            ajourholdi, ajourholdsplitt, insideparent);
+                            ajourholdi, ajourholdsplitt, insideparent,
+                            parseStringMember(object, "overlappsautomatikk"));
                 } else {
                     return new SpatialAttributeType(props,
                             determineSpatialType(object),

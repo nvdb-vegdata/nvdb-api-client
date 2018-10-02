@@ -81,7 +81,7 @@ public final class FeatureTypeParser {
                 locationalAttribute,
                 parseStringMember(obj, "status"),
                 parseStringMember(obj, "hovedkategori"),
-                parseBooleanMember(obj, "dekning"),
+                parseBooleanMember(obj, "dekningsgrad"),
                 parseBooleanMember(obj, "abstrakt_type"),
                 parseBooleanMember(obj, "avledet"),
                 parseBooleanMember(obj, "må_ha_mor"),
