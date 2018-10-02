@@ -34,6 +34,7 @@ public final class FeatureType implements Serializable {
 
     private final Integer id;
     private final String name;
+    private final String shortname;
     private final String description;
     private final String instructions;
     private final String sosiName;
@@ -49,11 +50,16 @@ public final class FeatureType implements Serializable {
     private final String status;
     private final String mainCategory;
     private final boolean coverage;
-    private final boolean simpleversionon;
+    private final boolean abstractType;
+    private final boolean derived;
+    private final boolean needParent;
+    private final boolean measureSet;
+    private final boolean connectingLinkOk;
     private final String additionalInformasion;
 
     public FeatureType(Integer id,
                        String name,
+                       String shortname,
                        String description,
                        List<AttributeType> attributeTypes,
                        List<AssociationType> parents,
@@ -67,10 +73,15 @@ public final class FeatureType implements Serializable {
                        String status,
                        String mainCategory,
                        boolean coverage,
-                       boolean simpleversionon,
+                       boolean abstractType,
+                       boolean derived,
+                       boolean needParent,
+                       boolean measureSet,
+                       boolean connectingLinkOk,
                        String additionalInformasion) {
         this.id = id;
         this.name = name;
+        this.shortname = shortname;
         this.description = description;
         this.instructions = instructions;
         this.sosiName = sosiName;
@@ -85,7 +96,11 @@ public final class FeatureType implements Serializable {
         this.status = status;
         this.mainCategory = mainCategory;
         this.coverage = coverage;
-        this.simpleversionon = simpleversionon;
+        this.abstractType = abstractType;
+        this.derived = derived;
+        this.needParent = needParent;
+        this.measureSet = measureSet;
+        this.connectingLinkOk = connectingLinkOk;
         this.additionalInformasion = additionalInformasion;
     }
 
@@ -123,6 +138,26 @@ public final class FeatureType implements Serializable {
 
     public String getSosiName() {
         return sosiName;
+    }
+
+    public String getShortname() {
+        return shortname;
+    }
+
+    public boolean isDerived() {
+        return derived;
+    }
+
+    public boolean isNeedParent() {
+        return needParent;
+    }
+
+    public boolean isMeasureSet() {
+        return measureSet;
+    }
+
+    public boolean isConnectingLinkOk() {
+        return connectingLinkOk;
     }
 
     public AttributeType getLocationalAttribute() {
@@ -200,8 +235,8 @@ public final class FeatureType implements Serializable {
         return coverage;
     }
 
-    public boolean isSimpleversionon() {
-        return simpleversionon;
+    public boolean isAbstractType() {
+        return abstractType;
     }
 
     public String getAdditionalInformasion() {

@@ -41,16 +41,6 @@ public final class FeatureTypeParser {
     }
 
     public static FeatureType parse(Map<String, DataType> dataTypes, JsonObject obj) {
-        Integer id = parseIntMember(obj, "id");
-        String name = parseStringMember(obj, "navn");
-        String description = parseStringMember(obj, "beskrivelse");
-        String instructions = parseStringMember(obj, "veiledning");
-        String sosiName = parseStringMember(obj, "sosinavn");
-        String sosiNvdbName = parseStringMember(obj, "sosinvdbnavn");
-        Integer sortNumber = parseIntMember(obj, "sorteringsnummer");
-        LocalDate objectListDate = parseDateMember(obj, "objektliste_dato");
-
-
         List<AttributeType> attributeTypes = new ArrayList<>();
         if (obj.has("egenskapstyper")) {
             JsonArray attributeTypeArray = obj.getAsJsonArray("egenskapstyper");
@@ -75,23 +65,28 @@ public final class FeatureTypeParser {
             locationalAttribute = AttributeTypeParser.parse(dataTypes, obj.getAsJsonObject("stedfesting"));
         }
 
-        return new FeatureType(id,
-                name,
-                description,
+        return new FeatureType(parseIntMember(obj, "id"),
+                parseStringMember(obj, "navn"),
+                parseStringMember(obj, "kortnavn"),
+                parseStringMember(obj, "beskrivelse"),
                 attributeTypes,
                 parents,
                 children,
-                instructions,
-                sosiName,
-                sosiNvdbName,
-                sortNumber,
-                objectListDate,
+                parseStringMember(obj, "veiledning"),
+                parseStringMember(obj, "sosinavn"),
+                parseStringMember(obj, "sosinvdbnavn"),
+                parseIntMember(obj, "sorteringsnummer"),
+                parseDateMember(obj, "objektliste_dato"),
                 placementType,
                 locationalAttribute,
                 parseStringMember(obj, "status"),
                 parseStringMember(obj, "hovedkategori"),
                 parseBooleanMember(obj, "dekning"),
-                parseBooleanMember(obj, "simpleversionon"),
+                parseBooleanMember(obj, "abstrakt_type"),
+                parseBooleanMember(obj, "avledet"),
+                parseBooleanMember(obj, "må_ha_mor"),
+                parseBooleanMember(obj, "er_dataserie"),
+                parseBooleanMember(obj, "konnekteringslenkeOk"),
                 parseStringMember(obj, "tilleggsinformasjon"));
     }
 
