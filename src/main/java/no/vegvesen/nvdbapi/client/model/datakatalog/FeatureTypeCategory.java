@@ -26,6 +26,7 @@ package no.vegvesen.nvdbapi.client.model.datakatalog;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Objects;
 import java.util.Optional;
 
 public class FeatureTypeCategory implements Serializable {
@@ -35,14 +36,17 @@ public class FeatureTypeCategory implements Serializable {
     private final String description;
     private final int sortNumber;
     private final LocalDate startDate;
+    private final boolean isPrimary;
 
-    public FeatureTypeCategory(int id, String name, String shortName, String description, int sortNumber, LocalDate startDate) {
+    public FeatureTypeCategory(int id, String name, String shortName, String description,
+                               int sortNumber, LocalDate startDate, boolean isPrimary) {
         this.id = id;
         this.name = name;
         this.shortName = shortName;
         this.description = description;
         this.sortNumber = sortNumber;
         this.startDate = startDate;
+        this.isPrimary = isPrimary;
     }
 
     public int getId() {
@@ -69,30 +73,27 @@ public class FeatureTypeCategory implements Serializable {
         return Optional.ofNullable(startDate);
     }
 
+    public boolean isPrimary() {
+        return isPrimary;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         FeatureTypeCategory that = (FeatureTypeCategory) o;
-
-        if (id != that.id) return false;
-        if (sortNumber != that.sortNumber) return false;
-        if (!name.equals(that.name)) return false;
-        if (!shortName.equals(that.shortName)) return false;
-        if (!description.equals(that.description)) return false;
-        return startDate != null ? startDate.equals(that.startDate) : that.startDate == null;
+        return id == that.id &&
+                sortNumber == that.sortNumber &&
+                isPrimary == that.isPrimary &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(shortName, that.shortName) &&
+                Objects.equals(description, that.description) &&
+                Objects.equals(startDate, that.startDate);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + name.hashCode();
-        result = 31 * result + shortName.hashCode();
-        result = 31 * result + description.hashCode();
-        result = 31 * result + sortNumber;
-        result = 31 * result + (startDate != null ? startDate.hashCode() : 0);
-        return result;
+        return Objects.hash(id, name, shortName, description, sortNumber, startDate, isPrimary);
     }
 
     @Override

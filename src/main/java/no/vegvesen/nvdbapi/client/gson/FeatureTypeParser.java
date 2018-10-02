@@ -91,13 +91,13 @@ public final class FeatureTypeParser {
     }
 
     public static FeatureTypeCategory parseCategory(JsonObject obj) {
-        Integer id = parseIntMember(obj, "id");
-        String name = parseStringMember(obj, "navn");
-        String shortName = parseStringMember(obj, "kortnavn");
-        String description = parseStringMember(obj, "beskrivelse");
-        Integer sortNumber = parseIntMember(obj, "sorteringsnummer");
-        LocalDate validFrom = parseDateMember(obj, "startdato");
-
-        return new FeatureTypeCategory(id, name, shortName, description, sortNumber, validFrom);
+        return new FeatureTypeCategory(
+                parseIntMember(obj, "id"),
+                parseStringMember(obj, "navn"),
+                parseStringMember(obj, "kortnavn"),
+                parseStringMember(obj, "beskrivelse"),
+                parseIntMember(obj, "sorteringsnummer"),
+                parseDateMember(obj, "startdato"),
+                parseBooleanMember(obj, "primærkategori"));
     }
 }
