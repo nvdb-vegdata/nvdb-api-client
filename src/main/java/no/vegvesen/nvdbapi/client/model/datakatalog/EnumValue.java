@@ -36,6 +36,9 @@ public abstract class EnumValue<T> implements Serializable {
     private final String description;
     private final LocalDate objectListDate;
     private final boolean isDefault;
+    private final boolean isShortValueUsable;
+    private final Integer shortValueLength;
+    private final Integer complimentaryId;
 
     public EnumValue(Integer id,
                      Integer sortNumber,
@@ -43,7 +46,10 @@ public abstract class EnumValue<T> implements Serializable {
                      String shortName,
                      String description,
                      LocalDate objectListDate,
-                     boolean isDefault) {
+                     boolean isDefault,
+                     boolean isShortValueUsable,
+                     Integer shortValueLength,
+                     Integer complimentaryId) {
         this.id = id;
         this.sortNumber = sortNumber;
         this.value = value;
@@ -51,6 +57,9 @@ public abstract class EnumValue<T> implements Serializable {
         this.description = description;
         this.objectListDate = objectListDate;
         this.isDefault = isDefault;
+        this.isShortValueUsable = isShortValueUsable;
+        this.shortValueLength = shortValueLength;
+        this.complimentaryId = complimentaryId;
     }
 
     public Integer getId() {
@@ -79,5 +88,17 @@ public abstract class EnumValue<T> implements Serializable {
 
     public boolean isDefault() {
         return isDefault;
+    }
+
+    public boolean isShortValueUsable() {
+        return isShortValueUsable;
+    }
+
+    public Integer getShortValueLength() {
+        return shortValueLength;
+    }
+
+    public Integer getComplimentaryId() {
+        return complimentaryId;
     }
 }

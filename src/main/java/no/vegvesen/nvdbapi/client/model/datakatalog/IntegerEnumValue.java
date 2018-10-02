@@ -9,7 +9,11 @@ public class IntegerEnumValue extends EnumValue<Integer> {
                             String shortName,
                             String description,
                             LocalDate objectListDate,
-                            boolean isDefault) {
-        super(id, sortNumber, value, shortName, description, objectListDate, isDefault);
+                            boolean isDefault,
+                            boolean isShortValueUsable,
+                            Integer shortValueLength,
+                            Integer complimentaryId) {
+        super(id, sortNumber, value, shortName, description, objectListDate, isDefault,
+                isShortValueUsable, shortValueLength, complimentaryId);
     }
 }
