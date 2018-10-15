@@ -49,7 +49,6 @@ public final class FeatureType implements Serializable {
 
     private final String status;
     private final String mainCategory;
-    private final boolean coverage;
     private final boolean abstractType;
     private final boolean derived;
     private final boolean needParent;
@@ -72,7 +71,6 @@ public final class FeatureType implements Serializable {
                        AttributeType locationalAttribute,
                        String status,
                        String mainCategory,
-                       boolean coverage,
                        boolean abstractType,
                        boolean derived,
                        boolean needParent,
@@ -95,7 +93,6 @@ public final class FeatureType implements Serializable {
         this.locationalAttribute = locationalAttribute;
         this.status = status;
         this.mainCategory = mainCategory;
-        this.coverage = coverage;
         this.abstractType = abstractType;
         this.derived = derived;
         this.needParent = needParent;
@@ -229,10 +226,6 @@ public final class FeatureType implements Serializable {
 
     public String getMainCategory() {
         return mainCategory;
-    }
-
-    public boolean isCoverage() {
-        return coverage;
     }
 
     public boolean isAbstractType() {
