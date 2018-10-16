@@ -86,10 +86,6 @@ public final class PlacementParser {
                 .orElse(null);
         List<String> lane = parseStringListMember(obj, "felt");
 
-        HeightLevel heightLevel = Optional.ofNullable(parseStringMember(obj, "høyde"))
-                .map(HeightLevel::from)
-                .orElse(null);
-
-        return new Placement(netElementId, startPos, endPos, dir, sidePos, heightLevel, lane);
+        return new Placement(netElementId, startPos, endPos, dir, sidePos, lane);
     }
 }

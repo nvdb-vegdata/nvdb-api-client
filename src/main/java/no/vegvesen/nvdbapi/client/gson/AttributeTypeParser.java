@@ -118,12 +118,11 @@ public final class AttributeTypeParser {
                     Boolean overlapp = parseBooleanMember(object, "overlapp_ok");
                     String laneRelevant = parseStringMember(object, "kjørefelt_relevant");
                     String sideposRelevant = parseStringMember(object, "sideposisjon_relevant");
-                    Boolean heightRelevant = parseBooleanMember(object, "høyde_relevant");
                     Boolean insideparent = parseBooleanMember(object, "innenfor_mor");
                     String ajourholdi = parseStringMember(object, "ajourhold_i");
                     String ajourholdsplitt = parseStringMember(object, "ajourhold_splitt");
                     return new LocationalAttributeType(props, determineLocationalType(object),
-                            overlapp, laneRelevant, sideposRelevant, heightRelevant,
+                            overlapp, laneRelevant, sideposRelevant,
                             ajourholdi, ajourholdsplitt, insideparent,
                             parseStringMember(object, "overlappsautomatikk"));
                 } else {

@@ -26,7 +26,6 @@
 package no.vegvesen.nvdbapi.client.model.roadobjects;
 
 import no.vegvesen.nvdbapi.client.model.Direction;
-import no.vegvesen.nvdbapi.client.model.HeightLevel;
 import no.vegvesen.nvdbapi.client.model.SidePosition;
 
 import java.util.List;
@@ -38,7 +37,6 @@ public class Placement {
     private final double endPosition;
     private final Direction direction;
     private final SidePosition sidePos;
-    private final HeightLevel heightLevel;
     private final List<String> lane;
 
     public Placement(long netElementId,
@@ -46,14 +44,12 @@ public class Placement {
                      double endPosition,
                      Direction direction,
                      SidePosition sidePos,
-                     HeightLevel heightLevel,
                      List<String> lane) {
         this.netElementId = netElementId;
         this.startPosition = startPosition;
         this.endPosition = endPosition;
         this.direction = direction;
         this.sidePos = sidePos;
-        this.heightLevel = heightLevel;
         this.lane = lane;
     }
 
@@ -85,10 +81,6 @@ public class Placement {
         return lane;
     }
 
-    public HeightLevel getHeightLevel() {
-        return heightLevel;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -99,13 +91,12 @@ public class Placement {
                 Double.compare(placement.endPosition, endPosition) == 0 &&
                 direction == placement.direction &&
                 sidePos == placement.sidePos &&
-                heightLevel == placement.heightLevel &&
                 Objects.equals(lane, placement.lane);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(netElementId, startPosition, endPosition, direction, sidePos, heightLevel, lane);
+        return Objects.hash(netElementId, startPosition, endPosition, direction, sidePos, lane);
     }
 
     @Override
@@ -116,7 +107,6 @@ public class Placement {
                 ", endPosition=" + endPosition +
                 ", direction=" + direction +
                 ", sidePos=" + sidePos +
-                ", heightLevel=" + heightLevel +
                 ", lane=" + lane +
                 '}';
     }
