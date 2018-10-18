@@ -27,9 +27,9 @@ package no.vegvesen.nvdbapi.client.gson;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class GsonUtilTest {
 

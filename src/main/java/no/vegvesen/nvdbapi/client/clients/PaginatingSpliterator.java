@@ -1,6 +1,5 @@
 package no.vegvesen.nvdbapi.client.clients;
 
-import jersey.repackaged.com.google.common.base.Throwables;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,7 +36,7 @@ class PaginatingSpliterator<T> implements Spliterator<T> {
                             queue.put(o);
                             log.debug("Put {}", o);
                         } catch (InterruptedException e) {
-                            throw Throwables.propagate(e);
+                            throw new RuntimeException(e);
                         }
                     }
                     log.debug("Done resultSet.hasNext()");
@@ -71,7 +70,7 @@ class PaginatingSpliterator<T> implements Spliterator<T> {
                 action.accept(object);
                 log.debug("{} taken from queue", object);
             } catch (InterruptedException e) {
-                throw Throwables.propagate(e);
+                throw new RuntimeException(e);
             }
             return true;
         }
