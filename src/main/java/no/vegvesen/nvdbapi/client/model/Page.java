@@ -47,14 +47,6 @@ public final class Page {
         return DEFAULT;
     }
 
-    public static Page subPage(int count, String start) {
-        return new Page(count, start);
-    }
-
-    public static Page subPage(int count, Integer start) {
-        return new Page(count, Optional.ofNullable(start).map(Object::toString).orElse(null));
-    }
-
     public static Page count(Integer count) {
         Objects.requireNonNull(count, "Missing count argument!");
         if (count < 1) {

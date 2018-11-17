@@ -49,7 +49,7 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 public class GenericResultSet<T> implements ResultSet<T> {
-    private final Logger logger = LoggerFactory.getLogger(getClass());
+    private static final Logger logger = LoggerFactory.getLogger(GenericResultSet.class);
 
     private final WebTarget baseTarget;
     private final Function<JsonObject, T> parser;
@@ -131,7 +131,7 @@ public class GenericResultSet<T> implements ResultSet<T> {
         return token;
     }
 
-    private static WebTarget applyPage(Page page, WebTarget target) {
+    static WebTarget applyPage(Page page, WebTarget target) {
         if (Objects.nonNull(page.getCount())) {
             target = target.queryParam("antall", page.getCount());
         }
