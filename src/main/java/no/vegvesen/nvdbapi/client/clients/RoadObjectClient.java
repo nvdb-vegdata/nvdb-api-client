@@ -87,6 +87,10 @@ public class RoadObjectClient extends AbstractJerseyClient {
         return getRoadObjects(featureTypeId, DEFAULT);
     }
 
+    public AsyncRoadObjectsResult getRoadObjectsAsync(int featureTypeId) {
+        return getRoadObjectsAsync(featureTypeId, DEFAULT);
+    }
+
     public List<RoadObjectType> getRoadObjectTypes(){
         List<RoadObjectType> roadObjectTypes = new ArrayList<>();
         UriBuilder path = start().path("/vegobjekter");
@@ -115,15 +119,27 @@ public class RoadObjectClient extends AbstractJerseyClient {
     }
 
     public RoadObjectsResult getRoadObjects(int featureTypeId, RoadObjectRequest request) {
-        UriBuilder path = start()
-                .path(String.format("/vegobjekter/%d", featureTypeId));
-
-        applyRequestParameters(path, convert(request));
-        WebTarget target = getClient().target(path);
+        WebTarget target = getWebTarget(featureTypeId, request);
 
         return new RoadObjectsResult(target,
                 request.getPage(),
                 datakatalog);
+    }
+
+    public AsyncRoadObjectsResult getRoadObjectsAsync(int featureTypeId, RoadObjectRequest request) {
+        WebTarget target = getWebTarget(featureTypeId, request);
+
+        return new AsyncRoadObjectsResult(target,
+                request.getPage(),
+                datakatalog);
+    }
+
+    private WebTarget getWebTarget(int featureTypeId, RoadObjectRequest request) {
+        UriBuilder path = start()
+                .path(String.format("/vegobjekter/%d", featureTypeId));
+
+        applyRequestParameters(path, convert(request));
+        return getClient().target(path);
     }
 
     private Page extractPage(MultivaluedMap<String, String> params) {
@@ -284,6 +300,15 @@ public class RoadObjectClient extends AbstractJerseyClient {
     public static class RoadObjectsResult extends GenericResultSet<RoadObject> {
 
         public RoadObjectsResult(WebTarget baseTarget,
+                                 Page currentPage,
+                                 Datakatalog datakatalog) {
+            super(baseTarget, currentPage, o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o));
+        }
+    }
+
+    public static class AsyncRoadObjectsResult extends AsyncResult<RoadObject> {
+
+        public AsyncRoadObjectsResult(WebTarget baseTarget,
                                  Page currentPage,
                                  Datakatalog datakatalog) {
             super(baseTarget, currentPage, o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o));
