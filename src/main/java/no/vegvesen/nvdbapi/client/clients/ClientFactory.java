@@ -54,6 +54,7 @@ public final class ClientFactory implements AutoCloseable {
     private List<AbstractJerseyClient> clients;
     private boolean isClosed;
     private final Logger debugLogger;
+    private PoolingHttpClientConnectionManager connectionManager;
 
     public ClientFactory(String baseUrl, String userAgent, String xClientName) {
         this(baseUrl, userAgent, xClientName, null);
@@ -68,6 +69,7 @@ public final class ClientFactory implements AutoCloseable {
                                    .map(LoggerFactory::getLogger)
                                    .orElse(null);
         this.clients = new ArrayList<>();
+        this.connectionManager = new PoolingHttpClientConnectionManager();
     }
 
     public ClientFactory(String baseUrl) {
@@ -166,7 +168,7 @@ public final class ClientFactory implements AutoCloseable {
         if (debugLogger != null) {
             config.register(new LoggingFilter(debugLogger, true));
         }
-        config.property(ApacheClientProperties.CONNECTION_MANAGER, new PoolingHttpClientConnectionManager());
+        config.property(ApacheClientProperties.CONNECTION_MANAGER, connectionManager);
         config.register(GsonMessageBodyHandler.class);
         config.register(new RequestHeaderFilter(userAgent, xClientName, datakatalogVersion, enableCompression, apiRevision));
 
@@ -182,6 +184,7 @@ public final class ClientFactory implements AutoCloseable {
                 }
             }
         }
+        connectionManager.close();
         isClosed = true;
     }
 }

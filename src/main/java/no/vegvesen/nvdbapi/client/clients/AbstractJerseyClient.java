@@ -40,7 +40,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class AbstractJerseyClient implements AutoCloseable, Serializable {
+abstract class AbstractJerseyClient implements AutoCloseable, Serializable {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final String baseUrl;
     private final Client client;

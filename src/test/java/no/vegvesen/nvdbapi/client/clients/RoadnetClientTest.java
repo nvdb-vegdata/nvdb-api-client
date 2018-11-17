@@ -27,7 +27,7 @@ public class RoadnetClientTest {
                         System.out.println("Node: " + element.node().getId());
                     }
                 });
-        started.stop();
-        System.out.println(started.elapsedMillis());
+        Stopwatch stop = started.stop();
+        System.out.println(stop.elapsedMillis());
     }
 }
