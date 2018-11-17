@@ -88,6 +88,16 @@ public class RoadNetClient extends AbstractJerseyClient {
         return new LinkResult(target, request.getPage());
     }
 
+    public AsyncLinkResult getLinkSequencesSync(RoadNetRequest request) {
+        Objects.requireNonNull(request, "Missing page info argument.");
+
+        UriBuilder path = endpoint().path("/veglenkesekvenser");
+        addParameters(request, path);
+
+        WebTarget target = getClient().target(path);
+        return new AsyncLinkResult(target, request.getPage());
+    }
+
     public NodeResult getNodes(RoadNetRequest request) {
         Objects.requireNonNull(request, "Missing page info argument.");
 
@@ -144,22 +154,24 @@ public class RoadNetClient extends AbstractJerseyClient {
         return start().path("vegnett");
     }
 
+    public final class AsyncLinkResult extends AsyncResult<LinkSequence> {
+        AsyncLinkResult(WebTarget baseTarget, Page currentPage) {
+            super(baseTarget, currentPage, RoadNetParser::parseLink);
+        }
+    }
     public final class LinkResult extends GenericResultSet<LinkSequence> {
-
-        protected LinkResult(WebTarget baseTarget, Page currentPage) {
+        LinkResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, RoadNetParser::parseLink);
         }
     }
 
     public final class NodeResult extends GenericResultSet<Node> {
-
-        protected NodeResult(WebTarget baseTarget, Page currentPage) {
+        NodeResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, RoadNetParser::parseNode);
         }
     }
     public final class NetElementResult extends GenericResultSet<NetElementWrapper> {
-
-        protected NetElementResult(WebTarget baseTarget, Page currentPage) {
+        NetElementResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, RoadNetParser::parseNetElement);
         }
     }
