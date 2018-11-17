@@ -14,13 +14,20 @@ public class RoadnetClientTest {
                 "Jersey", "nvdbapi-client-test");
         RoadNetClient roadNetService = clientFactory.createRoadNetService();
 
-        RoadNetClient.AsyncLinkResult result = roadNetService.getLinkSequencesSync(
+        RoadNetClient.AsyncNetElementResult result = roadNetService.getNetElementsAsynk(
                 RoadNetRequest
                         .newBuilder()
                         .build());
         result.get()
                 .toStream()
-                .forEach(linksequence -> System.out.println(linksequence.getId()));
+                .forEach(element -> {
+                    if(element.isLink()) {
+                        System.out.println("Linksequence: " + element.link().getId());
+                    } else {
+                        System.out.println("Node: " + element.node().getId());
+                    }
+                });
+        started.stop();
         System.out.println(started.elapsedMillis());
     }
 }
