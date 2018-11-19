@@ -67,7 +67,20 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         return getLinks(RoadNetRequest.DEFAULT);
     }
 
+    public AsyncSegmentedLinkResult getLinksAsync() {
+        return getLinksAsync(RoadNetRequest.DEFAULT);
+    }
+
     public SegmentedLinkResult getLinks(RoadNetRequest request) {
+        WebTarget target = getWebTarget(request);
+        return new SegmentedLinkResult(target, request.getPage());
+    }
+    public AsyncSegmentedLinkResult getLinksAsync(RoadNetRequest request) {
+        WebTarget target = getWebTarget(request);
+        return new AsyncSegmentedLinkResult(target, request.getPage());
+    }
+
+    private WebTarget getWebTarget(RoadNetRequest request) {
         Objects.requireNonNull(request, "Missing page info argument.");
 
         UriBuilder path = endpoint().path("/veglenkesekvenser/segmentert");
@@ -80,8 +93,7 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         request.getProjection().ifPresent(v -> path.queryParam("srid", v.getSrid()));
         request.getRoadRefFilter().ifPresent(v -> path.queryParam("vegreferanse", v));
 
-        WebTarget target = getClient().target(path);
-        return new SegmentedLinkResult(target, request.getPage());
+        return getClient().target(path);
     }
 
     private static String join(List<Integer> list) {
@@ -100,6 +112,13 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
     public final class SegmentedLinkResult extends GenericResultSet<SegmentedLink> {
 
         SegmentedLinkResult(WebTarget baseTarget, Page currentPage) {
+            super(baseTarget, currentPage, SegmentedLinkParser::parse);
+        }
+    }
+
+    public final class AsyncSegmentedLinkResult extends AsyncResult<SegmentedLink> {
+
+        AsyncSegmentedLinkResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, SegmentedLinkParser::parse);
         }
     }

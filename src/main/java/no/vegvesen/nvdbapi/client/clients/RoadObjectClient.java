@@ -71,19 +71,6 @@ public class RoadObjectClient extends AbstractJerseyClient {
         return datakatalog;
     }
 
-    public Attribute getAttribute(int featureTypeId, long featureId, int attributeTypeId) {
-        UriBuilder path = start()
-                .path(String.format("/vegobjekter/%d/%d/egenskaper/%d", featureTypeId, featureId, attributeTypeId));
-        logger.debug("Invoking {}", path);
-        WebTarget target = getClient().target(path);
-        JsonElement e = execute(target);
-        return RoadObjectParser.parseAttribute(datakatalog.getDataTypeMap(), e.getAsJsonObject());
-    }
-
-    public Stream<Attribute> getAttributes(int featureTypeId, Stream<Long> featureIds, int attributeTypeId) {
-        return featureIds.map(id -> getAttribute(featureTypeId, id, attributeTypeId));
-    }
-
     public Statistics getStats(int featureTypeId, RoadObjectRequest request) {
         UriBuilder path = start()
                 .path(String.format("/vegobjekter/%d/statistikk", featureTypeId));
@@ -98,6 +85,10 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
     public RoadObjectsResult getRoadObjects(int featureTypeId) {
         return getRoadObjects(featureTypeId, DEFAULT);
+    }
+
+    public AsyncRoadObjectsResult getRoadObjectsAsync(int featureTypeId) {
+        return getRoadObjectsAsync(featureTypeId, DEFAULT);
     }
 
     public List<RoadObjectType> getRoadObjectTypes(){
@@ -128,15 +119,27 @@ public class RoadObjectClient extends AbstractJerseyClient {
     }
 
     public RoadObjectsResult getRoadObjects(int featureTypeId, RoadObjectRequest request) {
-        UriBuilder path = start()
-                .path(String.format("/vegobjekter/%d", featureTypeId));
-
-        applyRequestParameters(path, convert(request));
-        WebTarget target = getClient().target(path);
+        WebTarget target = getWebTarget(featureTypeId, request);
 
         return new RoadObjectsResult(target,
                 request.getPage(),
                 datakatalog);
+    }
+
+    public AsyncRoadObjectsResult getRoadObjectsAsync(int featureTypeId, RoadObjectRequest request) {
+        WebTarget target = getWebTarget(featureTypeId, request);
+
+        return new AsyncRoadObjectsResult(target,
+                request.getPage(),
+                datakatalog);
+    }
+
+    private WebTarget getWebTarget(int featureTypeId, RoadObjectRequest request) {
+        UriBuilder path = start()
+                .path(String.format("/vegobjekter/%d", featureTypeId));
+
+        applyRequestParameters(path, convert(request));
+        return getClient().target(path);
     }
 
     private Page extractPage(MultivaluedMap<String, String> params) {
@@ -162,28 +165,6 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
         JsonObject obj = execute(target).getAsJsonObject();
         return RoadObjectParser.parse(datakatalog.getDataTypeMap(), obj);
-    }
-
-    public ChangesResult getChanges(int typeId, LocalDate from, Page page, Change.Type type) {
-        return getChanges(typeId, from.atStartOfDay(), page, type);
-    }
-
-    public ChangesResult getChanges(int typeId, LocalDateTime from, Page page, Change.Type type) {
-        Objects.requireNonNull(from, "Missing from argument!");
-
-        UriBuilder path = start()
-                .path(String.format("/vegobjekter/%d/endringer", typeId))
-                .queryParam("etter", ArgUtil.date(from))
-                .queryParam("type", type.getArgValue());
-
-        WebTarget target = getClient().target(path);
-
-        return new ChangesResult(
-                datakatalog.getDataTypeMap(),
-                typeId,
-                target,
-                Optional.ofNullable(page)
-                        .orElse(Page.defaults()));
     }
 
     public List<RoadObject> getRoadObjectVersions(int featureTypeId, long featureId) {
@@ -247,19 +228,6 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
     private static void applyRequestParameters(UriBuilder path, MultivaluedMap<String, String> params) {
         params.forEach((k, values) -> path.queryParam(k, (Object[]) values.toArray(new String[0])));
-    }
-
-    public List<Attribute> getAttributes(int featureTypeId, long featureId) {
-        UriBuilder path = start()
-                .path(String.format("/vegobjekter/%d/%d/egenskaper", featureTypeId, featureId));
-        logger.debug("Invoking {}", path);
-        WebTarget target = getClient().target(path);
-
-        JsonArray array = execute(target).getAsJsonArray();
-        return StreamSupport.stream(array.spliterator(), false)
-                .map(JsonElement::getAsJsonObject)
-                .map(o -> RoadObjectParser.parseAttribute(datakatalog.getDataTypeMap(), o))
-                .collect(toList());
     }
 
     public List<RoadObjectTypeWithStats> getSummary() {
@@ -338,13 +306,12 @@ public class RoadObjectClient extends AbstractJerseyClient {
         }
     }
 
-    public static class ChangesResult extends GenericResultSet<Change> {
+    public static class AsyncRoadObjectsResult extends AsyncResult<RoadObject> {
 
-        public ChangesResult(Map<String, DataType> dataTypes,
-                             int typeId,
-                             WebTarget baseTarget,
-                             Page currentPage) {
-            super(baseTarget, currentPage, obj -> ChangesParser.parse(dataTypes, obj, typeId));
+        public AsyncRoadObjectsResult(WebTarget baseTarget,
+                                 Page currentPage,
+                                 Datakatalog datakatalog) {
+            super(baseTarget, currentPage, o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o));
         }
     }
 }

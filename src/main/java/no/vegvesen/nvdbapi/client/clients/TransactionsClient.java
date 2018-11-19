@@ -47,14 +47,23 @@ public class TransactionsClient extends AbstractJerseyClient {
     }
 
     public TransacionsResult getTransactions(TransactionsRequest request) {
+        WebTarget target = setupGetTransactions(request);
+        return new TransacionsResult(target, request.getPage());
+    }
+
+    public AsyncTransacionsResult getTransactionsAsync(TransactionsRequest request) {
+        WebTarget target = setupGetTransactions(request);
+        return new AsyncTransacionsResult(target, request.getPage());
+    }
+
+    private WebTarget setupGetTransactions(TransactionsRequest request) {
         UriBuilder url = start().path("/transaksjoner");
 
         if(request.getIder().size() > 0) url.queryParam("ider", join(request.getIder()));
         if(nonNull(request.getFrom())) url.queryParam("fra", request.getFrom());
         if(nonNull(request.getTo())) url.queryParam("til", request.getTo());
 
-        WebTarget target = getClient().target(url);
-        return new TransacionsResult(target, request.getPage());
+        return getClient().target(url);
     }
 
     public static class TransacionsResult extends GenericResultSet<Transaction>{
@@ -62,4 +71,10 @@ public class TransactionsClient extends AbstractJerseyClient {
             super(baseTarget, currentPage, TransactionParser::parseTransaction);
         }
     }
+    public static class AsyncTransacionsResult extends AsyncResult<Transaction>{
+        protected AsyncTransacionsResult(WebTarget baseTarget, Page currentPage) {
+            super(baseTarget, currentPage, TransactionParser::parseTransaction);
+        }
+    }
+
 }
