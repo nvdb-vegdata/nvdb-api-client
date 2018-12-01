@@ -1,6 +1,7 @@
 plugins {
     id "com.jfrog.bintray" version "1.7"
-    id 'pl.allegro.tech.build.axion-release' version '1.8.1'
+    id 'com.github.ben-manes.versions' version '0.20.0'
+    id 'pl.allegro.tech.build.axion-release' version '1.9.3'
 }
 
 apply plugin: 'java-library'
@@ -16,11 +17,13 @@ targetCompatibility = "1.8"
 [compileJava, compileTestJava]*.options*.encoding = "UTF-8"
 
 dependencies {
-    api "com.google.code.gson:gson:2.8.2"
+    api "com.google.code.gson:gson:2.8.5"
     api "org.slf4j:slf4j-api:1.7.25"
 
-    api "org.glassfish.jersey.core:jersey-client:2.26"
-    api "org.glassfish.jersey.connectors:jersey-apache-connector:2.6"
+    implementation "org.glassfish.jersey.core:jersey-client:2.27"
+    implementation "org.glassfish.jersey.connectors:jersey-apache-connector:2.27"
+    implementation "org.glassfish.jersey.inject:jersey-hk2:2.27"
+    implementation "io.projectreactor:reactor-core:3.2.2.RELEASE"
 
     testImplementation "junit:junit:4.12"
     testRuntimeOnly 'ch.qos.logback:logback-site:1.2.2'

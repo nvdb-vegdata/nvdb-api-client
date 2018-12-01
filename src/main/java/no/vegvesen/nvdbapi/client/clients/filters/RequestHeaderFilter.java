@@ -42,7 +42,11 @@ public class RequestHeaderFilter implements ClientRequestFilter {
     private final boolean enableCompression;
     private final String apiRevision;
 
-    public RequestHeaderFilter(String userAgent, String xClientName, String dakatVersion, boolean enableCompression, String apiRevision) {
+    public RequestHeaderFilter(String userAgent,
+                               String xClientName,
+                               String dakatVersion,
+                               boolean enableCompression,
+                               String apiRevision) {
         this.userAgent = userAgent;
         this.xClientName = xClientName;
         this.dakatVersion = dakatVersion;

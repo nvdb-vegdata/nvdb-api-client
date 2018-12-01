@@ -40,7 +40,6 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringReader;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,8 +47,7 @@ public class JerseyHelper {
     private static final Logger logger = LoggerFactory.getLogger(JerseyHelper.class);
     public static final String MEDIA_TYPE = "application/vnd.vegvesen.nvdb-v2+json";
 
-    private JerseyHelper() {
-    }
+    private JerseyHelper() {}
 
     public static boolean isSuccess(Response response) {
         return 200 <= response.getStatus() && response.getStatus() < 300;
@@ -75,14 +73,15 @@ public class JerseyHelper {
 
     public static JsonElement execute(WebTarget target, String mediaType) {
         Invocation invocation = target.request().accept(mediaType).buildGet();
-        Response response = execute(invocation, Response.class);
+        try(Response response = execute(invocation, Response.class)) {
 
-        if (!isSuccess(response)) {
-            throw parseError(response);
+            if (!isSuccess(response)) {
+                throw parseError(response);
+            }
+
+            return new JsonParser().parse(
+                    new InputStreamReader((InputStream) response.getEntity()));
         }
-
-        String body = response.readEntity(String.class);
-        return new JsonParser().parse(new StringReader(body));
     }
 
     public static <T> T execute(Invocation inv, GenericType<T> responseType) {
@@ -96,26 +95,23 @@ public class JerseyHelper {
 
     public static Optional<JsonElement> executeOptional(WebTarget target) {
         Invocation inv = target.request().buildGet();
-        Response response = execute(inv, Response.class);
+        try(Response response = execute(inv, Response.class)) {
 
-        if (!isSuccess(response)) {
-            switch (response.getStatus()) {
-                case 404:
+            if (!isSuccess(response)) {
+                if (response.getStatus() == 404) {
                     return Optional.empty();
-                default:
-                    throw parseError(response);
-            }
-        }
-
-        switch (response.getStatus()) {
-            case 204:
-                return Optional.empty();
-            default:
-                try (InputStream is = response.readEntity(InputStream.class)) {
-                    return Optional.of(new JsonParser().parse(new InputStreamReader(is)));
-                } catch (Exception e) {
-                    throw new RuntimeException("Error parsing response", e);
                 }
+                throw parseError(response);
+            }
+
+            if (response.getStatus() == 204) {
+                return Optional.empty();
+            }
+            try (InputStream is = response.readEntity(InputStream.class)) {
+                return Optional.of(new JsonParser().parse(new InputStreamReader(is)));
+            } catch (Exception e) {
+                throw new RuntimeException("Error parsing response", e);
+            }
         }
     }
 }

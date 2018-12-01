@@ -123,6 +123,16 @@ public class RoadObjectClient extends AbstractJerseyClient {
         return new RoadObjectsResult(target, Optional.ofNullable(request.getPage()), datakatalog);
     }
 
+    public AsyncRoadObjectsResult getRoadObjectsAsync(int featureTypeId, RoadObjectRequest request) {
+        UriBuilder path = start()
+                .path(String.format("/vegobjekter/%d", featureTypeId));
+
+        applyRequestParameters(path, convert(request));
+        WebTarget target = getClient().target(path);
+
+        return new AsyncRoadObjectsResult(target, request.getPage(), datakatalog);
+    }
+
     private Optional<Page> extractPage(MultivaluedMap<String, String> params) {
         if (params.containsKey("antall")) {
             return Optional.of(Page.count(Integer.parseInt(params.getFirst("antall"))));
@@ -238,6 +248,15 @@ public class RoadObjectClient extends AbstractJerseyClient {
         public RoadObjectsResult(WebTarget baseTarget,
                                  Optional<Page> currentPage,
                                  Datakatalog datakatalog) {
+            super(baseTarget, currentPage, o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o));
+        }
+    }
+
+    public static class AsyncRoadObjectsResult extends AsyncResult<RoadObject> {
+
+        public AsyncRoadObjectsResult(WebTarget baseTarget,
+                                      Page currentPage,
+                                      Datakatalog datakatalog) {
             super(baseTarget, currentPage, o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o));
         }
     }
