@@ -123,6 +123,16 @@ public class RoadObjectClient extends AbstractJerseyClient {
         return new RoadObjectsResult(target, Optional.ofNullable(request.getPage()), datakatalog);
     }
 
+    public AsyncRoadObjectsResult getRoadObjectsAsync(int featureTypeId, MultivaluedMap<String, String> queryParameters) {
+        UriBuilder path = start()
+                .path(String.format("/vegobjekter/%d", featureTypeId));
+
+        applyRequestParameters(path, queryParameters);
+        WebTarget target = getClient().target(path);
+
+        return new AsyncRoadObjectsResult(target, extractPage(queryParameters).orElse(Page.defaults()), datakatalog);
+    }
+
     public AsyncRoadObjectsResult getRoadObjectsAsync(int featureTypeId, RoadObjectRequest request) {
         UriBuilder path = start()
                 .path(String.format("/vegobjekter/%d", featureTypeId));
