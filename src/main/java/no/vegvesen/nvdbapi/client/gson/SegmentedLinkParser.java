@@ -44,7 +44,7 @@ public final class SegmentedLinkParser {
         // Metadata
         LocalDate fromDate = parseDateMember(obj, "metadata.startdato"), toDate = parseDateMember(obj, "metadata.sluttdato");
 
-        long id = parseLongMember(obj, "veglenkesekvens");
+        long id = parseLongMember(obj, "netelementid");
         Double start = parseDoubleMember(obj, "startposisjon"), end = parseDoubleMember(obj, "sluttposisjon");
         String startNode = parseStringMember(obj, "startnode"), endNode = parseStringMember(obj, "sluttnode");
 
