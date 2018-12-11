@@ -41,31 +41,29 @@ public final class SegmentedLink implements Serializable {
     private final double start;
     private final double end;
     private final SosiMedium medium;
-    private final Ltema ltema;
     private final TopologyLevel topologyLevel;
     private final Integer county;
     private final Integer municipality;
     private final Integer region;
     private final Integer roadDepartment;
     private final RoadRef roadRef;
-    private final boolean isConnectionLink;
     private final LocalDate fromDate;
     private final LocalDate toDate;
     private final String startNode;
     private final String endNode;
+    private final Integer reflinkPartType;
 
     public SegmentedLink(long id, Long superLinkId, double start, double end,
                          String startNode, String endNode,
                          LocalDate fromDate, LocalDate toDate,
-                         SosiMedium medium, Ltema ltema, TopologyLevel level, Integer region, Integer county,
+                         SosiMedium medium, TopologyLevel level, Integer region, Integer county,
                          Integer municipality, Integer roadDepartment,
-                         Geometry geometry, RoadRef roadRef, boolean isConnectionLink) {
+                         Geometry geometry, RoadRef roadRef, Integer reflinkPartType) {
         this.id = id;
         this.superLinkId = superLinkId;
         this.start = start;
         this.end = end;
         this.medium = medium;
-        this.ltema = ltema;
         this.topologyLevel = level;
         this.county = county;
         this.municipality = municipality;
@@ -76,8 +74,8 @@ public final class SegmentedLink implements Serializable {
         this.startNode = startNode;
         this.endNode = endNode;
         this.roadRef = roadRef;
-        this.isConnectionLink = isConnectionLink;
         this.geometry = geometry;
+        this.reflinkPartType = reflinkPartType;
     }
 
     public long getId() {
@@ -86,10 +84,6 @@ public final class SegmentedLink implements Serializable {
 
     public Optional<Long> getSuperLinkId() {
         return Optional.ofNullable(superLinkId);
-    }
-
-    public boolean isConnectionLink() {
-        return isConnectionLink;
     }
 
     public double getStart() {
@@ -102,10 +96,6 @@ public final class SegmentedLink implements Serializable {
 
     public SosiMedium getMedium() {
         return medium;
-    }
-
-    public Ltema getLtema() {
-        return ltema;
     }
 
     public TopologyLevel getTopologyLevel() {
@@ -156,30 +146,28 @@ public final class SegmentedLink implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SegmentedLink link = (SegmentedLink) o;
-        return id == link.id &&
-                Double.compare(link.start, start) == 0 &&
-                Double.compare(link.end, end) == 0 &&
-                isConnectionLink == link.isConnectionLink &&
-                Objects.equals(geometry, link.geometry) &&
-                Objects.equals(superLinkId, link.superLinkId) &&
-                medium == link.medium &&
-                ltema == link.ltema &&
-                topologyLevel == link.topologyLevel &&
-                Objects.equals(county, link.county) &&
-                Objects.equals(municipality, link.municipality) &&
-                Objects.equals(region, link.region) &&
-                Objects.equals(roadDepartment, link.roadDepartment) &&
-                Objects.equals(roadRef, link.roadRef) &&
-                Objects.equals(fromDate, link.fromDate) &&
-                Objects.equals(toDate, link.toDate) &&
-                Objects.equals(startNode, link.startNode) &&
-                Objects.equals(endNode, link.endNode);
+        SegmentedLink that = (SegmentedLink) o;
+        return id == that.id &&
+                Double.compare(that.start, start) == 0 &&
+                Double.compare(that.end, end) == 0 &&
+                Objects.equals(geometry, that.geometry) &&
+                Objects.equals(superLinkId, that.superLinkId) &&
+                medium == that.medium &&
+                topologyLevel == that.topologyLevel &&
+                Objects.equals(county, that.county) &&
+                Objects.equals(municipality, that.municipality) &&
+                Objects.equals(region, that.region) &&
+                Objects.equals(roadDepartment, that.roadDepartment) &&
+                Objects.equals(roadRef, that.roadRef) &&
+                Objects.equals(fromDate, that.fromDate) &&
+                Objects.equals(toDate, that.toDate) &&
+                Objects.equals(startNode, that.startNode) &&
+                Objects.equals(endNode, that.endNode) &&
+                Objects.equals(reflinkPartType, that.reflinkPartType);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(geometry, id, superLinkId, start, end, medium, ltema, topologyLevel, county, municipality,
-                region, roadDepartment, roadRef, isConnectionLink, fromDate, toDate, startNode, endNode);
+        return Objects.hash(geometry, id, superLinkId, start, end, medium, topologyLevel, county, municipality, region, roadDepartment, roadRef, fromDate, toDate, startNode, endNode, reflinkPartType);
     }
 }
