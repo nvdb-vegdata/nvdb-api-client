@@ -30,9 +30,7 @@ import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.*;
 
 import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
-import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseDoubleMember;
-import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseIntMember;
-import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseStringMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 
 public final class RoadSysRefParser {
     private RoadSysRefParser() {}
@@ -77,6 +75,8 @@ public final class RoadSysRefParser {
 
     private static RoadSystem parseRoadSystem(JsonObject obj) {
         return new RoadSystem(
+                parseLongMember(obj, "id"),
+                parseIntMember(obj, "versjon"),
                 parseIntMember(obj,"nummer"),
                 parseStringMember(obj, "vegkategori"),
                 parseStringMember(obj, "fase"));
@@ -84,6 +84,8 @@ public final class RoadSysRefParser {
 
     private static Section parseSection(JsonObject obj) {
         return new Section(
+                parseLongMember(obj, "id"),
+                parseIntMember(obj, "versjon"),
                 parseIntMember(obj, "strekning"),
                 parseIntMember(obj, "delstrekning"),
                 parseStringMember(obj, "arm"),
@@ -97,6 +99,8 @@ public final class RoadSysRefParser {
         Integer intersectionNumber = parseIntMember(obj, "kryssystem");
         if (nonNull(intersectionNumber)) {
             return new Intersection(
+                    parseLongMember(obj, "id"),
+                    parseIntMember(obj, "versjon"),
                     intersectionNumber,
                     parseIntMember(obj, "kryssdel"));
         }
@@ -109,6 +113,8 @@ public final class RoadSysRefParser {
         Integer sideAreaNumber = parseIntMember(obj, "sideanlegg");
         if (nonNull(sideAreaNumber)) {
             return new SideArea(
+                    parseLongMember(obj, "id"),
+                    parseIntMember(obj, "versjon"),
                     sideAreaNumber,
                     parseIntMember(obj, "sideanleggsdel"));
         }

@@ -3,11 +3,15 @@ package no.vegvesen.nvdbapi.client.model.roadnet.roadsysref;
 import java.util.Objects;
 
 public class RoadSystem {
+    public final Long id;
+    public final Integer version;
     public final int roadNumber;
     public final String roadCategory;
     public final String phase;
 
-    public RoadSystem(int roadNumber, String roadCategory, String phase) {
+    public RoadSystem(Long id, Integer version, int roadNumber, String roadCategory, String phase) {
+        this.id = id;
+        this.version = version;
         this.roadNumber = roadNumber;
         this.roadCategory = roadCategory;
         this.phase = phase;
@@ -20,10 +24,12 @@ public class RoadSystem {
     @Override
     public String toString() {
         return "RoadSystem{" +
-            "roadNumber=" + roadNumber +
-            ", roadCategory='" + roadCategory + '\'' +
-            ", phase='" + phase + '\'' +
-            '}';
+                "id=" + id +
+                ", version=" + version +
+                ", roadNumber=" + roadNumber +
+                ", roadCategory='" + roadCategory + '\'' +
+                ", phase='" + phase + '\'' +
+                '}';
     }
 
     @Override
@@ -32,12 +38,14 @@ public class RoadSystem {
         if (o == null || getClass() != o.getClass()) return false;
         RoadSystem that = (RoadSystem) o;
         return roadNumber == that.roadNumber &&
-            Objects.equals(roadCategory, that.roadCategory) &&
-            Objects.equals(phase, that.phase);
+                Objects.equals(id, that.id) &&
+                Objects.equals(version, that.version) &&
+                Objects.equals(roadCategory, that.roadCategory) &&
+                Objects.equals(phase, that.phase);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roadNumber, roadCategory, phase);
+        return Objects.hash(id, version, roadNumber, roadCategory, phase);
     }
 }

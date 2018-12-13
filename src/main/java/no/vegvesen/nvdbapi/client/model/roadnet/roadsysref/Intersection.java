@@ -3,20 +3,26 @@ package no.vegvesen.nvdbapi.client.model.roadnet.roadsysref;
 import java.util.Objects;
 
 public class Intersection {
+    public final Long id;
+    public final Integer version;
     public final int number;
     public final int part;
 
-    public Intersection(int number, int part) {
+    public Intersection(Long id, Integer version, int number, int part) {
         this.number = number;
         this.part = part;
+        this.id = id;
+        this.version = version;
     }
 
     @Override
     public String toString() {
         return "Intersection{" +
-            "number=" + number +
-            ", systemPart=" + part +
-            '}';
+                "id=" + id +
+                ", version=" + version +
+                ", number=" + number +
+                ", part=" + part +
+                '}';
     }
 
     @Override
@@ -24,12 +30,14 @@ public class Intersection {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Intersection that = (Intersection) o;
-        return number == that.number &&
-            part == that.part;
+        return id == that.id &&
+                version == that.version &&
+                number == that.number &&
+                part == that.part;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(number, part);
+        return Objects.hash(id, version, number, part);
     }
 }
