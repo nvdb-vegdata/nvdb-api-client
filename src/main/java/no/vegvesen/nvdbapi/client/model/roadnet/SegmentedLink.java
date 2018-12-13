@@ -26,6 +26,7 @@
 package no.vegvesen.nvdbapi.client.model.roadnet;
 
 import no.vegvesen.nvdbapi.client.model.Geometry;
+import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
 import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
 
 import java.io.Serializable;
@@ -46,7 +47,7 @@ public final class SegmentedLink implements Serializable {
     private final Integer municipality;
     private final Integer region;
     private final Integer roadDepartment;
-    private final RoadRef roadRef;
+    private final RoadSysRef roadRef;
     private final LocalDate fromDate;
     private final LocalDate toDate;
     private final String startNode;
@@ -58,7 +59,7 @@ public final class SegmentedLink implements Serializable {
                          LocalDate fromDate, LocalDate toDate,
                          SosiMedium medium, TopologyLevel level, Integer region, Integer county,
                          Integer municipality, Integer roadDepartment,
-                         Geometry geometry, RoadRef roadRef, Integer reflinkPartType) {
+                         Geometry geometry, RoadSysRef roadRef, Integer reflinkPartType) {
         this.id = id;
         this.superLinkId = superLinkId;
         this.start = start;
@@ -102,7 +103,7 @@ public final class SegmentedLink implements Serializable {
         return topologyLevel;
     }
 
-    public RoadRef getRoadRef() {
+    public RoadSysRef getRoadRef() {
         return roadRef;
     }
 

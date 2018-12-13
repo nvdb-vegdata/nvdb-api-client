@@ -28,7 +28,7 @@ package no.vegvesen.nvdbapi.client.gson;
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.roadnet.*;
-import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
+import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.*;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -64,9 +64,9 @@ public final class SegmentedLinkParser {
             geo = GeometryParser.parse(obj.getAsJsonObject("geometri"));
         }
 
-        RoadRef roadRef = null;
-        if (obj.has("vegreferanse")) {
-            roadRef = RoadRefParser.parse(obj.getAsJsonObject("vegreferanse"));
+        RoadSysRef roadSysRef = null;
+        if (obj.has("vegsystemreferanse")) {
+            roadSysRef = RoadSysRefParser.parse(obj.getAsJsonObject("vegsystemreferanse"));
         }
 
         Long superLinkId = null;
@@ -75,7 +75,7 @@ public final class SegmentedLinkParser {
         }
 
         return new SegmentedLink(id, superLinkId, start, end, startNode, endNode, fromDate, toDate,
-                medium, level, region, county, municipality, roadDepartment, geo, roadRef, reflinkPartType);
+                medium, level, region, county, municipality, roadDepartment, geo, roadSysRef, reflinkPartType);
     }
 
 }
