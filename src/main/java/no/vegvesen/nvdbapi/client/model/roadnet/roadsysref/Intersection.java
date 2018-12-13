@@ -1,0 +1,43 @@
+package no.vegvesen.nvdbapi.client.model.roadnet.roadsysref;
+
+import java.util.Objects;
+
+public class Intersection {
+    public final Long id;
+    public final Integer version;
+    public final int number;
+    public final int part;
+
+    public Intersection(Long id, Integer version, int number, int part) {
+        this.number = number;
+        this.part = part;
+        this.id = id;
+        this.version = version;
+    }
+
+    @Override
+    public String toString() {
+        return "Intersection{" +
+                "id=" + id +
+                ", version=" + version +
+                ", number=" + number +
+                ", part=" + part +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Intersection that = (Intersection) o;
+        return id == that.id &&
+                version == that.version &&
+                number == that.number &&
+                part == that.part;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, version, number, part);
+    }
+}

@@ -28,7 +28,7 @@ package no.vegvesen.nvdbapi.client.gson;
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.roadnet.*;
-import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
+import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.*;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -44,15 +44,13 @@ public final class SegmentedLinkParser {
         // Metadata
         LocalDate fromDate = parseDateMember(obj, "metadata.startdato"), toDate = parseDateMember(obj, "metadata.sluttdato");
 
-        long id = parseLongMember(obj, "netelementid");
+        long id = parseLongMember(obj, "veglenkesekvens");
         Double start = parseDoubleMember(obj, "startposisjon"), end = parseDoubleMember(obj, "sluttposisjon");
         String startNode = parseStringMember(obj, "startnode"), endNode = parseStringMember(obj, "sluttnode");
 
-        boolean isConnectionLink = parseBooleanMember(obj, "konnekteringslenke");
-
         SosiMedium medium = Optional.ofNullable(parseStringMember(obj, "medium")).map(SosiMedium::from).orElse(null);
-        Ltema ltema = Optional.ofNullable(parseIntMember(obj, "temakode")).map(Ltema::from).orElse(null);
         TopologyLevel level = Optional.ofNullable(parseStringMember(obj, "topologinivå")).map(TopologyLevel::fromValue).orElse(null);
+        Integer reflinkPartType = parseIntMember(obj,"netelem_typeid");
 
         // Areas
         Integer municipality = parseIntMember(obj, "kommune");
@@ -66,9 +64,9 @@ public final class SegmentedLinkParser {
             geo = GeometryParser.parse(obj.getAsJsonObject("geometri"));
         }
 
-        RoadRef roadRef = null;
-        if (obj.has("vegreferanse")) {
-            roadRef = RoadRefParser.parse(obj.getAsJsonObject("vegreferanse"));
+        RoadSysRef roadSysRef = null;
+        if (obj.has("vegsystemreferanse")) {
+            roadSysRef = RoadSysRefParser.parse(obj.getAsJsonObject("vegsystemreferanse"));
         }
 
         Long superLinkId = null;
@@ -77,7 +75,7 @@ public final class SegmentedLinkParser {
         }
 
         return new SegmentedLink(id, superLinkId, start, end, startNode, endNode, fromDate, toDate,
-                medium, ltema, level, region, county, municipality, roadDepartment, geo, roadRef, isConnectionLink);
+                medium, level, region, county, municipality, roadDepartment, geo, roadSysRef, reflinkPartType);
     }
 
 }

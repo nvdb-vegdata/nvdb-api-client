@@ -48,10 +48,13 @@ public enum TopologyLevel {
 
     public static TopologyLevel fromValue(String val) {
         if(val == null) return null;
-        switch (val) {
-            case "Vegtrasé": return VEGTRASE;
-            case "Kjørebane": return KJOREBANE;
-            case "Kjørefelt": return KJOREFELT;
+        switch (val.toLowerCase()) {
+            case "vegtrase":
+            case "vegtrasé": return VEGTRASE;
+            case "kjorebane":
+            case "kjørebane": return KJOREBANE;
+            case "kjorefelt":
+            case "kjørefelt": return KJOREFELT;
             default: return null;
         }
     }
