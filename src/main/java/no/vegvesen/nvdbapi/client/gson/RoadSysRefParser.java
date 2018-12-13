@@ -55,8 +55,10 @@ public final class RoadSysRefParser {
             sectionMeter = parseSectionMeter(obj); // get meter value *on* the section where intersection starts
             startEndMeter = obj.getAsJsonObject("kryssdel");
         }
-        double startMeter = parseDoubleMember(startEndMeter,"fra_meter");
-        double endMeter = parseDoubleMember(startEndMeter,"til_meter");
+        Double startMeter = parseDoubleMember(startEndMeter,"fra_meter");
+        Double endMeter = parseDoubleMember(startEndMeter,"til_meter");
+
+        if (isNull(startMeter) || isNull(endMeter)) return null;
 
         return new RoadSysRef(
                 roadSystem,
@@ -83,6 +85,7 @@ public final class RoadSysRefParser {
     }
 
     private static Section parseSection(JsonObject obj) {
+        if (isNull(obj)) return null;
         return new Section(
                 parseLongMember(obj, "id"),
                 parseIntMember(obj, "versjon"),
