@@ -52,6 +52,7 @@ import java.util.*;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
 import static no.vegvesen.nvdbapi.client.clients.RoadObjectRequest.DEFAULT;
@@ -72,8 +73,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
     }
 
     public Statistics getStats(int featureTypeId, RoadObjectRequest request) {
-        UriBuilder path = start()
-                .path(String.format("/vegobjekter/%d/statistikk", featureTypeId));
+        UriBuilder path = start(featureTypeId).path("statistikk");
 
         applyRequestParameters(path, convert(request));
         logger.debug("Invoking {}", path);
@@ -93,7 +93,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
     public List<RoadObjectType> getRoadObjectTypes(){
         List<RoadObjectType> roadObjectTypes = new ArrayList<>();
-        UriBuilder path = start().path("/vegobjekter");
+        UriBuilder path = start();
         WebTarget target = getClient().target(path);
 
         JsonArray e = execute(target).getAsJsonArray();
@@ -109,8 +109,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
      * @return {@code RoadObjectsResult} for query
      */
     public RoadObjectsResult getRoadObjects(int featureTypeId, MultivaluedMap<String, String> queryParameters) {
-        UriBuilder path = start()
-                .path(String.format("/vegobjekter/%d", featureTypeId));
+        UriBuilder path = start(featureTypeId);
 
         applyRequestParameters(path, queryParameters);
         WebTarget target = getClient().target(path);
@@ -135,8 +134,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
     }
 
     private WebTarget getWebTarget(int featureTypeId, RoadObjectRequest request) {
-        UriBuilder path = start()
-                .path(String.format("/vegobjekter/%d", featureTypeId));
+        UriBuilder path = start(featureTypeId);
 
         applyRequestParameters(path, convert(request));
         return getClient().target(path);
@@ -155,8 +153,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
     }
 
     public RoadObject getRoadObject(int featureTypeId, long featureId, RoadObjectRequest request) {
-        UriBuilder path = start()
-                .path(String.format("/vegobjekter/%d/%d", featureTypeId, featureId));
+        UriBuilder path = start(featureTypeId).path(valueOf(featureId));
 
         logger.debug("Invoking {}", path);
         applyRequestParameters(path, convert(request));
@@ -172,8 +169,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
     }
 
     public List<RoadObject> getRoadObjectVersions(int featureTypeId, long featureId, RoadObjectRequest roadObjectRequest) {
-        UriBuilder path = start()
-                .path(String.format("/vegobjekter/%d/%d/versjoner", featureTypeId, featureId));
+        UriBuilder path = start(featureTypeId).path(valueOf(featureId)).path("versjoner");
 
         logger.debug("Invoking {}", path);
         applyRequestParameters(path, convert(roadObjectRequest));
@@ -191,8 +187,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
     }
 
     public RoadObject getRoadObjectVersion(int featureTypeId, long featureId, int version, RoadObjectRequest roadObjectRequest){
-        UriBuilder path = start()
-                .path(String.format("/vegobjekter/%d/%d/%d", featureTypeId, featureId, version));
+        UriBuilder path = start(featureTypeId).path(valueOf(featureId)).path(valueOf(version));
 
         logger.debug("Invoking {}", path);
         applyRequestParameters(path, convert(roadObjectRequest));
@@ -204,8 +199,8 @@ public class RoadObjectClient extends AbstractJerseyClient {
     }
 
     public RoadObjectAttribute getBinaryAttributeRoadObject(int featureTypeId, long featureId, int version, int attributeId, int blobId){
-        UriBuilder path = start()
-                .path(String.format("/vegobjekter/%d/%d/%d/egenskaper/%d/%d/binaer", featureTypeId, featureId, version, attributeId, blobId));
+        UriBuilder path = start(featureTypeId).path(valueOf(featureId)).path(valueOf(version))
+                .path("egenskaper").path(valueOf(attributeId)).path(valueOf(blobId)).path("binaer");
 
         logger.debug("Invoking {}", path);
         WebTarget target = getClient().target(path);
@@ -235,7 +230,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
     }
 
     public List<RoadObjectTypeWithStats> getSummary(RoadObjectRequest request) {
-        UriBuilder path = start().path("/vegobjekter");
+        UriBuilder path = start();
         applyRequestParameters(path, convert(request));
         WebTarget target = getClient().target(path);
         logger.debug("Invoking {}", path);
@@ -244,6 +239,15 @@ public class RoadObjectClient extends AbstractJerseyClient {
                 .map(JsonElement::getAsJsonObject)
                 .map(RoadObjectParser::parseRoadObjectTypeWithStats)
                 .collect(toList());
+    }
+
+    private UriBuilder start(int typeId) {
+        return start().path(valueOf(typeId));
+    }
+
+    @Override
+    protected UriBuilder start() {
+        return super.start().path("vegobjekter");
     }
 
     public enum Include {
