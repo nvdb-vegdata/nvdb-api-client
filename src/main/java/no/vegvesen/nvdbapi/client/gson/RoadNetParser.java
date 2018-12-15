@@ -47,7 +47,7 @@ public final class RoadNetParser {
     public static LinkSequence parseLink(JsonObject obj){
         if(obj==null) return null;
 
-        long id = parseLongMember(obj, "id");
+        long id = parseLongMember(obj, "veglenkesekvensid");
         List<Port> ports = parsePorts(obj.getAsJsonArray("porter"));
         List<Link> links = parseLinkPorts(obj.getAsJsonArray("veglenker"));
 
@@ -73,7 +73,7 @@ public final class RoadNetParser {
                 .stream(obj.spliterator(), false)
                 .map(JsonElement::getAsJsonObject)
                 .map(asJsonObject -> new Link(
-                        parseIntMember(asJsonObject, "id"),
+                        parseIntMember(asJsonObject, "veglenkenummer"),
                         parseBooleanMember(asJsonObject, "konnekteringslenke"),
                         parseBooleanMember(asJsonObject, "detaljert"),
                         TopologyLevel.fromValue(parseStringMember(asJsonObject, "topologinivå")),
