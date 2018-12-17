@@ -28,6 +28,7 @@ package no.vegvesen.nvdbapi.client.model.roadobjects;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
 
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Segment {
@@ -42,6 +43,8 @@ public class Segment {
     private final int roadDepartment;
     private final RoadSysRef roadSysRef;
     private final Integer length;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
 
     public Segment(long netElementId,
                    double startPosition,
@@ -52,7 +55,9 @@ public class Segment {
                    int region,
                    int roadDepartment,
                    RoadSysRef roadSysRef,
-                   Integer length) {
+                   Integer length,
+                   LocalDate startDate,
+                   LocalDate endDate) {
         this.netElementId = netElementId;
         this.startPosition = startPosition;
         this.endPosition = endPosition;
@@ -63,6 +68,8 @@ public class Segment {
         this.roadDepartment = roadDepartment;
         this.roadSysRef = roadSysRef;
         this.length = length;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
     public Geometry getGeometry() {
@@ -105,6 +112,14 @@ public class Segment {
         return length;
     }
 
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -119,12 +134,14 @@ public class Segment {
                 roadDepartment == segment.roadDepartment &&
                 Objects.equals(geometry, segment.geometry) &&
                 Objects.equals(roadSysRef, segment.roadSysRef) &&
-                Objects.equals(length, segment.length);
+                Objects.equals(length, segment.length) &&
+                Objects.equals(startDate, segment.startDate) &&
+                Objects.equals(endDate, segment.endDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(netElementId, startPosition, endPosition, geometry, municipality,
-                county, region, roadDepartment, roadSysRef, length);
+        return Objects.hash(netElementId, startPosition, endPosition, geometry, municipality, county, region,
+                roadDepartment, roadSysRef, length, startDate, endDate);
     }
 }

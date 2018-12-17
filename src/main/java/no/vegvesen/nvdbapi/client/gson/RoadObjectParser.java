@@ -196,7 +196,9 @@ public final class RoadObjectParser {
                 region,
                 department,
                 ref,
-                length);
+                length,
+                parseDateMember(obj, "startdato"),
+                parseDateMember(obj, "sluttdato"));
     }
 
     public static Attribute parseAttribute(Map<String, DataType> dataTypes, JsonObject obj) {
