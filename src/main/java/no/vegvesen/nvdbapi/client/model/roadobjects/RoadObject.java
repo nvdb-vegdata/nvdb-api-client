@@ -41,7 +41,6 @@ public class RoadObject {
     private final LocalDate endDate;
     private final Location location;
     private final Geometry geometry;
-    private final SegmentationFilter segmentationFilter;
     private final List<Segment> segments;
     private final List<Attribute> attributes;
     private final List<Association> children;
@@ -49,7 +48,7 @@ public class RoadObject {
     private final LocalDateTime lastModified;
 
     public RoadObject(long id, Integer typeId, Integer version, LocalDate startDate, LocalDate endDate,
-                      SegmentationFilter segmentationFilter, List<Segment> segments,
+                      List<Segment> segments,
                       Location location, Geometry geometry, LocalDateTime lastModified,
                       List<Attribute> attributes, List<Association> children, List<Association> parents) {
         this.id = id;
@@ -57,7 +56,6 @@ public class RoadObject {
         this.version = version;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.segmentationFilter = segmentationFilter;
         this.segments = segments;
         this.location = location;
         this.geometry = geometry;
@@ -139,14 +137,6 @@ public class RoadObject {
         return location;
     }
 
-    public boolean isSegmented() {
-        return segmentationFilter != null;
-    }
-
-    public SegmentationFilter getSegmentationFilter() {
-        return segmentationFilter;
-    }
-
     public List<Segment> getSegments() {
         return segments;
     }
@@ -172,7 +162,6 @@ public class RoadObject {
                 Objects.equals(endDate, that.endDate) &&
                 Objects.equals(location, that.location) &&
                 Objects.equals(geometry, that.geometry) &&
-                Objects.equals(segmentationFilter, that.segmentationFilter) &&
                 Objects.equals(segments, that.segments) &&
                 Objects.equals(attributes, that.attributes) &&
                 Objects.equals(children, that.children) &&
@@ -183,7 +172,7 @@ public class RoadObject {
     @Override
     public int hashCode() {
 
-        return Objects.hash(id, typeId, version, startDate, endDate, location, geometry, segmentationFilter, segments,
+        return Objects.hash(id, typeId, version, startDate, endDate, location, geometry, segments,
                 attributes, children, parents, lastModified);
     }
 }

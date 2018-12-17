@@ -26,29 +26,42 @@
 package no.vegvesen.nvdbapi.client.model.roadobjects;
 
 import no.vegvesen.nvdbapi.client.model.Geometry;
+import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
 
 import java.util.Objects;
 
 public class Segment {
 
+    private final long netElementId;
+    private final double startPosition;
+    private final double endPosition;
     private final Geometry geometry;
     private final int municipality;
     private final int county;
     private final int region;
     private final int roadDepartment;
-    private final Placement placement;
-    private final RoadRef roadRef;
+    private final RoadSysRef roadSysRef;
     private final Integer length;
 
-    public Segment(Geometry geometry, int municipality, int county, int region, int roadDepartment,
-                   Placement placement, RoadRef roadRef, Integer length) {
+    public Segment(long netElementId,
+                   double startPosition,
+                   double endPosition,
+                   Geometry geometry,
+                   int municipality,
+                   int county,
+                   int region,
+                   int roadDepartment,
+                   RoadSysRef roadSysRef,
+                   Integer length) {
+        this.netElementId = netElementId;
+        this.startPosition = startPosition;
+        this.endPosition = endPosition;
         this.geometry = geometry;
         this.municipality = municipality;
         this.county = county;
         this.region = region;
         this.roadDepartment = roadDepartment;
-        this.placement = placement;
-        this.roadRef = roadRef;
+        this.roadSysRef = roadSysRef;
         this.length = length;
     }
 
@@ -72,12 +85,20 @@ public class Segment {
         return roadDepartment;
     }
 
-    public Placement getPlacement() {
-        return placement;
+    public long getNetElementId() {
+        return netElementId;
     }
 
-    public RoadRef getRoadRef() {
-        return roadRef;
+    public double getStartPosition() {
+        return startPosition;
+    }
+
+    public double getEndPosition() {
+        return endPosition;
+    }
+
+    public RoadSysRef getRoadSysRef() {
+        return roadSysRef;
     }
 
     public Integer getLength() {
@@ -89,18 +110,21 @@ public class Segment {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Segment segment = (Segment) o;
-        return municipality == segment.municipality &&
+        return netElementId == segment.netElementId &&
+                Double.compare(segment.startPosition, startPosition) == 0 &&
+                Double.compare(segment.endPosition, endPosition) == 0 &&
+                municipality == segment.municipality &&
                 county == segment.county &&
                 region == segment.region &&
                 roadDepartment == segment.roadDepartment &&
                 Objects.equals(geometry, segment.geometry) &&
-                Objects.equals(placement, segment.placement) &&
-                Objects.equals(roadRef, segment.roadRef) &&
+                Objects.equals(roadSysRef, segment.roadSysRef) &&
                 Objects.equals(length, segment.length);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(geometry, municipality, county, region, roadDepartment, placement, roadRef, length);
+        return Objects.hash(netElementId, startPosition, endPosition, geometry, municipality,
+                county, region, roadDepartment, roadSysRef, length);
     }
 }

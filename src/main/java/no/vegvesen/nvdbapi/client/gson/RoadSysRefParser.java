@@ -38,8 +38,9 @@ public final class RoadSysRefParser {
     public static RoadSysRef parse(JsonObject obj) {
         if (isNull(obj)) return null;
 
+        if(!obj.has("vegsystem")) return  null;
+
         RoadSystem roadSystem = parseRoadSystem(obj.getAsJsonObject("vegsystem"));
-        if(roadSystem == null) return  null;
 
         Section section = parseSection(obj.getAsJsonObject("strekning"));
         Intersection intersection = parseIntersection(obj.getAsJsonObject("kryssystem"));
