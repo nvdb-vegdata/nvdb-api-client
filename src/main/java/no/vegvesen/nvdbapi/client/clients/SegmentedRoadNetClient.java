@@ -92,6 +92,7 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         request.getBpolygon().ifPresent(v -> path.queryParam("polygon", v));
         request.getProjection().ifPresent(v -> path.queryParam("srid", v.getSrid()));
         request.getRoadRefFilter().ifPresent(v -> path.queryParam("vegreferanse", v));
+        path.queryParam("historisk", request.isHistory());
 
         return getClient().target(path);
     }

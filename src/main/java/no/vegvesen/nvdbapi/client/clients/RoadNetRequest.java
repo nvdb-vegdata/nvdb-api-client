@@ -50,6 +50,7 @@ public class RoadNetRequest {
     private final Optional<String> contractArea;
     private final Optional<String> nationalRoute;
     private final Optional<String> bpolygon;
+    private final boolean history;
 
     private RoadNetRequest(Builder b) {
         page = b.page;
@@ -66,6 +67,7 @@ public class RoadNetRequest {
         contractArea = b.contractArea;
         nationalRoute = b.nationalRoute;
         id = b.id;
+        history = b.history;
     }
 
     public static Builder newBuilder() {
@@ -128,6 +130,10 @@ public class RoadNetRequest {
         return bpolygon;
     }
 
+    public boolean isHistory() {
+        return history;
+    }
+
     public static class Builder {
         private Optional<String> bpolygon = Optional.empty();
         private Optional<Page> page = Optional.empty();
@@ -143,6 +149,7 @@ public class RoadNetRequest {
         private Optional<Projection> projection = Optional.empty();
         private Optional<String> contractArea = Optional.empty();
         private Optional<String> nationalRoute = Optional.empty();
+        private boolean history = false;
 
         private Builder() {
         }
@@ -242,6 +249,11 @@ public class RoadNetRequest {
 
         public Builder withNationalRoute(String nationalRoute) {
             this.nationalRoute = Optional.ofNullable(nationalRoute);
+            return this;
+        }
+
+        public Builder withHistory(boolean history){
+            this.history = history;
             return this;
         }
     }
