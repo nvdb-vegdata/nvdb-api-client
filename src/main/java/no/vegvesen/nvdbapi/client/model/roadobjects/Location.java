@@ -28,6 +28,7 @@ package no.vegvesen.nvdbapi.client.model.roadobjects;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
 import no.vegvesen.nvdbapi.client.model.areas.Route;
+import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
 
 import java.util.List;
 import java.util.Objects;
@@ -41,14 +42,14 @@ public class Location {
     private final List<Integer> departments;
     private final List<ContractArea> contractAreas;
     private final List<Route> nationalRoutes;
-    private final List<RoadRef> roadRefs;
+    private final List<RoadSysRef> roadSysRefs;
     private final List<Placement> placements;
     private final Geometry geometry;
 
     private final Double length;
 
     public Location(List<Integer> municipalities, List<Integer> counties, List<Integer> regions,
-                    List<Integer> departments, Double length, List<Placement> placements, List<RoadRef> roadRefs,
+                    List<Integer> departments, Double length, List<Placement> placements, List<RoadSysRef> RoadSysRefs,
                     List<ContractArea> contractAreas, List<Route> nationalRoutes, Geometry geometry) {
         this.placements = placements;
         this.contractAreas = contractAreas;
@@ -59,7 +60,7 @@ public class Location {
         this.regions = requireNonNull(regions);
         this.departments = requireNonNull(departments);
         this.length = length;
-        this.roadRefs = requireNonNull(roadRefs);
+        this.roadSysRefs = requireNonNull(RoadSysRefs);
     }
 
     public List<Integer> getMunicipalities() {
@@ -86,8 +87,8 @@ public class Location {
         return nationalRoutes;
     }
 
-    public List<RoadRef> getRoadRefs() {
-        return roadRefs;
+    public List<RoadSysRef> getRoadSysRefs() {
+        return roadSysRefs;
     }
 
     public List<Placement> getPlacements() {
@@ -113,7 +114,7 @@ public class Location {
                 Objects.equals(departments, location.departments) &&
                 Objects.equals(contractAreas, location.contractAreas) &&
                 Objects.equals(nationalRoutes, location.nationalRoutes) &&
-                Objects.equals(roadRefs, location.roadRefs) &&
+                Objects.equals(roadSysRefs, location.roadSysRefs) &&
                 Objects.equals(placements, location.placements) &&
                 Objects.equals(geometry, location.geometry) &&
                 Objects.equals(length, location.length);
@@ -121,7 +122,7 @@ public class Location {
 
     @Override
     public int hashCode() {
-        return Objects.hash(municipalities, counties, regions, departments, contractAreas, nationalRoutes, roadRefs,
+        return Objects.hash(municipalities, counties, regions, departments, contractAreas, nationalRoutes, roadSysRefs,
                 placements, geometry, length);
     }
 }

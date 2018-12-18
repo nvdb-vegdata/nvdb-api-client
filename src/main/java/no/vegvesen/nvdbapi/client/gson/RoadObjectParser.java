@@ -31,6 +31,7 @@ import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.*;
 import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
 import no.vegvesen.nvdbapi.client.model.areas.Route;
+import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
 import no.vegvesen.nvdbapi.client.model.roadobjects.*;
 import no.vegvesen.nvdbapi.client.model.datakatalog.DataType;
 
@@ -53,58 +54,70 @@ public final class RoadObjectParser {
         LocalDate startDate = parseDateMember(obj, "metadata.startdato"), endDate = parseDateMember(obj, "metadata.sluttdato");
         LocalDateTime lastModified = parseDateTimeMember(obj, "metadata.sist_modifisert");
 
-        List<Attribute> attributes = Collections.emptyList();
-        JsonArray egenskaper = obj.getAsJsonArray("egenskaper");
-        if (egenskaper != null) {
-            attributes = StreamSupport.stream(egenskaper.spliterator(), false)
-                    .map(e -> parseAttribute(dataTypes, e.getAsJsonObject()))
-                    .collect(Collectors.toList());
-        }
+        List<Attribute> attributes = parseAttributes(dataTypes, obj);
 
-        List<Association> childrenList = Collections.emptyList();
-        JsonArray children = getArray(obj, "relasjoner.barn").orElse(null);
-        if (children != null) {
-            childrenList = StreamSupport.stream(children.spliterator(), false)
-                    .map(e -> parseAssociation(dataTypes, e.getAsJsonObject()))
-                    .collect(Collectors.toList());
-        }
+        List<Association> childrenList = parseChildren(dataTypes, obj);
 
-        List<Association> parentList = Collections.emptyList();
-        JsonArray parents = getArray(obj, "relasjoner.foreldre").orElse(null);
-        if (parents != null) {
-            parentList = StreamSupport.stream(parents.spliterator(), false)
-                    .map(e -> parseAssociation(dataTypes, e.getAsJsonObject()))
-                    .collect(Collectors.toList());
-        }
+        List<Association> parentList = parseParents(dataTypes, obj);
 
-        JsonElement loc = obj.get("lokasjon");
-        Location location = Optional.ofNullable(loc).map(e -> parseLocation(e.getAsJsonObject())).orElse(null);
+        Location location = Optional.ofNullable(obj.get("lokasjon"))
+                .map(e -> parseLocation(e.getAsJsonObject())).orElse(null);
 
         Geometry geometry = null;
         if (obj.has("geometri")) {
             geometry = GeometryParser.parse(obj.getAsJsonObject("geometri"));
         }
 
-        SegmentationFilter segFilter = null;
-        JsonElement segmentation = obj.get("segmentering");
-        if (segmentation != null) {
-            segFilter = parseSegmentFilter(segmentation.getAsJsonObject());
-        }
+        List<Segment> segments = parseSegments(obj);
 
-        List<Segment> segments = Collections.emptyList();
-        JsonArray segmenter = obj.getAsJsonArray("vegsegmenter");
-        if (segmenter != null) {
-            segments = StreamSupport.stream(segmenter.spliterator(), false)
-                    .map(e -> parseSegment(e.getAsJsonObject()))
-                    .collect(Collectors.toList());
-        }
-
-        return new RoadObject(id, typeId, version, startDate, endDate, segFilter, segments, location, geometry,
+        return new RoadObject(id, typeId, version, startDate, endDate, segments, location, geometry,
                 lastModified, attributes, childrenList, parentList);
     }
 
-    private static Location parseLocation(JsonObject obj) {
+    private static List<Segment> parseSegments(JsonObject obj) {
+        List<Segment> segments = Collections.emptyList();
+        JsonArray segmenter = obj.getAsJsonArray("vegsegmenter");
+        if (segmenter != null) {
+            return StreamSupport.stream(segmenter.spliterator(), false)
+                    .map(e -> parseSegment(e.getAsJsonObject()))
+                    .collect(Collectors.toList());
+        }
+        return segments;
+    }
 
+    private static List<Association> parseParents(Map<String, DataType> dataTypes, JsonObject obj) {
+        List<Association> parentList = Collections.emptyList();
+        JsonArray parents = getArray(obj, "relasjoner.foreldre").orElse(null);
+        return getAssociations(dataTypes, parentList, parents);
+    }
+
+    private static List<Association> parseChildren(Map<String, DataType> dataTypes, JsonObject obj) {
+        List<Association> childrenList = Collections.emptyList();
+        JsonArray children = getArray(obj, "relasjoner.barn").orElse(null);
+        return getAssociations(dataTypes, childrenList, children);
+    }
+
+    private static List<Association> getAssociations(Map<String, DataType> dataTypes, List<Association> parentList, JsonArray parents) {
+        if (parents != null) {
+            parentList = StreamSupport.stream(parents.spliterator(), false)
+                    .map(e -> parseAssociation(dataTypes, e.getAsJsonObject()))
+                    .collect(Collectors.toList());
+        }
+        return parentList;
+    }
+
+    private static List<Attribute> parseAttributes(Map<String, DataType> dataTypes, JsonObject obj) {
+        List<Attribute> attributes = Collections.emptyList();
+        JsonArray egenskaper = obj.getAsJsonArray("egenskaper");
+        if (egenskaper != null) {
+            return StreamSupport.stream(egenskaper.spliterator(), false)
+                    .map(e -> parseAttribute(dataTypes, e.getAsJsonObject()))
+                    .collect(Collectors.toList());
+        }
+        return attributes;
+    }
+
+    private static Location parseLocation(JsonObject obj) {
         List<Integer> municipalities = parseIntListMember(obj, "kommuner");
         List<Integer> counties = parseIntListMember(obj, "fylker");
         List<Integer> regions  = parseIntListMember(obj, "regioner");
@@ -129,10 +142,11 @@ public final class RoadObjectParser {
         }
 
         JsonArray refs = obj.getAsJsonArray("vegreferanser");
-        List<RoadRef> roadRefs = Collections.emptyList();
+        List<RoadSysRef> roadRefs = Collections.emptyList();
         if (refs != null) {
             roadRefs = StreamSupport.stream(refs.spliterator(), false)
-                    .map(e -> new RoadRef(-123))
+                    .map(JsonElement::getAsJsonObject)
+                    .map(RoadSysRefParser::parse)
                     .collect(Collectors.toList());
         }
 
@@ -152,19 +166,7 @@ public final class RoadObjectParser {
                 contractAreas, nationalRoutes, geometry);
     }
 
-    private static SegmentationFilter parseSegmentFilter(JsonObject object) {
-        List<Integer> municipalities = Optional.ofNullable(parseIntListMember(object, "kommuner")).orElse(Collections.emptyList());
-        List<Integer> counties = Optional.ofNullable(parseIntListMember(object, "fylker")).orElse(Collections.emptyList());
-        List<Integer> regions = Optional.ofNullable(parseIntListMember(object, "regioner")).orElse(Collections.emptyList());
-        List<Integer> roadDepartments = Optional.ofNullable(parseIntListMember(object, "vegavdelinger")).orElse(Collections.emptyList());
-        List<RoadRefFilter> roadRefFilters = Optional.ofNullable(parseRoadRefFilter(object)).orElse(Collections.emptyList());
-
-        return new SegmentationFilter(municipalities, counties,
-                regions, roadDepartments, roadRefFilters);
-    }
-
     private static Segment parseSegment(JsonObject obj) {
-        Placement placement = PlacementParser.parsePlacement(obj.getAsJsonObject("stedfesting"));
 
         Geometry geo = GeometryParser.parse(obj.getAsJsonObject("geometri"));
 
@@ -173,41 +175,30 @@ public final class RoadObjectParser {
         Integer region  = parseIntMember(obj, "region");
         Integer department = parseIntMember(obj, "vegavdeling");
 
-        RoadRef ref = null;
+        RoadSysRef ref = null;
         if (obj.has("vegreferanse")) {
-            ref = new RoadRef(-123);
+            ref = RoadSysRefParser.parse(obj);
         }
 
         Integer length = parseIntMember(obj, "strekningslengde");
 
-        return new Segment(geo, municipality, county, region, department, placement, ref, length);
-    }
+        boolean isPoint = obj.has("relativPosisjon");
+        double startPos = isPoint ? parseDoubleMember(obj, "relativPosisjon") : parseDoubleMember(obj, "startposisjon");
+        double endPos   = isPoint ? startPos : parseDoubleMember(obj, "sluttposisjon");
 
-    private static List<RoadRefFilter> parseRoadRefFilter(JsonObject object) {
-        if (!object.has("vegreferanser")) {
-            return Collections.emptyList();
-        }
-
-        JsonArray a = object.getAsJsonArray("vegreferanser");
-
-        return StreamSupport.stream(a.spliterator(), false).map(JsonElement::getAsJsonObject)
-                .map(o -> {
-                    Integer c = parseIntMember(o, "fylke");
-                    Integer m = parseIntMember(o, "kommune");
-                    String cat = parseStringMember(o, "kategori");
-                    String stat = parseStringMember(o, "status");
-                    Integer n = parseIntMember(o, "nummer");
-                    Integer fromHp = null, toHp = null;
-                    if (o.has("hp")) {
-                        fromHp = parseIntMember(o, "hp");
-                    } else {
-                        fromHp = parseIntMember(o, "fra_hp");
-                        toHp = parseIntMember(o, "til_hp");
-                    }
-
-                    return new RoadRefFilter(c, m, cat, stat, n, fromHp, toHp);
-                })
-                .collect(Collectors.toList());
+        return new Segment(
+                parseLongMember(obj, "veglenkesekvens"),
+                startPos,
+                endPos,
+                geo,
+                municipality,
+                county,
+                region,
+                department,
+                ref,
+                length,
+                parseDateMember(obj, "startdato"),
+                parseDateMember(obj, "sluttdato"));
     }
 
     public static Attribute parseAttribute(Map<String, DataType> dataTypes, JsonObject obj) {
@@ -240,7 +231,7 @@ public final class RoadObjectParser {
         Set<RoadObject> roadObjects = StreamSupport.stream(objects.spliterator(), false).map(e -> {
             RoadObject ro;
             if (e.isJsonPrimitive()) {
-                ro = new RoadObject(e.getAsLong(), typeId, null, null, null, null, null, null, null, null, null, null, null);
+                ro = new RoadObject(e.getAsLong(), typeId, null, null, null, null, null, null, null, null, null, null);
             } else {
                 ro = parse(dataTypes, e.getAsJsonObject());
             }
