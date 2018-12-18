@@ -65,7 +65,7 @@ public final class SegmentedLinkParser {
         }
 
         RoadSysRef roadSysRef = null;
-        if (obj.has("vegsystemreferanse")) {
+        if (obj.has("vegsystemreferanse") && obj.getAsJsonObject("vegsystemreferanse").size() > 0) {
             roadSysRef = RoadSysRefParser.parse(obj.getAsJsonObject("vegsystemreferanse"));
         }
 
