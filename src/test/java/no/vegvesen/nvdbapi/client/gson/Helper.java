@@ -22,4 +22,10 @@ class Helper {
              .map(mapper)
              .collect(Collectors.toList());
     }
+
+    static <T> T parseObject(String file, Function<JsonObject, T> mapper) {
+        InputStream resource = Helper.class.getResourceAsStream("/jsonresponse/" + file);
+        JsonElement response = new JsonParser().parse(new InputStreamReader(resource));
+        return mapper.apply(response.getAsJsonObject());
+    }
 }

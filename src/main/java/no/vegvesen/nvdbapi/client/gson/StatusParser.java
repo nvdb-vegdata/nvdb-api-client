@@ -37,9 +37,10 @@ import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseDateTimeMember;
 public class StatusParser {
 
     public static Status parseStatus(JsonObject obj) {
-        LocalDateTime date = parseDateTimeMember(obj, "datagrunnlag.sist_oppdatert");
-        TransactionId transactionId = TransactionIdParser.parseTransactionId(obj.getAsJsonObject("sist_prosesserte_transaksjon"));
-        Version version = DatakatalogVersionParser.parseVersion(obj.getAsJsonObject("datakatalog"));
+        JsonObject datagrunnlag = obj.get("datagrunnlag").getAsJsonObject();
+        LocalDateTime date = parseDateTimeMember(datagrunnlag, "sist_oppdatert");
+        TransactionId transactionId = TransactionIdParser.parseTransactionId(datagrunnlag.getAsJsonObject("sist_prosesserte_transaksjon"));
+        Version version = DatakatalogVersionParser.parseVersion(datagrunnlag.getAsJsonObject("datakatalog"));
 
         return new Status(date, transactionId, version);
     }
