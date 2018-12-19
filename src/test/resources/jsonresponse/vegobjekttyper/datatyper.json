@@ -1,0 +1,133 @@
+[
+  {
+    "id": 1,
+    "navn": "Tekst",
+    "kortnavn": "T",
+    "beskrivelse": "Datatype benyttes for ET som skal inneholde tekst.  Må angi feltlengde.  Kan angi maske og defaultverdi."
+  },
+  {
+    "id": 2,
+    "navn": "Tall",
+    "kortnavn": "N",
+    "beskrivelse": "Datatype benyttes for ET som skal inneholde tall.  Benyttes både om heltall og desimaltall.  Det må angis feltlengde og antall desimaler.  Både siffer foran og bak komma samt selve kommaet inngår i feltlengde.  Kan angi maksverdi, minverdi, defaultverdi og maske."
+  },
+  {
+    "id": 8,
+    "navn": "Dato",
+    "kortnavn": "D",
+    "beskrivelse": "Datatype benyttes for ET som skal inneholde År/Måned/Dag.  Skal ha feltlengde = 8.  Må oppgi maske.  Kan oppgi maksverdi,  minverdi og defaultverdi."
+  },
+  {
+    "id": 9,
+    "navn": "KortDato",
+    "kortnavn": "KD",
+    "beskrivelse": "Datatype benyttes for ET som skal inneholde Måned/Dag for datoer som skal gjentas år etter år.  Må angi feltlengde.  Skal ha feltlengde 4.  Må angi maske.  Kan angi maksverdi, minverdi og defaultverdi."
+  },
+  {
+    "id": 10,
+    "navn": "Klokkeslett",
+    "kortnavn": "KL",
+    "beskrivelse": "Datatype benyttes for ET som skal inneholde Time/Minutt.  Må ha feltlengde=4. Kan angi maksverdi, minverdi og defaultverdi."
+  },
+  {
+    "id": 17,
+    "navn": "GeomPunkt",
+    "kortnavn": "GP",
+    "beskrivelse": "Datatype benyttes for ET som skal inneholde koordinater til et punkt i form av x-, y- og z-verdier.  Z-koordinat kan utelates.  Det må gis informasjon om koordinatsystem."
+  },
+  {
+    "id": 18,
+    "navn": "GeomLinje eller Kurve",
+    "kortnavn": "GLK",
+    "beskrivelse": "Datatype benyttes for ET som skal inneholde koordinater til ei linje/kurve.  Det kan gis linjer/kurver i 3 dimensjoner.  Linja/kurva går gjennom et sett med punkter i gitt rekkefølge.   Punktene er gitt ved x-, y- og z-verdier.  z-koordinat kan utelates. Det må gis informasjon om koordinatsystem."
+  },
+  {
+    "id": 19,
+    "navn": "GeomFlate",
+    "kortnavn": "GF",
+    "beskrivelse": "Datatype benyttes for ET som skal inneholde koordinater til et ei flate.  Det kan gis flater i 3 dimensjoner. Flate avgrenses av ei linje/kurve. Linja/kurva går gjennom et sett med punkter i gitt rekkefølge.   Punktene er gitt ved x-, y- og z-verdier.  Z-koordinat kan utelates. Det må gis informasjon om koordinatsystem."
+  },
+  {
+    "id": 20,
+    "navn": "GeomSammensatt geometri",
+    "kortnavn": "GSG",
+    "beskrivelse": "Datatype benyttes for ET som skal inneholde geometri bestående av både punkt, linje/kurve og flate"
+  },
+  {
+    "id": 21,
+    "navn": "GeomMultiPunkt",
+    "kortnavn": "GMP",
+    "beskrivelse": "Datatype benyttes for ET som skal inneholde et sett med punkt (se datatype 17)"
+  },
+  {
+    "id": 22,
+    "navn": "GeomMultiKurve/linje",
+    "kortnavn": "GMLK",
+    "beskrivelse": "Datatype benyttes for ET som skal inneholde et sett med kurver/linjer (se datatype 18)"
+  },
+  {
+    "id": 23,
+    "navn": "GeomMultiFlate",
+    "kortnavn": "GMF",
+    "beskrivelse": "Datatype benyttes for ET som skal inneholde et sett med flater (se datatype 19)"
+  },
+  {
+    "id": 24,
+    "navn": "NettNodeEllerPunktT??",
+    "kortnavn": "NNPT"
+  },
+  {
+    "id": 26,
+    "navn": "Struktur",
+    "kortnavn": "STRUKT",
+    "beskrivelse": "Datatype benyttes for ET som skal settes sammen av andre ET."
+  },
+  {
+    "id": 27,
+    "navn": "BinærObjekt",
+    "kortnavn": "BO",
+    "beskrivelse": "Datatype benyttes for ET som skal inneholde lyd, bilde, video, binærtekst etc."
+  },
+  {
+    "id": 28,
+    "navn": "Boolean",
+    "kortnavn": "BL",
+    "beskrivelse": "Datatype benyttes for ET hvor det skal gis enten ”Ja” eller ”Nei”. (”True” eller ”False”)."
+  },
+  {
+    "id": 29,
+    "navn": "Tegn",
+    "kortnavn": "TG",
+    "beskrivelse": "Datatype benyttes for ET som skal ha et sett med tillatte verdier, der de tillatte verdiene er av type tekst.  Må angi feltlengde større enn strenglengde av lengste tillatte verdi."
+  },
+  {
+    "id": 30,
+    "navn": "FlerverdiAttributt, Tekst",
+    "kortnavn": "FVA",
+    "beskrivelse": "Datatype benyttes for ET som skal ha et sett med tillatte verdier, der de tillatte verdiene er av type tekst.  Må angi feltlengde større enn strenglengde av lengste tillatte verdi."
+  },
+  {
+    "id": 31,
+    "navn": "Flerverdiattributt, Tall",
+    "kortnavn": "FVN",
+    "beskrivelse": "Datatype benyttes for ET som skal ha et sett med tillatte verdier, der de tillatte verdiene er av type tall.  Det må oppgis feltlengde og antall desimaler slik at alle tillatte verdier holder seg innenfor formatet."
+  },
+  {
+    "id": 32,
+    "navn": "Autogenerert verdi",
+    "kortnavn": "AV",
+    "beskrivelse": "Datatype benyttes for ET hvor det skal angis heltallsverdi som skal være unik innenfor objekttypen.  Ny verdi skal være høyeste eksisterende verdi + 1."
+  },
+  {
+    "id": 38,
+    "navn": "Liste",
+    "kortnavn": "LST",
+    "beskrivelse": "Datatype for liste av egenskaper"
+  },
+  {
+    "id": 39,
+    "navn": "Assosiasjon",
+    "kortnavn": "ASS",
+    "beskrivelse": "Datatype for assosiasjoner"
+  }
+]
