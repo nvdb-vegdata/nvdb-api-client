@@ -78,7 +78,7 @@ public final class PlacementParser {
             endPos = parseDoubleMember(obj, "sluttposisjon");
         }
 
-        Direction dir = Optional.of(parseStringMember(obj, "retning"))
+        Direction dir = Optional.ofNullable(parseStringMember(obj, "retning"))
                 .map(Direction::from)
                 .orElse(null);
         SidePosition sidePos = Optional.ofNullable(parseStringMember(obj, "sideposisjon"))
