@@ -1,0 +1,34 @@
+{
+  "objekter": [
+    {
+      "href": "https://pm1.utv.vegvesen.no/nvdb/api/v3/vegnett/veglenkesekvenser/segmentert/1",
+      "metadata": {},
+      "netelementid": 1,
+      "startposisjon": 0.0,
+      "sluttposisjon": 0.45729325,
+      "kortform": "0.0-0.45729325@1",
+      "medium": "T",
+      "temakode": 7001,
+      "konnekteringslenke": false,
+      "startnode": "1264799",
+      "sluttnode": "2955499",
+      "geometri": {
+        "wkt": "LINESTRING (155306.26026 6527946.06209, 155308.08 6527949.22, 155310.69 6527955.4, 155312.6 6527961.46, 155314.21 6527967.66, 155315.76 6527974.57, 155317.12 6527981.15, 155318.3 6527987.2, 155319.5 6527993.6, 155320.76 6527999.8, 155322.07 6528006.55, 155323.13 6528012.86, 155324.01 6528019.33, 155324.55 6528022.8, 155325.05 6528026.23, 155325.9 6528029.62, 155326.23 6528030.19, 155327.35 6528032.09, 155328.86 6528033.71, 155330.19 6528034.83, 155331.97 6528035.9, 155334.39 6528036.36, 155336.1 6528036.55, 155339.25 6528036.78, 155342.88 6528036.45)",
+        "srid": 32633
+      },
+      "region": 2,
+      "fylke": 9,
+      "vegavdeling": 9,
+      "kommune": 901,
+      "typeVeg": "Ikke implementert"
+    }
+  ],
+  "metadata": {
+    "antall": 1,
+    "returnert": 1,
+    "neste": {
+      "start": "HeB2Z4oLn9biyoCUF45YcKrMEDZp2Koy3VwzC1QAyZhx2hQZUfaXFcSWAfa5SRTigiBr1fBRGRivtJ1fnydZHkPiSM7V4CcnezGr6TZQpKFEV4mWbZraWGyPgdbDg9whATv6Hra4CNNZPA",
+      "href": "https://pm1.utv.vegvesen.no/nvdb/api/v3/vegnett/veglenkesekvenser/segmentert?antall=1&start=HeB2Z4oLn9biyoCUF45YcKrMEDZp2Koy3VwzC1QAyZhx2hQZUfaXFcSWAfa5SRTigiBr1fBRGRivtJ1fnydZHkPiSM7V4CcnezGr6TZQpKFEV4mWbZraWGyPgdbDg9whATv6Hra4CNNZPA"
+    }
+  }
+}
