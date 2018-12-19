@@ -3,47 +3,48 @@ package no.vegvesen.nvdbapi.client.gson;
 import com.google.gson.JsonObject;
 import org.junit.jupiter.api.Test;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.function.Function;
 
-import static no.vegvesen.nvdbapi.client.gson.Helper.parseList;
+import static no.vegvesen.nvdbapi.client.gson.Helper.parsePlainList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.not;
 
 class AreaParserTest {
     @Test
-    void parseFylker() {
+    void parseFylker() throws IOException {
         doParse("omrader/fylker.json", AreaParser::parseCounty);
     }
 
     @Test
-    void parseKommuner() {
+    void parseKommuner() throws IOException {
         doParse("omrader/kommuner.json", AreaParser::parseMun);
     }
 
     @Test
-    void parseKontraktsomrader() {
+    void parseKontraktsomrader() throws IOException {
         doParse("omrader/kontraktsomrader.json", AreaParser::parseContractArea);
     }
 
     @Test
-    void parseRegioner() {
+    void parseRegioner() throws IOException {
         doParse("omrader/regioner.json", AreaParser::parseRegion);
     }
 
     @Test
-    void parseRiksvegruter() {
+    void parseRiksvegruter() throws IOException {
         doParse("omrader/riksvegruter.json", AreaParser::parseRoute);
     }
 
     @Test
-    void parseVegavdelinger() {
+    void parseVegavdelinger() throws IOException {
         doParse("omrader/vegavdelinger.json", AreaParser::parseDepartment);
     }
 
-    private <T> void doParse(String file, Function<JsonObject, T> mapper) {
-        List<T> list = parseList(file, mapper);
+    private <T> void doParse(String file, Function<JsonObject, T> mapper) throws IOException {
+        List<T> list = parsePlainList(file, mapper);
         long count = list.size();
         assertThat(count, is(not(0)));
     }
