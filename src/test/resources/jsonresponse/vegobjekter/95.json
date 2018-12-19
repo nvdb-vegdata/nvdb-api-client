@@ -27,6 +27,7 @@
         {
           "id": 220006,
           "egenskapstype": "Liste",
+          "datatype": "Liste",
           "innhold": [
             {
               "id": 200006,
@@ -39,7 +40,7 @@
         }
       ],
       "geometri": {
-        "wkt": "POINT Z (88206.76856 6783844.94758 259.86262)",
+        "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
         "srid": 32633,
         "egengeometri": false
       },
@@ -94,6 +95,29 @@
             "periode": "2014-2023 / 2018-2029"
           }
         ],
+        "vegreferanser": [
+          {
+            "vegsystem": {
+              "id": 888791412,
+              "versjon": 1,
+              "vegkategori": "E",
+              "fase": "V",
+              "nummer": 16
+            },
+            "strekning": {
+              "id": 888802558,
+              "versjon": 1,
+              "strekning": 19,
+              "delstrekning": 1,
+              "arm": "N",
+              "adskilte_løp": "N",
+              "trafikantgruppe": "K",
+              "fra_meter": 759.336,
+              "til_meter": 13965.336
+            },
+            "kortform": "EV16 S19D1 M759-13965"
+          }
+        ],
         "stedfestinger": [
           {
             "veglenkesekvens": 384011,
@@ -104,11 +128,364 @@
           }
         ],
         "geometri": {
-          "wkt": "POINT Z (88206.76856 6783844.94758 259.86262)",
+          "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
           "srid": 32633
         }
       },
-      "vegsegmenter": [],
+      "vegsegmenter": [
+        {
+          "veglenkesekvens": 384011,
+          "relativPosisjon": 0.07178555,
+          "startdato": "2000-11-27",
+          "sluttdato": "2003-05-21",
+          "geometri": {
+            "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
+            "srid": 32633
+          },
+          "kommune": 1421,
+          "fylke": 14,
+          "region": 3,
+          "vegavdeling": 14,
+          "vegsystemreferanse": {}
+        },
+        {
+          "veglenkesekvens": 384011,
+          "relativPosisjon": 0.07178555,
+          "startdato": "2003-05-21",
+          "sluttdato": "2003-07-01",
+          "geometri": {
+            "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
+            "srid": 32633
+          },
+          "kommune": 1421,
+          "fylke": 14,
+          "region": 3,
+          "vegavdeling": 14,
+          "vegsystemreferanse": {}
+        },
+        {
+          "veglenkesekvens": 384011,
+          "relativPosisjon": 0.07178555,
+          "startdato": "2003-07-01",
+          "sluttdato": "2007-07-08",
+          "geometri": {
+            "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
+            "srid": 32633
+          },
+          "kommune": 1421,
+          "fylke": 14,
+          "region": 3,
+          "vegavdeling": 14,
+          "vegsystemreferanse": {
+            "vegsystem": {
+              "id": 888791412,
+              "versjon": 1,
+              "vegkategori": "E",
+              "fase": "V",
+              "nummer": 16
+            },
+            "kortform": "EV16"
+          }
+        },
+        {
+          "veglenkesekvens": 384011,
+          "relativPosisjon": 0.07178555,
+          "startdato": "2007-07-08",
+          "sluttdato": "2007-08-30",
+          "geometri": {
+            "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
+            "srid": 32633
+          },
+          "kommune": 1421,
+          "fylke": 14,
+          "region": 3,
+          "vegavdeling": 14,
+          "vegsystemreferanse": {
+            "vegsystem": {
+              "id": 888791412,
+              "versjon": 1,
+              "vegkategori": "E",
+              "fase": "V",
+              "nummer": 16
+            },
+            "kortform": "EV16"
+          }
+        },
+        {
+          "veglenkesekvens": 384011,
+          "relativPosisjon": 0.07178555,
+          "startdato": "2007-08-30",
+          "sluttdato": "2008-01-01",
+          "geometri": {
+            "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
+            "srid": 32633
+          },
+          "kommune": 1421,
+          "fylke": 14,
+          "region": 3,
+          "vegavdeling": 14,
+          "vegsystemreferanse": {
+            "vegsystem": {
+              "id": 888791412,
+              "versjon": 1,
+              "vegkategori": "E",
+              "fase": "V",
+              "nummer": 16
+            },
+            "kortform": "EV16"
+          }
+        },
+        {
+          "veglenkesekvens": 384011,
+          "relativPosisjon": 0.07178555,
+          "startdato": "2008-01-01",
+          "sluttdato": "2011-01-01",
+          "geometri": {
+            "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
+            "srid": 32633
+          },
+          "kommune": 1421,
+          "fylke": 14,
+          "region": 3,
+          "vegavdeling": 14,
+          "vegsystemreferanse": {
+            "vegsystem": {
+              "id": 888791412,
+              "versjon": 1,
+              "vegkategori": "E",
+              "fase": "V",
+              "nummer": 16
+            },
+            "kortform": "EV16"
+          }
+        },
+        {
+          "veglenkesekvens": 384011,
+          "relativPosisjon": 0.07178555,
+          "startdato": "2011-01-01",
+          "sluttdato": "2013-02-26",
+          "geometri": {
+            "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
+            "srid": 32633
+          },
+          "kommune": 1421,
+          "fylke": 14,
+          "region": 3,
+          "vegavdeling": 14,
+          "vegsystemreferanse": {
+            "vegsystem": {
+              "id": 888791412,
+              "versjon": 1,
+              "vegkategori": "E",
+              "fase": "V",
+              "nummer": 16
+            },
+            "kortform": "EV16"
+          }
+        },
+        {
+          "veglenkesekvens": 384011,
+          "relativPosisjon": 0.07178555,
+          "startdato": "2013-02-26",
+          "sluttdato": "2014-05-01",
+          "geometri": {
+            "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
+            "srid": 32633
+          },
+          "kommune": 1421,
+          "fylke": 14,
+          "region": 3,
+          "vegavdeling": 14,
+          "vegsystemreferanse": {
+            "vegsystem": {
+              "id": 888791412,
+              "versjon": 1,
+              "vegkategori": "E",
+              "fase": "V",
+              "nummer": 16
+            },
+            "kortform": "EV16"
+          }
+        },
+        {
+          "veglenkesekvens": 384011,
+          "relativPosisjon": 0.07178555,
+          "startdato": "2014-05-01",
+          "sluttdato": "2016-01-01",
+          "geometri": {
+            "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
+            "srid": 32633
+          },
+          "kommune": 1421,
+          "fylke": 14,
+          "region": 3,
+          "vegavdeling": 14,
+          "vegsystemreferanse": {
+            "vegsystem": {
+              "id": 888791412,
+              "versjon": 1,
+              "vegkategori": "E",
+              "fase": "V",
+              "nummer": 16
+            },
+            "kortform": "EV16"
+          }
+        },
+        {
+          "veglenkesekvens": 384011,
+          "relativPosisjon": 0.07178555,
+          "startdato": "2016-01-01",
+          "sluttdato": "2016-03-10",
+          "geometri": {
+            "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
+            "srid": 32633
+          },
+          "kommune": 1421,
+          "fylke": 14,
+          "region": 3,
+          "vegavdeling": 14,
+          "vegsystemreferanse": {
+            "vegsystem": {
+              "id": 888791412,
+              "versjon": 1,
+              "vegkategori": "E",
+              "fase": "V",
+              "nummer": 16
+            },
+            "kortform": "EV16"
+          }
+        },
+        {
+          "veglenkesekvens": 384011,
+          "relativPosisjon": 0.07178555,
+          "startdato": "2016-03-10",
+          "sluttdato": "2017-09-29",
+          "geometri": {
+            "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
+            "srid": 32633
+          },
+          "kommune": 1421,
+          "fylke": 14,
+          "region": 3,
+          "vegavdeling": 14,
+          "vegsystemreferanse": {
+            "vegsystem": {
+              "id": 888791412,
+              "versjon": 1,
+              "vegkategori": "E",
+              "fase": "V",
+              "nummer": 16
+            },
+            "kortform": "EV16"
+          }
+        },
+        {
+          "veglenkesekvens": 384011,
+          "relativPosisjon": 0.07178555,
+          "startdato": "2017-09-29",
+          "sluttdato": "2017-11-07",
+          "geometri": {
+            "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
+            "srid": 32633
+          },
+          "kommune": 1421,
+          "fylke": 14,
+          "region": 3,
+          "vegavdeling": 14,
+          "vegsystemreferanse": {
+            "vegsystem": {
+              "id": 888791412,
+              "versjon": 1,
+              "vegkategori": "E",
+              "fase": "V",
+              "nummer": 16
+            },
+            "kortform": "EV16"
+          }
+        },
+        {
+          "veglenkesekvens": 384011,
+          "relativPosisjon": 0.07178555,
+          "startdato": "2017-11-07",
+          "sluttdato": "2017-12-15",
+          "geometri": {
+            "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
+            "srid": 32633
+          },
+          "kommune": 1421,
+          "fylke": 14,
+          "region": 3,
+          "vegavdeling": 14,
+          "vegsystemreferanse": {
+            "vegsystem": {
+              "id": 888791412,
+              "versjon": 1,
+              "vegkategori": "E",
+              "fase": "V",
+              "nummer": 16
+            },
+            "kortform": "EV16"
+          }
+        },
+        {
+          "veglenkesekvens": 384011,
+          "relativPosisjon": 0.07178555,
+          "startdato": "2017-12-15",
+          "sluttdato": "2018-01-01",
+          "geometri": {
+            "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
+            "srid": 32633
+          },
+          "kommune": 1421,
+          "fylke": 14,
+          "region": 3,
+          "vegavdeling": 14,
+          "vegsystemreferanse": {
+            "vegsystem": {
+              "id": 888791412,
+              "versjon": 1,
+              "vegkategori": "E",
+              "fase": "V",
+              "nummer": 16
+            },
+            "kortform": "EV16"
+          }
+        },
+        {
+          "veglenkesekvens": 384011,
+          "relativPosisjon": 0.07178555,
+          "startdato": "2018-01-01",
+          "geometri": {
+            "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
+            "srid": 32633
+          },
+          "kommune": 1421,
+          "fylke": 14,
+          "region": 3,
+          "vegavdeling": 14,
+          "vegsystemreferanse": {
+            "vegsystem": {
+              "id": 888791412,
+              "versjon": 1,
+              "vegkategori": "E",
+              "fase": "V",
+              "nummer": 16
+            },
+            "strekning": {
+              "id": 888802558,
+              "versjon": 1,
+              "strekning": 19,
+              "delstrekning": 1,
+              "arm": "N",
+              "adskilte_løp": "N",
+              "trafikantgruppe": "K",
+              "fra_meter": 759.336,
+              "til_meter": 13965.336
+            },
+            "kortform": "EV16 S19D1 M759-13965"
+          }
+        }
+      ],
       "relasjoner": {
         "foreldre": [
           {
