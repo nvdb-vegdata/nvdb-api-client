@@ -1,6 +1,7 @@
 package no.vegvesen.nvdbapi.client.gson;
 
 import no.vegvesen.nvdbapi.client.model.datakatalog.DataType;
+import no.vegvesen.nvdbapi.client.model.datakatalog.FeatureType;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
@@ -11,6 +12,9 @@ import java.util.function.Function;
 import static java.util.stream.Collectors.toMap;
 import static no.vegvesen.nvdbapi.client.gson.Helper.parseObject;
 import static no.vegvesen.nvdbapi.client.gson.Helper.parsePlainList;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.is;
 
 public class VegobjekttyperParserTest {
     @ParameterizedTest
@@ -19,6 +23,7 @@ public class VegobjekttyperParserTest {
         Map<String, DataType> datatyper = parsePlainList("vegobjekttyper/datatyper.json", AttributeTypeParser::parseDataType)
             .stream()
             .collect(toMap(DataType::getName, Function.identity()));
-        parseObject("vegobjekttyper/" + file + ".json", e -> FeatureTypeParser.parse(datatyper, e));
+        FeatureType featureType = parseObject("vegobjekttyper/" + file + ".json", e -> FeatureTypeParser.parse(datatyper, e));
+        assertThat(featureType, is(notNullValue()));
     }
 }
