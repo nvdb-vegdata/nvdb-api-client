@@ -1,0 +1,32 @@
+{
+  "objekter": [
+    {
+      "taskId": 4042432,
+      "taskTypeId": 61498,
+      "tidspunkt": "2018-12-19 13:11:25",
+      "objekter": [
+        {
+          "id": 891135745,
+          "href": "https://nvdbw01.kantega.no/nvdb/api/v3/vegobjekter/581/891135745/1",
+          "metadata": {
+            "type": {
+              "id": 581,
+              "navn": "Tunnel"
+            },
+            "versjon": 1,
+            "startdato": "2013-10-29"
+          },
+          "transaksjonstype": "CREATED"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "antall": 1,
+    "returnert": 1,
+    "neste": {
+      "start": "Ed4DAgh7a3QrfSH149U7vJA25Fn8gy",
+      "href": "https://nvdbw01.kantega.no/nvdb/api/v3/transaksjoner?antall=1&start=Ed4DAgh7a3QrfSH149U7vJA25Fn8gy"
+    }
+  }
+}
