@@ -1,0 +1,1 @@
+https://pm1.utv.vegvesen.no/nvdb/api/v3/vegobjekter/105.json?antall=1&inkluder=alle

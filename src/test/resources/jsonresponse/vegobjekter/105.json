@@ -1,0 +1,99 @@
+{
+  "objekter": [
+    {
+      "id": 78697179,
+      "href": "https://pm1.utv.vegvesen.no/nvdb/api/v3/vegobjekter/105/78697179/1",
+      "metadata": {
+        "type": {
+          "id": 105,
+          "navn": "Fartsgrense"
+        },
+        "versjon": 1,
+        "startdato": "1980-01-01"
+      },
+      "egenskaper": [
+        {
+          "id": 2021,
+          "navn": "Fartsgrense",
+          "egenskapstype": "Heltall",
+          "datatype": "Flerverdiattributt, Tall",
+          "verdi": 50,
+          "enum_id": 2730,
+          "enhet": {
+            "id": 7,
+            "navn": "Kilometer/time",
+            "kortnavn": "km/h"
+          }
+        },
+        {
+          "id": 5127,
+          "navn": "Gyldig fra dato",
+          "egenskapstype": "Dato",
+          "datatype": "Dato",
+          "verdi": "1980-01-01"
+        },
+        {
+          "id": 120105,
+          "egenskapstype": "Liste",
+          "innhold": [
+            {
+              "id": 100105,
+              "navn": "StrekningTilknytning",
+              "egenskapstype": "Stedfesting",
+              "datatype": "GeomLinje eller Kurve",
+              "netelementid": 383266,
+              "netelementtype": 50002,
+              "fra_posisjon": 0.0,
+              "til_posisjon": 1.0,
+              "retning": "MED",
+              "felt": []
+            }
+          ]
+        }
+      ],
+      "geometri": {
+        "wkt": "MULTILINESTRING Z ((25400.08984375 6855338.56054688 230.61999512, 25399.5 6855341.19921875 230.5, 25399.09960938 6855342.30078125 230.69999695, 25397.40039062 6855344.40039063 231.19999695, 25394.90039062 6855345.69921875 231.80000305, 25386.79980469 6855349.59960937 233.3999939, 25381 6855355.19921875 234.1000061, 25377 6855360.80078125 234.69999695, 25375.59960938 6855365.09960938 235.19999695, 25374.79980469 6855370.19921875 236.1000061, 25375 6855373.2 236.19999695))",
+        "srid": 32633,
+        "egengeometri": false
+      },
+      "lokasjon": {
+        "kommuner": [
+          1432
+        ],
+        "fylker": [
+          14
+        ],
+        "regioner": [
+          3
+        ],
+        "vegavdelinger": [
+          14
+        ],
+        "stedfestinger": [
+          {
+            "veglenkesekvens": 383266,
+            "startposisjon": 0.0,
+            "sluttposisjon": 1.0,
+            "kortform": "0.0-1.0@383266",
+            "felt": [],
+            "retning": "MED"
+          }
+        ],
+        "geometri": {
+          "wkt": "MULTILINESTRING Z ((25400.08984375 6855338.56054688 230.61999512, 25399.5 6855341.19921875 230.5, 25399.09960938 6855342.30078125 230.69999695, 25397.40039062 6855344.40039063 231.19999695, 25394.90039062 6855345.69921875 231.80000305, 25386.79980469 6855349.59960937 233.3999939, 25381 6855355.19921875 234.1000061, 25377 6855360.80078125 234.69999695, 25375.59960938 6855365.09960938 235.19999695, 25374.79980469 6855370.19921875 236.1000061, 25375 6855373.2 236.19999695))",
+          "srid": 32633
+        }
+      },
+      "vegsegmenter": [],
+      "relasjoner": {}
+    }
+  ],
+  "metadata": {
+    "antall": 874407,
+    "returnert": 1,
+    "neste": {
+      "start": "7KZjp3ETMJ6AszgmAPDPvggHezhAEE9ByDBH2xgWMQMdqz83NtXMzaxVvDMc4XHbQ6PKCX6DMg1EjTinSy8fb5sCXc49uADZ1qbw1uVa",
+      "href": "https://pm1.utv.vegvesen.no/nvdb/api/v3/vegobjekter/105?antall=1&start=7KZjp3ETMJ6AszgmAPDPvggHezhAEE9ByDBH2xgWMQMdqz83NtXMzaxVvDMc4XHbQ6PKCX6DMg1EjTinSy8fb5sCXc49uADZ1qbw1uVa&inkluder=alle"
+    }
+  }
+}

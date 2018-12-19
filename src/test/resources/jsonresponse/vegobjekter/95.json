@@ -1,0 +1,148 @@
+{
+  "objekter": [
+    {
+      "id": 78735745,
+      "href": "https://pm1.utv.vegvesen.no/nvdb/api/v3/vegobjekter/95/78735745/1",
+      "metadata": {
+        "type": {
+          "id": 95,
+          "navn": "Skiltpunkt"
+        },
+        "versjon": 1,
+        "startdato": "1950-01-01"
+      },
+      "egenskaper": [
+        {
+          "id": 100095,
+          "navn": "PunktTilknytning",
+          "egenskapstype": "Stedfesting",
+          "datatype": "GeomPunkt",
+          "netelementid": 384011,
+          "netelementtype": 50002,
+          "fra_posisjon": 0.07178555,
+          "til_posisjon": 0.07178555,
+          "retning": "MED",
+          "felt": []
+        },
+        {
+          "id": 220006,
+          "egenskapstype": "Liste",
+          "innhold": [
+            {
+              "id": 200006,
+              "navn": "Assosiert Variabelt skilt",
+              "egenskapstype": "Assosiasjon",
+              "datatype": "Assosiasjon",
+              "verdi": 78735746
+            }
+          ]
+        }
+      ],
+      "geometri": {
+        "wkt": "POINT Z (88206.76856 6783844.94758 259.86262)",
+        "srid": 32633,
+        "egengeometri": false
+      },
+      "lokasjon": {
+        "kommuner": [
+          1421
+        ],
+        "fylker": [
+          14
+        ],
+        "regioner": [
+          3
+        ],
+        "vegavdelinger": [
+          14
+        ],
+        "kontraktsområder": [
+          {
+            "nummer": 1454,
+            "navn": "1454 ELEKTRO"
+          },
+          {
+            "nummer": 1401,
+            "navn": "1401 INDRE SOGN 2009-2014"
+          },
+          {
+            "nummer": 1454,
+            "navn": "1454 ELEKTRO SOGN 2012-2017"
+          },
+          {
+            "nummer": 1454,
+            "navn": "E1454 Elektrokontrakt Sogn 2017-2022"
+          },
+          {
+            "nummer": 1401,
+            "navn": "1401 Indre Sogn 2014-2019"
+          },
+          {
+            "nummer": 1401,
+            "navn": "1401 Indre Sogn 2019-2024"
+          }
+        ],
+        "riksvegruter": [
+          {
+            "nummer": "5C",
+            "navn": "RUTE5C",
+            "periode": "2010-2019"
+          },
+          {
+            "nummer": "5C",
+            "navn": "RUTE5C",
+            "periode": "2014-2023 / 2018-2029"
+          }
+        ],
+        "stedfestinger": [
+          {
+            "veglenkesekvens": 384011,
+            "relativPosisjon": 0.07178555,
+            "kortform": "0.07178555@384011",
+            "felt": [],
+            "retning": "MED"
+          }
+        ],
+        "geometri": {
+          "wkt": "POINT Z (88206.76856 6783844.94758 259.86262)",
+          "srid": 32633
+        }
+      },
+      "vegsegmenter": [],
+      "relasjoner": {
+        "foreldre": [
+          {
+            "type": {
+              "id": 67,
+              "navn": "Tunnelløp"
+            },
+            "vegobjekter": [
+              78731475
+            ]
+          }
+        ],
+        "barn": [
+          {
+            "listeid": 220006,
+            "id": 200006,
+            "type": {
+              "id": 97,
+              "navn": "Variabelt skilt"
+            },
+            "vegobjekter": [
+              78735746
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "metadata": {
+    "antall": 573299,
+    "returnert": 1,
+    "neste": {
+      "start": "7KZjtGmYv1CboZLznXfG8EmZB2DPncJVunUUEMdKj4LrWGGNNNJzGtCVdkxNyXECYPD63ef4NUgsYRrDQJaJquSm1DcSeGcepGWWtr2c",
+      "href": "https://pm1.utv.vegvesen.no/nvdb/api/v3/vegobjekter/95?antall=1&start=7KZjtGmYv1CboZLznXfG8EmZB2DPncJVunUUEMdKj4LrWGGNNNJzGtCVdkxNyXECYPD63ef4NUgsYRrDQJaJquSm1DcSeGcepGWWtr2c&inkluder=alle"
+    }
+  }
+}
