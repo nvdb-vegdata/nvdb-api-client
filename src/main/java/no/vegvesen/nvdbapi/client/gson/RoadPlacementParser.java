@@ -28,10 +28,10 @@ package no.vegvesen.nvdbapi.client.gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.Geometry;
-import no.vegvesen.nvdbapi.client.model.RoadPlacement;
 import no.vegvesen.nvdbapi.client.model.RefLinkPosition;
+import no.vegvesen.nvdbapi.client.model.RoadPlacement;
 import no.vegvesen.nvdbapi.client.model.RoadPlacementBulkResult;
-import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
+import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
 
 public final class RoadPlacementParser {
     private RoadPlacementParser() {}
@@ -47,7 +47,7 @@ public final class RoadPlacementParser {
     }
 
     public static RoadPlacement parseRoadPlacement(JsonObject obj) {
-        RoadRef roadRef = new RoadRef(-123);
+        RoadSysRef roadRef = RoadSysRefParser.parse(obj.getAsJsonObject("vegsystemreferanse"));
         RefLinkPosition refLinkPosition = ShortRefLinkParser.parseShortRefLink(obj.getAsJsonObject("veglenke"));
         Geometry point = GeometryParser.parse(obj.getAsJsonObject("geometri"));
 

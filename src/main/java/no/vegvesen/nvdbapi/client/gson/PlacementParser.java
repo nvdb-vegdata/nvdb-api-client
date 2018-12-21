@@ -29,8 +29,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.*;
+import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
 import no.vegvesen.nvdbapi.client.model.roadobjects.Placement;
-import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,7 +45,7 @@ public final class PlacementParser {
     private PlacementParser() {}
 
     private static RoadPlacement parseRoadPlacement(JsonObject obj) {
-        RoadRef roadRef = new RoadRef(-123);
+        RoadSysRef roadRef = RoadSysRefParser.parse(obj.getAsJsonObject("vegsystemreferanse"));
         RefLinkPosition refLink = ShortRefLinkParser.parseShortRefLink(obj.getAsJsonObject("veglenke"));
         Geometry point = GeometryParser.parse(obj.getAsJsonObject("geometri"));
 
