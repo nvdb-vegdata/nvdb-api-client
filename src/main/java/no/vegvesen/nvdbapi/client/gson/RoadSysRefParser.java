@@ -48,18 +48,24 @@ public final class RoadSysRefParser {
 
         Double sectionMeter = null;
 
-        JsonObject startEndMeter = obj.getAsJsonObject("strekning");
+        JsonObject sectionElement = obj.getAsJsonObject("strekning");
         if (nonNull(sideArea)) {
             sectionMeter = parseSectionMeter(obj); // get meter value *on* the section where sidearea starts
-            startEndMeter = obj.getAsJsonObject("sideanlegg");
+            sectionElement = obj.getAsJsonObject("sideanlegg");
         } else if (nonNull(intersection)) {
             sectionMeter = parseSectionMeter(obj); // get meter value *on* the section where intersection starts
-            startEndMeter = obj.getAsJsonObject("kryssdel");
+            sectionElement = obj.getAsJsonObject("kryssdel");
         }
-        Double startMeter = parseDoubleMember(startEndMeter,"fra_meter");
-        Double endMeter = parseDoubleMember(startEndMeter,"til_meter");
+        Double startMeter = parseDoubleMember(sectionElement,"fra_meter");
+        Double endMeter = parseDoubleMember(sectionElement,"til_meter");
+        Double meter = parseDoubleMember(sectionElement,"meter");
 
-        if (isNull(startMeter) || isNull(endMeter)) return null;
+        if (isNull(meter) && isNull(startMeter) && isNull(endMeter)) return null;
+
+        if (nonNull(meter)) {
+            startMeter = meter;
+            endMeter = meter;
+        }
 
         return new RoadSysRef(
                 roadSystem,
