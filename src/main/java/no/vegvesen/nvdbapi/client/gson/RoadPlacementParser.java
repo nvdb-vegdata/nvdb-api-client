@@ -48,7 +48,7 @@ public final class RoadPlacementParser {
 
     public static RoadPlacement parseRoadPlacement(JsonObject obj) {
         RoadSysRef roadRef = RoadSysRefParser.parse(obj.getAsJsonObject("vegsystemreferanse"));
-        RefLinkPosition refLinkPosition = ShortRefLinkParser.parseShortRefLink(obj.getAsJsonObject("veglenke"));
+        RefLinkPosition refLinkPosition = ShortRefLinkParser.parseShortRefLink(obj.getAsJsonObject("veglenkesekvens"));
         Geometry point = GeometryParser.parse(obj.getAsJsonObject("geometri"));
 
        return new RoadPlacement(roadRef, refLinkPosition, point);
