@@ -36,8 +36,8 @@ public final class ShortRefLinkParser {
     private ShortRefLinkParser() {}
 
     public static RefLinkPosition parseShortRefLink(JsonObject reflink) {
-        int id = parseIntMember(reflink, "id");
-        double position = parseDoubleMember(reflink, "posisjon");
+        int id = parseIntMember(reflink, "veglenkesekvens");
+        double position = parseDoubleMember(reflink, "relativPosisjon");
         String shortName = parseStringMember(reflink, "kortform");
 
         return new RefLinkPosition(id, position, shortName);

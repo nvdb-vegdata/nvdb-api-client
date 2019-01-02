@@ -25,23 +25,23 @@
 
 package no.vegvesen.nvdbapi.client.model;
 
-import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
+import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
 
 import java.util.Objects;
 
 public class RoadPlacement {
 
-    private final RoadRef roadRef;
+    private final RoadSysRef roadRef;
     private final RefLinkPosition refLinkPosition;
     private final Geometry point;
 
-    public RoadPlacement(RoadRef roadRef, RefLinkPosition refLinkPosition, Geometry point) {
+    public RoadPlacement(RoadSysRef roadRef, RefLinkPosition refLinkPosition, Geometry point) {
         this.roadRef = roadRef;
         this.refLinkPosition = refLinkPosition;
         this.point = point;
     }
 
-    public RoadRef getRoadRef() {
+    public RoadSysRef getRoadRef() {
         return roadRef;
     }
 

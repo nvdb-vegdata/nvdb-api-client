@@ -1,0 +1,32 @@
+{
+  "vegsystemreferanse": {
+    "vegsystem": {
+      "id": 888834101,
+      "versjon": 1,
+      "vegkategori": "F",
+      "fase": "V",
+      "nummer": 913
+    },
+    "strekning": {
+      "id": 888831530,
+      "versjon": 1,
+      "strekning": 1,
+      "delstrekning": 1,
+      "arm": "N",
+      "adskilte_løp": "N",
+      "trafikantgruppe": "K",
+      "meter": 962.957
+    },
+    "kortform": "FV913 S1D1 M962"
+  },
+  "veglenkesekvens": {
+    "veglenkesekvens": 320753,
+    "relativPosisjon": 0.99636,
+    "kortform": "0.99636@320753"
+  },
+  "geometri": {
+    "wkt": "POINT Z(-74439 6617648 13.89832087)",
+    "srid": 32633
+  },
+  "avstand": 1
+}

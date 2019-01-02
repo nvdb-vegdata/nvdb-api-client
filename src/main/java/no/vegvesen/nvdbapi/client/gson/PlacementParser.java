@@ -29,8 +29,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.*;
+import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
 import no.vegvesen.nvdbapi.client.model.roadobjects.Placement;
-import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
 
 import java.util.List;
 import java.util.Optional;
@@ -45,8 +45,8 @@ public final class PlacementParser {
     private PlacementParser() {}
 
     private static RoadPlacement parseRoadPlacement(JsonObject obj) {
-        RoadRef roadRef = new RoadRef(-123);
-        RefLinkPosition refLink = ShortRefLinkParser.parseShortRefLink(obj.getAsJsonObject("veglenke"));
+        RoadSysRef roadRef = RoadSysRefParser.parse(obj.getAsJsonObject("vegsystemreferanse"));
+        RefLinkPosition refLink = ShortRefLinkParser.parseShortRefLink(obj.getAsJsonObject("veglenkesekvens"));
         Geometry point = GeometryParser.parse(obj.getAsJsonObject("geometri"));
 
         return new RoadPlacement(roadRef, refLink, point);
@@ -84,7 +84,7 @@ public final class PlacementParser {
         SidePosition sidePos = Optional.ofNullable(parseStringMember(obj, "sideposisjon"))
                 .map(SidePosition::from)
                 .orElse(null);
-        List<String> lane = parseStringListMember(obj, "felt");
+        List<String> lane = parseStringListMember(obj, "kjørefelt");
 
         return new Placement(netElementId, startPos, endPos, dir, sidePos, lane);
     }
