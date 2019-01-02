@@ -1,0 +1,22 @@
+[
+  {
+    "navn": "ØST",
+    "nummer": 1
+  },
+  {
+    "navn": "SØR",
+    "nummer": 2
+  },
+  {
+    "navn": "VEST",
+    "nummer": 3
+  },
+  {
+    "navn": "MIDT",
+    "nummer": 4
+  },
+  {
+    "navn": "NORD",
+    "nummer": 5
+  }
+]

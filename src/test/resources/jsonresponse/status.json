@@ -1,0 +1,14 @@
+{
+  "datagrunnlag": {
+    "sist_oppdatert": "2018-12-19T13:11:46.192",
+    "sist_prosesserte_transaksjon": {
+      "transaksjonsid": 4042432,
+      "transaksjonstidspunkt": "2018-12-19T13:11:25"
+    },
+    "datakatalog": {
+      "id": 796,
+      "dato": "2018-01-23",
+      "versjon": "2.12"
+    }
+  }
+}

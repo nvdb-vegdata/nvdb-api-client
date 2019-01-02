@@ -44,7 +44,7 @@ public final class RoadNetParser {
 
     private RoadNetParser() { }
 
-    public static LinkSequence parseLink(JsonObject obj){
+    public static LinkSequence parseLinkSequence(JsonObject obj){
         if(obj==null) return null;
 
         long id = parseLongMember(obj, "veglenkesekvensid");
@@ -137,7 +137,7 @@ public final class RoadNetParser {
         if (netelementtype == NetElementType.NODE.getValue()) {
             return new NetElementWrapper(parseNode(obj));
         } else if (netelementtype == NetElementType.LENKE.getValue()) {
-            return new NetElementWrapper(parseLink(obj));
+            return new NetElementWrapper(parseLinkSequence(obj));
         }
         throw new RuntimeException("Netelement with type " + netelementtype + " not recognized");
     }

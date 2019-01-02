@@ -55,7 +55,7 @@ public class RoadNetClient extends AbstractJerseyClient {
         WebTarget target = getClient().target(path);
         JsonElement result = JerseyHelper.execute(target);
 
-        return RoadNetParser.parseLink(result.getAsJsonObject());
+        return RoadNetParser.parseLinkSequence(result.getAsJsonObject());
     }
 
     public Node getNode(int id) {
@@ -167,13 +167,13 @@ public class RoadNetClient extends AbstractJerseyClient {
 
     public final class AsyncLinkResult extends AsyncResult<LinkSequence> {
         AsyncLinkResult(WebTarget baseTarget, Page currentPage) {
-            super(baseTarget, currentPage, RoadNetParser::parseLink);
+            super(baseTarget, currentPage, RoadNetParser::parseLinkSequence);
         }
     }
 
     public final class LinkResult extends GenericResultSet<LinkSequence> {
         LinkResult(WebTarget baseTarget, Page currentPage) {
-            super(baseTarget, currentPage, RoadNetParser::parseLink);
+            super(baseTarget, currentPage, RoadNetParser::parseLinkSequence);
         }
     }
 
