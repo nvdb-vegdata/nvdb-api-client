@@ -52,14 +52,14 @@ public final class SegmentedLink implements Serializable {
     private final LocalDate toDate;
     private final String startNode;
     private final String endNode;
-    private final Integer reflinkPartType;
+    private final String reflinkPartType;
 
     public SegmentedLink(long id, Long superLinkId, double start, double end,
                          String startNode, String endNode,
                          LocalDate fromDate, LocalDate toDate,
                          SosiMedium medium, TopologyLevel level, Integer region, Integer county,
                          Integer municipality, Integer roadDepartment,
-                         Geometry geometry, RoadSysRef roadRef, Integer reflinkPartType) {
+                         Geometry geometry, RoadSysRef roadRef, String reflinkPartType) {
         this.id = id;
         this.superLinkId = superLinkId;
         this.start = start;
