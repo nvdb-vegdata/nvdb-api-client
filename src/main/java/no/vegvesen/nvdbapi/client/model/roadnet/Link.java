@@ -40,6 +40,8 @@ public class Link {
     private final TopologyLevel topologyLevel;
     private final Integer startPort;
     private final Integer endPort;
+    private final Double startPos;
+    private final Double endPos;
     private final Integer municipality;
     private final Integer municipalityGeometry;
     private final Double length;
@@ -56,16 +58,18 @@ public class Link {
     private final LocalDate endDate;
 
     public Link(Integer partId, Boolean isConnectionLink, Boolean isDetailed, TopologyLevel topologyLevel,
-                Integer startPort, Integer endPort, Integer municipality, Integer municipalityGeometry, Double length,
-                String measureMethod, LocalDate measureDate, SosiMedium sosiMedium, Ltema ltema,
-                Placement centerLineProjection, String typeRoad, String detailLevel, Geometry geometry, List<String> fields,
-                LocalDate startDate, LocalDate endDate) {
+                Integer startPort, Integer endPort, Double startPos, Double endPos, Integer municipality,
+                Integer municipalityGeometry, Double length, String measureMethod, LocalDate measureDate,
+                SosiMedium sosiMedium, Ltema ltema, Placement centerLineProjection, String typeRoad, String detailLevel,
+                Geometry geometry, List<String> fields, LocalDate startDate, LocalDate endDate) {
         this.partId = partId;
         this.isConnectionLink = isConnectionLink;
         this.isDetailed = isDetailed;
         this.topologyLevel = topologyLevel;
         this.startPort = startPort;
         this.endPort = endPort;
+        this.startPos = startPos;
+        this.endPos = endPos;
         this.municipality = municipality;
         this.municipalityGeometry = municipalityGeometry;
         this.length = length;
@@ -104,6 +108,14 @@ public class Link {
 
     public Integer getEndPort() {
         return endPort;
+    }
+
+    public Double getStartPos() {
+        return startPos;
+    }
+
+    public Double getEndPos() {
+        return endPos;
     }
 
     public Integer getMunicipality() {
@@ -173,6 +185,8 @@ public class Link {
                 topologyLevel == link.topologyLevel &&
                 Objects.equals(startPort, link.startPort) &&
                 Objects.equals(endPort, link.endPort) &&
+                Objects.equals(startPos, link.startPos) &&
+                Objects.equals(endPos, link.endPos) &&
                 Objects.equals(municipality, link.municipality) &&
                 Objects.equals(municipalityGeometry, link.municipalityGeometry) &&
                 Objects.equals(length, link.length) &&
@@ -193,7 +207,7 @@ public class Link {
     public int hashCode() {
         return Objects.hash(partId, isConnectionLink, isDetailed, topologyLevel, startPort, endPort, municipality,
                 municipalityGeometry, length, measureMethod, measureDate, sosiMedium, ltema, centerLineProjection,
-                typeRoad, detailLevel, geometry, fields, startDate, endDate);
+                typeRoad, detailLevel, geometry, fields, startDate, endDate, startPos, endPos);
     }
 
     @Override
@@ -205,6 +219,8 @@ public class Link {
             ", topologyLevel=" + topologyLevel +
             ", startPort=" + startPort +
             ", endPort=" + endPort +
+            ", startPos=" + startPos +
+            ", endPos=" + endPos +
             ", municipality=" + municipality +
             ", municipalityGeometry=" + municipalityGeometry +
             ", length=" + length +
