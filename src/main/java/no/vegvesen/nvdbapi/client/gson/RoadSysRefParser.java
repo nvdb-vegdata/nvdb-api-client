@@ -40,11 +40,8 @@ public final class RoadSysRefParser {
 
         if(!obj.has("vegsystem")) return  null;
 
-        RoadSystem roadSystem = parseRoadSystem(obj.getAsJsonObject("vegsystem"));
-
-        Section section = parseSection(obj.getAsJsonObject("strekning"));
-        Intersection intersection = parseIntersection(obj.getAsJsonObject("kryssystem"));
         SideArea sideArea = parseSideArea(obj.getAsJsonObject("sideanlegg"));
+        Intersection intersection = parseIntersection(obj.getAsJsonObject("kryssystem"));
 
         Double sectionMeter = null;
 
@@ -54,7 +51,7 @@ public final class RoadSysRefParser {
             sectionElement = obj.getAsJsonObject("sideanlegg");
         } else if (nonNull(intersection)) {
             sectionMeter = parseSectionMeter(obj); // get meter value *on* the section where intersection starts
-            sectionElement = obj.getAsJsonObject("kryssdel");
+            sectionElement = obj.getAsJsonObject("kryssystem");
         }
         Double startMeter = parseDoubleMember(sectionElement,"fra_meter");
         Double endMeter = parseDoubleMember(sectionElement,"til_meter");
@@ -66,6 +63,9 @@ public final class RoadSysRefParser {
             startMeter = meter;
             endMeter = meter;
         }
+
+        Section section = parseSection(obj.getAsJsonObject("strekning"));
+        RoadSystem roadSystem = parseRoadSystem(obj.getAsJsonObject("vegsystem"));
 
         return new RoadSysRef(
                 roadSystem,
