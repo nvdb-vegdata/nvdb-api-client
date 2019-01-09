@@ -27,7 +27,6 @@ package no.vegvesen.nvdbapi.client.model.roadnet;
 
 import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
-import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -36,13 +35,18 @@ import java.util.Optional;
 
 public final class SegmentedLink implements Serializable {
 
-    private final Geometry geometry;
     private final long id;
-    private final Long superLinkId;
     private final double start;
     private final double end;
-    private final SosiMedium medium;
-    private final TopologyLevel topologyLevel;
+    private final Geometry geometry;
+    private final double length;
+    private final int linkNumber;
+    private final String linkType;
+    private final String detailLevel;
+    private final String roadType;
+
+
+    private final Long superLinkId;
     private final Integer county;
     private final Integer municipality;
     private final Integer region;
@@ -52,20 +56,22 @@ public final class SegmentedLink implements Serializable {
     private final LocalDate toDate;
     private final String startNode;
     private final String endNode;
-    private final String reflinkPartType;
 
     public SegmentedLink(long id, Long superLinkId, double start, double end,
+                         int linkNumber, String detailLevel, String roadType,
                          String startNode, String endNode,
                          LocalDate fromDate, LocalDate toDate,
-                         SosiMedium medium, TopologyLevel level, Integer region, Integer county,
+                         Integer region, Integer county,
                          Integer municipality, Integer roadDepartment,
-                         Geometry geometry, RoadSysRef roadRef, String reflinkPartType) {
+                         Geometry geometry, double length, RoadSysRef roadRef,
+                         String linkType) {
         this.id = id;
         this.superLinkId = superLinkId;
         this.start = start;
         this.end = end;
-        this.medium = medium;
-        this.topologyLevel = level;
+        this.linkNumber = linkNumber;
+        this.detailLevel = detailLevel;
+        this.roadType = roadType;
         this.county = county;
         this.municipality = municipality;
         this.region = region;
@@ -74,9 +80,10 @@ public final class SegmentedLink implements Serializable {
         this.roadDepartment = roadDepartment;
         this.startNode = startNode;
         this.endNode = endNode;
+        this.length = length;
         this.roadRef = roadRef;
         this.geometry = geometry;
-        this.reflinkPartType = reflinkPartType;
+        this.linkType = linkType;
     }
 
     public long getId() {
@@ -95,12 +102,20 @@ public final class SegmentedLink implements Serializable {
         return end;
     }
 
-    public SosiMedium getMedium() {
-        return medium;
+    public int getLinkNumber() {
+        return linkNumber;
     }
 
-    public TopologyLevel getTopologyLevel() {
-        return topologyLevel;
+    public String getLinkType() {
+        return linkType;
+    }
+
+    public String getDetailLevel() {
+        return detailLevel;
+    }
+
+    public String getRoadType() {
+        return roadType;
     }
 
     public RoadSysRef getRoadRef() {
@@ -143,6 +158,10 @@ public final class SegmentedLink implements Serializable {
         return Optional.ofNullable(geometry);
     }
 
+    public double getLength() {
+        return length;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -151,10 +170,13 @@ public final class SegmentedLink implements Serializable {
         return id == that.id &&
                 Double.compare(that.start, start) == 0 &&
                 Double.compare(that.end, end) == 0 &&
+                linkNumber == that.linkNumber &&
                 Objects.equals(geometry, that.geometry) &&
+                Double.compare(length, that.length) == 0 &&
+                Objects.equals(linkType, that.linkType) &&
+                Objects.equals(detailLevel, that.detailLevel) &&
+                Objects.equals(roadType, that.roadType) &&
                 Objects.equals(superLinkId, that.superLinkId) &&
-                medium == that.medium &&
-                topologyLevel == that.topologyLevel &&
                 Objects.equals(county, that.county) &&
                 Objects.equals(municipality, that.municipality) &&
                 Objects.equals(region, that.region) &&
@@ -163,12 +185,11 @@ public final class SegmentedLink implements Serializable {
                 Objects.equals(fromDate, that.fromDate) &&
                 Objects.equals(toDate, that.toDate) &&
                 Objects.equals(startNode, that.startNode) &&
-                Objects.equals(endNode, that.endNode) &&
-                Objects.equals(reflinkPartType, that.reflinkPartType);
+                Objects.equals(endNode, that.endNode);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(geometry, id, superLinkId, start, end, medium, topologyLevel, county, municipality, region, roadDepartment, roadRef, fromDate, toDate, startNode, endNode, reflinkPartType);
+        return Objects.hash(id, start, end, geometry, length, linkNumber, linkType, detailLevel, roadType, superLinkId, county, municipality, region, roadDepartment, roadRef, fromDate, toDate, startNode, endNode);
     }
 }

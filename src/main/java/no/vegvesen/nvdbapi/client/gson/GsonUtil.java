@@ -29,14 +29,15 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.datakatalog.JavaType;
+import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
 import no.vegvesen.nvdbapi.client.util.Strings;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -190,5 +191,21 @@ public final class GsonUtil {
 
     public static Optional<JsonArray> getArray(JsonObject node, String path) {
         return getNode(node, path).map(JsonElement::getAsJsonArray);
+    }
+
+    public static Geometry parseGeometryMember(JsonObject obj, String path) {
+        if (obj.has(path)) {
+            return GeometryParser.parse(obj.getAsJsonObject(path));
+        } else {
+            return null;
+        }
+    }
+
+    public static RoadSysRef parseRoadSysRefMember(JsonObject obj, String path) {
+        if (obj.has(path) && obj.getAsJsonObject(path).size() > 0) {
+            return RoadSysRefParser.parse(obj.getAsJsonObject(path));
+        } else {
+            return null;
+        }
     }
 }

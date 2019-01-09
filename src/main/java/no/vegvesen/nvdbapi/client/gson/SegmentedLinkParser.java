@@ -26,12 +26,7 @@
 package no.vegvesen.nvdbapi.client.gson;
 
 import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.model.Geometry;
-import no.vegvesen.nvdbapi.client.model.roadnet.*;
-import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.*;
-
-import java.time.LocalDate;
-import java.util.Optional;
+import no.vegvesen.nvdbapi.client.model.roadnet.SegmentedLink;
 
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 
@@ -41,41 +36,26 @@ public final class SegmentedLinkParser {
     }
 
     public static SegmentedLink parse(JsonObject obj) {
-        // Metadata
-        LocalDate fromDate = parseDateMember(obj, "metadata.startdato"), toDate = parseDateMember(obj, "metadata.sluttdato");
-
-        long id = parseLongMember(obj, "veglenkesekvens");
-        Double start = parseDoubleMember(obj, "startposisjon"), end = parseDoubleMember(obj, "sluttposisjon");
-        String startNode = parseStringMember(obj, "startnode"), endNode = parseStringMember(obj, "sluttnode");
-
-        SosiMedium medium = Optional.ofNullable(parseStringMember(obj, "medium")).map(SosiMedium::from).orElse(null);
-        TopologyLevel level = Optional.ofNullable(parseStringMember(obj, "topologinivå")).map(TopologyLevel::fromValue).orElse(null);
-        String reflinkPartType = parseStringMember(obj,"type");
-
-        // Areas
-        Integer municipality = parseIntMember(obj, "kommune");
-        Integer region = parseIntMember(obj, "region");
-        Integer county = parseIntMember(obj, "fylke");
-        Integer roadDepartment = parseIntMember(obj, "vegavdeling");
-
-        // Geometry
-        Geometry geo = null;
-        if (obj.has("geometri")) {
-            geo = GeometryParser.parse(obj.getAsJsonObject("geometri"));
-        }
-
-        RoadSysRef roadSysRef = null;
-        if (obj.has("vegsystemreferanse") && obj.getAsJsonObject("vegsystemreferanse").size() > 0) {
-            roadSysRef = RoadSysRefParser.parse(obj.getAsJsonObject("vegsystemreferanse"));
-        }
-
-        Long superLinkId = null;
-        if(obj.has("superstedfesting")) {
-            superLinkId = parseLongMember(obj, "superstedfesting.veglenkesekvens");
-        }
-
-        return new SegmentedLink(id, superLinkId, start, end, startNode, endNode, fromDate, toDate,
-                medium, level, region, county, municipality, roadDepartment, geo, roadSysRef, reflinkPartType);
+        return new SegmentedLink(
+                parseLongMember(obj, "veglenkesekvens"),
+                parseLongMember(obj, "superstedfesting.veglenkesekvens"),
+                parseDoubleMember(obj, "startposisjon"),
+                parseDoubleMember(obj, "sluttposisjon"),
+                parseIntMember(obj, "veglenkenummer"),
+                parseStringMember(obj, "detaljnivå"),
+                parseStringMember(obj, "typeVeg"),
+                parseStringMember(obj, "startnode"),
+                parseStringMember(obj, "sluttnode"),
+                parseDateMember(obj, "metadata.startdato"),
+                parseDateMember(obj, "metadata.sluttdato"),
+                parseIntMember(obj, "region"),
+                parseIntMember(obj, "fylke"),
+                parseIntMember(obj, "kommune"),
+                parseIntMember(obj, "vegavdeling"),
+                GsonUtil.parseGeometryMember(obj, "geometri"),
+                parseDoubleMember(obj, "lengde"),
+                GsonUtil.parseRoadSysRefMember(obj, "vegsystemreferanse"),
+                parseStringMember(obj,"type"));
     }
 
 }
