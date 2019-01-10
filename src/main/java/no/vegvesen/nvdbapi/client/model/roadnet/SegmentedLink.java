@@ -41,6 +41,7 @@ public final class SegmentedLink implements Serializable {
     private final Geometry geometry;
     private final double length;
     private final int linkNumber;
+    private final int segmentNumber;
     private final String linkType;
     private final String detailLevel;
     private final String roadType;
@@ -58,7 +59,7 @@ public final class SegmentedLink implements Serializable {
     private final String endNode;
 
     public SegmentedLink(long id, Long superLinkId, double start, double end,
-                         int linkNumber, String detailLevel, String roadType,
+                         int linkNumber, int segmentNumber, String detailLevel, String roadType,
                          String startNode, String endNode,
                          LocalDate fromDate, LocalDate toDate,
                          Integer region, Integer county,
@@ -70,6 +71,7 @@ public final class SegmentedLink implements Serializable {
         this.start = start;
         this.end = end;
         this.linkNumber = linkNumber;
+        this.segmentNumber = segmentNumber;
         this.detailLevel = detailLevel;
         this.roadType = roadType;
         this.county = county;
@@ -104,6 +106,10 @@ public final class SegmentedLink implements Serializable {
 
     public int getLinkNumber() {
         return linkNumber;
+    }
+
+    public int getSegmentNumber() {
+        return segmentNumber;
     }
 
     public String getLinkType() {
@@ -171,6 +177,7 @@ public final class SegmentedLink implements Serializable {
                 Double.compare(that.start, start) == 0 &&
                 Double.compare(that.end, end) == 0 &&
                 linkNumber == that.linkNumber &&
+                segmentNumber == that.segmentNumber&&
                 Objects.equals(geometry, that.geometry) &&
                 Double.compare(length, that.length) == 0 &&
                 Objects.equals(linkType, that.linkType) &&
@@ -190,6 +197,6 @@ public final class SegmentedLink implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, start, end, geometry, length, linkNumber, linkType, detailLevel, roadType, superLinkId, county, municipality, region, roadDepartment, roadRef, fromDate, toDate, startNode, endNode);
+        return Objects.hash(id, start, end, geometry, length, linkNumber, segmentNumber, linkType, detailLevel, roadType, superLinkId, county, municipality, region, roadDepartment, roadRef, fromDate, toDate, startNode, endNode);
     }
 }

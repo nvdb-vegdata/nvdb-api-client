@@ -42,6 +42,7 @@ public final class SegmentedLinkParser {
                 parseDoubleMember(obj, "startposisjon"),
                 parseDoubleMember(obj, "sluttposisjon"),
                 parseIntMember(obj, "veglenkenummer"),
+                parseIntMember(obj, "segmentnummer"),
                 parseStringMember(obj, "detaljnivå"),
                 parseStringMember(obj, "typeVeg"),
                 parseStringMember(obj, "startnode"),
