@@ -159,7 +159,7 @@ public final class RoadObjectParser {
                     .collect(Collectors.toList());
         }
 
-        Double length = parseDoubleMember(obj, "strekningslengde");
+        Double length = parseDoubleMember(obj, "lengde");
 
         return new Location(municipalities, counties, regions,
                 departments, length, placements, roadRefs,
@@ -180,7 +180,7 @@ public final class RoadObjectParser {
             ref = RoadSysRefParser.parse(obj);
         }
 
-        Integer length = parseIntMember(obj, "strekningslengde");
+        Integer length = parseIntMember(obj, "lengde");
 
         boolean isPoint = obj.has("relativPosisjon");
         double startPos = isPoint ? parseDoubleMember(obj, "relativPosisjon") : parseDoubleMember(obj, "startposisjon");
@@ -243,7 +243,7 @@ public final class RoadObjectParser {
 
     public static Statistics parseStatistics(JsonObject obj) {
         int numFound = parseIntMember(obj, "antall");
-        long length = parseLongMember(obj, "strekningslengde");
+        long length = parseLongMember(obj, "lengde");
 
         return new Statistics(numFound, length);
     }
