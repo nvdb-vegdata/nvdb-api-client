@@ -176,7 +176,7 @@ public final class RoadObjectParser {
         Integer department = parseIntMember(obj, "vegavdeling");
 
         RoadSysRef ref = null;
-        if (obj.has("vegreferanse")) {
+        if (obj.has("vegsystemreferanse")) {
             ref = RoadSysRefParser.parse(obj);
         }
 

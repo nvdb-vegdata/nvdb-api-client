@@ -57,7 +57,7 @@ public class PositionClient extends AbstractJerseyClient {
         req.getMaxDistance().ifPresent(v -> url.queryParam("maks_avstand", v));
         req.getConnectionLinks().ifPresent(v -> url.queryParam("konnekteringslenker", v));
         req.getDetailedLinks().ifPresent(v -> url.queryParam("detaljerte_lenker", v));
-        req.getRoadRefFilters().ifPresent(v -> url.queryParam("vegreferanse", v));
+        req.getRoadRefFilters().ifPresent(v -> url.queryParam("vegsystemreferanse", v));
 
         WebTarget target = getClient().target(url);
 
