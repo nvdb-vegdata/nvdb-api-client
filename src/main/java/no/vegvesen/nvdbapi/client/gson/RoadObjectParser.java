@@ -141,7 +141,7 @@ public final class RoadObjectParser {
             geometry = GeometryParser.parse(obj.get("geometri").getAsJsonObject());
         }
 
-        JsonArray refs = obj.getAsJsonArray("vegreferanser");
+        JsonArray refs = obj.getAsJsonArray("vegsystemreferanser");
         List<RoadSysRef> roadRefs = Collections.emptyList();
         if (refs != null) {
             roadRefs = StreamSupport.stream(refs.spliterator(), false)
