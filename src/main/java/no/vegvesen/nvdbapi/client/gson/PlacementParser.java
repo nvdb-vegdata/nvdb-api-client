@@ -84,7 +84,7 @@ public final class PlacementParser {
         SidePosition sidePos = Optional.ofNullable(parseStringMember(obj, "sideposisjon"))
                 .map(SidePosition::from)
                 .orElse(null);
-        List<String> lane = parseStringListMember(obj, "kjørefelt");
+        List<String> lane = parseStringListMember(obj, "feltoversikt");
 
         return new Placement(netElementId, startPos, endPos, dir, sidePos, lane);
     }

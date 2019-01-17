@@ -92,7 +92,7 @@ public final class RoadNetParser {
                         parseStringMember(o, "typeVeg"),
                         parseStringMember(o, "detaljnivå"),
                         GeometryParser.parse(o.getAsJsonObject("geometri")),
-                        parseFields(o.getAsJsonArray("felt")),
+                        parseFields(o.getAsJsonArray("feltoversikt")),
                         parseDateMember(o, "startdato"),
                         parseDateMember(o, "sluttdato")
                 ))
