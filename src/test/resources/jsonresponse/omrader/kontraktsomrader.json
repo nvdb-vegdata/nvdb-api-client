@@ -1,15 +1,18 @@
 [
   {
+    "id": 1,
     "navn": "1211 Tunnel 2016-2021",
     "nummer": 1211,
     "type": "Tunnelkontrakt"
   },
   {
+    "id": 2,
     "navn": "1257 ELEKTRO",
     "nummer": 1257,
     "type": "Elektrokontrakt"
   },
   {
+    "id": 3,
     "navn": "1291 Asola grønt 2017-2022",
     "nummer": 1291,
     "type": "Driftskontrakt"

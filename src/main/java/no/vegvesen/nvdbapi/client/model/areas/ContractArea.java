@@ -31,16 +31,20 @@ import java.util.Optional;
 
 public final class ContractArea implements Serializable {
 
-    private final Optional<RoadObjectId> id;
+    private final long id;
     private final Integer number;
     private final String name;
     private final String type;
 
-    public ContractArea(RoadObjectId id, Integer number, String name, String type) {
-        this.id = Optional.ofNullable(id);
+    public ContractArea(long id, Integer number, String name, String type) {
+        this.id = id;
         this.number = number;
         this.name = name;
         this.type = type;
+    }
+
+    public long getId() {
+        return id;
     }
 
     public Optional<Integer> getNumber() {

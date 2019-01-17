@@ -122,19 +122,8 @@ public final class RoadObjectParser {
         List<Integer> counties = parseIntListMember(obj, "fylker");
         List<Integer> regions  = parseIntListMember(obj, "regioner");
         List<Integer> departments = parseIntListMember(obj, "vegavdelinger");
-        List<ContractArea> contractAreas = Collections.emptyList();
-        if (obj.has("kontraktsområder")) {
-            contractAreas = StreamSupport.stream(obj.getAsJsonArray("kontraktsområder").spliterator(), false)
-                    .map(JsonElement::getAsJsonObject)
-                    .map(AreaParser::parseContractArea)
-                    .collect(Collectors.toList());
-        }
-        List<Route> nationalRoutes = Collections.emptyList();
-        if (obj.has("riksvegruter")) {
-            nationalRoutes = StreamSupport.stream(obj.getAsJsonArray("riksvegruter").spliterator(), false)
-                    .map(JsonElement::getAsJsonObject).map(AreaParser::parseRoute)
-                    .collect(Collectors.toList());
-        }
+        List<ContractArea> contractAreas = parseContractAreas(obj);
+        List<Route> nationalRoutes = parseRoutes(obj);
 
         Geometry geometry = null;
         if (obj.has("geometri")) {
@@ -164,6 +153,27 @@ public final class RoadObjectParser {
         return new Location(municipalities, counties, regions,
                 departments, length, placements, roadRefs,
                 contractAreas, nationalRoutes, geometry);
+    }
+
+    static List<Route> parseRoutes(JsonObject obj) {
+        List<Route> nationalRoutes = Collections.emptyList();
+        if (obj.has("riksvegruter")) {
+            nationalRoutes = StreamSupport.stream(obj.getAsJsonArray("riksvegruter").spliterator(), false)
+                    .map(JsonElement::getAsJsonObject).map(AreaParser::parseRoute)
+                    .collect(Collectors.toList());
+        }
+        return nationalRoutes;
+    }
+
+    static List<ContractArea> parseContractAreas(JsonObject obj) {
+        List<ContractArea> contractAreas = Collections.emptyList();
+        if (obj.has("kontraktsområder")) {
+            contractAreas = StreamSupport.stream(obj.getAsJsonArray("kontraktsområder").spliterator(), false)
+                    .map(JsonElement::getAsJsonObject)
+                    .map(AreaParser::parseContractArea)
+                    .collect(Collectors.toList());
+        }
+        return contractAreas;
     }
 
     private static Segment parseSegment(JsonObject obj) {

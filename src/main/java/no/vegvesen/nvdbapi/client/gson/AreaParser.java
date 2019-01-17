@@ -86,20 +86,20 @@ public final class AreaParser {
     }
 
     public static Route parseRoute(JsonObject obj) {
-        String name = parseStringMember(obj, "navn");
-        String number = parseStringMember(obj, "nummer");
-        String description = parseStringMember(obj, "beskrivelse");
-        String period = parseStringMember(obj, "periode");
-
-        return new Route(parseId(obj), number, name, description, period);
+        return new Route(
+                parseLongMember(obj, "id"),
+                parseStringMember(obj, "nummer"),
+                parseStringMember(obj, "navn"),
+                parseStringMember(obj, "beskrivelse"),
+                parseStringMember(obj, "periode"));
     }
 
     public static ContractArea parseContractArea(JsonObject obj) {
-        String name = parseStringMember(obj, "navn");
-        Integer number = parseIntMember(obj, "nummer");
-        String type = parseStringMember(obj, "type");
-
-        return new ContractArea(parseId(obj), number, name, type);
+        return new ContractArea(
+                parseLongMember(obj, "id"),
+                parseIntMember(obj, "nummer"),
+                parseStringMember(obj, "navn"),
+                parseStringMember(obj, "type"));
     }
 
     private static RoadObjectId parseId(JsonObject obj) {

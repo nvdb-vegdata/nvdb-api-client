@@ -59,37 +59,45 @@
         ],
         "kontraktsområder": [
           {
+            "id": 123,
             "nummer": 1454,
             "navn": "1454 ELEKTRO"
           },
           {
+            "id": 124,
             "nummer": 1401,
             "navn": "1401 INDRE SOGN 2009-2014"
           },
           {
+            "id": 125,
             "nummer": 1454,
             "navn": "1454 ELEKTRO SOGN 2012-2017"
           },
           {
+            "id": 126,
             "nummer": 1454,
             "navn": "E1454 Elektrokontrakt Sogn 2017-2022"
           },
           {
+            "id": 127,
             "nummer": 1401,
             "navn": "1401 Indre Sogn 2014-2019"
           },
           {
+            "id": 128,
             "nummer": 1401,
             "navn": "1401 Indre Sogn 2019-2024"
           }
         ],
         "riksvegruter": [
           {
+            "id": 133,
             "nummer": "5C",
             "navn": "RUTE5C",
             "periode": "2010-2019"
           },
           {
+            "id": 134,
             "nummer": "5C",
             "navn": "RUTE5C",
             "periode": "2014-2023 / 2018-2029"

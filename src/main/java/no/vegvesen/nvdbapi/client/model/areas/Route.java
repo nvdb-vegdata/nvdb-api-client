@@ -27,25 +27,24 @@ package no.vegvesen.nvdbapi.client.model.areas;
 
 import java.io.Serializable;
 import java.util.Objects;
-import java.util.Optional;
 
 public final class Route implements Serializable {
 
-    private final Optional<RoadObjectId> id;
+    private final long id;
     private final String number;
     private final String name;
     private final String description;
     private final String period;
 
-    public Route(RoadObjectId id, String number, String name, String description, String period) {
-        this.id = Optional.ofNullable(id);
+    public Route(long id, String number, String name, String description, String period) {
+        this.id = id;
         this.number = number;
         this.name = name;
         this.description = description;
         this.period = period;
     }
 
-    public Optional<RoadObjectId> getId() {
+    public long getId() {
         return id;
     }
 

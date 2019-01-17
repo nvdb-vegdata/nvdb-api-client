@@ -69,7 +69,22 @@
           "trafikantgruppe" : "K"
         },
         "kortform": "PV4490 S2D1 M87-193"
-      }
+      },
+      "kontraktsområder": [
+        {
+          "id": 123,
+          "nummer": 1454,
+          "navn": "1454 ELEKTRO"
+        }
+      ],
+      "riksvegruter": [
+        {
+          "id": 133,
+          "nummer": "5C",
+          "navn": "RUTE5C",
+          "periode": "2014-2023 / 2018-2029"
+        }
+      ]
     }
   ],
   "metadata": {
