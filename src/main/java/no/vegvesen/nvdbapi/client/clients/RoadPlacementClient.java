@@ -54,7 +54,7 @@ public class RoadPlacementClient extends AbstractJerseyClient {
      */
     @Deprecated
     public RoadPlacement getRoadPlacement(RoadRefRequest request) {
-        return getResults("vegreferanse", request.getQueryParam(), null).orElse(null);
+        return getResults("vegsystemreferanse", request.getQueryParam(), null).orElse(null);
     }
 
     /**
@@ -66,7 +66,7 @@ public class RoadPlacementClient extends AbstractJerseyClient {
      */
     @Deprecated
     public RoadPlacement getRoadPlacement(RoadRefRequest request, Projection projection) {
-        return getResults("vegreferanse", request.getQueryParam(), projection).orElse(null);
+        return getResults("vegsystemreferanse", request.getQueryParam(), projection).orElse(null);
     }
 
     /**
@@ -98,7 +98,7 @@ public class RoadPlacementClient extends AbstractJerseyClient {
      * @return {@code Optional<RoadPlacement>} if query had result, otherwise {@code Optional.empty()}
      */
     public Optional<RoadPlacement> findPlacement(RoadRefRequest request) {
-        return getResults("vegreferanse", request.getQueryParam(), request.getProjection().orElse(null));
+        return getResults("vegsystemreferanse", request.getQueryParam(), request.getProjection().orElse(null));
     }
 
     /**
@@ -112,7 +112,7 @@ public class RoadPlacementClient extends AbstractJerseyClient {
 
     public List<RoadPlacementBulkResult> getRoadPlacementsInBulk(List<RoadRefRequest> requests, Projection projection) {
         String queryParam = requests.stream().map(RoadRefRequest::getQueryParam).collect(Collectors.joining(","));
-        return getRoadPlacementsInBatch("vegreferanser", queryParam, projection);
+        return getRoadPlacementsInBatch("vegsystemreferanser", queryParam, projection);
     }
 
     public List<RoadPlacementBulkResult> getRoadPlacementsInBulkFromReflinks(List<RefLinkRequest> requests, Projection projection) {

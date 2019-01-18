@@ -13,8 +13,7 @@ import java.util.function.Function;
 import static java.util.stream.Collectors.toMap;
 import static no.vegvesen.nvdbapi.client.gson.Helper.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.*;
 
 public class VegobjekterParserTest {
     @ParameterizedTest
@@ -25,5 +24,9 @@ public class VegobjekterParserTest {
             .collect(toMap(DataType::getName, Function.identity()));
         List<RoadObject> roadObjects = parseObjekterList("vegobjekter/" + file + ".json", e -> RoadObjectParser.parse(datatyper, e));
         assertThat(roadObjects.size(), is(not(0)));
+
+        for (RoadObject roadObject : roadObjects) {
+            assertThat(   roadObject.getLocation().getRoadSysRefs(), is(not(empty())));
+        }
     }
 }
