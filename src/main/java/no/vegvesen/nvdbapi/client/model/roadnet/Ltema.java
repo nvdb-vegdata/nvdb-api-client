@@ -28,7 +28,7 @@ package no.vegvesen.nvdbapi.client.model.roadnet;
 import java.util.Arrays;
 
 public enum Ltema {
-    
+
     VEGSENTERLINJE(7001, "VegSenterlinje"),
     KJOREFELT(7010, "Kjørefelt"),
     KJOREBANE(7011, "Kjørebane"),
@@ -42,7 +42,7 @@ public enum Ltema {
 
     private final int code;
     private final String description;
-    
+
     Ltema(int code, String description) {
         this.code = code;
         this.description = description;
