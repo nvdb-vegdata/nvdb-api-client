@@ -26,10 +26,13 @@
 package no.vegvesen.nvdbapi.client.model.roadnet;
 
 import no.vegvesen.nvdbapi.client.model.Geometry;
+import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
+import no.vegvesen.nvdbapi.client.model.areas.Route;
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -43,6 +46,8 @@ public final class SegmentedLink implements Serializable {
     private final int linkNumber;
     private final int segmentNumber;
     private final String linkType;
+    private final List<ContractArea> contractAreas;
+    private final List<Route> routes;
     private final String detailLevel;
     private final String roadType;
 
@@ -65,7 +70,9 @@ public final class SegmentedLink implements Serializable {
                          Integer region, Integer county,
                          Integer municipality, Integer roadDepartment,
                          Geometry geometry, double length, RoadSysRef roadRef,
-                         String linkType) {
+                         String linkType,
+                         List<ContractArea> contractAreas,
+                         List<Route> routes) {
         this.id = id;
         this.superLinkId = superLinkId;
         this.start = start;
@@ -86,6 +93,8 @@ public final class SegmentedLink implements Serializable {
         this.roadRef = roadRef;
         this.geometry = geometry;
         this.linkType = linkType;
+        this.contractAreas = contractAreas;
+        this.routes = routes;
     }
 
     public long getId() {
@@ -168,6 +177,14 @@ public final class SegmentedLink implements Serializable {
         return length;
     }
 
+    public List<ContractArea> getContractAreas() {
+        return contractAreas;
+    }
+
+    public List<Route> getRoutes() {
+        return routes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -176,11 +193,13 @@ public final class SegmentedLink implements Serializable {
         return id == that.id &&
                 Double.compare(that.start, start) == 0 &&
                 Double.compare(that.end, end) == 0 &&
+                Double.compare(that.length, length) == 0 &&
                 linkNumber == that.linkNumber &&
-                segmentNumber == that.segmentNumber&&
+                segmentNumber == that.segmentNumber &&
                 Objects.equals(geometry, that.geometry) &&
-                Double.compare(length, that.length) == 0 &&
                 Objects.equals(linkType, that.linkType) &&
+                Objects.equals(contractAreas, that.contractAreas) &&
+                Objects.equals(routes, that.routes) &&
                 Objects.equals(detailLevel, that.detailLevel) &&
                 Objects.equals(roadType, that.roadType) &&
                 Objects.equals(superLinkId, that.superLinkId) &&
@@ -197,6 +216,6 @@ public final class SegmentedLink implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, start, end, geometry, length, linkNumber, segmentNumber, linkType, detailLevel, roadType, superLinkId, county, municipality, region, roadDepartment, roadRef, fromDate, toDate, startNode, endNode);
+        return Objects.hash(id, start, end, geometry, length, linkNumber, segmentNumber, linkType, contractAreas, routes, detailLevel, roadType, superLinkId, county, municipality, region, roadDepartment, roadRef, fromDate, toDate, startNode, endNode);
     }
 }
