@@ -43,14 +43,10 @@ public final class RoadSysRefParser {
         SideArea sideArea = parseSideArea(obj.getAsJsonObject("sideanlegg"));
         Intersection intersection = parseIntersection(obj.getAsJsonObject("kryssystem"));
 
-        Double sectionMeter = null;
-
         JsonObject sectionElement = obj.getAsJsonObject("strekning");
         if (nonNull(sideArea)) {
-            sectionMeter = parseSectionMeter(obj); // get meter value *on* the section where sidearea starts
             sectionElement = obj.getAsJsonObject("sideanlegg");
         } else if (nonNull(intersection)) {
-            sectionMeter = parseSectionMeter(obj); // get meter value *on* the section where intersection starts
             sectionElement = obj.getAsJsonObject("kryssystem");
         }
         Double startMeter = parseDoubleMember(sectionElement,"fra_meter");
@@ -58,11 +54,6 @@ public final class RoadSysRefParser {
         Double meter = parseDoubleMember(sectionElement,"meter");
 
         if (isNull(meter) && isNull(startMeter) && isNull(endMeter)) return null;
-
-        if (nonNull(meter)) {
-            startMeter = meter;
-            endMeter = meter;
-        }
 
         Section section = parseSection(obj.getAsJsonObject("strekning"));
         RoadSystem roadSystem = parseRoadSystem(obj.getAsJsonObject("vegsystem"));
@@ -72,14 +63,7 @@ public final class RoadSysRefParser {
                 section,
                 intersection,
                 sideArea,
-                startMeter,
-                endMeter,
-                sectionMeter,
                 parseStringMember(obj, "kortform"));
-    }
-
-    private static Double parseSectionMeter(JsonObject obj) {
-        return parseDoubleMember(obj.getAsJsonObject("strekning"), "meter");
     }
 
     private static RoadSystem parseRoadSystem(JsonObject obj) {
@@ -91,6 +75,23 @@ public final class RoadSysRefParser {
                 parseStringMember(obj, "fase"));
     }
 
+    private static Double getFromMeter(JsonObject obj) {
+        Double fromMeter = parseDoubleMember(obj, "fra_meter");
+        if (isNull(fromMeter) ) {
+            return parseDoubleMember(obj, "meter");
+        }
+        return fromMeter;
+    }
+
+    private static Double getToMeter(JsonObject obj) {
+        Double toMeter = parseDoubleMember(obj, "til_meter");
+
+        if (isNull(toMeter) && isNull(toMeter)) {
+            return parseDoubleMember(obj, "meter");
+        }
+        return toMeter;
+    }
+
     private static Section parseSection(JsonObject obj) {
         if (isNull(obj)) return null;
         return new Section(
@@ -98,9 +99,11 @@ public final class RoadSysRefParser {
                 parseIntMember(obj, "versjon"),
                 parseIntMember(obj, "strekning"),
                 parseIntMember(obj, "delstrekning"),
-                parseStringMember(obj, "arm"),
+                parseBooleanMember(obj, "arm"),
                 parseStringMember(obj, "adskilte_løp"),
-                parseStringMember(obj, "trafikantgruppe"));
+                parseStringMember(obj, "trafikantgruppe"),
+                getFromMeter(obj),
+                getToMeter(obj));
     }
 
     private static Intersection parseIntersection(JsonObject obj) {
@@ -112,7 +115,9 @@ public final class RoadSysRefParser {
                     parseLongMember(obj, "id"),
                     parseIntMember(obj, "versjon"),
                     intersectionNumber,
-                    parseIntMember(obj, "kryssdel"));
+                    parseIntMember(obj, "kryssdel"),
+                    getFromMeter(obj),
+                    getToMeter(obj));
         }
         return null;
     }
@@ -126,7 +131,9 @@ public final class RoadSysRefParser {
                     parseLongMember(obj, "id"),
                     parseIntMember(obj, "versjon"),
                     sideAreaNumber,
-                    parseIntMember(obj, "sideanleggsdel"));
+                    parseIntMember(obj, "sideanleggsdel"),
+                    getFromMeter(obj),
+                    getToMeter(obj));
         }
         return null;
     }
