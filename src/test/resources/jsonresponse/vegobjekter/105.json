@@ -86,7 +86,7 @@
               "versjon": 1,
               "strekning": 2,
               "delstrekning": 1,
-              "arm": "N",
+              "arm": false,
               "adskilte_løp": "N",
               "trafikantgruppe": "K",
               "fra_meter": 0.0,

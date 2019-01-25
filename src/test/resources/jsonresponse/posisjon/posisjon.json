@@ -12,7 +12,7 @@
       "versjon": 1,
       "strekning": 1,
       "delstrekning": 1,
-      "arm": "N",
+      "arm": false,
       "adskilte_løp": "N",
       "trafikantgruppe": "K",
       "meter": 962.957
