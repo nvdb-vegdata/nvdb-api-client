@@ -17,6 +17,7 @@
       "type": "Hoved",
       "detaljnivå": "Vegtrase og kjørebane",
       "typeVeg": "Enkel bilveg",
+      "typeVeg_sosi": "enkelBilveg",
       "måleMetode": "Geometrisk",
       "feltoversikt": [
         "1",
