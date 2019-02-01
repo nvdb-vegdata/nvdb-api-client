@@ -9,15 +9,17 @@ public class Section {
     public final Integer version;
     public final int sectionNumber;
     public final int sectionPartNumber;
-    public final String arm;
+    public final Boolean arm;
     public final String sepratePassages;
     public final String trafficType;
+    public final double startMeter;
+    public final Double endMeter;
 
     public Section(Long id, Integer version, int sectionNumber,
                    int sectionPartNumber,
-                   String arm,
+                   Boolean arm,
                    String sepratePassages,
-                   String trafficType) {
+                   String trafficType, double startMeter, Double endMeter) {
         this.id = id;
         this.version = version;
         this.sectionNumber = sectionNumber;
@@ -25,6 +27,8 @@ public class Section {
         this.arm = arm;
         this.sepratePassages = sepratePassages;
         this.trafficType = trafficType;
+        this.startMeter = startMeter;
+        this.endMeter = endMeter;
     }
 
     @Override
@@ -37,6 +41,8 @@ public class Section {
                 ", arm='" + arm + '\'' +
                 ", sepratePassages='" + sepratePassages + '\'' +
                 ", trafficType='" + trafficType + '\'' +
+                ", startMeter='" + startMeter + '\'' +
+                ", endMeter='" + endMeter + '\'' +
                 '}';
     }
 
@@ -54,15 +60,17 @@ public class Section {
         Section section = (Section) o;
         return sectionNumber == section.sectionNumber &&
                 sectionPartNumber == section.sectionPartNumber &&
+                Double.compare(section.startMeter, startMeter) == 0 &&
                 Objects.equals(id, section.id) &&
                 Objects.equals(version, section.version) &&
                 Objects.equals(arm, section.arm) &&
                 Objects.equals(sepratePassages, section.sepratePassages) &&
-                Objects.equals(trafficType, section.trafficType);
+                Objects.equals(trafficType, section.trafficType) &&
+                Objects.equals(endMeter, section.endMeter);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, sectionNumber, sectionPartNumber, arm, sepratePassages, trafficType);
+        return Objects.hash(id, version, sectionNumber, sectionPartNumber, arm, sepratePassages, trafficType, startMeter, endMeter);
     }
 }
