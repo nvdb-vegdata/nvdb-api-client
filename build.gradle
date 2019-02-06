@@ -23,7 +23,7 @@ dependencies {
     implementation "org.glassfish.jersey.core:jersey-client:2.27"
     implementation "org.glassfish.jersey.connectors:jersey-apache-connector:2.27"
     implementation "org.glassfish.jersey.inject:jersey-hk2:2.27"
-    implementation "io.projectreactor:reactor-core:3.2.2.RELEASE"
+    api "io.projectreactor:reactor-core:3.2.2.RELEASE"
 
     testImplementation "junit:junit:4.12"
     testRuntimeOnly 'ch.qos.logback:logback-site:1.2.2'
