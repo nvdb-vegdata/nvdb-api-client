@@ -38,7 +38,7 @@ public class AsyncResult<T> {
                        Function<JsonObject, T> parser) {
         this.baseTarget = baseTarget;
         this.parser = parser;
-        this.page = page.withCount(7500);
+        this.page = page;
         executorService = Executors.newSingleThreadExecutor();
         gson = new Gson();
     }
