@@ -43,18 +43,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Objects.isNull;
+
 public final class ClientFactory implements AutoCloseable {
     private final String baseUrl;
     private final String userAgent;
     private final String xClientName;
 
-    private final String apiRevision = "application/vnd.vegvesen.nvdb-v3+json";
+    private static final String apiRevision = "application/vnd.vegvesen.nvdb-v3+json";
 
     private Datakatalog datakatalog;
     private List<AbstractJerseyClient> clients;
     private boolean isClosed;
     private final Logger debugLogger;
     private PoolingHttpClientConnectionManager connectionManager;
+    private Login.AuthTokens authTokens;
 
     public ClientFactory(String baseUrl, String userAgent, String xClientName) {
         this(baseUrl, userAgent, xClientName, null);
@@ -80,6 +83,52 @@ public final class ClientFactory implements AutoCloseable {
         return isClosed;
     }
 
+    /**
+     * Authenticate with username and password.
+     * If successful the {@code AuthTokens} recieved is used in followinf calls.
+     * @param username -
+     * @param password -
+     * @return {@code Login} containing either {@code AuthTokens} if successful or {@code Failure} if not
+     */
+    public Login login(String username, String password) {
+        try(AuthClient client = new AuthClient(baseUrl, createClient())) {
+            return client.login(username, password);
+        } catch (Exception e) {
+            debugLogger.error("Login failed", e);
+            return Login.failed(e.getMessage());
+        }
+    }
+
+    /**
+     * Use an existing refresh token to authenticate.
+     * @param refreshToken from a previous session
+     * @return {@code Login} containing either {@code AuthTokens} if successful or {@code Failure} if not
+     */
+    public Login refresh(String refreshToken) {
+        try(AuthClient client = new AuthClient(baseUrl, createClient())) {
+            Login refresh = client.refresh(refreshToken);
+            if(refresh.isSuccessful()) {
+                this.authTokens = refresh.authTokens;
+            }
+            return refresh;
+        } catch (Exception e) {
+            debugLogger.error("Login failed", e);
+            return Login.failed(e.getMessage());
+        }
+    }
+
+    /**
+     * Refresh authentication using internal {@code AuthTokens}.
+     * @return {@code Login} containing either {@code AuthTokens} if successful or {@code Failure} if not
+     */
+    public Login refresh() {
+        if(isNull(this.authTokens)) {
+            throw new IllegalStateException("Tried to refresh without existing AuthTokens");
+        }
+
+        return refresh(this.authTokens.refreshToken);
+    }
+
     public RoadNetClient createRoadNetService() {
         assertIsOpen();
         RoadNetClient c = new RoadNetClient(baseUrl, createClient(getDatakatalog().getVersion().getVersion()));
@@ -101,7 +150,7 @@ public final class ClientFactory implements AutoCloseable {
 
     public DatakatalogClient createDatakatalogClient() {
         assertIsOpen();
-        DatakatalogClient c = new DatakatalogClient(baseUrl, createClient(null));
+        DatakatalogClient c = new DatakatalogClient(baseUrl, createClient());
         clients.add(c);
         return c;
     }
@@ -143,16 +192,20 @@ public final class ClientFactory implements AutoCloseable {
 
     public StatusClient createStatusClient() {
         assertIsOpen();
-        StatusClient c = new StatusClient(baseUrl, createClient(null));
+        StatusClient c = new StatusClient(baseUrl, createClient());
         clients.add(c);
         return c;
     }
 
     public TransactionsClient createTransactionsClient(){
         assertIsOpen();
-        TransactionsClient c = new TransactionsClient(baseUrl, createClient(null));
+        TransactionsClient c = new TransactionsClient(baseUrl, createClient());
         clients.add(c);
         return c;
+    }
+
+    private Client createClient() {
+        return createClient(null, true);
     }
 
     private Client createClient(String datakatalogVersion) {

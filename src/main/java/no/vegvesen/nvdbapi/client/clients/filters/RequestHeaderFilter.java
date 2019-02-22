@@ -29,7 +29,6 @@ import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MultivaluedMap;
-import java.io.IOException;
 import java.util.Arrays;
 
 public class RequestHeaderFilter implements ClientRequestFilter {
@@ -55,7 +54,7 @@ public class RequestHeaderFilter implements ClientRequestFilter {
     }
 
     @Override
-    public void filter(ClientRequestContext requestContext) throws IOException {
+    public void filter(ClientRequestContext requestContext) {
         MultivaluedMap<String, Object> headers = requestContext.getHeaders();
         headers.putSingle(HttpHeaders.ACCEPT, apiRevision);
         headers.putSingle(HttpHeaders.USER_AGENT, userAgent);
