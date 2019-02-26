@@ -55,6 +55,7 @@ public final class FeatureType implements Serializable {
     private final boolean measureSet;
     private final boolean connectingLinkOk;
     private final String additionalInformasion;
+    private final boolean sensitive;
 
     public FeatureType(Integer id,
                        String name,
@@ -76,7 +77,8 @@ public final class FeatureType implements Serializable {
                        boolean needParent,
                        boolean measureSet,
                        boolean connectingLinkOk,
-                       String additionalInformasion) {
+                       String additionalInformasion,
+                       boolean sensitive) {
         this.id = id;
         this.name = name;
         this.shortname = shortname;
@@ -99,6 +101,7 @@ public final class FeatureType implements Serializable {
         this.measureSet = measureSet;
         this.connectingLinkOk = connectingLinkOk;
         this.additionalInformasion = additionalInformasion;
+        this.sensitive = sensitive;
     }
 
     public Integer getId() {
@@ -175,6 +178,10 @@ public final class FeatureType implements Serializable {
 
     public Stream<AssociationType> associationTypes() {
         return Stream.concat(children.stream(), parents.stream());
+    }
+
+    public boolean isSensitive() {
+        return sensitive;
     }
 
     /**
