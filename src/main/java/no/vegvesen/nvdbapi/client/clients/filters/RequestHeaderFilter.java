@@ -25,11 +25,12 @@
 
 package no.vegvesen.nvdbapi.client.clients.filters;
 
+import no.vegvesen.nvdbapi.client.clients.Login;
+
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MultivaluedMap;
-import java.io.IOException;
 import java.util.Arrays;
 
 public class RequestHeaderFilter implements ClientRequestFilter {
@@ -41,21 +42,24 @@ public class RequestHeaderFilter implements ClientRequestFilter {
     private final String dakatVersion;
     private final boolean enableCompression;
     private final String apiRevision;
+    private final Login.AuthTokens authTokens;
 
     public RequestHeaderFilter(String userAgent,
                                String xClientName,
                                String dakatVersion,
                                boolean enableCompression,
-                               String apiRevision) {
+                               String apiRevision,
+                               Login.AuthTokens authTokens) {
         this.userAgent = userAgent;
         this.xClientName = xClientName;
         this.dakatVersion = dakatVersion;
         this.enableCompression = enableCompression;
         this.apiRevision = apiRevision;
+        this.authTokens = authTokens;
     }
 
     @Override
-    public void filter(ClientRequestContext requestContext) throws IOException {
+    public void filter(ClientRequestContext requestContext) {
         MultivaluedMap<String, Object> headers = requestContext.getHeaders();
         headers.putSingle(HttpHeaders.ACCEPT, apiRevision);
         headers.putSingle(HttpHeaders.USER_AGENT, userAgent);
@@ -63,5 +67,9 @@ public class RequestHeaderFilter implements ClientRequestFilter {
 
         headers.putSingle(X_CLIENT, xClientName);
         if (dakatVersion != null) headers.putSingle(DAKAT_VERSION, dakatVersion);
+
+        if(authTokens != null) {
+            headers.putSingle(HttpHeaders.AUTHORIZATION, "Bearer " + authTokens.idToken);
+        }
     }
 }

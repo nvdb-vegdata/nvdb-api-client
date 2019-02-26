@@ -86,7 +86,8 @@ public final class FeatureTypeParser {
                 parseBooleanMember(obj, "må_ha_mor"),
                 parseBooleanMember(obj, "er_dataserie"),
                 parseBooleanMember(obj, "konnekteringslenke_ok"),
-                parseStringMember(obj, "tilleggsinformasjon"));
+                parseStringMember(obj, "tilleggsinformasjon"),
+                parseBooleanMember(obj, "sensitiv"));
     }
 
     public static FeatureTypeCategory parseCategory(JsonObject obj) {
