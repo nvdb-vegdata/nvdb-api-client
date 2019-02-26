@@ -68,9 +68,9 @@ public final class ClientFactory implements AutoCloseable {
         this.userAgent = userAgent;
         this.xClientName = xClientName;
         this.debugLogger = Optional.ofNullable(debugLogName)
-                                   .filter(s -> s.trim().length() > 0)
-                                   .map(LoggerFactory::getLogger)
-                                   .orElse(null);
+                .filter(s -> s.trim().length() > 0)
+                .map(LoggerFactory::getLogger)
+                .orElse(null);
         this.clients = new ArrayList<>();
         this.connectionManager = new PoolingHttpClientConnectionManager();
     }
@@ -92,7 +92,11 @@ public final class ClientFactory implements AutoCloseable {
      */
     public Login login(String username, String password) {
         try(AuthClient client = new AuthClient(baseUrl, createClient())) {
-            return client.login(username, password);
+            Login login = client.login(username, password);
+            if(login.isSuccessful()) {
+                this.authTokens = login.authTokens;
+            }
+            return login;
         } catch (Exception e) {
             debugLogger.error("Login failed", e);
             return Login.failed(e.getMessage());
@@ -171,7 +175,12 @@ public final class ClientFactory implements AutoCloseable {
 
     public RoadObjectClient createRoadObjectClient() {
         assertIsOpen();
-        RoadObjectClient c = new RoadObjectClient(baseUrl, createClient(getDatakatalog().getVersion().getVersion()), getDatakatalog());
+        Datakatalog datakatalog = getDatakatalog();
+        RoadObjectClient c =
+                new RoadObjectClient(
+                        baseUrl,
+                        createClient(datakatalog.getVersion().getVersion()),
+                        datakatalog);
         clients.add(c);
         return c;
     }
@@ -223,7 +232,14 @@ public final class ClientFactory implements AutoCloseable {
         }
         config.property(ApacheClientProperties.CONNECTION_MANAGER, connectionManager);
         config.register(GsonMessageBodyHandler.class);
-        config.register(new RequestHeaderFilter(userAgent, xClientName, datakatalogVersion, enableCompression, apiRevision));
+        config.register(
+                new RequestHeaderFilter(
+                        userAgent,
+                        xClientName,
+                        datakatalogVersion,
+                        enableCompression,
+                        apiRevision,
+                        authTokens));
 
         return ClientBuilder.newBuilder().withConfig(config).build();
     }
