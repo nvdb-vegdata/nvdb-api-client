@@ -31,6 +31,7 @@ import no.vegvesen.nvdbapi.client.model.datakatalog.Datakatalog;
 import no.vegvesen.nvdbapi.client.util.LoggingFilter;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.glassfish.jersey.apache.connector.ApacheClientProperties;
+import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.message.DeflateEncoder;
@@ -162,6 +163,8 @@ public final class ClientFactory implements AutoCloseable {
         if (debugLogger != null) {
             config.register(new LoggingFilter(debugLogger, true));
         }
+        config.connectorProvider(new ApacheConnectorProvider());
+
         config.property(ApacheClientProperties.CONNECTION_MANAGER, connectionManager);
         config.register(GsonMessageBodyHandler.class);
         config.register(new RequestHeaderFilter(userAgent, xClientName, datakatalogVersion, enableCompression, apiRevision));
