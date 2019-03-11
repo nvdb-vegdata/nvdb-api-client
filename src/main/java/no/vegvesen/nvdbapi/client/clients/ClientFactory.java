@@ -25,6 +25,7 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
+import no.vegvesen.nvdbapi.client.ProxyConfig;
 import no.vegvesen.nvdbapi.client.clients.filters.RequestHeaderFilter;
 import no.vegvesen.nvdbapi.client.gson.GsonMessageBodyHandler;
 import no.vegvesen.nvdbapi.client.model.datakatalog.Datakatalog;
@@ -32,6 +33,7 @@ import no.vegvesen.nvdbapi.client.util.LoggingFilter;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.glassfish.jersey.apache.connector.ApacheClientProperties;
 import org.glassfish.jersey.client.ClientConfig;
+import org.glassfish.jersey.client.ClientProperties;
 import org.glassfish.jersey.message.DeflateEncoder;
 import org.glassfish.jersey.message.GZipEncoder;
 import org.slf4j.Logger;
@@ -51,6 +53,7 @@ public final class ClientFactory implements AutoCloseable {
     private final String xClientName;
 
     private static final String apiRevision = "application/vnd.vegvesen.nvdb-v3+json";
+    private final ProxyConfig proxyConfig;
 
     private Datakatalog datakatalog;
     private List<AbstractJerseyClient> clients;
@@ -60,10 +63,14 @@ public final class ClientFactory implements AutoCloseable {
     private Login.AuthTokens authTokens;
 
     public ClientFactory(String baseUrl, String userAgent, String xClientName) {
-        this(baseUrl, userAgent, xClientName, null);
+        this(baseUrl, userAgent, xClientName, null, null);
     }
 
-    public ClientFactory(String baseUrl, String userAgent, String xClientName, String debugLogName) {
+    public ClientFactory(String baseUrl, String userAgent, String xClientName, ProxyConfig proxyConfig) {
+        this(baseUrl, userAgent, xClientName, null, proxyConfig);
+    }
+
+    public ClientFactory(String baseUrl, String userAgent, String xClientName, String debugLogName, ProxyConfig proxyConfig) {
         this.baseUrl = baseUrl;
         this.userAgent = userAgent;
         this.xClientName = xClientName;
@@ -73,10 +80,11 @@ public final class ClientFactory implements AutoCloseable {
                 .orElse(null);
         this.clients = new ArrayList<>();
         this.connectionManager = new PoolingHttpClientConnectionManager();
+        this.proxyConfig = proxyConfig;
     }
 
     public ClientFactory(String baseUrl) {
-        this(baseUrl, null, null, null);
+        this(baseUrl, null, null, null, null);
     }
 
     public boolean isClosed() {
@@ -241,6 +249,13 @@ public final class ClientFactory implements AutoCloseable {
                         apiRevision,
                         authTokens));
 
+        if (proxyConfig != null) {
+            config.property(ClientProperties.PROXY_URI, proxyConfig.getUrl());
+            if (proxyConfig.hasCredentials()) {
+                config.property(ClientProperties.PROXY_USERNAME, proxyConfig.getUsername());
+                config.property(ClientProperties.PROXY_PASSWORD, proxyConfig.getPassword());
+            }
+        }
         return ClientBuilder.newBuilder().withConfig(config).build();
     }
 
