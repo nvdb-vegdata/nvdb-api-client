@@ -99,7 +99,8 @@ public final class ClientFactory implements AutoCloseable {
      * @return {@code Login} containing either {@code AuthTokens} if successful or {@code Failure} if not
      */
     public Login login(String username, String password) {
-        try(AuthClient client = new AuthClient(baseUrl, createClient())) {
+        try {
+            AuthClient client = getAuthClient();
             Login login = client.login(username, password);
             if(login.isSuccessful()) {
                 this.authTokens = login.authTokens;
@@ -111,13 +112,26 @@ public final class ClientFactory implements AutoCloseable {
         }
     }
 
+    private AuthClient getAuthClient() {
+        return clients.stream()
+                .filter(c -> c.getClass().equals(AuthClient.class))
+                .map(AuthClient.class::cast)
+                .findFirst()
+                .orElseGet(() -> {
+                    AuthClient client = new AuthClient(baseUrl, createClient());
+                    clients.add(client);
+                    return client;
+                });
+    }
+
     /**
      * Use an existing refresh token to authenticate.
      * @param refreshToken from a previous session
      * @return {@code Login} containing either {@code AuthTokens} if successful or {@code Failure} if not
      */
     public Login refresh(String refreshToken) {
-        try(AuthClient client = new AuthClient(baseUrl, createClient())) {
+        try {
+            AuthClient client = getAuthClient();
             Login refresh = client.refresh(refreshToken);
             if(refresh.isSuccessful()) {
                 this.authTokens = refresh.authTokens;

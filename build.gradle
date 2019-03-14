@@ -1,6 +1,6 @@
 plugins {
-    id "com.jfrog.bintray" version "1.7"
-    id 'com.github.ben-manes.versions' version '0.20.0'
+    id "com.jfrog.bintray" version "1.8.4"
+    id 'com.github.ben-manes.versions' version '0.21.0'
     id 'pl.allegro.tech.build.axion-release' version '1.9.3'
     id 'java-library'
     id 'maven-publish'
@@ -21,10 +21,10 @@ dependencies {
     api "com.google.code.gson:gson:2.8.5"
     api "org.slf4j:slf4j-api:1.7.25"
 
-    implementation "org.glassfish.jersey.core:jersey-client:2.27"
-    implementation "org.glassfish.jersey.connectors:jersey-apache-connector:2.27"
-    implementation "org.glassfish.jersey.inject:jersey-hk2:2.27"
-    api "io.projectreactor:reactor-core:3.2.2.RELEASE"
+    implementation "org.glassfish.jersey.core:jersey-client:2.28"
+    implementation "org.glassfish.jersey.connectors:jersey-apache-connector:2.28"
+    implementation "org.glassfish.jersey.inject:jersey-hk2:2.28"
+    api "io.projectreactor:reactor-core:3.2.6.RELEASE"
 
     testRuntime "org.junit.jupiter:junit-jupiter-engine:5.4.0"
     testCompile "org.junit.jupiter:junit-jupiter-api:5.4.0"
