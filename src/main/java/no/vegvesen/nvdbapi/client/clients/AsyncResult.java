@@ -96,6 +96,14 @@ public class AsyncResult<T> {
                 // no next page if last token and next token are equal
                 boolean hasNext = nextToken != null && (!nextToken.equals(token));
                 reader.endObject();
+
+                /*
+                 Not use why reader.skipValue() is needed.
+                 If it's left out MalformedChunkCodingException: CRLF expected at end of chunk
+                 some times occurs.
+                 https://stackoverflow.com/questions/8635112/java-malformedchunkcodingexception
+                 */
+                reader.skipValue();
                 return new PagingIndicator(hasNext, currentPage.withStart(nextToken));
             }
         }
