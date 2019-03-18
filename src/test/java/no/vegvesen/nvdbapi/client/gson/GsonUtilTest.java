@@ -27,11 +27,14 @@ package no.vegvesen.nvdbapi.client.gson;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import no.vegvesen.nvdbapi.client.model.Quality;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
 public class GsonUtilTest {
+
+    String jsonResponse = "{\"id\":615921663,\"href\":\"https://www.vegvesen.no/nvdb/api/v2/vegobjekter/83/615921663\",\"metadata\":{\"type\":{\"id\":83,\"navn\":\"Kum\"},\"versjon\":1,\"startdato\":\"2015-07-30\",\"sist_modifisert\":\"2018-01-01T01:11:53\"},\"egenskaper\":[{\"id\":1141,\"navn\":\"Type\",\"datatype\":30,\"datatype_tekst\":\"FlerverdiAttributt, Tekst\",\"verdi\":\"Standard kum m sandfang\",\"enum_id\":4146},{\"id\":1269,\"navn\":\"Bruksområde\",\"datatype\":30,\"datatype_tekst\":\"FlerverdiAttributt, Tekst\",\"verdi\":\"Drenering\",\"enum_id\":2936},{\"id\":1411,\"navn\":\"Materialtype\",\"datatype\":30,\"datatype_tekst\":\"FlerverdiAttributt, Tekst\",\"verdi\":\"Betong\",\"enum_id\":2211},{\"id\":1586,\"navn\":\"Dybde\",\"datatype\":2,\"datatype_tekst\":\"Tall\",\"verdi\":3.1,\"enhet\":{\"id\":1,\"navn\":\"Meter\",\"kortnavn\":\"m\"}},{\"id\":1727,\"navn\":\"Diameter\",\"datatype\":2,\"datatype_tekst\":\"Tall\",\"verdi\":1.0,\"enhet\":{\"id\":1,\"navn\":\"Meter\",\"kortnavn\":\"m\"}},{\"id\":2079,\"navn\":\"Dybde til utløp\",\"datatype\":2,\"datatype_tekst\":\"Tall\",\"verdi\":2.1,\"enhet\":{\"id\":1,\"navn\":\"Meter\",\"kortnavn\":\"m\"}},{\"id\":2122,\"navn\":\"Inngår i drenssystem\",\"datatype\":30,\"datatype_tekst\":\"FlerverdiAttributt, Tekst\",\"verdi\":\"Ja\",\"enum_id\":3547},{\"id\":2289,\"navn\":\"Diameter, åpning\",\"datatype\":2,\"datatype_tekst\":\"Tall\",\"verdi\":0.6,\"enhet\":{\"id\":1,\"navn\":\"Meter\",\"kortnavn\":\"m\"}},{\"id\":2290,\"navn\":\"Lokk/rist, type\",\"datatype\":30,\"datatype_tekst\":\"FlerverdiAttributt, Tekst\",\"verdi\":\"Tett lokk, støpjern\",\"enum_id\":4149},{\"id\":2388,\"navn\":\"Avstand fra vegkant\",\"datatype\":2,\"datatype_tekst\":\"Tall\",\"verdi\":0.4,\"enhet\":{\"id\":1,\"navn\":\"Meter\",\"kortnavn\":\"m\"}},{\"id\":4784,\"navn\":\"Geometri, punkt\",\"datatype\":17,\"datatype_tekst\":\"GeomPunkt\",\"verdi\":\"POINT (258127.12 7034288.74 106.66)\",\"kvalitet\":{\"målemetode\":11,\"nøyaktighet\":15,\"synbarhet\":0,\"målemetodeHøyde\":11,\"nøyaktighetHøyde\":15}},{\"id\":7065,\"navn\":\"Etableringsår\",\"datatype\":2,\"datatype_tekst\":\"Tall\",\"verdi\":2014}],\"geometri\":{\"wkt\":\"POINT Z (258127.12 7034288.74 106.66)\",\"srid\":32633,\"egengeometri\":true},\"lokasjon\":{\"kommuner\":[5001],\"fylker\":[50],\"regioner\":[4],\"vegavdelinger\":[50],\"kontraktsområder\":[{\"navn\":\"1609 TrondheimBydrift 2006-2010\"},{\"navn\":\"1606 TrondheimMalvik 2010-2015\"},{\"navn\":\"1609 Trondheim ytre 2015-2020\"},{\"navn\":\"1633 Fylkesveger i Trondheim Ytre 2016-2020\"}],\"vegreferanser\":[{\"fylke\":50,\"kommune\":0,\"kategori\":\"F\",\"status\":\"V\",\"nummer\":6652,\"hp\":1,\"meter\":13998,\"kortform\":\"5000 Fv6652 hp1 m13998\"}],\"stedfestinger\":[{\"veglenkeid\":42830,\"posisjon\":0.951965961208373,\"kortform\":\"0.951965961208373@42830\",\"retning\":\"MED\",\"sideposisjon\":\"H\"}],\"geometri\":{\"wkt\":\"POINT Z (258126.16992 7034291.08949 106.72683)\",\"srid\":32633}},\"relasjoner\":{}}";
 
     @Test
     public void testGetStringMember() {
@@ -41,4 +44,19 @@ public class GsonUtilTest {
 
         assertEquals(expectedStartDate, GsonUtil.parseStringMember(e, "versjon.startdato"));
     }
+
+    @Test
+    public void testGetQuality() {
+        JsonObject obj = new JsonParser().parse(jsonResponse).getAsJsonObject();
+
+        //JsonObject qualitySource = obj.getAsJsonArray("egenskaper").get(9).getAsJsonObject().getAsJsonObject("kvalitet");
+        JsonObject qualitySource = obj.getAsJsonArray("egenskaper").get(10).getAsJsonObject().getAsJsonObject("kvalitet");
+
+        Quality parsedQuality = GeometryParser.parseQuality(qualitySource);
+        Quality expectedQuality = new Quality(11, 15, 11, 15, null, 0, null);
+
+        assertTrue( parsedQuality.equals( expectedQuality ));
+
+    }
+
 }
