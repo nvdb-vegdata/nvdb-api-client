@@ -30,6 +30,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.Direction;
 import no.vegvesen.nvdbapi.client.model.Geometry;
+import no.vegvesen.nvdbapi.client.model.Quality;
 import no.vegvesen.nvdbapi.client.model.SidePosition;
 import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
 import no.vegvesen.nvdbapi.client.model.areas.Route;
@@ -225,7 +226,12 @@ public final class RoadObjectParser {
         DataType dataType = dataTypes.get(dataTypeId);
         Object value = parseAttributeValue(obj, "verdi", dataType.getJavaType());
 
-        return new Attribute(id, name, dataType, value, Optional.ofNullable(enumId));
+        Quality quality = null;
+        if (obj.has("kvalitet")) {
+            quality = parseQualityMember(obj, "kvalitet");
+        }
+
+        return new Attribute(id, name, dataType, value, Optional.ofNullable(enumId), Optional.ofNullable(quality));
     }
 
     private static Association parseAssociation(Map<Integer, DataType> dataTypes, JsonObject obj) {

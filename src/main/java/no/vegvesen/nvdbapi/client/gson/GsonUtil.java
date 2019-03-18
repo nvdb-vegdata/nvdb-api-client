@@ -29,6 +29,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
+import no.vegvesen.nvdbapi.client.model.Quality;
 import no.vegvesen.nvdbapi.client.model.datakatalog.JavaType;
 import no.vegvesen.nvdbapi.client.util.Strings;
 
@@ -134,6 +135,13 @@ public final class GsonUtil {
                         .collect(Collectors.toList()))
                 .orElse(null);
 
+    }
+
+    public static Quality parseQualityMember(JsonObject obj, String path) {
+        return getNode(obj, path)
+                .map(JsonElement::getAsJsonObject)
+                .map(GeometryParser::parseQuality)
+                .orElse(null);
     }
 
     public static Object parseAttributeValue(JsonObject obj, String path, JavaType datatype) {
