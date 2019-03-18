@@ -25,6 +25,7 @@
 
 package no.vegvesen.nvdbapi.client.model.roadobjects;
 
+import no.vegvesen.nvdbapi.client.model.Quality;
 import no.vegvesen.nvdbapi.client.model.datakatalog.DataType;
 
 import java.util.Objects;
@@ -36,13 +37,15 @@ public class Attribute {
     private final DataType datatype;
     private final Object value;
     private final Optional<Integer> enumId;
+    private final Optional<Quality> quality;
 
-    public Attribute(int typeId, String typeName, DataType datatype, Object value, Optional<Integer> enumId) {
+    public Attribute(int typeId, String typeName, DataType datatype, Object value, Optional<Integer> enumId, Optional<Quality> quality) {
         this.typeId = typeId;
         this.typeName = typeName;
         this.datatype = datatype;
         this.value = value;
         this.enumId = enumId;
+        this.quality = quality;
     }
 
     public int getTypeId() {
@@ -86,6 +89,8 @@ public class Attribute {
     public Optional<Integer> getEnumId() {
         return enumId;
     }
+
+    public Optional<Quality> getQuality() { return quality; }
 
     public boolean isEnum() {
         return enumId.isPresent();

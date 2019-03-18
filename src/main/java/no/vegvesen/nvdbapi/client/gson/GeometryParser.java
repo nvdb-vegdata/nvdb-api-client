@@ -48,19 +48,26 @@ public final class GeometryParser {
 
         boolean isSimplified = Optional.ofNullable(parseBooleanMember(obj, "forenklet")).orElse(false);
         boolean isOwnGeometry = Optional.ofNullable(parseBooleanMember(obj, "egengeometri")).orElse(false);
+
         Quality quality = null;
         if (obj.has("kvalitet")) {
-            int method = parseIntMember(obj, "kvalitet.metode");
-            Integer accuracy = parseIntMember(obj, "kvalitet.nøyaktighet");
-            Integer heightMethod = parseIntMember(obj, "kvalitet.høydemetode");
-            int heightAccuracy = parseIntMember(obj, "kvalitet.høydenøyaktighet");
-            int tolerance = parseIntMember(obj, "kvalitet.toleranse");
-            int visibility = parseIntMember(obj, "kvalitet.synlighet");
-            LocalDate verifiedDate = parseDateMember(obj, "kvalitet.datafangstdato");
-            quality = new Quality(method, accuracy, heightMethod, heightAccuracy, tolerance, visibility, verifiedDate);
+            quality = parseQuality(obj.getAsJsonObject("kvalitet"));
         }
 
         return new Geometry(wkt, srid, quality, isSimplified, isOwnGeometry);
+    }
+
+    public static Quality parseQuality(JsonObject qualityObj) {
+        Integer method = parseIntMember(qualityObj, "målemetode");
+        Integer accuracy = parseIntMember(qualityObj, "nøyaktighet");
+        Integer heightMethod = parseIntMember(qualityObj, "målemetodeHøyde");
+        Integer heightAccuracy = parseIntMember(qualityObj, "nøyaktighetHøyde");
+        Integer tolerance = parseIntMember(qualityObj, "toleranse");
+        Integer visibility = parseIntMember(qualityObj, "synbarhet");
+        LocalDate verifiedDate = parseDateMember(qualityObj, "datafangstdato");
+
+        Quality quality = new Quality(method, accuracy, heightMethod, heightAccuracy, tolerance, visibility, verifiedDate);
+        return quality;
     }
 
     static Projection parseProjection(JsonElement e) {
