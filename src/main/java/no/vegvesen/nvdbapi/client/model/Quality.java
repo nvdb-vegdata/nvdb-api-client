@@ -38,7 +38,7 @@ public class Quality {
     private final Integer heightAccuracy;
     private final Integer tolerance;
 
-    public Quality(int method, Integer accuracy, Integer heightMethod, Integer heightAccuracy, Integer tolerance, Integer visibility, LocalDate verifiedDate) {
+    public Quality(Integer method, Integer accuracy, Integer heightMethod, Integer heightAccuracy, Integer tolerance, Integer visibility, LocalDate verifiedDate) {
         this.verifiedDate = Optional.ofNullable(verifiedDate);
         this.method = method;
         this.accuracy = accuracy;
