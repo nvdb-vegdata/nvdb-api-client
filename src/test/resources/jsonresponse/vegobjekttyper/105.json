@@ -57,6 +57,7 @@
   "hovedkategori": "Detaljinfo",
   "tidsrom_relevant": true,
   "konnekteringslenke_ok": true,
+  "en_versjon": false,
   "abstrakt_type": false,
   "avledet": false,
   "må_ha_mor": false,
