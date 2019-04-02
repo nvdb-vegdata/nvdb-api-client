@@ -33,6 +33,7 @@ import java.util.stream.Stream;
 
 public class Projection implements Serializable {
     public static final Projection UTM33 = new Projection(6173, "utm33");
+    public static final Projection UTM33_32633 = new Projection(32633, "utm33");
     public static final Projection WGS84 = new Projection(4326, "wgs84");
 
     private final String alias;
@@ -75,6 +76,6 @@ public class Projection implements Serializable {
     }
 
     public static Optional<Projection> of(int srid) {
-        return Stream.of(UTM33, WGS84).filter(p -> p.getSrid() == srid).findAny();
+        return Stream.of(UTM33, WGS84, UTM33_32633).filter(p -> p.getSrid() == srid).findAny();
     }
 }
