@@ -55,8 +55,6 @@ public final class SegmentedLink implements Serializable {
     private final Long superLinkId;
     private final Integer county;
     private final Integer municipality;
-    private final Integer region;
-    private final Integer roadDepartment;
     private final RoadSysRef roadRef;
     private final LocalDate fromDate;
     private final LocalDate toDate;
@@ -67,8 +65,8 @@ public final class SegmentedLink implements Serializable {
                          int linkNumber, int segmentNumber, String detailLevel, String roadType,
                          String startNode, String endNode,
                          LocalDate fromDate, LocalDate toDate,
-                         Integer region, Integer county,
-                         Integer municipality, Integer roadDepartment,
+                         Integer county,
+                         Integer municipality,
                          Geometry geometry, double length, RoadSysRef roadRef,
                          String linkType,
                          List<ContractArea> contractAreas,
@@ -83,10 +81,8 @@ public final class SegmentedLink implements Serializable {
         this.roadType = roadType;
         this.county = county;
         this.municipality = municipality;
-        this.region = region;
         this.fromDate = fromDate;
         this.toDate = toDate;
-        this.roadDepartment = roadDepartment;
         this.startNode = startNode;
         this.endNode = endNode;
         this.length = length;
@@ -145,14 +141,6 @@ public final class SegmentedLink implements Serializable {
         return municipality;
     }
 
-    public Integer getRegion() {
-        return region;
-    }
-
-    public Integer getRoadDepartment() {
-        return roadDepartment;
-    }
-
     public LocalDate getFromDate() {
         return fromDate;
     }
@@ -205,8 +193,6 @@ public final class SegmentedLink implements Serializable {
                 Objects.equals(superLinkId, that.superLinkId) &&
                 Objects.equals(county, that.county) &&
                 Objects.equals(municipality, that.municipality) &&
-                Objects.equals(region, that.region) &&
-                Objects.equals(roadDepartment, that.roadDepartment) &&
                 Objects.equals(roadRef, that.roadRef) &&
                 Objects.equals(fromDate, that.fromDate) &&
                 Objects.equals(toDate, that.toDate) &&
@@ -216,6 +202,6 @@ public final class SegmentedLink implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, start, end, geometry, length, linkNumber, segmentNumber, linkType, contractAreas, routes, detailLevel, roadType, superLinkId, county, municipality, region, roadDepartment, roadRef, fromDate, toDate, startNode, endNode);
+        return Objects.hash(id, start, end, geometry, length, linkNumber, segmentNumber, linkType, contractAreas, routes, detailLevel, roadType, superLinkId, county, municipality, roadRef, fromDate, toDate, startNode, endNode);
     }
 }

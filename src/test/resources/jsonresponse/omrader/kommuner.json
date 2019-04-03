@@ -2,15 +2,11 @@
   {
     "navn": "Steigen",
     "nummer": 1848,
-    "region": 5,
-    "fylke": 18,
-    "vegavdeling": 18
+    "fylke": 18
   },
   {
     "navn": "Trondheim",
     "nummer": 5001,
-    "region": 4,
-    "fylke": 50,
-    "vegavdeling": 50
+    "fylke": 50
   }
 ]

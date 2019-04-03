@@ -68,16 +68,6 @@ public class AreaClient extends AbstractJerseyClient {
         return getCountys(true, true, false, null);
     }
 
-    public List<Region> getRegions(boolean includeBoundingBox, boolean includeCenterPoint, boolean includeObjectLink, Projection projection) {
-        WebTarget target = getClient().target(areaRoot().path("regioner"));
-
-        return getAreas(includeBoundingBox, includeCenterPoint, includeObjectLink, projection, target).map(AreaParser::parseRegion).collect(Collectors.toList());
-    }
-
-    public List<Region> getRegions() {
-        return getRegions(true, true, false, null);
-    }
-
     public List<Route> getNationalRoutes(boolean includeObjectLink) {
         UriBuilder path = areaRoot().path("riksvegruter");
 
@@ -104,20 +94,6 @@ public class AreaClient extends AbstractJerseyClient {
 
     public List<ContractArea> getContractAreas() {
         return getContractAreas(false);
-    }
-
-    public List<RoadDepartment> getRoadDepartments(boolean includeObjectLink) {
-        UriBuilder path = areaRoot().path("vegavdelinger");
-
-        if (includeObjectLink) path.queryParam("inkluder", getIncludeParameter(false, false, true));
-
-        WebTarget target = getClient().target(path);
-
-        return getAreas(target).map(AreaParser::parseDepartment).collect(Collectors.toList());
-    }
-
-    public List<RoadDepartment> getRoadDepartments() {
-        return getRoadDepartments(false);
     }
 
     private Stream<JsonObject> getAreas(boolean includeBoundingBox, boolean includeCenterPoint, boolean includeObjectLink, Projection projection, WebTarget target) {

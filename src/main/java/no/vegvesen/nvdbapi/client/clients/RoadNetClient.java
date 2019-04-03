@@ -140,7 +140,6 @@ public class RoadNetClient extends AbstractJerseyClient {
 
 
     private void addParameters(RoadNetRequest request, UriBuilder path) {
-        if (!request.getRegions().isEmpty()) path.queryParam("region", join(request.getRegions()));
         if (!request.getCounties().isEmpty()) path.queryParam("fylke", join(request.getCounties()));
         if (!request.getTopologyLevel().isEmpty()) {
             path.queryParam("topologiniva",
@@ -150,7 +149,6 @@ public class RoadNetClient extends AbstractJerseyClient {
                             .collect(Collectors.toList())));
         }
         if (!request.getSuperId().isEmpty()) path.queryParam("superid", join(request.getSuperId()));
-        if (!request.getRoadDepartments().isEmpty()) path.queryParam("vegavdeling", join(request.getRoadDepartments()));
         if (!request.getMunicipalities().isEmpty()) path.queryParam("kommune", join(request.getMunicipalities()));
         if (!request.getId().isEmpty()) path.queryParam("ider", join(request.getId()));
         request.getBbox().ifPresent(v -> path.queryParam("kartutsnitt", v));

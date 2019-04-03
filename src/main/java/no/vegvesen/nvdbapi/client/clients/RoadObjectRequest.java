@@ -50,8 +50,6 @@ public class RoadObjectRequest {
     private final List<OverlapFilter> overlapFilters;
     private final List<Integer> municipalities;
     private final List<Integer> counties;
-    private final List<Integer> regions;
-    private final List<Integer> roadDepartments;
     private final List<String> contractAreas;
     private final List<String> nationalRoutes;
     private final List<Long> roadobjectIds;
@@ -72,8 +70,6 @@ public class RoadObjectRequest {
         overlapFilters = b.overlapFilters;
         municipalities = b.municipalities;
         counties = b.counties;
-        regions = b.regions;
-        roadDepartments = b.roadDepartments;
         contractAreas = b.contractAreas;
         nationalRoutes = b.nationalRoutes;
         allVersions = b.allVersions;
@@ -148,14 +144,6 @@ public class RoadObjectRequest {
         return counties;
     }
 
-    public List<Integer> getRegions() {
-        return regions;
-    }
-
-    public List<Integer> getRoadDepartments() {
-        return roadDepartments;
-    }
-
     public List<String> getContractAreas() {
         return contractAreas;
     }
@@ -198,8 +186,6 @@ public class RoadObjectRequest {
                 .withRefLinkFilter(refLinkFilter)
                 .withMunicipalities(municipalities)
                 .withCounties(counties)
-                .withRegions(regions)
-                .withRoadDepartments(roadDepartments)
                 .withAllVersions(allVersions)
                 .withIds(roadobjectIds);
         overlapFilters.forEach(of -> b.addOverlapFilter(of.filter, of.typeId));
@@ -224,8 +210,6 @@ public class RoadObjectRequest {
         private List<OverlapFilter> overlapFilters = new ArrayList<>();
         private List<Integer> municipalities = Collections.emptyList();
         private List<Integer> counties = Collections.emptyList();
-        private List<Integer> regions = Collections.emptyList();
-        private List<Integer> roadDepartments = Collections.emptyList();
         private List<String> contractAreas = Collections.emptyList();
         private List<String> nationalRoutes = Collections.emptyList();
         private List<Long> roadobjectIds = Collections.emptyList();
@@ -321,36 +305,6 @@ public class RoadObjectRequest {
 
         public Builder withRefLinkFilter(String filter) {
             this.refLinkFilter = filter;
-            return this;
-        }
-
-        public Builder withRoadDepartments(List<Integer> roadDepartments) {
-            this.roadDepartments = roadDepartments;
-            return this;
-        }
-
-        public Builder withRoadDepartments(Integer... roadDepartments) {
-            this.roadDepartments = Arrays.asList(roadDepartments);
-            return this;
-        }
-
-        public Builder withRoadDepartment(Integer roadDepartment) {
-            this.roadDepartments = Collections.singletonList(roadDepartment);
-            return this;
-        }
-
-        public Builder withRegions(List<Integer> regions) {
-            this.regions = regions;
-            return this;
-        }
-
-        public Builder withRegions(Integer... regions) {
-            this.regions = Arrays.asList(regions);
-            return this;
-        }
-
-        public Builder withRegion(Integer region) {
-            this.regions = Collections.singletonList(region);
             return this;
         }
 

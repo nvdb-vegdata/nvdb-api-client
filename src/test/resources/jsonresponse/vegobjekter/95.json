@@ -51,12 +51,6 @@
         "fylker": [
           14
         ],
-        "regioner": [
-          3
-        ],
-        "vegavdelinger": [
-          14
-        ],
         "kontraktsområder": [
           {
             "id": 123,
@@ -152,8 +146,6 @@
           },
           "kommune": 1421,
           "fylke": 14,
-          "region": 3,
-          "vegavdeling": 14,
           "vegsystemreferanse": {}
         },
         {
@@ -167,8 +159,6 @@
           },
           "kommune": 1421,
           "fylke": 14,
-          "region": 3,
-          "vegavdeling": 14,
           "vegsystemreferanse": {}
         },
         {
@@ -182,8 +172,6 @@
           },
           "kommune": 1421,
           "fylke": 14,
-          "region": 3,
-          "vegavdeling": 14,
           "vegsystemreferanse": {
             "vegsystem": {
               "id": 888791412,
@@ -206,8 +194,6 @@
           },
           "kommune": 1421,
           "fylke": 14,
-          "region": 3,
-          "vegavdeling": 14,
           "vegsystemreferanse": {
             "vegsystem": {
               "id": 888791412,
@@ -230,8 +216,6 @@
           },
           "kommune": 1421,
           "fylke": 14,
-          "region": 3,
-          "vegavdeling": 14,
           "vegsystemreferanse": {
             "vegsystem": {
               "id": 888791412,
@@ -254,8 +238,6 @@
           },
           "kommune": 1421,
           "fylke": 14,
-          "region": 3,
-          "vegavdeling": 14,
           "vegsystemreferanse": {
             "vegsystem": {
               "id": 888791412,
@@ -278,8 +260,6 @@
           },
           "kommune": 1421,
           "fylke": 14,
-          "region": 3,
-          "vegavdeling": 14,
           "vegsystemreferanse": {
             "vegsystem": {
               "id": 888791412,
@@ -302,8 +282,6 @@
           },
           "kommune": 1421,
           "fylke": 14,
-          "region": 3,
-          "vegavdeling": 14,
           "vegsystemreferanse": {
             "vegsystem": {
               "id": 888791412,
@@ -326,8 +304,6 @@
           },
           "kommune": 1421,
           "fylke": 14,
-          "region": 3,
-          "vegavdeling": 14,
           "vegsystemreferanse": {
             "vegsystem": {
               "id": 888791412,
@@ -350,8 +326,6 @@
           },
           "kommune": 1421,
           "fylke": 14,
-          "region": 3,
-          "vegavdeling": 14,
           "vegsystemreferanse": {
             "vegsystem": {
               "id": 888791412,
@@ -374,8 +348,6 @@
           },
           "kommune": 1421,
           "fylke": 14,
-          "region": 3,
-          "vegavdeling": 14,
           "vegsystemreferanse": {
             "vegsystem": {
               "id": 888791412,
@@ -398,8 +370,6 @@
           },
           "kommune": 1421,
           "fylke": 14,
-          "region": 3,
-          "vegavdeling": 14,
           "vegsystemreferanse": {
             "vegsystem": {
               "id": 888791412,
@@ -422,8 +392,6 @@
           },
           "kommune": 1421,
           "fylke": 14,
-          "region": 3,
-          "vegavdeling": 14,
           "vegsystemreferanse": {
             "vegsystem": {
               "id": 888791412,
@@ -446,8 +414,6 @@
           },
           "kommune": 1421,
           "fylke": 14,
-          "region": 3,
-          "vegavdeling": 14,
           "vegsystemreferanse": {
             "vegsystem": {
               "id": 888791412,
@@ -469,8 +435,6 @@
           },
           "kommune": 1421,
           "fylke": 14,
-          "region": 3,
-          "vegavdeling": 14,
           "vegsystemreferanse": {
             "vegsystem": {
               "id": 888791412,
