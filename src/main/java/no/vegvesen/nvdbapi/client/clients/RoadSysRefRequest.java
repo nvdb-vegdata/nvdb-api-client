@@ -122,8 +122,8 @@ public class RoadSysRefRequest {
         return sideAreaMeter;
     }
 
-    public Integer getMunicipality() {
-        return municipality;
+    public Optional<Integer> getMunicipality() {
+        return Optional.ofNullable(municipality);
     }
 
     public Optional<Projection> getProjection() {
