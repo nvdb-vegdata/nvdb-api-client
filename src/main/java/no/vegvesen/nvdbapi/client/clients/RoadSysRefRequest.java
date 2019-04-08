@@ -74,6 +74,10 @@ public class RoadSysRefRequest {
         this.projection = builder.projection;
     }
 
+    public static Builder newBuilder() {
+        return new Builder();
+    }
+
     public Integer getRoadNumber() {
         return roadNumber;
     }
