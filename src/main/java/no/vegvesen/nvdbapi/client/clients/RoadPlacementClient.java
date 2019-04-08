@@ -64,8 +64,8 @@ public class RoadPlacementClient extends AbstractJerseyClient {
         return getResults("veglenkesekvens", request.getQueryParam(), null, request.getProjection().orElse(null));
     }
 
-    public List<RoadPlacementBulkResult> getRoadPlacementsInBulk(List<RoadRefRequest> requests, Integer municipality, Projection projection) {
-        String queryParam = requests.stream().map(RoadRefRequest::getQueryParam).collect(Collectors.joining(","));
+    public List<RoadPlacementBulkResult> getRoadPlacementsInBulk(List<RoadSysRefRequest> requests, Integer municipality, Projection projection) {
+        String queryParam = requests.stream().map(RoadSysRefRequest::getQueryParam).collect(Collectors.joining(","));
         return getRoadPlacementsInBatch("vegsystemreferanser", queryParam, municipality, projection);
     }
 
