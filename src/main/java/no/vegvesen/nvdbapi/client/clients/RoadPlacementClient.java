@@ -78,7 +78,7 @@ public class RoadPlacementClient extends AbstractJerseyClient {
         UriBuilder url = bulkEndpoint();
 
         url.queryParam(paramName, queryParam);
-        Optional.ofNullable(projection).ifPresent(p -> url.queryParam("kommune", municipality));
+        Optional.ofNullable(municipality).ifPresent(p -> url.queryParam("kommune", municipality));
         Optional.ofNullable(projection).ifPresent(p -> url.queryParam("srid", projection.getSrid()));
 
         WebTarget target = getClient().target(url);
@@ -92,7 +92,7 @@ public class RoadPlacementClient extends AbstractJerseyClient {
         UriBuilder url = endpoint();
 
         url.queryParam(paramName, queryParam);
-        Optional.ofNullable(projection).ifPresent(p -> url.queryParam("kommune", municipality));
+        Optional.ofNullable(municipality).ifPresent(p -> url.queryParam("kommune", municipality));
         Optional.ofNullable(projection).ifPresent(p -> url.queryParam("srid", projection.getSrid()));
 
         WebTarget target = getClient().target(url);
