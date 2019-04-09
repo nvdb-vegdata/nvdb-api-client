@@ -31,18 +31,18 @@ import java.util.Objects;
 
 public class RoadPlacement {
 
-    private final RoadSysRef roadRef;
+    private final RoadSysRef roadSysRef;
     private final RefLinkPosition refLinkPosition;
     private final Geometry point;
 
-    public RoadPlacement(RoadSysRef roadRef, RefLinkPosition refLinkPosition, Geometry point) {
-        this.roadRef = roadRef;
+    public RoadPlacement(RoadSysRef roadSysRef, RefLinkPosition refLinkPosition, Geometry point) {
+        this.roadSysRef = roadSysRef;
         this.refLinkPosition = refLinkPosition;
         this.point = point;
     }
 
-    public RoadSysRef getRoadRef() {
-        return roadRef;
+    public RoadSysRef getRoadSysRef() {
+        return roadSysRef;
     }
 
     public RefLinkPosition getRefLinkPosition() {
@@ -56,7 +56,7 @@ public class RoadPlacement {
     @Override
     public String toString() {
         return "RoadPlacement{" +
-                "roadRef=" + roadRef +
+                "roadSysRef=" + roadSysRef +
                 ", refLinkPosition=" + refLinkPosition +
                 ", point=" + point +
                 '}';
@@ -67,13 +67,13 @@ public class RoadPlacement {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RoadPlacement that = (RoadPlacement) o;
-        return Objects.equals(roadRef, that.roadRef) &&
+        return Objects.equals(roadSysRef, that.roadSysRef) &&
                 Objects.equals(refLinkPosition, that.refLinkPosition) &&
                 Objects.equals(point, that.point);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roadRef, refLinkPosition, point);
+        return Objects.hash(roadSysRef, refLinkPosition, point);
     }
 }
