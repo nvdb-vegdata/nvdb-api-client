@@ -29,18 +29,8 @@ class AreaParserTest {
     }
 
     @Test
-    void parseRegioner() throws IOException {
-        doParse("omrader/regioner.json", AreaParser::parseRegion);
-    }
-
-    @Test
     void parseRiksvegruter() throws IOException {
         doParse("omrader/riksvegruter.json", AreaParser::parseRoute);
-    }
-
-    @Test
-    void parseVegavdelinger() throws IOException {
-        doParse("omrader/vegavdelinger.json", AreaParser::parseDepartment);
     }
 
     private <T> void doParse(String file, Function<JsonObject, T> mapper) throws IOException {

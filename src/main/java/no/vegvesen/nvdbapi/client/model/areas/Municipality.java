@@ -38,27 +38,21 @@ public final class Municipality implements Serializable {
     private final String name;
     private final Optional<Geometry> boundingBox;
     private final Optional<Geometry> centerPoint;
-    private final int region;
     private final int county;
-    private final int roadDepartment;
 
 
     public Municipality(RoadObjectId id,
                         int number,
                         String name,
                         int county,
-                        int region,
                         Geometry boundingBox,
-                        Geometry centerPoint,
-                        int roadDepartment) {
+                        Geometry centerPoint) {
         this.id = Optional.ofNullable(id);
         this.number = number;
         this.name = name;
         this.boundingBox = Optional.ofNullable(boundingBox);
         this.centerPoint = Optional.ofNullable(centerPoint);
-        this.region = region;
         this.county = county;
-        this.roadDepartment = roadDepartment;
     }
 
     public Optional<RoadObjectId> getId() {
@@ -81,16 +75,8 @@ public final class Municipality implements Serializable {
         return centerPoint;
     }
 
-    public int getRegion() {
-        return region;
-    }
-
     public int getCounty() {
         return county;
-    }
-
-    public int getRoadDepartment() {
-        return roadDepartment;
     }
 
     @Override
@@ -99,9 +85,7 @@ public final class Municipality implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Municipality that = (Municipality) o;
         return number == that.number &&
-                region == that.region &&
                 county == that.county &&
-                roadDepartment == that.roadDepartment &&
                 Objects.equals(id, that.id) &&
                 Objects.equals(name, that.name) &&
                 Objects.equals(boundingBox, that.boundingBox) &&
@@ -110,6 +94,6 @@ public final class Municipality implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, number, name, boundingBox, centerPoint, region, county, roadDepartment);
+        return Objects.hash(id, number, name, boundingBox, centerPoint, county);
     }
 }

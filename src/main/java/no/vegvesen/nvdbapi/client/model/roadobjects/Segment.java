@@ -39,8 +39,6 @@ public class Segment {
     private final Geometry geometry;
     private final int municipality;
     private final int county;
-    private final int region;
-    private final int roadDepartment;
     private final RoadSysRef roadSysRef;
     private final Integer length;
     private final LocalDate startDate;
@@ -52,8 +50,6 @@ public class Segment {
                    Geometry geometry,
                    int municipality,
                    int county,
-                   int region,
-                   int roadDepartment,
                    RoadSysRef roadSysRef,
                    Integer length,
                    LocalDate startDate,
@@ -64,8 +60,6 @@ public class Segment {
         this.geometry = geometry;
         this.municipality = municipality;
         this.county = county;
-        this.region = region;
-        this.roadDepartment = roadDepartment;
         this.roadSysRef = roadSysRef;
         this.length = length;
         this.startDate = startDate;
@@ -82,14 +76,6 @@ public class Segment {
 
     public int getCounty() {
         return county;
-    }
-
-    public int getRegion() {
-        return region;
-    }
-
-    public int getRoadDepartment() {
-        return roadDepartment;
     }
 
     public long getNetElementId() {
@@ -130,8 +116,6 @@ public class Segment {
                 Double.compare(segment.endPosition, endPosition) == 0 &&
                 municipality == segment.municipality &&
                 county == segment.county &&
-                region == segment.region &&
-                roadDepartment == segment.roadDepartment &&
                 Objects.equals(geometry, segment.geometry) &&
                 Objects.equals(roadSysRef, segment.roadSysRef) &&
                 Objects.equals(length, segment.length) &&
@@ -141,7 +125,7 @@ public class Segment {
 
     @Override
     public int hashCode() {
-        return Objects.hash(netElementId, startPosition, endPosition, geometry, municipality, county, region,
-                roadDepartment, roadSysRef, length, startDate, endDate);
+        return Objects.hash(netElementId, startPosition, endPosition, geometry, municipality, county,
+                roadSysRef, length, startDate, endDate);
     }
 }

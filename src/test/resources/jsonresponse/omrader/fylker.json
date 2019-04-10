@@ -1,12 +1,10 @@
 [
   {
     "navn": "Nordland",
-    "nummer": 18,
-    "region": 5
+    "nummer": 18
   },
   {
     "navn": "Trøndelag",
-    "nummer": 50,
-    "region": 4
+    "nummer": 50
   }
 ]

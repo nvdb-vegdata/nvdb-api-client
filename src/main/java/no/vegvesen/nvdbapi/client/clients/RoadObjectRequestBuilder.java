@@ -53,8 +53,6 @@ class RoadObjectRequestBuilder {
         flatten(request.getMunicipalities()).ifPresent(v -> map.putSingle("kommune", v));
         flatten(request.getRoadobjectIds()).ifPresent(v -> map.putSingle("ider", v));
         flatten(request.getCounties()).ifPresent(v -> map.putSingle("fylke", v));
-        flatten(request.getRegions()).ifPresent(v -> map.putSingle("region", v));
-        flatten(request.getRoadDepartments()).ifPresent(v -> map.putSingle("vegavdeling", v));
         flattenString(request.getContractAreas()).ifPresent(v -> map.putSingle("kontraktsomrade", v));
         flattenString(request.getNationalRoutes()).ifPresent(v -> map.putSingle("riksvegrute", v));
 

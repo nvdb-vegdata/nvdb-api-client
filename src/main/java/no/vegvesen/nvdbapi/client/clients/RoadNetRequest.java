@@ -38,10 +38,8 @@ public class RoadNetRequest {
 
     private final Optional<Page> page;
     private final Optional<String> roadRefFilter;
-    private final List<Integer> regions;
     private final List<Integer> counties;
     private final List<Integer> municipalities;
-    private final List<Integer> roadDepartments;
     private final List<TopologyLevel> topologyLevel;
     private final List<Integer> superId;
     private final List<Integer> id;
@@ -55,10 +53,8 @@ public class RoadNetRequest {
     private RoadNetRequest(Builder b) {
         page = b.page;
         roadRefFilter = b.roadRefFilter;
-        regions = b.regions;
         counties = b.counties;
         municipalities = b.municipalities;
-        roadDepartments = b.roadDepartments;
         topologyLevel = b.topologyLevel;
         this.superId = b.superId;
         projection = b.projection;
@@ -82,20 +78,12 @@ public class RoadNetRequest {
         return roadRefFilter;
     }
 
-    public List<Integer> getRegions() {
-        return regions;
-    }
-
     public List<Integer> getCounties() {
         return counties;
     }
 
     public List<Integer> getMunicipalities() {
         return municipalities;
-    }
-
-    public List<Integer> getRoadDepartments() {
-        return roadDepartments;
     }
 
     public List<TopologyLevel> getTopologyLevel() {
@@ -138,10 +126,8 @@ public class RoadNetRequest {
         private Optional<String> bpolygon = Optional.empty();
         private Optional<Page> page = Optional.empty();
         private Optional<String> roadRefFilter = Optional.empty();
-        private List<Integer> regions = Collections.emptyList();
         private List<Integer> counties = Collections.emptyList();
         private List<Integer> municipalities = Collections.emptyList();
-        private List<Integer> roadDepartments = Collections.emptyList();
         private List<TopologyLevel> topologyLevel = Collections.emptyList();
         private List<Integer> superId = Collections.emptyList();
         private List<Integer> id = Collections.emptyList();
@@ -172,16 +158,6 @@ public class RoadNetRequest {
             return this;
         }
 
-        public Builder withRegions(List<Integer> regions) {
-            this.regions = Optional.ofNullable(regions).orElse(Collections.emptyList());
-            return this;
-        }
-
-        public Builder withRegion(Integer region) {
-            this.regions = Optional.ofNullable(region).map(Collections::singletonList).orElse(Collections.emptyList());
-            return this;
-        }
-
         public Builder withCounties(List<Integer> counties) {
             this.counties = Optional.ofNullable(counties).orElse(Collections.emptyList());
             return this;
@@ -202,11 +178,6 @@ public class RoadNetRequest {
             return this;
         }
 
-        public Builder withRoadDepartments(List<Integer> roadDepartments) {
-            this.roadDepartments = Optional.ofNullable(roadDepartments).orElse(Collections.emptyList());
-            return this;
-        }
-
         public Builder withTopologyLevel(List<TopologyLevel> topologyLevel) {
             this.topologyLevel = Optional.ofNullable(topologyLevel).orElse(Collections.emptyList());
             return this;
@@ -219,11 +190,6 @@ public class RoadNetRequest {
 
         public Builder withId(List<Integer> id) {
             this.id = Optional.ofNullable(id).orElse(Collections.emptyList());
-            return this;
-        }
-
-        public Builder withRoadDepartment(Integer roadDepartment) {
-            this.roadDepartments = Optional.ofNullable(roadDepartment).map(Collections::singletonList).orElse(Collections.emptyList());
             return this;
         }
 

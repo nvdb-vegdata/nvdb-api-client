@@ -120,8 +120,6 @@ public final class RoadObjectParser {
     private static Location parseLocation(JsonObject obj) {
         List<Integer> municipalities = parseIntListMember(obj, "kommuner");
         List<Integer> counties = parseIntListMember(obj, "fylker");
-        List<Integer> regions  = parseIntListMember(obj, "regioner");
-        List<Integer> departments = parseIntListMember(obj, "vegavdelinger");
         List<ContractArea> contractAreas = parseContractAreas(obj);
         List<Route> nationalRoutes = parseRoutes(obj);
 
@@ -150,9 +148,8 @@ public final class RoadObjectParser {
 
         Double length = parseDoubleMember(obj, "lengde");
 
-        return new Location(municipalities, counties, regions,
-                departments, length, placements, roadRefs,
-                contractAreas, nationalRoutes, geometry);
+        return new Location(municipalities, counties, length, placements, roadRefs, contractAreas,
+                nationalRoutes, geometry);
     }
 
     static List<Route> parseRoutes(JsonObject obj) {
@@ -182,8 +179,6 @@ public final class RoadObjectParser {
 
         Integer municipality = parseIntMember(obj, "kommune");
         Integer county = parseIntMember(obj, "fylke");
-        Integer region  = parseIntMember(obj, "region");
-        Integer department = parseIntMember(obj, "vegavdeling");
 
         RoadSysRef ref = null;
         if (obj.has("vegsystemreferanse")) {
@@ -203,8 +198,6 @@ public final class RoadObjectParser {
                 geo,
                 municipality,
                 county,
-                region,
-                department,
                 ref,
                 length,
                 parseDateMember(obj, "startdato"),

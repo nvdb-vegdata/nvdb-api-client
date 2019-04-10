@@ -43,19 +43,15 @@ public final class AreaParser {
         Geometry boundingBox = parseGeometry(obj, "kartutsnitt");
         Geometry centerPoint = parseGeometry(obj, "senterpunkt");
 
-        Integer region = parseIntMember(obj, "region");
         Integer county = parseIntMember(obj, "fylke");
-        Integer roadDepartment = parseIntMember(obj, "vegavdeling");
 
         return new Municipality(
                 parseId(obj),
                 number,
                 name,
                 county,
-                region,
                 boundingBox,
-                centerPoint,
-                roadDepartment);
+                centerPoint);
     }
 
     public static County parseCounty(JsonObject obj) {
@@ -64,25 +60,7 @@ public final class AreaParser {
         Geometry boundingBox = parseGeometry(obj, "kartutsnitt");
         Geometry centerPoint = parseGeometry(obj, "senterpunkt");
 
-        Integer region = parseIntMember(obj, "region");
-
-        return new County(parseId(obj), number, name, boundingBox, centerPoint, region);
-    }
-
-    public static Region parseRegion(JsonObject obj) {
-        String name = parseStringMember(obj, "navn");
-        int number = parseIntMember(obj, "nummer");
-        Geometry boundingBox = parseGeometry(obj, "kartutsnitt");
-        Geometry centerPoint = parseGeometry(obj, "senterpunkt");
-
-        return new Region(parseId(obj), number, name, boundingBox, centerPoint);
-    }
-
-    public static RoadDepartment parseDepartment(JsonObject obj) {
-        String name = parseStringMember(obj, "navn");
-        int number = parseIntMember(obj, "nummer");
-
-        return new RoadDepartment(parseId(obj), number, name);
+        return new County(parseId(obj), number, name, boundingBox, centerPoint);
     }
 
     public static Route parseRoute(JsonObject obj) {

@@ -84,10 +84,8 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         Objects.requireNonNull(request, "Missing page info argument.");
 
         UriBuilder path = endpoint().path("/veglenkesekvenser/segmentert");
-        if (!request.getRegions().isEmpty()) path.queryParam("region", join(request.getRegions()));
         if (!request.getCounties().isEmpty()) path.queryParam("fylke", join(request.getCounties()));
         if (!request.getMunicipalities().isEmpty()) path.queryParam("kommune", join(request.getMunicipalities()));
-        if (!request.getRoadDepartments().isEmpty()) path.queryParam("vegavdeling", join(request.getRoadDepartments()));
         request.getBbox().ifPresent(v -> path.queryParam("kartutsnitt", v));
         request.getBpolygon().ifPresent(v -> path.queryParam("polygon", v));
         request.getProjection().ifPresent(v -> path.queryParam("srid", v.getSrid()));

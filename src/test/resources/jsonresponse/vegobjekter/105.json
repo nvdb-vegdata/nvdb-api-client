@@ -64,12 +64,6 @@
         "fylker": [
           14
         ],
-        "regioner": [
-          3
-        ],
-        "vegavdelinger": [
-          14
-        ],
         "kontraktsområder": [],
         "riksvegruter": [],
         "vegsystemreferanser": [
@@ -125,8 +119,6 @@
           },
           "kommune": 1432,
           "fylke": 14,
-          "region": 3,
-          "vegavdeling": 14,
           "vegsystemreferanse": {
             "vegsystem": {
               "id": 889391396,
@@ -150,8 +142,6 @@
           },
           "kommune": 1432,
           "fylke": 14,
-          "region": 3,
-          "vegavdeling": 14,
           "vegsystemreferanse": {
             "vegsystem": {
               "id": 889391396,
