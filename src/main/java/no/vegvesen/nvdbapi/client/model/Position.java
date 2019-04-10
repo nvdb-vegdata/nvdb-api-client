@@ -59,7 +59,7 @@ public class Position {
         }
 
         public RoadSysRef getRoadRef() {
-            return placement.getRoadRef();
+            return placement.getRoadSysRef();
         }
 
         public RefLinkPosition getRefLink() {
