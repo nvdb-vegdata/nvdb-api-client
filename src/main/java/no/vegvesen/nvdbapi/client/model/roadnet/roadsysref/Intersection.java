@@ -9,15 +9,18 @@ public class Intersection {
     public final int part;
     public final double startMeter;
     public final Double endMeter;
+    public final String direction;
 
 
-    public Intersection(Long id, Integer version, int number, int part, double startMeter, Double endMeter) {
+    public Intersection(Long id, Integer version, int number, int part, double startMeter, Double endMeter,
+                        String direction) {
         this.number = number;
         this.part = part;
         this.id = id;
         this.version = version;
         this.startMeter = startMeter;
         this.endMeter = endMeter;
+        this.direction = direction;
     }
 
     @Override
@@ -29,6 +32,7 @@ public class Intersection {
                 ", part=" + part +
                 ", startMeter='" + startMeter + '\'' +
                 ", endMeter='" + endMeter + '\'' +
+                ", direction='" + direction + '\'' +
                 '}';
     }
 
@@ -41,12 +45,13 @@ public class Intersection {
                 part == that.part &&
                 Double.compare(that.startMeter, startMeter) == 0 &&
                 Objects.equals(id, that.id) &&
+                Objects.equals(direction, that.direction) &&
                 Objects.equals(version, that.version) &&
                 Objects.equals(endMeter, that.endMeter);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, number, part, startMeter, endMeter);
+        return Objects.hash(id, version, number, part, startMeter, endMeter, direction);
     }
 }

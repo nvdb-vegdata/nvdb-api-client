@@ -103,7 +103,8 @@ public final class RoadSysRefParser {
                 parseStringMember(obj, "adskilte_løp"),
                 parseStringMember(obj, "trafikantgruppe"),
                 getFromMeter(obj),
-                getToMeter(obj));
+                getToMeter(obj),
+                parseStringMember(obj, "retning"));
     }
 
     private static Intersection parseIntersection(JsonObject obj) {
@@ -117,7 +118,8 @@ public final class RoadSysRefParser {
                     intersectionNumber,
                     parseIntMember(obj, "kryssdel"),
                     getFromMeter(obj),
-                    getToMeter(obj));
+                    getToMeter(obj),
+                    parseStringMember(obj, "retning"));
         }
         return null;
     }
@@ -133,7 +135,8 @@ public final class RoadSysRefParser {
                     sideAreaNumber,
                     parseIntMember(obj, "sideanleggsdel"),
                     getFromMeter(obj),
-                    getToMeter(obj));
+                    getToMeter(obj),
+                    parseStringMember(obj, "retning"));
         }
         return null;
     }
