@@ -29,6 +29,7 @@ import no.vegvesen.nvdbapi.client.model.Page;
 import no.vegvesen.nvdbapi.client.model.Projection;
 import no.vegvesen.nvdbapi.client.model.roadnet.TopologyLevel;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
@@ -49,6 +50,7 @@ public class RoadNetRequest {
     private final Optional<String> nationalRoute;
     private final Optional<String> bpolygon;
     private final boolean history;
+    private final Optional<LocalDate> dateFilter;
 
     private RoadNetRequest(Builder b) {
         page = b.page;
@@ -64,6 +66,7 @@ public class RoadNetRequest {
         nationalRoute = b.nationalRoute;
         id = b.id;
         history = b.history;
+        dateFilter = b.dateFilter;
     }
 
     public static Builder newBuilder() {
@@ -122,6 +125,10 @@ public class RoadNetRequest {
         return history;
     }
 
+    public Optional<LocalDate> getDateFilter() {
+        return dateFilter;
+    }
+
     public static class Builder {
         private Optional<String> bpolygon = Optional.empty();
         private Optional<Page> page = Optional.empty();
@@ -136,6 +143,7 @@ public class RoadNetRequest {
         private Optional<String> contractArea = Optional.empty();
         private Optional<String> nationalRoute = Optional.empty();
         private boolean history = false;
+        private Optional<LocalDate> dateFilter = Optional.empty();
 
         private Builder() {
         }
@@ -215,6 +223,11 @@ public class RoadNetRequest {
 
         public Builder withNationalRoute(String nationalRoute) {
             this.nationalRoute = Optional.ofNullable(nationalRoute);
+            return this;
+        }
+
+        public Builder withDateFilter(LocalDate localDate){
+            this.dateFilter = Optional.ofNullable(localDate);
             return this;
         }
 

@@ -28,6 +28,8 @@ package no.vegvesen.nvdbapi.client.clients;
 
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -40,6 +42,8 @@ class RoadObjectRequestBuilder {
         // Single parameters
         request.getSegmented().ifPresent(v -> map.putSingle("segmentering", Boolean.toString(v)));
         request.getAllVersions().ifPresent(v -> map.putSingle("alle_versjoner", Boolean.toString(v)));
+        request.getPointInTime().ifPresent(v -> map.putSingle("tidspunkt",
+                v.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
         request.getProjection().ifPresent(v -> map.putSingle("srid", Integer.toString(v.getSrid())));
         request.getDistanceTolerance().ifPresent(v -> map.putSingle("geometritoleranse", Integer.toString(v)));
         request.getDepth().ifPresent(v -> map.putSingle("dybde", v));
