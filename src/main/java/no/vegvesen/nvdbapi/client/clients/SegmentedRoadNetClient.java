@@ -36,6 +36,7 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -91,7 +92,8 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         request.getProjection().ifPresent(v -> path.queryParam("srid", v.getSrid()));
         request.getRoadRefFilter().ifPresent(v -> path.queryParam("vegsystemreferanse", v));
         path.queryParam("historisk", request.isHistory());
-        request.getDateFilter().ifPresent(v -> path.queryParam("tidspunkt", v));
+        request.getDateFilter()
+            .ifPresent(v -> path.queryParam("tidspunkt", v.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
 
         return getClient().target(path);
     }

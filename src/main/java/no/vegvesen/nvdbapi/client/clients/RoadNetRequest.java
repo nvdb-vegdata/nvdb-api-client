@@ -143,7 +143,7 @@ public class RoadNetRequest {
         private Optional<String> contractArea = Optional.empty();
         private Optional<String> nationalRoute = Optional.empty();
         private boolean history = false;
-        private Optional<LocalDate> dateFilter;
+        private Optional<LocalDate> dateFilter = Optional.empty();
 
         private Builder() {
         }
@@ -227,7 +227,7 @@ public class RoadNetRequest {
         }
 
         public Builder withDateFilter(LocalDate localDate){
-            this.dateFilter = dateFilter;
+            this.dateFilter = Optional.ofNullable(localDate);
             return this;
         }
 
