@@ -28,6 +28,7 @@ package no.vegvesen.nvdbapi.client.clients;
 import no.vegvesen.nvdbapi.client.model.Page;
 import no.vegvesen.nvdbapi.client.model.Projection;
 
+import java.time.LocalDate;
 import java.util.*;
 
 public class RoadObjectRequest {
@@ -53,6 +54,7 @@ public class RoadObjectRequest {
     private final List<String> contractAreas;
     private final List<String> nationalRoutes;
     private final List<Long> roadobjectIds;
+    private final LocalDate pointInTime;
 
     private RoadObjectRequest(Builder b) {
         page = b.page;
@@ -74,6 +76,7 @@ public class RoadObjectRequest {
         nationalRoutes = b.nationalRoutes;
         allVersions = b.allVersions;
         roadobjectIds = b.roadobjectIds;
+        pointInTime = b.pointInTime;
     }
 
     public static Builder newBuilder() {
@@ -156,6 +159,10 @@ public class RoadObjectRequest {
         return roadobjectIds;
     }
 
+    public Optional<LocalDate> getPointInTime() {
+        return Optional.ofNullable(pointInTime);
+    }
+
     /**
      * This method strips any parameters that are not supported by the API
      * for statistics requests
@@ -187,6 +194,7 @@ public class RoadObjectRequest {
                 .withMunicipalities(municipalities)
                 .withCounties(counties)
                 .withAllVersions(allVersions)
+                .withPointInTime(pointInTime)
                 .withIds(roadobjectIds);
         overlapFilters.forEach(of -> b.addOverlapFilter(of.filter, of.typeId));
         return b;
@@ -213,6 +221,7 @@ public class RoadObjectRequest {
         private List<String> contractAreas = Collections.emptyList();
         private List<String> nationalRoutes = Collections.emptyList();
         private List<Long> roadobjectIds = Collections.emptyList();
+        private LocalDate pointInTime = null;
 
         private Builder() {
         }
@@ -375,6 +384,11 @@ public class RoadObjectRequest {
 
         public Builder withIds(List<Long> roadobjectIds) {
             this.roadobjectIds = roadobjectIds;
+            return this;
+        }
+
+        public Builder withPointInTime(LocalDate date) {
+            this.pointInTime = date;
             return this;
         }
     }
