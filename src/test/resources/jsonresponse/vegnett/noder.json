@@ -12,7 +12,7 @@
           "nøyaktighet": 0,
           "høydenøyaktighet": -1,
           "toleranse": -1,
-          "synlighet": 99
+          "synbarhet": 99
         }
       },
       "porter": [

@@ -84,8 +84,8 @@ public final class RoadNetParser {
                         parseIntMember(o, "geometri.kommune"),
                         parseIntMember(o, "geometri.kommune"),
                         parseDoubleMember(o, "geometri.lengde"),
-                        parseStringMember(o, "måleMetode"),
-                        parseDateMember(o, "måleDato"),
+                        parseStringMember(o, "målemetode"),
+                        parseDateMember(o, "måledato"),
                         SosiMedium.from(parseStringMember(o, "medium")),
                         Ltema.from(parseIntMember(o, "geometri.temakode")),
                         PlacementParser.parsePlacement(o.getAsJsonObject("superstedfesting")),
@@ -123,14 +123,7 @@ public final class RoadNetParser {
         return p.getAsJsonObject().getAsJsonObject("tilkobling") == null
                 ? null
                 : new PortConnection(parseIntMember(p.getAsJsonObject(), "tilkobling.portid"),
-                parseIntMember(p.getAsJsonObject(), "tilkobling.netelementid"),
-                NetelementType(p));
-    }
-
-    private static NetElementType NetelementType(JsonElement p) {
-        Integer val = parseIntMember(p.getAsJsonObject(), "tilkobling.netelementtype");
-        if(isNull(val)) return null;
-        return NetElementType.from(val);
+                parseLongMember(p.getAsJsonObject(), "tilkobling.nodeid"));
     }
 
     public static NetElementWrapper parseNetElement(JsonObject obj) {

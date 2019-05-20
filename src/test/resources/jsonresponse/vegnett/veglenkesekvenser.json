@@ -11,9 +11,7 @@
           "relativPosisjon": 0.0,
           "tilkobling": {
             "portid": 1,
-            "netelementid": 1264799,
-            "netelementtype": 50001,
-            "netelementtype_tekst": "Node",
+            "veglenkesekvensid": 1264799,
             "href": "https://pm1.utv.vegvesen.no/nvdb/api/v3/vegnett/noder/1264799"
           }
         },
@@ -22,9 +20,7 @@
           "relativPosisjon": 1.0,
           "tilkobling": {
             "portid": 1,
-            "netelementid": 1264800,
-            "netelementtype": 50001,
-            "netelementtype_tekst": "Node",
+            "veglenkesekvensid": 1264800,
             "href": "https://pm1.utv.vegvesen.no/nvdb/api/v3/vegnett/noder/1264800"
           }
         },
@@ -33,9 +29,7 @@
           "relativPosisjon": 0.45729325,
           "tilkobling": {
             "portid": 1,
-            "netelementid": 2955499,
-            "netelementtype": 50001,
-            "netelementtype_tekst": "Node",
+            "veglenkesekvensid": 2955499,
             "href": "https://pm1.utv.vegvesen.no/nvdb/api/v3/vegnett/noder/2955499"
           }
         },
@@ -44,9 +38,7 @@
           "relativPosisjon": 0.56216505,
           "tilkobling": {
             "portid": 1,
-            "netelementid": 2955500,
-            "netelementtype": 50001,
-            "netelementtype_tekst": "Node",
+            "veglenkesekvensid": 2955500,
             "href": "https://pm1.utv.vegvesen.no/nvdb/api/v3/vegnett/noder/2955500"
           }
         },
@@ -55,9 +47,7 @@
           "relativPosisjon": 0.82068135,
           "tilkobling": {
             "portid": 1,
-            "netelementid": 2955501,
-            "netelementtype": 50001,
-            "netelementtype_tekst": "Node",
+            "veglenkesekvensid": 2955501,
             "href": "https://pm1.utv.vegvesen.no/nvdb/api/v3/vegnett/noder/2955501"
           }
         }
@@ -79,7 +69,7 @@
               "nøyaktighet": 22,
               "høydenøyaktighet": -1,
               "toleranse": -1,
-              "synlighet": 99
+              "synbarhet": 99
             },
             "datafangstdato": "2004-06-03",
             "kommune": 901,
@@ -110,7 +100,7 @@
               "nøyaktighet": 22,
               "høydenøyaktighet": -1,
               "toleranse": -1,
-              "synlighet": 99
+              "synbarhet": 99
             },
             "datafangstdato": "2004-06-03",
             "kommune": 901,
@@ -145,7 +135,7 @@
               "høydemetode": 24,
               "høydenøyaktighet": 10,
               "toleranse": -1,
-              "synlighet": 0
+              "synbarhet": 0
             },
             "datafangstdato": "2015-04-08",
             "kommune": 901,
@@ -179,7 +169,7 @@
               "høydemetode": 24,
               "høydenøyaktighet": 10,
               "toleranse": -1,
-              "synlighet": 0
+              "synbarhet": 0
             },
             "datafangstdato": "2015-04-08",
             "kommune": 901,
