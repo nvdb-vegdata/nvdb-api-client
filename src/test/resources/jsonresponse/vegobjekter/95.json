@@ -22,7 +22,7 @@
           "fra_posisjon": 0.07178555,
           "til_posisjon": 0.07178555,
           "retning": "MED",
-          "feltoversikt": []
+          "kjørefelt": []
         },
         {
           "id": 220006,
@@ -125,7 +125,7 @@
             "veglenkesekvens": 384011,
             "relativPosisjon": 0.07178555,
             "kortform": "0.07178555@384011",
-            "feltoversikt": [],
+            "kjørefelt": [],
             "retning": "MED"
           }
         ],
