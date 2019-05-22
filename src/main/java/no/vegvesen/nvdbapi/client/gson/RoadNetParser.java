@@ -122,7 +122,7 @@ public final class RoadNetParser {
     private static PortConnection getTilkobling(JsonElement p) {
         return p.getAsJsonObject().getAsJsonObject("tilkobling") == null
                 ? null
-                : new PortConnection(parseIntMember(p.getAsJsonObject(), "tilkobling.portid"),
+                : new PortConnection(parseIntMember(p.getAsJsonObject(), "tilkobling.portnummer"),
                 parseLongMember(p.getAsJsonObject(), "tilkobling.nodeid"));
     }
 

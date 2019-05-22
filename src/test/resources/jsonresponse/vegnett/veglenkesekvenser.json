@@ -10,8 +10,8 @@
           "id": 1,
           "relativPosisjon": 0.0,
           "tilkobling": {
-            "portid": 1,
-            "veglenkesekvensid": 1264799,
+            "portnummer": 1,
+            "nodeid": 1264799,
             "href": "https://pm1.utv.vegvesen.no/nvdb/api/v3/vegnett/noder/1264799"
           }
         },
@@ -19,8 +19,8 @@
           "id": 2,
           "relativPosisjon": 1.0,
           "tilkobling": {
-            "portid": 1,
-            "veglenkesekvensid": 1264800,
+            "portnummer": 1,
+            "nodeid": 1264800,
             "href": "https://pm1.utv.vegvesen.no/nvdb/api/v3/vegnett/noder/1264800"
           }
         },
@@ -28,8 +28,8 @@
           "id": 3,
           "relativPosisjon": 0.45729325,
           "tilkobling": {
-            "portid": 1,
-            "veglenkesekvensid": 2955499,
+            "portnummer": 1,
+            "nodeid": 2955499,
             "href": "https://pm1.utv.vegvesen.no/nvdb/api/v3/vegnett/noder/2955499"
           }
         },
@@ -37,8 +37,8 @@
           "id": 4,
           "relativPosisjon": 0.56216505,
           "tilkobling": {
-            "portid": 1,
-            "veglenkesekvensid": 2955500,
+            "portnummer": 1,
+            "nodeid": 2955500,
             "href": "https://pm1.utv.vegvesen.no/nvdb/api/v3/vegnett/noder/2955500"
           }
         },
@@ -46,8 +46,8 @@
           "id": 5,
           "relativPosisjon": 0.82068135,
           "tilkobling": {
-            "portid": 1,
-            "veglenkesekvensid": 2955501,
+            "portnummer": 1,
+            "nodeid": 2955501,
             "href": "https://pm1.utv.vegvesen.no/nvdb/api/v3/vegnett/noder/2955501"
           }
         }
