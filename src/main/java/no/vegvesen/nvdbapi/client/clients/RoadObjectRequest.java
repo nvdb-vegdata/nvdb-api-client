@@ -55,6 +55,7 @@ public class RoadObjectRequest {
     private final List<String> nationalRoutes;
     private final List<Long> roadobjectIds;
     private final LocalDate pointInTime;
+    private final Boolean armFilter;
 
     private RoadObjectRequest(Builder b) {
         page = b.page;
@@ -77,6 +78,7 @@ public class RoadObjectRequest {
         allVersions = b.allVersions;
         roadobjectIds = b.roadobjectIds;
         pointInTime = b.pointInTime;
+        armFilter = b.armFilter;
     }
 
     public static Builder newBuilder() {
@@ -163,6 +165,10 @@ public class RoadObjectRequest {
         return Optional.ofNullable(pointInTime);
     }
 
+    public Optional<Boolean> getArmFilter() {
+        return Optional.ofNullable(armFilter);
+    }
+
     /**
      * This method strips any parameters that are not supported by the API
      * for statistics requests
@@ -195,7 +201,8 @@ public class RoadObjectRequest {
                 .withCounties(counties)
                 .withAllVersions(allVersions)
                 .withPointInTime(pointInTime)
-                .withIds(roadobjectIds);
+                .withIds(roadobjectIds)
+                .withArmFilter(armFilter);
         overlapFilters.forEach(of -> b.addOverlapFilter(of.filter, of.typeId));
         return b;
     }
@@ -222,6 +229,7 @@ public class RoadObjectRequest {
         private List<String> nationalRoutes = Collections.emptyList();
         private List<Long> roadobjectIds = Collections.emptyList();
         private LocalDate pointInTime = null;
+        private Boolean armFilter = null;
 
         private Builder() {
         }
@@ -314,6 +322,11 @@ public class RoadObjectRequest {
 
         public Builder withRefLinkFilter(String filter) {
             this.refLinkFilter = filter;
+            return this;
+        }
+
+        public Builder withArmFilter(Boolean arm) {
+            this.armFilter = arm;
             return this;
         }
 
