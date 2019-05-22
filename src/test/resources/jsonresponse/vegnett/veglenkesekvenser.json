@@ -76,7 +76,7 @@
             "temakode": 7001,
             "lengde": 60.7931156257749
           },
-          "måleMetode": "Geometrisk",
+          "målemetode": "Geometrisk",
           "detaljnivå": "Vegtrase og kjørebane",
           "typeVeg": "Enkel bilveg",
           "typeVeg_sosi": "enkelBilveg",
@@ -107,7 +107,7 @@
             "temakode": 7001,
             "lengde": 42.1688670580194
           },
-          "måleMetode": "Geometrisk",
+          "målemetode": "Geometrisk",
           "detaljnivå": "Vegtrase og kjørebane",
           "typeVeg": "Enkel bilveg",
           "typeVeg_sosi": "enkelBilveg",
@@ -142,7 +142,7 @@
             "temakode": 7001,
             "lengde": 106.217429880484
           },
-          "måleMetode": "Geometrisk",
+          "målemetode": "Geometrisk",
           "detaljnivå": "Vegtrase og kjørebane",
           "typeVeg": "Enkel bilveg",
           "typeVeg_sosi": "enkelBilveg",
@@ -177,7 +177,7 @@
             "temakode": 7001,
             "lengde": 19.0001152913329
           },
-          "måleMetode": "Geometrisk",
+          "målemetode": "Geometrisk",
           "detaljnivå": "Vegtrase og kjørebane",
           "typeVeg": "Enkel bilveg",
           "typeVeg_sosi": "enkelBilveg",
