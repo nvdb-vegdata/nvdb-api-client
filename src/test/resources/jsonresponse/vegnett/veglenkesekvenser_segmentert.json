@@ -18,7 +18,7 @@
       "detaljnivå": "Vegtrase og kjørebane",
       "typeVeg": "Enkel bilveg",
       "typeVeg_sosi": "enkelBilveg",
-      "måleMetode": "Geometrisk",
+      "målemetode": "Geometrisk",
       "feltoversikt": [
         "1",
         "2"

@@ -29,6 +29,7 @@ import no.vegvesen.nvdbapi.client.model.Page;
 import no.vegvesen.nvdbapi.client.model.Projection;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.*;
 
 public class RoadObjectRequest {
@@ -55,6 +56,7 @@ public class RoadObjectRequest {
     private final List<String> nationalRoutes;
     private final List<Long> roadobjectIds;
     private final LocalDate pointInTime;
+    private final LocalDateTime modifiedAfter;
     private final Boolean armFilter;
 
     private RoadObjectRequest(Builder b) {
@@ -78,6 +80,7 @@ public class RoadObjectRequest {
         allVersions = b.allVersions;
         roadobjectIds = b.roadobjectIds;
         pointInTime = b.pointInTime;
+        modifiedAfter = b.modifiedAfter;
         armFilter = b.armFilter;
     }
 
@@ -169,6 +172,10 @@ public class RoadObjectRequest {
         return Optional.ofNullable(armFilter);
     }
 
+    public Optional<LocalDateTime> getModifiedAfter() {
+        return Optional.ofNullable(modifiedAfter);
+    }
+
     /**
      * This method strips any parameters that are not supported by the API
      * for statistics requests
@@ -201,6 +208,7 @@ public class RoadObjectRequest {
                 .withCounties(counties)
                 .withAllVersions(allVersions)
                 .withPointInTime(pointInTime)
+                .withModifiedAfter(modifiedAfter)
                 .withIds(roadobjectIds)
                 .withArmFilter(armFilter);
         overlapFilters.forEach(of -> b.addOverlapFilter(of.filter, of.typeId));
@@ -230,9 +238,9 @@ public class RoadObjectRequest {
         private List<Long> roadobjectIds = Collections.emptyList();
         private LocalDate pointInTime = null;
         private Boolean armFilter = null;
+        private LocalDateTime modifiedAfter = null;
 
-        private Builder() {
-        }
+        private Builder() { }
 
         public RoadObjectRequest build() {
             return new RoadObjectRequest(this);
@@ -402,6 +410,11 @@ public class RoadObjectRequest {
 
         public Builder withPointInTime(LocalDate date) {
             this.pointInTime = date;
+            return this;
+        }
+
+        public Builder withModifiedAfter(LocalDateTime date) {
+            this.modifiedAfter = date;
             return this;
         }
     }

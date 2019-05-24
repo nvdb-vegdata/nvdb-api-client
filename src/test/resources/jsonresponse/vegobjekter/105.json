@@ -47,7 +47,7 @@
               "fra_posisjon": 0.0,
               "til_posisjon": 1.0,
               "retning": "MED",
-              "feltoversikt": []
+              "kjørefelt": []
             }
           ]
         }
@@ -95,7 +95,7 @@
             "startposisjon": 0.0,
             "sluttposisjon": 1.0,
             "kortform": "0.0-1.0@383266",
-            "feltoversikt": [],
+            "kjørefelt": [],
             "retning": "MED"
           }
         ],

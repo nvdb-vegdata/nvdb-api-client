@@ -56,7 +56,7 @@ public final class GeometryParser {
             Integer heightMethod = parseIntMember(obj, "kvalitet.høydemetode");
             int heightAccuracy = parseIntMember(obj, "kvalitet.høydenøyaktighet");
             int tolerance = parseIntMember(obj, "kvalitet.toleranse");
-            int visibility = parseIntMember(obj, "kvalitet.synlighet");
+            int visibility = parseIntMember(obj, "kvalitet.synbarhet");
             LocalDate verifiedDate = parseDateMember(obj, "kvalitet.datafangstdato");
             quality = new Quality(method, accuracy, heightMethod, heightAccuracy, tolerance, visibility, verifiedDate);
         }

@@ -43,8 +43,10 @@ class RoadObjectRequestBuilder {
         request.getSegmented().ifPresent(v -> map.putSingle("segmentering", Boolean.toString(v)));
         request.getAllVersions().ifPresent(v -> map.putSingle("alle_versjoner", Boolean.toString(v)));
         request.getPointInTime().ifPresent(v -> map.putSingle("tidspunkt",
-                v.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
+            v.format(DateTimeFormatter.ISO_DATE)));
         request.getArmFilter().ifPresent(v -> map.putSingle("arm", Boolean.toString(v)));
+        request.getModifiedAfter().ifPresent(v -> map.putSingle("endret_etter",
+                v.format(DateTimeFormatter.ISO_DATE_TIME)));
         request.getProjection().ifPresent(v -> map.putSingle("srid", Integer.toString(v.getSrid())));
         request.getDistanceTolerance().ifPresent(v -> map.putSingle("geometritoleranse", Integer.toString(v)));
         request.getDepth().ifPresent(v -> map.putSingle("dybde", v));
