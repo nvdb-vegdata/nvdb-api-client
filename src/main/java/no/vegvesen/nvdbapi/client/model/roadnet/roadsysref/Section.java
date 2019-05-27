@@ -14,12 +14,16 @@ public class Section {
     public final String trafficType;
     public final double startMeter;
     public final Double endMeter;
+    public final String direction;
 
     public Section(Long id, Integer version, int sectionNumber,
                    int sectionPartNumber,
                    Boolean arm,
                    String sepratePassages,
-                   String trafficType, double startMeter, Double endMeter) {
+                   String trafficType,
+                   double startMeter,
+                   Double endMeter,
+                   String direction) {
         this.id = id;
         this.version = version;
         this.sectionNumber = sectionNumber;
@@ -29,6 +33,7 @@ public class Section {
         this.trafficType = trafficType;
         this.startMeter = startMeter;
         this.endMeter = endMeter;
+        this.direction = direction;
     }
 
     @Override
@@ -43,6 +48,7 @@ public class Section {
                 ", trafficType='" + trafficType + '\'' +
                 ", startMeter='" + startMeter + '\'' +
                 ", endMeter='" + endMeter + '\'' +
+                ", direction'" + direction + '\'' +
                 '}';
     }
 
@@ -66,11 +72,13 @@ public class Section {
                 Objects.equals(arm, section.arm) &&
                 Objects.equals(sepratePassages, section.sepratePassages) &&
                 Objects.equals(trafficType, section.trafficType) &&
-                Objects.equals(endMeter, section.endMeter);
+                Objects.equals(endMeter, section.endMeter) &&
+                Objects.equals(direction, section.direction);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, sectionNumber, sectionPartNumber, arm, sepratePassages, trafficType, startMeter, endMeter);
+        return Objects.hash(id, version, sectionNumber, sectionPartNumber, arm, sepratePassages, trafficType,
+                startMeter, endMeter, direction);
     }
 }

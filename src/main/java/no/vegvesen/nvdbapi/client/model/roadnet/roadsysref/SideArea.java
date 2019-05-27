@@ -9,15 +9,17 @@ public class SideArea {
     public final int part;
     public final double startMeter;
     public final Double endMeter;
+    public final String direction;
 
 
-    public SideArea(Long id, Integer version, int number, int part, double startMeter, Double endMeter) {
+    public SideArea(Long id, Integer version, int number, int part, double startMeter, Double endMeter, String direction) {
         this.id = id;
         this.version = version;
         this.number = number;
         this.part = part;
         this.startMeter = startMeter;
         this.endMeter = endMeter;
+        this.direction = direction;
     }
 
     @Override
@@ -29,6 +31,7 @@ public class SideArea {
                 ", part=" + part +
                 ", startMeter='" + startMeter + '\'' +
                 ", endMeter='" + endMeter + '\'' +
+                ", direction='" + direction + '\'' +
                 '}';
     }
 
@@ -42,11 +45,12 @@ public class SideArea {
                 Double.compare(sideArea.startMeter, startMeter) == 0 &&
                 Objects.equals(id, sideArea.id) &&
                 Objects.equals(version, sideArea.version) &&
+                Objects.equals(direction, sideArea.direction) &&
                 Objects.equals(endMeter, sideArea.endMeter);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, number, part, startMeter, endMeter);
+        return Objects.hash(id, version, number, part, startMeter, endMeter, direction);
     }
 }
