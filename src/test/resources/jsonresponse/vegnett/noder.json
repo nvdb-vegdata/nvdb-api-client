@@ -19,20 +19,16 @@
         {
           "id": 1,
           "tilkobling": {
-            "portid": 1,
-            "netelementid": 14907,
-            "netelementtype": 50002,
-            "netelementtype_tekst": "Lenke",
+            "portnummer": 1,
+            "veglenkesekvensid": 14907,
             "href": "https://pm1.utv.vegvesen.no/nvdb/api/v3/vegnett/veglenkesekvenser/14907"
           }
         },
         {
           "id": 2,
           "tilkobling": {
-            "portid": 3,
-            "netelementid": 1982,
-            "netelementtype": 50002,
-            "netelementtype_tekst": "Lenke",
+            "portnummer": 3,
+            "veglenkesekvensid": 1982,
             "href": "https://pm1.utv.vegvesen.no/nvdb/api/v3/vegnett/veglenkesekvenser/1982"
           }
         }

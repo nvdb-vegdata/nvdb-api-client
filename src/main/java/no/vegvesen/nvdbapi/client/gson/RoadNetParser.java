@@ -113,17 +113,29 @@ public final class RoadNetParser {
             obj.forEach(p ->
                     ports.add(new Port(
                             parseIntMember(p.getAsJsonObject(), "id"),
-                            parseDoubleMember(p.getAsJsonObject(), "relativposisjon"),
+                            parseDoubleMember(p.getAsJsonObject(), "relativPosisjon"),
                             getTilkobling(p))));
         }
         return ports;
     }
 
     private static PortConnection getTilkobling(JsonElement p) {
-        return p.getAsJsonObject().getAsJsonObject("tilkobling") == null
+        JsonObject tilkobling = p.getAsJsonObject().getAsJsonObject("tilkobling");
+        return tilkobling == null
                 ? null
-                : new PortConnection(parseIntMember(p.getAsJsonObject(), "tilkobling.portnummer"),
-                parseLongMember(p.getAsJsonObject(), "tilkobling.nodeid"));
+                : getPortConnection(tilkobling);
+    }
+
+    private static PortConnection getPortConnection(JsonObject tilkobling) {
+        boolean pointsToNode = tilkobling.has("nodeid");
+        Long netelementid = pointsToNode ?
+                parseLongMember(tilkobling, "nodeid") :
+                parseLongMember(tilkobling, "veglenkesekvensid");
+        NetElementType netElementType = pointsToNode ? NetElementType.NODE : NetElementType.LENKE;
+        return new PortConnection(
+                parseIntMember(tilkobling, "portnummer"),
+                netelementid,
+                netElementType);
     }
 
     public static NetElementWrapper parseNetElement(JsonObject obj) {
