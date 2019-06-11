@@ -100,8 +100,10 @@ public class GenericResultSet<T> implements ResultSet<T> {
 
         int numTotal = GsonUtil.parseIntMember(currentResponse, "metadata.antall");
         int numReturned = GsonUtil.parseIntMember(currentResponse, "metadata.returnert");
+        int numPerPage = GsonUtil.parseIntMember(currentResponse, "metadata.sidestørrelse");
         logger.debug("Result size returned was {}.", numTotal);
-        logger.debug("Page size returned was {}.", numReturned);
+        logger.debug("Results in page returned was {}.", numReturned);
+        logger.debug("Page size returned was {}.", numPerPage);
 
         if (logger.isTraceEnabled()){
             logger.trace("Response: {}", currentResponse.toString());

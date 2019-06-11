@@ -70,7 +70,7 @@ public class RoadObjectMetadata {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RoadObjectMetadata that = (RoadObjectMetadata) o;
-        return getVersion() == that.getVersion() &&
+        return getVersion().equals(that.getVersion()) &&
             Objects.equals(getRoadObjectType(), that.getRoadObjectType()) &&
             Objects.equals(getStartDate(), that.getStartDate()) &&
             Objects.equals(getEndDate(), that.getEndDate()) &&
