@@ -27,6 +27,9 @@ package no.vegvesen.nvdbapi.client.clients;
 
 import no.vegvesen.nvdbapi.client.model.Page;
 import no.vegvesen.nvdbapi.client.model.Projection;
+import no.vegvesen.nvdbapi.client.model.roadnet.DetailLevel;
+import no.vegvesen.nvdbapi.client.model.roadnet.RefLinkPartType;
+import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -58,6 +61,10 @@ public class RoadObjectRequest {
     private final LocalDate pointInTime;
     private final LocalDateTime modifiedAfter;
     private final Boolean armFilter;
+    private final DetailLevel detailLevel;
+    private final TypeOfRoad typeOfRoad;
+    private final RefLinkPartType refLinkPartType;
+
 
     private RoadObjectRequest(Builder b) {
         page = b.page;
@@ -82,6 +89,9 @@ public class RoadObjectRequest {
         pointInTime = b.pointInTime;
         modifiedAfter = b.modifiedAfter;
         armFilter = b.armFilter;
+        detailLevel = b.detailLevel;
+        typeOfRoad = b.typeOfRoad;
+        refLinkPartType = b.refLinkPartType;
     }
 
     public static Builder newBuilder() {
@@ -176,6 +186,18 @@ public class RoadObjectRequest {
         return Optional.ofNullable(modifiedAfter);
     }
 
+    public Optional<DetailLevel> getDetailLevel() {
+        return Optional.ofNullable(detailLevel);
+    }
+
+    public Optional<TypeOfRoad> getTypeOfRoad() {
+        return Optional.ofNullable(typeOfRoad);
+    }
+
+    public Optional<RefLinkPartType> getRefLinkPartType() {
+        return Optional.ofNullable(refLinkPartType);
+    }
+
     /**
      * This method strips any parameters that are not supported by the API
      * for statistics requests
@@ -210,12 +232,20 @@ public class RoadObjectRequest {
                 .withPointInTime(pointInTime)
                 .withModifiedAfter(modifiedAfter)
                 .withIds(roadobjectIds)
-                .withArmFilter(armFilter);
+                .withArmFilter(armFilter)
+                .withRefLinkPartType(refLinkPartType)
+                .withTypeOfRoad(typeOfRoad)
+                .withDetailLevel(detailLevel);
+
         overlapFilters.forEach(of -> b.addOverlapFilter(of.filter, of.typeId));
         return b;
     }
 
     public static class Builder {
+
+        private RefLinkPartType refLinkPartType = null;
+        private DetailLevel detailLevel = null;
+        private TypeOfRoad typeOfRoad = null;
 
         private Page page = Page.count(1000);
         private Boolean segmented;
@@ -257,6 +287,21 @@ public class RoadObjectRequest {
 
         public Builder withSegmented(Boolean segmented) {
             this.segmented = segmented;
+            return this;
+        }
+
+        public Builder withDetailLevel(DetailLevel detailLevel) {
+            this.detailLevel = detailLevel;
+            return this;
+        }
+
+        public Builder withTypeOfRoad(TypeOfRoad typeOfRoad) {
+            this.typeOfRoad = typeOfRoad;
+            return this;
+        }
+
+        public Builder withRefLinkPartType(RefLinkPartType refLinkPartType) {
+            this.refLinkPartType = refLinkPartType;
             return this;
         }
 

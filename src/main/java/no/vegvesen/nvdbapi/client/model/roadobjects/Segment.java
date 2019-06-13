@@ -26,6 +26,9 @@
 package no.vegvesen.nvdbapi.client.model.roadobjects;
 
 import no.vegvesen.nvdbapi.client.model.Geometry;
+import no.vegvesen.nvdbapi.client.model.roadnet.DetailLevel;
+import no.vegvesen.nvdbapi.client.model.roadnet.RefLinkPartType;
+import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
 
 import java.time.LocalDate;
@@ -43,6 +46,9 @@ public class Segment {
     private final Integer length;
     private final LocalDate startDate;
     private final LocalDate endDate;
+    private final RefLinkPartType refLinkPartType;
+    private final DetailLevel detailLevel;
+    private final TypeOfRoad typeOfRoad;
 
     public Segment(long netElementId,
                    double startPosition,
@@ -53,7 +59,10 @@ public class Segment {
                    RoadSysRef roadSysRef,
                    Integer length,
                    LocalDate startDate,
-                   LocalDate endDate) {
+                   LocalDate endDate,
+                   RefLinkPartType refLinkPartType,
+                   DetailLevel detailLevel,
+                   TypeOfRoad typeOfRoad) {
         this.netElementId = netElementId;
         this.startPosition = startPosition;
         this.endPosition = endPosition;
@@ -64,6 +73,9 @@ public class Segment {
         this.length = length;
         this.startDate = startDate;
         this.endDate = endDate;
+        this.refLinkPartType = refLinkPartType;
+        this.detailLevel = detailLevel;
+        this.typeOfRoad = typeOfRoad;
     }
 
     public Geometry getGeometry() {
@@ -106,6 +118,18 @@ public class Segment {
         return endDate;
     }
 
+    public DetailLevel getDetailLevel() {
+        return detailLevel;
+    }
+
+    public TypeOfRoad getTypeOfRoad() {
+        return typeOfRoad;
+    }
+
+    public RefLinkPartType getRefLinkPartType() {
+        return refLinkPartType;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -119,6 +143,9 @@ public class Segment {
                 Objects.equals(geometry, segment.geometry) &&
                 Objects.equals(roadSysRef, segment.roadSysRef) &&
                 Objects.equals(length, segment.length) &&
+                Objects.equals(refLinkPartType, segment.refLinkPartType) &&
+                Objects.equals(detailLevel, segment.detailLevel) &&
+                Objects.equals(typeOfRoad, segment.typeOfRoad) &&
                 Objects.equals(startDate, segment.startDate) &&
                 Objects.equals(endDate, segment.endDate);
     }
@@ -126,6 +153,6 @@ public class Segment {
     @Override
     public int hashCode() {
         return Objects.hash(netElementId, startPosition, endPosition, geometry, municipality, county,
-                roadSysRef, length, startDate, endDate);
+                roadSysRef, length, startDate, endDate, typeOfRoad, detailLevel, refLinkPartType);
     }
 }

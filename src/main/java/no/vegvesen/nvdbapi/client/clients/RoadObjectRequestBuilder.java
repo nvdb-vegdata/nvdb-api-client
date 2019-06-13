@@ -28,7 +28,6 @@ package no.vegvesen.nvdbapi.client.clients;
 
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -55,6 +54,9 @@ class RoadObjectRequestBuilder {
         request.getAttributeFilter().ifPresent(v -> map.putSingle("egenskap", v));
         request.getBpolygon().ifPresent(v -> map.putSingle("polygon", v));
         request.getBbox().ifPresent(v -> map.putSingle("kartutsnitt", v));
+        request.getDetailLevel().ifPresent(v -> map.putSingle("detaljniva", v.getSosi()));
+        request.getTypeOfRoad().ifPresent(v -> map.putSingle("typeveg", v.getTypeOfRoadSosi()));
+        request.getRefLinkPartType().ifPresent(v -> map.putSingle("veglenketype", v.getRefLinkPartType()));
         request.getRoadRefFilter().ifPresent(v -> map.putSingle("vegsystemreferanse", v));
         request.getRefLinkFilter().ifPresent(v -> map.putSingle("veglenkesekvens", v));
         flatten(request.getMunicipalities()).ifPresent(v -> map.putSingle("kommune", v));

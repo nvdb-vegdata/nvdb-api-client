@@ -28,12 +28,18 @@ package no.vegvesen.nvdbapi.client.gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.model.*;
+import no.vegvesen.nvdbapi.client.model.Geometry;
+import no.vegvesen.nvdbapi.client.model.GeometryAttributes;
+import no.vegvesen.nvdbapi.client.model.Projection;
+import no.vegvesen.nvdbapi.client.model.Quality;
 import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
 import no.vegvesen.nvdbapi.client.model.areas.Route;
+import no.vegvesen.nvdbapi.client.model.datakatalog.DataType;
+import no.vegvesen.nvdbapi.client.model.roadnet.DetailLevel;
+import no.vegvesen.nvdbapi.client.model.roadnet.RefLinkPartType;
+import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
 import no.vegvesen.nvdbapi.client.model.roadobjects.*;
-import no.vegvesen.nvdbapi.client.model.datakatalog.DataType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -201,7 +207,10 @@ public final class RoadObjectParser {
                 ref,
                 length,
                 parseDateMember(obj, "startdato"),
-                parseDateMember(obj, "sluttdato"));
+                parseDateMember(obj, "sluttdato"),
+                RefLinkPartType.fromValue(parseStringMember(obj, "veglenkeType")),
+                DetailLevel.fromTextValue(parseStringMember(obj, "detaljnivå")),
+                TypeOfRoad.fromTextValue(parseStringMember(obj, "typeVeg")));
     }
 
     public static Attribute parseAttribute(Map<String, DataType> dataTypes, JsonObject obj) {
