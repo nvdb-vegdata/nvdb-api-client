@@ -99,6 +99,7 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         request.getTypeOfRoadFilter().ifPresent(v -> path.queryParam("typeveg", v.getTypeOfRoadSosi()));
         request.getRefLinkPartTypeFilter().ifPresent(v -> path.queryParam("veglenketype", v.getRefLinkPartType()));
         request.getDetailLevelFilter().ifPresent(v -> path.queryParam("detaljniva", v.getSosi()));
+
         path.queryParam("historisk", request.isHistory());
         request.getDateFilter()
             .ifPresent(v -> path.queryParam("tidspunkt", v.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
