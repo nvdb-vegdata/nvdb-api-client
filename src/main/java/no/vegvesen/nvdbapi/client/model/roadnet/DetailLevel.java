@@ -24,7 +24,7 @@ public enum DetailLevel {
     }
 
     private static Map<String, DetailLevel> mapping =
-            Stream.of(values()).collect(Collectors.toMap(k -> k.name().toLowerCase(), Function.identity()));
+            Stream.of(values()).collect(Collectors.toMap(k -> k.detailLevelText.toLowerCase(), Function.identity()));
 
     public static DetailLevel fromTextValue(String detailLevel) {
         if (isNull(detailLevel)) return UKJENT;

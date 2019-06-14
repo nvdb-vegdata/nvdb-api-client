@@ -34,7 +34,7 @@ public enum TypeOfRoad {
     }
 
     private static final Map<String,TypeOfRoad> mapping =
-            Stream.of(values()).collect(toMap(k -> k.typeOfRoadSosi.toLowerCase(), Function.identity()));
+            Stream.of(values()).collect(toMap(k -> k.typeOfRoadText.toLowerCase(), Function.identity()));
 
     public static TypeOfRoad fromTextValue(String typeOfRoad) {
         if (isNull(typeOfRoad)) return UKJENT;

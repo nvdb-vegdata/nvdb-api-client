@@ -1,10 +1,18 @@
 package no.vegvesen.nvdbapi.client.model.roadnet;
 
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Stream;
+
+import static java.util.Objects.isNull;
+import static java.util.stream.Collectors.toMap;
+
 public enum RefLinkPartType {
     MAIN("Hoved"),
     CONNECTION("Konnektering"),
     DETAILED("Detaljert"),
-    DETAILED_CONNECTION("Detaljert_konnekterting");
+    DETAILED_CONNECTION("Detaljert_konnekterting"),
+    UNKNOWN("Ukjent");
 
 
     private final String refLinkPartType;
@@ -13,12 +21,14 @@ public enum RefLinkPartType {
         this.refLinkPartType = refLinkPartTYpe;
     }
 
+    private static final Map<String, RefLinkPartType> mapping =
+            Stream.of(values()).collect(toMap(k -> k.refLinkPartType.toLowerCase(), Function.identity()));
+
     public static RefLinkPartType fromValue(String refLinkPartType) {
-        for (RefLinkPartType rp : values()) {
-            if (rp.refLinkPartType.equalsIgnoreCase(refLinkPartType)) return rp;
-        }
-        return null;
+        if (isNull(refLinkPartType)) return null;
+        return mapping.getOrDefault(refLinkPartType.toLowerCase(), UNKNOWN);
     }
+
     public String getRefLinkPartType() {
         return refLinkPartType;
     }
