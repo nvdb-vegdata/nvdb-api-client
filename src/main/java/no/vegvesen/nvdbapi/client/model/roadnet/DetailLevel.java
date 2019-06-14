@@ -35,4 +35,7 @@ public enum DetailLevel {
         return detailLevelShort;
     }
 
+    public String getDetailLevelText() {
+        return detailLevelText;
+    }
 }
