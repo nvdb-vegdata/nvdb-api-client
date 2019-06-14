@@ -11,7 +11,7 @@ public enum RefLinkPartType {
     MAIN("Hoved"),
     CONNECTION("Konnektering"),
     DETAILED("Detaljert"),
-    DETAILED_CONNECTION("Detaljert_konnekterting"),
+    DETAILED_CONNECTION("Detaljert_konnektering"),
     UNKNOWN("Ukjent");
 
 
