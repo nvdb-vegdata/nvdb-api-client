@@ -91,6 +91,14 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         request.getBpolygon().ifPresent(v -> path.queryParam("polygon", v));
         request.getProjection().ifPresent(v -> path.queryParam("srid", v.getSrid()));
         request.getRoadRefFilter().ifPresent(v -> path.queryParam("vegsystemreferanse", v));
+        request.getArmFilter().ifPresent(v -> path.queryParam("arm", v.booleanValue()));
+        request.getIntersectionFilter().ifPresent(v -> path.queryParam("kryssystem", v.booleanValue()));
+        request.getSideAreaFilter().ifPresent(v -> path.queryParam("sideanlegg", v.booleanValue()));
+        request.getRoadUserGroupFilter().ifPresent(v -> path.queryParam("trafikantgruppe", v.getTextValue()));
+        request.getSeparatePassagesFilter().ifPresent(v -> path.queryParam("adskiltelop", v.getTextValue()));
+        request.getTypeOfRoadFilter().ifPresent(v -> path.queryParam("typeveg", v.getTypeOfRoadSosi()));
+        request.getRefLinkPartTypeFilter().ifPresent(v -> path.queryParam("veglenketype"));
+        request.getDetailLevelFilter().ifPresent(v -> path.queryParam("detaljniva"));
         path.queryParam("historisk", request.isHistory());
         request.getDateFilter()
             .ifPresent(v -> path.queryParam("tidspunkt", v.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));

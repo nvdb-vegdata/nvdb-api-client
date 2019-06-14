@@ -27,7 +27,7 @@ package no.vegvesen.nvdbapi.client.clients;
 
 import no.vegvesen.nvdbapi.client.model.Page;
 import no.vegvesen.nvdbapi.client.model.Projection;
-import no.vegvesen.nvdbapi.client.model.roadnet.TopologyLevel;
+import no.vegvesen.nvdbapi.client.model.roadnet.*;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -51,6 +51,14 @@ public class RoadNetRequest {
     private final Optional<String> bpolygon;
     private final boolean history;
     private final Optional<LocalDate> dateFilter;
+    private final Optional<Boolean> armFilter;
+    private final Optional<Boolean> sideAreaFilter;
+    private final Optional<Boolean> intersectionFilter;
+    private final Optional<RoadUserGroup> roadUserGroupFilter;
+    private final Optional<SeparatePassages> separatePassagesFilter;
+    private final Optional<TypeOfRoad> typeOfRoadFilter;
+    private final Optional<RefLinkPartType> refLinkPartTypeFilter;
+    private final Optional<DetailLevel> detailLevelFilter;
 
     private RoadNetRequest(Builder b) {
         page = b.page;
@@ -67,6 +75,15 @@ public class RoadNetRequest {
         id = b.id;
         history = b.history;
         dateFilter = b.dateFilter;
+        armFilter = b.armFilter;
+        sideAreaFilter = b.sideAreaFilter;
+        intersectionFilter = b.intersectionFilter;
+        roadUserGroupFilter = b.roadUserGroupFilter;
+        separatePassagesFilter = b.separatePassagesFilter;
+        refLinkPartTypeFilter = b.refLinkPartTypeFilter;
+        detailLevelFilter = b.detailLevelFilter;
+        typeOfRoadFilter = b.typeOfRoadFilter;
+
     }
 
     public static Builder newBuilder() {
@@ -75,6 +92,38 @@ public class RoadNetRequest {
 
     public Page getPage() {
         return page.orElse(Page.defaults());
+    }
+
+    public Optional<Boolean> getArmFilter() {
+        return armFilter;
+    }
+
+    public Optional<Boolean> getSideAreaFilter() {
+        return sideAreaFilter;
+    }
+
+    public Optional<Boolean> getIntersectionFilter() {
+        return intersectionFilter;
+    }
+
+    public Optional<RoadUserGroup> getRoadUserGroupFilter() {
+        return roadUserGroupFilter;
+    }
+
+    public Optional<SeparatePassages> getSeparatePassagesFilter() {
+        return separatePassagesFilter;
+    }
+
+    public Optional<TypeOfRoad> getTypeOfRoadFilter() {
+        return typeOfRoadFilter;
+    }
+
+    public Optional<RefLinkPartType> getRefLinkPartTypeFilter() {
+        return refLinkPartTypeFilter;
+    }
+
+    public Optional<DetailLevel> getDetailLevelFilter() {
+        return detailLevelFilter;
     }
 
     public Optional<String> getRoadRefFilter() {
@@ -144,12 +193,60 @@ public class RoadNetRequest {
         private Optional<String> nationalRoute = Optional.empty();
         private boolean history = false;
         private Optional<LocalDate> dateFilter = Optional.empty();
+        private Optional<Boolean> armFilter = Optional.empty();
+        private Optional<Boolean> sideAreaFilter = Optional.empty();
+        private Optional<Boolean> intersectionFilter = Optional.empty();
+        private Optional<RoadUserGroup> roadUserGroupFilter = Optional.empty();
+        private Optional<SeparatePassages> separatePassagesFilter = Optional.empty();
+        private Optional<RefLinkPartType> refLinkPartTypeFilter = Optional.empty();
+        private Optional<DetailLevel> detailLevelFilter = Optional.empty();
+        private Optional<TypeOfRoad> typeOfRoadFilter = Optional.empty();
 
         private Builder() {
         }
 
         public RoadNetRequest build() {
             return new RoadNetRequest(this);
+        }
+
+        public Builder withArmFilter(Boolean armFilter) {
+            this.armFilter = Optional.ofNullable(armFilter);
+            return this;
+        }
+
+        public Builder withSideAreaFilter(Boolean sideAreaFilter) {
+            this.sideAreaFilter = Optional.ofNullable(sideAreaFilter);
+            return this;
+        }
+
+        public Builder withIntersectionFilter(Boolean intersectionFilter) {
+            this.intersectionFilter = Optional.ofNullable(intersectionFilter);
+            return this;
+        }
+
+        public Builder withRoadUserGroupFilter(RoadUserGroup roadUserGroupFilter) {
+            this.roadUserGroupFilter = Optional.ofNullable(roadUserGroupFilter);
+            return this;
+        }
+
+        public Builder withSeparatePassagesFilter(SeparatePassages separatePassagesFilter) {
+            this.separatePassagesFilter = Optional.ofNullable(separatePassagesFilter);
+            return this;
+        }
+
+        public Builder withRefLinkPartTypeFilter(RefLinkPartType refLinkPartTypeFilter) {
+            this.refLinkPartTypeFilter = Optional.ofNullable(refLinkPartTypeFilter);
+            return this;
+        }
+
+        public Builder withDetailLevelFilter(DetailLevel detailLevelFilter) {
+            this.detailLevelFilter = Optional.ofNullable(detailLevelFilter);
+            return this;
+        }
+
+        public Builder withTypeOfRoadFilter(TypeOfRoad typeOfRoadFilter) {
+            this.typeOfRoadFilter = Optional.ofNullable(typeOfRoadFilter);
+            return this;
         }
 
         public Builder withBoundingPolygon(String boundingPolygon) {
