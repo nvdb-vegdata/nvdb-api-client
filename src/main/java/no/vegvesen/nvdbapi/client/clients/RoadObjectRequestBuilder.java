@@ -46,6 +46,8 @@ class RoadObjectRequestBuilder {
         request.getArmFilter().ifPresent(v -> map.putSingle("arm", Boolean.toString(v)));
         request.getIntersectionFilter().ifPresent(v -> map.putSingle("kryssystem", Boolean.toString(v)));
         request.getSideAreaFilter().ifPresent(v -> map.putSingle("sideanlegg", Boolean.toString(v)));
+        request.getRoadUserGroupFilter().ifPresent(v -> map.putSingle("trafikantgruppe", v.getTextValue()));
+        request.getSeparatePassagesFilter().ifPresent(v -> map.putSingle("adskiltelop", v.getTextValue()));
         request.getModifiedAfter().ifPresent(v -> map.putSingle("endret_etter",
                 v.format(DateTimeFormatter.ISO_DATE_TIME)));
         request.getProjection().ifPresent(v -> map.putSingle("srid", Integer.toString(v.getSrid())));

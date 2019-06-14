@@ -1,5 +1,12 @@
 package no.vegvesen.nvdbapi.client.model.roadnet;
 
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Stream;
+
+import static java.util.Objects.isNull;
+import static java.util.stream.Collectors.toMap;
+
 public enum TypeOfRoad {
 
     KANALISERT_VEG("kanalisertVeg", "Kanalisert veg"),
@@ -26,11 +33,12 @@ public enum TypeOfRoad {
         this.typeOfRoadSosi = typeOfRoadSosi;
     }
 
+    private static final Map<String,TypeOfRoad> mapping =
+            Stream.of(values()).collect(toMap(k -> k.typeOfRoadSosi.toLowerCase(), Function.identity()));
+
     public static TypeOfRoad fromTextValue(String typeOfRoad) {
-        for (TypeOfRoad r : values()) {
-            if (r.typeOfRoadText.equalsIgnoreCase(typeOfRoad)) return r;
-        }
-        return UKJENT;
+        if (isNull(typeOfRoad)) return UKJENT;
+        return mapping.getOrDefault(typeOfRoad.toLowerCase(), UKJENT);
     }
 
     public String getTypeOfRoadSosi() {

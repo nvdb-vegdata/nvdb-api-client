@@ -1,5 +1,12 @@
 package no.vegvesen.nvdbapi.client.model.roadnet;
 
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.Objects.isNull;
+
 public enum DetailLevel {
 
     VEGTRASE("VT", "Vegtrase"),
@@ -16,12 +23,12 @@ public enum DetailLevel {
         this.detailLevelText = detailLevelText;
     }
 
-    public static DetailLevel fromTextValue(String detailLevel) {
-        for (DetailLevel l : values()) {
-            if (l.detailLevelText.equalsIgnoreCase(detailLevel)) return l;
-        }
-        return UKJENT;
+    private static Map<String, DetailLevel> mapping =
+            Stream.of(values()).collect(Collectors.toMap(k -> k.name().toLowerCase(), Function.identity()));
 
+    public static DetailLevel fromTextValue(String detailLevel) {
+        if (isNull(detailLevel)) return UKJENT;
+        return mapping.getOrDefault(detailLevel.toLowerCase(), UKJENT);
     }
 
     public String getSosi() {
