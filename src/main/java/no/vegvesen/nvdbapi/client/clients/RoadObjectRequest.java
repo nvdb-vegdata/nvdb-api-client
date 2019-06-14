@@ -27,6 +27,7 @@ package no.vegvesen.nvdbapi.client.clients;
 
 import no.vegvesen.nvdbapi.client.model.Page;
 import no.vegvesen.nvdbapi.client.model.Projection;
+import no.vegvesen.nvdbapi.client.model.roadnet.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -58,6 +59,14 @@ public class RoadObjectRequest {
     private final LocalDate pointInTime;
     private final LocalDateTime modifiedAfter;
     private final Boolean armFilter;
+    private final Boolean sideAreaFilter;
+    private final Boolean intersectionFilter;
+    private final RoadUserGroup roadUserGroupFilter;
+    private final SeparatePassages separatePassagesFilter;
+    private final DetailLevel detailLevel;
+    private final TypeOfRoad typeOfRoad;
+    private final RefLinkPartType refLinkPartType;
+
 
     private RoadObjectRequest(Builder b) {
         page = b.page;
@@ -82,6 +91,13 @@ public class RoadObjectRequest {
         pointInTime = b.pointInTime;
         modifiedAfter = b.modifiedAfter;
         armFilter = b.armFilter;
+        sideAreaFilter = b.sideAreaFilter;
+        intersectionFilter = b.intersectionFilter;
+        detailLevel = b.detailLevel;
+        typeOfRoad = b.typeOfRoad;
+        refLinkPartType = b.refLinkPartType;
+        roadUserGroupFilter = b.roadUserGroupFilter;
+        separatePassagesFilter = b.separatePassagesFilter;
     }
 
     public static Builder newBuilder() {
@@ -172,8 +188,36 @@ public class RoadObjectRequest {
         return Optional.ofNullable(armFilter);
     }
 
+    public Optional<Boolean> getSideAreaFilter() {
+        return Optional.ofNullable(sideAreaFilter);
+    }
+
+    public Optional<Boolean> getIntersectionFilter() {
+        return Optional.ofNullable(intersectionFilter);
+    }
+
+    public Optional<RoadUserGroup> getRoadUserGroupFilter() {
+        return Optional.ofNullable(roadUserGroupFilter);
+    }
+
+    public Optional<SeparatePassages> getSeparatePassagesFilter() {
+        return Optional.ofNullable(separatePassagesFilter);
+    }
+
     public Optional<LocalDateTime> getModifiedAfter() {
         return Optional.ofNullable(modifiedAfter);
+    }
+
+    public Optional<DetailLevel> getDetailLevel() {
+        return Optional.ofNullable(detailLevel);
+    }
+
+    public Optional<TypeOfRoad> getTypeOfRoad() {
+        return Optional.ofNullable(typeOfRoad);
+    }
+
+    public Optional<RefLinkPartType> getRefLinkPartType() {
+        return Optional.ofNullable(refLinkPartType);
     }
 
     /**
@@ -210,12 +254,24 @@ public class RoadObjectRequest {
                 .withPointInTime(pointInTime)
                 .withModifiedAfter(modifiedAfter)
                 .withIds(roadobjectIds)
-                .withArmFilter(armFilter);
+                .withArmFilter(armFilter)
+                .withSideAreaFilter(sideAreaFilter)
+                .withIntersectionFilter(intersectionFilter)
+                .withSeparatePassagesFilter(separatePassagesFilter)
+                .withRoadUserGroupFilter(roadUserGroupFilter)
+                .withRefLinkPartType(refLinkPartType)
+                .withTypeOfRoad(typeOfRoad)
+                .withDetailLevel(detailLevel);
+
         overlapFilters.forEach(of -> b.addOverlapFilter(of.filter, of.typeId));
         return b;
     }
 
     public static class Builder {
+
+        private RefLinkPartType refLinkPartType = null;
+        private DetailLevel detailLevel = null;
+        private TypeOfRoad typeOfRoad = null;
 
         private Page page = Page.count(1000);
         private Boolean segmented;
@@ -238,6 +294,10 @@ public class RoadObjectRequest {
         private List<Long> roadobjectIds = Collections.emptyList();
         private LocalDate pointInTime = null;
         private Boolean armFilter = null;
+        private Boolean sideAreaFilter = null;
+        private Boolean intersectionFilter = null;
+        private RoadUserGroup roadUserGroupFilter = null;
+        private SeparatePassages separatePassagesFilter = null;
         private LocalDateTime modifiedAfter = null;
 
         private Builder() { }
@@ -257,6 +317,21 @@ public class RoadObjectRequest {
 
         public Builder withSegmented(Boolean segmented) {
             this.segmented = segmented;
+            return this;
+        }
+
+        public Builder withDetailLevel(DetailLevel detailLevel) {
+            this.detailLevel = detailLevel;
+            return this;
+        }
+
+        public Builder withTypeOfRoad(TypeOfRoad typeOfRoad) {
+            this.typeOfRoad = typeOfRoad;
+            return this;
+        }
+
+        public Builder withRefLinkPartType(RefLinkPartType refLinkPartType) {
+            this.refLinkPartType = refLinkPartType;
             return this;
         }
 
@@ -335,6 +410,26 @@ public class RoadObjectRequest {
 
         public Builder withArmFilter(Boolean arm) {
             this.armFilter = arm;
+            return this;
+        }
+
+        public Builder withSideAreaFilter(Boolean sideAreaFilter) {
+            this.sideAreaFilter = sideAreaFilter;
+            return this;
+        }
+
+        public Builder withIntersectionFilter(Boolean intersectionFilter) {
+            this.intersectionFilter = intersectionFilter;
+            return this;
+        }
+
+        public Builder withSeparatePassagesFilter(SeparatePassages separatePassagesFilter) {
+            this.separatePassagesFilter = separatePassagesFilter;
+            return this;
+        }
+
+        public Builder withRoadUserGroupFilter(RoadUserGroup roadUserGroupFilter) {
+            this.roadUserGroupFilter = roadUserGroupFilter;
             return this;
         }
 

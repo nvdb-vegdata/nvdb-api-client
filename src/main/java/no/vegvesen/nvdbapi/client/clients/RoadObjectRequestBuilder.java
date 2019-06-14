@@ -28,7 +28,6 @@ package no.vegvesen.nvdbapi.client.clients;
 
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -45,6 +44,10 @@ class RoadObjectRequestBuilder {
         request.getPointInTime().ifPresent(v -> map.putSingle("tidspunkt",
             v.format(DateTimeFormatter.ISO_DATE)));
         request.getArmFilter().ifPresent(v -> map.putSingle("arm", Boolean.toString(v)));
+        request.getIntersectionFilter().ifPresent(v -> map.putSingle("kryssystem", Boolean.toString(v)));
+        request.getSideAreaFilter().ifPresent(v -> map.putSingle("sideanlegg", Boolean.toString(v)));
+        request.getRoadUserGroupFilter().ifPresent(v -> map.putSingle("trafikantgruppe", v.getTextValue()));
+        request.getSeparatePassagesFilter().ifPresent(v -> map.putSingle("adskiltelop", v.getTextValue()));
         request.getModifiedAfter().ifPresent(v -> map.putSingle("endret_etter",
                 v.format(DateTimeFormatter.ISO_DATE_TIME)));
         request.getProjection().ifPresent(v -> map.putSingle("srid", Integer.toString(v.getSrid())));
@@ -55,6 +58,9 @@ class RoadObjectRequestBuilder {
         request.getAttributeFilter().ifPresent(v -> map.putSingle("egenskap", v));
         request.getBpolygon().ifPresent(v -> map.putSingle("polygon", v));
         request.getBbox().ifPresent(v -> map.putSingle("kartutsnitt", v));
+        request.getDetailLevel().ifPresent(v -> map.putSingle("detaljniva", v.getSosi()));
+        request.getTypeOfRoad().ifPresent(v -> map.putSingle("typeveg", v.getTypeOfRoadSosi()));
+        request.getRefLinkPartType().ifPresent(v -> map.putSingle("veglenketype", v.getRefLinkPartType()));
         request.getRoadRefFilter().ifPresent(v -> map.putSingle("vegsystemreferanse", v));
         request.getRefLinkFilter().ifPresent(v -> map.putSingle("veglenkesekvens", v));
         flatten(request.getMunicipalities()).ifPresent(v -> map.putSingle("kommune", v));
