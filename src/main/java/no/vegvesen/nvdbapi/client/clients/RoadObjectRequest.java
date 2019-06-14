@@ -61,6 +61,8 @@ public class RoadObjectRequest {
     private final LocalDate pointInTime;
     private final LocalDateTime modifiedAfter;
     private final Boolean armFilter;
+    private final Boolean sideAreaFilter;
+    private final Boolean intersectionFilter;
     private final DetailLevel detailLevel;
     private final TypeOfRoad typeOfRoad;
     private final RefLinkPartType refLinkPartType;
@@ -89,6 +91,8 @@ public class RoadObjectRequest {
         pointInTime = b.pointInTime;
         modifiedAfter = b.modifiedAfter;
         armFilter = b.armFilter;
+        sideAreaFilter = b.sideAreaFilter;
+        intersectionFilter = b.intersectionFilter;
         detailLevel = b.detailLevel;
         typeOfRoad = b.typeOfRoad;
         refLinkPartType = b.refLinkPartType;
@@ -182,6 +186,14 @@ public class RoadObjectRequest {
         return Optional.ofNullable(armFilter);
     }
 
+    public Optional<Boolean> getSideAreaFilter() {
+        return Optional.ofNullable(sideAreaFilter);
+    }
+
+    public Optional<Boolean> getIntersectionFilter() {
+        return Optional.ofNullable(intersectionFilter);
+    }
+
     public Optional<LocalDateTime> getModifiedAfter() {
         return Optional.ofNullable(modifiedAfter);
     }
@@ -233,6 +245,8 @@ public class RoadObjectRequest {
                 .withModifiedAfter(modifiedAfter)
                 .withIds(roadobjectIds)
                 .withArmFilter(armFilter)
+                .withSideAreaFilter(sideAreaFilter)
+                .withIntersectionFilter(intersectionFilter)
                 .withRefLinkPartType(refLinkPartType)
                 .withTypeOfRoad(typeOfRoad)
                 .withDetailLevel(detailLevel);
@@ -268,6 +282,8 @@ public class RoadObjectRequest {
         private List<Long> roadobjectIds = Collections.emptyList();
         private LocalDate pointInTime = null;
         private Boolean armFilter = null;
+        private Boolean sideAreaFilter = null;
+        private Boolean intersectionFilter = null;
         private LocalDateTime modifiedAfter = null;
 
         private Builder() { }
@@ -382,6 +398,17 @@ public class RoadObjectRequest {
             this.armFilter = arm;
             return this;
         }
+
+        public Builder withSideAreaFilter(Boolean sideAreaFilter) {
+            this.sideAreaFilter = sideAreaFilter;
+            return this;
+        }
+
+        public Builder withIntersectionFilter(Boolean intersectionFilter) {
+            this.intersectionFilter = intersectionFilter;
+            return this;
+        }
+
 
         public Builder withCounties(List<Integer> counties) {
             this.counties = counties;
