@@ -30,6 +30,8 @@ import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
 import no.vegvesen.nvdbapi.client.gson.SegmentedLinkParser;
 import no.vegvesen.nvdbapi.client.model.Page;
 import no.vegvesen.nvdbapi.client.model.roadnet.SegmentedLink;
+import no.vegvesen.nvdbapi.client.model.roadnet.TopologyLevel;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,6 +101,13 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         request.getTypeOfRoadFilter().ifPresent(v -> path.queryParam("typeveg", v.getTypeOfRoadSosi()));
         request.getRefLinkPartTypeFilter().ifPresent(v -> path.queryParam("veglenketype", v.getRefLinkPartType()));
         request.getDetailLevelFilter().ifPresent(v -> path.queryParam("detaljniva", v.getSosi()));
+        if (!request.getTopologyLevel().isEmpty()) {
+            List<String> collect = request.getTopologyLevel()
+                    .stream()
+                    .map(TopologyLevel::getApiValue)
+                    .collect(Collectors.toList());
+            path.queryParam("topologiniva", join(collect));
+        }
 
         path.queryParam("historisk", request.isHistory());
         request.getDateFilter()
@@ -107,7 +116,7 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         return getClient().target(path);
     }
 
-    private static String join(List<Integer> list) {
+    private static String join(List<?> list) {
         if (list == null) {
             return null;
         }
