@@ -25,8 +25,6 @@
 
 package no.vegvesen.nvdbapi.client.model;
 
-import java.util.Arrays;
-
 public enum Direction {
     WITH("MED"), AGAINST("MOT");
 
@@ -37,6 +35,12 @@ public enum Direction {
     }
 
     public static Direction from(String apiValue) {
-        return Arrays.stream(values()).filter(d -> d.apiValue.equalsIgnoreCase(apiValue)).findAny().orElse(null);
+        if(apiValue.equalsIgnoreCase(WITH.apiValue)) {
+            return WITH;
+        } else if (apiValue.equalsIgnoreCase(AGAINST.apiValue)) {
+            return AGAINST;
+        } else {
+            return null;
+        }
     }
 }

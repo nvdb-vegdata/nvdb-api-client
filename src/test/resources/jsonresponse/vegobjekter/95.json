@@ -17,6 +17,7 @@
           "navn": "PunktTilknytning",
           "egenskapstype": "Stedfesting",
           "datatype": "GeomPunkt",
+          "stedfestingstype": "Punkt",
           "netelementid": 384011,
           "netelementtype": 50002,
           "fra_posisjon": 0.07178555,

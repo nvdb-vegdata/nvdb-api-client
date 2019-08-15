@@ -32,14 +32,12 @@ import no.vegvesen.nvdbapi.client.model.GeometryAttributes;
 import no.vegvesen.nvdbapi.client.model.Projection;
 import no.vegvesen.nvdbapi.client.model.Quality;
 
-import java.time.LocalDate;
 import java.util.Optional;
 
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 
 public final class GeometryParser {
-    private GeometryParser() {
-    }
+    private GeometryParser() {}
 
     public static Geometry parse(JsonObject obj) {
         if (obj==null) return null;
@@ -49,35 +47,73 @@ public final class GeometryParser {
 
         boolean isSimplified = Optional.ofNullable(parseBooleanMember(obj, "forenklet")).orElse(false);
         boolean isOwnGeometry = Optional.ofNullable(parseBooleanMember(obj, "egengeometri")).orElse(false);
-        Quality quality = null;
-        if (obj.has("kvalitet")) {
-            int method = parseIntMember(obj, "kvalitet.metode");
-            Integer accuracy = parseIntMember(obj, "kvalitet.nøyaktighet");
-            Integer heightMethod = parseIntMember(obj, "kvalitet.høydemetode");
-            int heightAccuracy = parseIntMember(obj, "kvalitet.høydenøyaktighet");
-            int tolerance = parseIntMember(obj, "kvalitet.toleranse");
-            int visibility = parseIntMember(obj, "kvalitet.synbarhet");
-            LocalDate verifiedDate = parseDateMember(obj, "kvalitet.datafangstdato");
-            quality = new Quality(method, accuracy, heightMethod, heightAccuracy, tolerance, visibility, verifiedDate);
-        }
+        Quality quality = getQuality(obj);
 
-        GeometryAttributes geometryAttributes = new GeometryAttributes(
-            parseDateMember(obj,"datafangstdato"),
-            parseDateMember(obj,"verifiseringsdato"),
-            parseDateMember(obj,"oppdateringsdato"),
-            parseStringMember(obj, "prosesshistorikk"),
-            parseIntMember(obj, "kommune"),
-            parseStringMember(obj, "medium"),
-            parseIntMember(obj, "sosinavn"),
-            parseIntMember(obj, "temakode"),
-            parseBooleanMember(obj, "referansegeometri"),
-            parseDoubleMember(obj, "lengde"),
-            parseIntMember(obj, "høydereferanse"));
+        GeometryAttributes geometryAttributes = getGeometryAttributes(obj);
 
         return new Geometry(wkt, srid, quality, isSimplified, isOwnGeometry, geometryAttributes);
     }
 
-    static Projection parseProjection(JsonElement e) {
+    private static GeometryAttributes getGeometryAttributes(JsonObject obj) {
+        return new GeometryAttributes(
+            parseDateMember(obj, "datafangstdato"),
+            parseDateMember(obj, "verifiseringsdato"),
+            parseDateMember(obj, "oppdateringsdato"),
+            parseStringMember(obj, "prosesshistorikk"),
+            parseIntMember(obj, "kommune"),
+            parseStringMember(obj, "medium"),
+            parseStringMember(obj, "sosinavn"),
+            parseIntMember(obj, "temakode"),
+            parseBooleanMember(obj, "referansegeometri"),
+            parseDoubleMember(obj, "lengde"),
+            parseIntMember(obj, "høydereferanse"));
+    }
+
+    public static Geometry parseAttribute(JsonObject obj) {
+        if (obj==null) return null;
+
+        String wkt = parseStringMember(obj, "verdi");
+        Projection srid = Projection.UTM33;
+
+        Quality quality = getAttributeQuality(obj);
+
+        GeometryAttributes geometryAttributes = getGeometryAttributes(obj);
+
+        return new Geometry(wkt, srid, quality, false, true, geometryAttributes);
+    }
+
+    /*
+    Remove in response rev 1
+     */
+    private static Quality getAttributeQuality(JsonObject obj) {
+        if (obj.has("kvalitet")) {
+            Integer method = parseIntMember(obj, "kvalitet.målemetode");
+            Integer accuracy = parseIntMember(obj, "kvalitet.nøyaktighet");
+            Integer heightMethod = parseIntMember(obj, "kvalitet.målemetodeHøyde");
+            Integer heightAccuracy = parseIntMember(obj, "kvalitet.nøyaktighetHøyde");
+            Integer tolerance = parseIntMember(obj, "kvalitet.maksimaltAvvik");
+            Integer visibility = parseIntMember(obj, "kvalitet.synbarhet");
+            return new Quality(method, accuracy, heightMethod, heightAccuracy, tolerance, visibility);
+        } else {
+            return null;
+        }
+    }
+
+    private static Quality getQuality(JsonObject obj) {
+        if (obj.has("kvalitet")) {
+            Integer method = parseIntMember(obj, "kvalitet.metode");
+            Integer accuracy = parseIntMember(obj, "kvalitet.nøyaktighet");
+            Integer heightMethod = parseIntMember(obj, "kvalitet.høydemetode");
+            Integer heightAccuracy = parseIntMember(obj, "kvalitet.høydenøyaktighet");
+            Integer tolerance = parseIntMember(obj, "kvalitet.toleranse");
+            Integer visibility = parseIntMember(obj, "kvalitet.synbarhet");
+            return new Quality(method, accuracy, heightMethod, heightAccuracy, tolerance, visibility);
+        } else {
+            return null;
+        }
+    }
+
+    private static Projection parseProjection(JsonElement e) {
         return Projection.of(e.getAsInt()).orElse(null);
     }
 }

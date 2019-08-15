@@ -1,29 +1,47 @@
 package no.vegvesen.nvdbapi.client.model.roadobjects.attribute;
 
 import no.vegvesen.nvdbapi.client.model.roadnet.NetElementType;
+import no.vegvesen.nvdbapi.client.model.roadobjects.Placement;
+
+import java.util.Objects;
 
 public class TurnExtent extends LocationalAttribute {
 
-    private final ReflinkExtentAttribute startPoint;
-    private final ReflinkExtentAttribute endPoint;
+    private final Placement startPoint;
+    private final Placement endPoint;
 
-    public TurnExtent(int id, int netelementId,
-                      ReflinkExtentAttribute startPoint, ReflinkExtentAttribute endPoint) {
+    public TurnExtent(int id, long netelementId,
+                      Placement startPoint, Placement endPoint) {
         super(id, netelementId, NetElementType.NODE);
         this.startPoint = startPoint;
         this.endPoint = endPoint;
     }
 
-    public ReflinkExtentAttribute getStartPoint() {
+    public Placement getStartPoint() {
         return startPoint;
     }
 
-    public ReflinkExtentAttribute getEndPoint() {
+    public Placement getEndPoint() {
         return endPoint;
     }
 
     @Override
     public AttributeType getAttributeType() {
         return AttributeType.TURN_EXTENT;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        TurnExtent that = (TurnExtent) o;
+        return Objects.equals(startPoint, that.startPoint) &&
+            Objects.equals(endPoint, that.endPoint);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), startPoint, endPoint);
     }
 }

@@ -26,6 +26,7 @@
 package no.vegvesen.nvdbapi.client.model.datakatalog;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public final class Unit implements Serializable {
 
@@ -55,21 +56,15 @@ public final class Unit implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Unit unit = (Unit) o;
-
-        if (id != unit.id) return false;
-        if (name != null ? !name.equals(unit.name) : unit.name != null) return false;
-        return !(shortName != null ? !shortName.equals(unit.shortName) : unit.shortName != null);
-
+        return id == unit.id &&
+            Objects.equals(name, unit.name) &&
+            Objects.equals(shortName, unit.shortName);
     }
 
     @Override
     public int hashCode() {
-        int result = id;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (shortName != null ? shortName.hashCode() : 0);
-        return result;
+        return Objects.hash(id, name, shortName);
     }
 
     @Override

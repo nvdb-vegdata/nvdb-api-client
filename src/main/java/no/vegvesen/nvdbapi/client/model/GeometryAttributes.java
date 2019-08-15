@@ -11,13 +11,13 @@ public class GeometryAttributes {
     private final String processHistory;      //
     private final Integer municipality;       //               indexed by: roadnet
     private final String medium;              //               indexed by: roadnet
-    private final Integer objectCode;         // (sosi name)
+    private final String objectCode;         // (sosi name)
     private final Integer classCode;          // (ltema)       indexed by: roadnet
     private final Boolean referenceGeometry;  //
     private final Double length;              //               indexed by: roadnet & roadobject
     private final Integer heightRef;          //               indexed by: roadnet
 
-    public GeometryAttributes(LocalDate capturedDate, LocalDate verifiedDate, LocalDate updatedDate, String processHistory, Integer municipality, String medium, Integer objectCode, Integer classCode, Boolean referenceGeometry, Double length, Integer heightRef) {
+    public GeometryAttributes(LocalDate capturedDate, LocalDate verifiedDate, LocalDate updatedDate, String processHistory, Integer municipality, String medium, String objectCode, Integer classCode, Boolean referenceGeometry, Double length, Integer heightRef) {
         this.capturedDate = capturedDate;
         this.verifiedDate = verifiedDate;
         this.updatedDate = updatedDate;
@@ -55,7 +55,7 @@ public class GeometryAttributes {
         return medium;
     }
 
-    public Integer getObjectCode() {
+    public String getObjectCode() {
         return objectCode;
     }
 
@@ -77,20 +77,20 @@ public class GeometryAttributes {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o ) return true;
-        if (o == null | o.getClass() != this.getClass()) return false;
-        GeometryAttributes other = (GeometryAttributes) o;
-        return  Objects.equals(this.capturedDate, other.capturedDate) &&
-            Objects.equals(this.verifiedDate, other.verifiedDate) &&
-            Objects.equals(this.updatedDate, other.updatedDate) &&
-            Objects.equals(this.processHistory, other.processHistory) &&
-            Objects.equals(this.municipality, other.municipality) &&
-            Objects.equals(this.medium, other.medium) &&
-            Objects.equals(this.objectCode, other.objectCode) &&
-            Objects.equals(this.classCode, other.classCode) &&
-            Objects.equals(this.referenceGeometry, other.referenceGeometry) &&
-            Objects.equals(this.length, other.length) &&
-            Objects.equals(this.heightRef, other.heightRef);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GeometryAttributes that = (GeometryAttributes) o;
+        return Objects.equals(capturedDate, that.capturedDate) &&
+            Objects.equals(verifiedDate, that.verifiedDate) &&
+            Objects.equals(updatedDate, that.updatedDate) &&
+            Objects.equals(processHistory, that.processHistory) &&
+            Objects.equals(municipality, that.municipality) &&
+            Objects.equals(medium, that.medium) &&
+            Objects.equals(objectCode, that.objectCode) &&
+            Objects.equals(classCode, that.classCode) &&
+            Objects.equals(referenceGeometry, that.referenceGeometry) &&
+            Objects.equals(length, that.length) &&
+            Objects.equals(heightRef, that.heightRef);
     }
 
     @Override

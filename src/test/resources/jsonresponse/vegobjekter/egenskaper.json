@@ -1,0 +1,183 @@
+[
+    {
+        "id": 1,
+        "navn": "Binær",
+        "egenskapstype": "Binær",
+        "datatype": "BinærObjekt",
+        "blob_id": 213,
+        "blob_format": "bah",
+        "href": "https://bah"
+    },{
+        "id": 2,
+        "navn": "Boolsk",
+        "egenskapstype": "Boolsk",
+        "datatype": "Boolean",
+        "verdi": false
+    },{
+        "id": 3,
+        "navn": "Dato",
+        "egenskapstype": "Dato",
+        "datatype": "Dato",
+        "verdi": "2019-10-12"
+    },{
+        "id": 4,
+        "navn": "KortDato",
+        "egenskapstype": "Kortdato",
+        "datatype": "KortDato",
+        "verdi": "10-12"
+    },{
+        "id": 5,
+        "navn": "Tidspunkt",
+        "egenskapstype": "Tid",
+        "datatype": "Klokkeslett",
+        "verdi": "12:12"
+    },{
+        "id": 6,
+        "navn": "PunktGeometri",
+        "egenskapstype": "Geometri",
+        "datatype": "GeomPunkt",
+        "verdi": "POINT Z(88206.76856 6783844.94758 259.86262)",
+        "kvalitet": {
+            "målemetode": 95,
+            "nøyaktighet": 5,
+            "synbarhet": 2,
+            "målemetodeHøyde": 1,
+            "nøyaktighetHøyde": 1,
+            "maksimaltAvvik": 2
+        },
+        "datafangstdato": "1012-12-12",
+        "verifiseringsdato": "1012-12-13",
+        "oppdateringsdato": "1012-12-14",
+        "prosesshistorikk": "blabal",
+        "kommune": 1847,
+        "medium": "papir",
+        "sosinavn": "Schmosi",
+        "temakode": 2012,
+        "referansegeometri": false,
+        "lengde": 0.0,
+        "høydereferanse": 123
+    },{
+        "id": 7,
+        "navn": "Heltall",
+        "egenskapstype": "Heltall",
+        "datatype": "Tall",
+        "verdi": 1,
+        "enhet": {
+            "id": 1,
+            "navn": "Meter",
+            "kortnavn": "m"
+        }
+    },{
+        "id": 8,
+        "navn": "Tallenum",
+        "egenskapstype": "Heltall",
+        "datatype": "FlerverdiAttributt, Tall",
+        "verdi": 2,
+        "enum_id": 1
+    },{
+        "id": 9,
+        "navn": "Flyttall",
+        "egenskapstype": "Flyttall",
+        "datatype": "Tall",
+        "verdi": 1.213
+    },{
+        "id": 10,
+        "navn": "Strukt",
+        "egenskapstype": "Struktur",
+        "datatype": "Struktur",
+        "innhold": [
+            {
+                "id": 10001,
+                "navn": "Tallenum",
+                "egenskapstype": "Heltall",
+                "datatype": "FlerverdiAttributt, Tall",
+                "verdi": 2,
+                "enum_id": 1
+            },{
+                "id": 10002,
+                "navn": "Flyttall",
+                "egenskapstype": "Flyttall",
+                "datatype": "Tall",
+                "verdi": 1.213
+            }
+        ]
+    },{
+        "id": 11,
+        "navn": "Tekst",
+        "egenskapstype": "Tekst",
+        "datatype": "Tekst",
+        "verdi": "øl"
+    },{
+        "id": 12,
+        "navn": "Tekstenum",
+        "egenskapstype": "Tekst",
+        "datatype": "FlerverdiAttributt, Tekst",
+        "verdi": "bap",
+        "enum_id": 1
+    },{
+        "id": 13,
+        "navn": "PunktTilknytning",
+        "egenskapstype": "Stedfesting",
+        "datatype": "GeomPunkt",
+        "stedfestingstype": "Punkt",
+        "netelementid": 384011,
+        "netelementtype": 50002,
+        "fra_posisjon": 0.07178555,
+        "til_posisjon": 0.07178555,
+        "retning": "MED",
+        "kjørefelt": ["1"],
+        "sideposisjon": "MH"
+    },{
+        "id": 14,
+        "navn": "LinjeTilknytning",
+        "egenskapstype": "Stedfesting",
+        "datatype": "GeomPunkt",
+        "stedfestingstype": "Linje",
+        "netelementid": 384011,
+        "netelementtype": 50002,
+        "fra_posisjon": 0.07178555,
+        "til_posisjon": 0.15652675,
+        "retning": "MED",
+        "kjørefelt": ["1"],
+        "sideposisjon": "MH"
+    },{
+        "id": 15,
+        "navn": "SvingeTilknytning",
+        "egenskapstype": "Stedfesting",
+        "datatype": "GeomPunkt",
+        "stedfestingstype": "Sving",
+        "netelementid": 384011,
+        "netelementtype": 50002,
+        "startpunkt": {
+            "veglenkesekvens": 942450,
+            "fra_posisjon": 0.23585116,
+            "til_posisjon": 0.23585116,
+            "kortform": "23585116-0.23585116@942450",
+            "kjørefelt": [ ],
+            "retning": "MED",
+            "sideposisjon": "M"
+        },
+        "sluttpunkt": {
+            "veglenkesekvens": 942694,
+            "fra_posisjon": 0.64558392,
+            "til_posisjon": 0.64558392,
+            "kortform": "0.64558392-0.64558392@942694",
+            "kjørefelt": [ ],
+            "retning": "MED",
+            "sideposisjon": "M"
+        }
+    },{
+        "id": 220016,
+        "egenskapstype": "Liste",
+        "datatype": "Liste",
+        "innhold": [
+            {
+                "id": 200016,
+                "navn": "Assosiert Variabelt skilt",
+                "egenskapstype": "Assosiasjon",
+                "datatype": "Assosiasjon",
+                "verdi": 78735746
+            }
+        ]
+    }
+]
