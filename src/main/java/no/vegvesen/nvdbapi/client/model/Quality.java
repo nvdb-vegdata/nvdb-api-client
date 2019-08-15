@@ -25,12 +25,9 @@
 
 package no.vegvesen.nvdbapi.client.model;
 
-import java.time.LocalDate;
 import java.util.Objects;
-import java.util.Optional;
 
 public class Quality {
-    private final Optional<LocalDate> verifiedDate;
     private final Integer method;
     private final Integer accuracy;
     private final Integer visibility;
@@ -38,18 +35,13 @@ public class Quality {
     private final Integer heightAccuracy;
     private final Integer tolerance;
 
-    public Quality(Integer method, Integer accuracy, Integer heightMethod, Integer heightAccuracy, Integer tolerance, Integer visibility, LocalDate verifiedDate) {
-        this.verifiedDate = Optional.ofNullable(verifiedDate);
+    public Quality(Integer method, Integer accuracy, Integer heightMethod, Integer heightAccuracy, Integer tolerance, Integer visibility) {
         this.method = method;
         this.accuracy = accuracy;
         this.visibility = visibility;
         this.heightMethod = heightMethod;
         this.heightAccuracy = heightAccuracy;
         this.tolerance = tolerance;
-    }
-
-    public Optional<LocalDate> getVerifiedDate() {
-        return verifiedDate;
     }
 
     public Integer getMethod() {
@@ -81,17 +73,16 @@ public class Quality {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Quality quality = (Quality) o;
-        return Objects.equals(method,quality.method) &&
-                Objects.equals(visibility, quality.visibility) &&
-                Objects.equals(heightAccuracy,quality.heightAccuracy) &&
-                Objects.equals(tolerance, quality.tolerance) &&
-                Objects.equals(verifiedDate, quality.verifiedDate) &&
-                Objects.equals(accuracy, quality.accuracy) &&
-                Objects.equals(heightMethod, quality.heightMethod);
+        return Objects.equals(method, quality.method) &&
+            Objects.equals(accuracy, quality.accuracy) &&
+            Objects.equals(visibility, quality.visibility) &&
+            Objects.equals(heightMethod, quality.heightMethod) &&
+            Objects.equals(heightAccuracy, quality.heightAccuracy) &&
+            Objects.equals(tolerance, quality.tolerance);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(verifiedDate, method, accuracy, visibility, heightMethod, heightAccuracy, tolerance);
+        return Objects.hash(method, accuracy, visibility, heightMethod, heightAccuracy, tolerance);
     }
 }

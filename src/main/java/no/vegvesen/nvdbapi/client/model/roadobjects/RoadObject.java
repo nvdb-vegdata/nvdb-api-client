@@ -26,6 +26,7 @@
 package no.vegvesen.nvdbapi.client.model.roadobjects;
 
 import no.vegvesen.nvdbapi.client.model.Geometry;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.Attribute;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -42,7 +43,7 @@ public class RoadObject {
     private final Location location;
     private final Geometry geometry;
     private final List<Segment> segments;
-    private final List<Attribute> attributes;
+    private final List<? extends Attribute> attributes;
     private final List<Association> children;
     private final List<Association> parents;
     private final LocalDateTime lastModified;
@@ -50,7 +51,7 @@ public class RoadObject {
     public RoadObject(long id, Integer typeId, Integer version, LocalDate startDate, LocalDate endDate,
                       List<Segment> segments,
                       Location location, Geometry geometry, LocalDateTime lastModified,
-                      List<Attribute> attributes, List<Association> children, List<Association> parents) {
+                      List<? extends Attribute> attributes, List<Association> children, List<Association> parents) {
         this.id = id;
         this.typeId = typeId;
         this.version = version;
@@ -97,15 +98,27 @@ public class RoadObject {
         return lastModified;
     }
 
-    public List<Attribute> getAttributes() {
+    public List<? extends Attribute> getAttributes() {
         return attributes;
     }
 
     public Attribute getAttribute(int attributeTypeId) {
-        return attributes.stream().filter(a -> a.getTypeId() == attributeTypeId).findAny().orElse(null);
+        return attributes.stream()
+            .filter(a -> a.getId() == attributeTypeId)
+            .findAny()
+            .orElse(null);
     }
 
-    public Stream<Attribute> attributes() {
+    public <T extends Attribute> T getAttribute(int attributeTypeId, Class<T> attributeType) {
+        return attributes.stream()
+            .filter(a -> a.getId() == attributeTypeId)
+            .filter(a -> attributeType.isAssignableFrom(a.getClass()))
+            .map(attributeType::cast)
+            .findAny()
+            .orElse(null);
+    }
+
+    public Stream<? extends Attribute> attributes() {
         return attributes.stream();
     }
 

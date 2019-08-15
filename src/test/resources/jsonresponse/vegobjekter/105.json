@@ -42,6 +42,7 @@
               "navn": "StrekningTilknytning",
               "egenskapstype": "Stedfesting",
               "datatype": "GeomLinje eller Kurve",
+              "stedfestingstype": "Linje",
               "netelementid": 383266,
               "netelementtype": 50002,
               "fra_posisjon": 0.0,

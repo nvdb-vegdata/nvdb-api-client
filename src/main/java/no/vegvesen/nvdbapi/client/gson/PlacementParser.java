@@ -67,6 +67,15 @@ public final class PlacementParser {
     }
 
     static Placement parsePlacement(JsonObject obj) {
+        return parsePlacement(obj, "startposisjon", "sluttposisjon");
+    }
+
+    // Will be fixed in response rev1
+    static Placement parsePlacementAttribute(JsonObject obj) {
+        return parsePlacement(obj, "fra_posisjon", "til_posisjon");
+    }
+
+    private static Placement parsePlacement(JsonObject obj, String startPosField, String endPosField) {
         if(isNull(obj)) return null;
         long netElementId = parseLongMember(obj, "veglenkesekvens");
 
@@ -74,8 +83,8 @@ public final class PlacementParser {
         if (obj.has("relativPosisjon")) {
             startPos = endPos = parseDoubleMember(obj, "relativPosisjon");
         } else {
-            startPos = parseDoubleMember(obj, "startposisjon");
-            endPos = parseDoubleMember(obj, "sluttposisjon");
+            startPos = parseDoubleMember(obj, startPosField);
+            endPos = parseDoubleMember(obj, endPosField);
         }
 
         Direction dir = Optional.ofNullable(parseStringMember(obj, "retning"))

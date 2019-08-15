@@ -26,11 +26,13 @@
 package no.vegvesen.nvdbapi.client.model;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 public enum SidePosition {
     LEFT("V"),
     RIGHT("H"),
-    LEFT_AND_RIGHT("M"),
+    LEFT_AND_RIGHT("HV"),
     MIDDLE("M"),
     CROSSING("K"),
     MIDDLE_LEFT("MV"),
@@ -46,11 +48,14 @@ public enum SidePosition {
         this.apiValue = apiValue;
     }
 
+    private static Map<String, SidePosition> mapping = new HashMap<>();
     public static SidePosition from(String apiValue) {
-        return Arrays.stream(values())
-                .filter(d -> d.apiValue.equalsIgnoreCase(apiValue))
+        return mapping.computeIfAbsent(
+            apiValue,
+            v -> Arrays.stream(values())
+                .filter(d -> d.apiValue.equalsIgnoreCase(v))
                 .findAny()
-                .orElse(null);
+                .orElse(null));
     }
 
 }

@@ -28,25 +28,29 @@ package no.vegvesen.nvdbapi.client.gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.model.Geometry;
-import no.vegvesen.nvdbapi.client.model.GeometryAttributes;
-import no.vegvesen.nvdbapi.client.model.Projection;
-import no.vegvesen.nvdbapi.client.model.Quality;
+import no.vegvesen.nvdbapi.client.model.*;
 import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
 import no.vegvesen.nvdbapi.client.model.areas.Route;
 import no.vegvesen.nvdbapi.client.model.datakatalog.DataType;
+import no.vegvesen.nvdbapi.client.model.datakatalog.Unit;
 import no.vegvesen.nvdbapi.client.model.roadnet.DetailLevel;
 import no.vegvesen.nvdbapi.client.model.roadnet.RefLinkPartType;
 import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
 import no.vegvesen.nvdbapi.client.model.roadobjects.*;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.*;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.MonthDay;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static java.util.Objects.nonNull;
+import static java.util.stream.Collectors.toList;
+import static no.vegvesen.nvdbapi.client.gson.AttributeTypeParser.parseUnit;
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 
 public final class RoadObjectParser {
@@ -60,14 +64,14 @@ public final class RoadObjectParser {
         LocalDate startDate = parseDateMember(obj, "metadata.startdato"), endDate = parseDateMember(obj, "metadata.sluttdato");
         LocalDateTime lastModified = parseDateTimeMember(obj, "metadata.sist_modifisert");
 
-        List<Attribute> attributes = parseAttributes(dataTypes, obj);
+        List<Attribute> attributes = parseAttributes(obj);
 
         List<Association> childrenList = parseChildren(dataTypes, obj);
 
         List<Association> parentList = parseParents(dataTypes, obj);
 
         Location location = Optional.ofNullable(obj.get("lokasjon"))
-                .map(e -> parseLocation(e.getAsJsonObject())).orElse(null);
+            .map(e -> parseLocation(e.getAsJsonObject())).orElse(null);
 
         Geometry geometry = null;
         if (obj.has("geometri")) {
@@ -77,7 +81,7 @@ public final class RoadObjectParser {
         List<Segment> segments = parseSegments(obj);
 
         return new RoadObject(id, typeId, version, startDate, endDate, segments, location, geometry,
-                lastModified, attributes, childrenList, parentList);
+            lastModified, attributes, childrenList, parentList);
     }
 
     private static List<Segment> parseSegments(JsonObject obj) {
@@ -85,8 +89,8 @@ public final class RoadObjectParser {
         JsonArray segmenter = obj.getAsJsonArray("vegsegmenter");
         if (segmenter != null) {
             return StreamSupport.stream(segmenter.spliterator(), false)
-                    .map(e -> parseSegment(e.getAsJsonObject()))
-                    .collect(Collectors.toList());
+                .map(e -> parseSegment(e.getAsJsonObject()))
+                .collect(toList());
         }
         return segments;
     }
@@ -106,21 +110,19 @@ public final class RoadObjectParser {
     private static List<Association> getAssociations(Map<String, DataType> dataTypes, List<Association> parentList, JsonArray parents) {
         if (parents != null) {
             parentList = StreamSupport.stream(parents.spliterator(), false)
-                    .map(e -> parseAssociation(dataTypes, e.getAsJsonObject()))
-                    .collect(Collectors.toList());
+                .map(e -> parseAssociation(dataTypes, e.getAsJsonObject()))
+                .collect(toList());
         }
         return parentList;
     }
 
-    private static List<Attribute> parseAttributes(Map<String, DataType> dataTypes, JsonObject obj) {
-        List<Attribute> attributes = Collections.emptyList();
+    static List<Attribute> parseAttributes(JsonObject obj) {
         JsonArray egenskaper = obj.getAsJsonArray("egenskaper");
         if (egenskaper != null) {
-            return StreamSupport.stream(egenskaper.spliterator(), false)
-                    .map(e -> parseAttribute(dataTypes, e.getAsJsonObject()))
-                    .collect(Collectors.toList());
+            return parseInnhold(egenskaper);
+        } else {
+            return Collections.emptyList();
         }
-        return attributes;
     }
 
     private static Location parseLocation(JsonObject obj) {
@@ -138,32 +140,32 @@ public final class RoadObjectParser {
         List<RoadSysRef> roadRefs = Collections.emptyList();
         if (refs != null) {
             roadRefs = StreamSupport.stream(refs.spliterator(), false)
-                    .map(JsonElement::getAsJsonObject)
-                    .map(RoadSysRefParser::parse)
-                    .collect(Collectors.toList());
+                .map(JsonElement::getAsJsonObject)
+                .map(RoadSysRefParser::parse)
+                .collect(toList());
         }
 
         List<Placement> placements = Collections.emptyList();
         JsonArray placementsArray = getArray(obj, "stedfestinger").orElse(null);
         if (placementsArray != null) {
             placements = StreamSupport.stream(placementsArray.spliterator(), false)
-                    .map(JsonElement::getAsJsonObject)
-                    .map(PlacementParser::parsePlacement)
-                    .collect(Collectors.toList());
+                .map(JsonElement::getAsJsonObject)
+                .map(PlacementParser::parsePlacement)
+                .collect(toList());
         }
 
         Double length = parseDoubleMember(obj, "lengde");
 
         return new Location(municipalities, counties, length, placements, roadRefs, contractAreas,
-                nationalRoutes, geometry);
+            nationalRoutes, geometry);
     }
 
     static List<Route> parseRoutes(JsonObject obj) {
         List<Route> nationalRoutes = Collections.emptyList();
         if (obj.has("riksvegruter")) {
             nationalRoutes = StreamSupport.stream(obj.getAsJsonArray("riksvegruter").spliterator(), false)
-                    .map(JsonElement::getAsJsonObject).map(AreaParser::parseRoute)
-                    .collect(Collectors.toList());
+                .map(JsonElement::getAsJsonObject).map(AreaParser::parseRoute)
+                .collect(Collectors.toList());
         }
         return nationalRoutes;
     }
@@ -172,9 +174,9 @@ public final class RoadObjectParser {
         List<ContractArea> contractAreas = Collections.emptyList();
         if (obj.has("kontraktsområder")) {
             contractAreas = StreamSupport.stream(obj.getAsJsonArray("kontraktsområder").spliterator(), false)
-                    .map(JsonElement::getAsJsonObject)
-                    .map(AreaParser::parseContractArea)
-                    .collect(Collectors.toList());
+                .map(JsonElement::getAsJsonObject)
+                .map(AreaParser::parseContractArea)
+                .collect(Collectors.toList());
         }
         return contractAreas;
     }
@@ -198,57 +200,111 @@ public final class RoadObjectParser {
         double endPos   = isPoint ? startPos : parseDoubleMember(obj, "sluttposisjon");
 
         return new Segment(
-                parseLongMember(obj, "veglenkesekvens"),
-                startPos,
-                endPos,
-                geo,
-                municipality,
-                county,
-                ref,
-                length,
-                parseDateMember(obj, "startdato"),
-                parseDateMember(obj, "sluttdato"),
-                RefLinkPartType.fromValue(parseStringMember(obj, "veglenkeType")),
-                DetailLevel.fromTextValue(parseStringMember(obj, "detaljnivå")),
-                TypeOfRoad.fromTextValue(parseStringMember(obj, "typeVeg")));
+            parseLongMember(obj, "veglenkesekvens"),
+            startPos,
+            endPos,
+            geo,
+            municipality,
+            county,
+            ref,
+            length,
+            parseDateMember(obj, "startdato"),
+            parseDateMember(obj, "sluttdato"),
+            RefLinkPartType.fromValue(parseStringMember(obj, "veglenkeType")),
+            DetailLevel.fromTextValue(parseStringMember(obj, "detaljnivå")),
+            TypeOfRoad.fromTextValue(parseStringMember(obj, "typeVeg")));
     }
 
-    public static Attribute parseAttribute(Map<String, DataType> dataTypes, JsonObject obj) {
+    public static Attribute parseAttribute(JsonObject obj) {
         Integer id = parseIntMember(obj, "id");
-        String name = parseStringMember(obj, "navn");
+        String egenskapstype = parseStringMember(obj, "egenskapstype");
         Integer enumId = parseIntMember(obj, "enum_id");
-        String dataTypeId = parseStringMember(obj, "datatype");
-        DataType dataType = dataTypes.get(dataTypeId);
-        Object value = parseAttributeValue(obj, "verdi", dataType.getJavaType());
-        String href = parseStringMember(obj, "href");
-        String blobFormat = parseStringMember(obj, "blob_format");
-        Integer blobId = parseIntMember(obj, "blob_id");
-
-        GeometryAttributes geometryAttributes = getGeometryAttributes(obj);
-        Quality quality = getQuality(obj);
-
-        Geometry attribGeometry = null;
-        if (Objects.nonNull(quality)) {
-            // Quality must be set to add geometry to an attribute
-            attribGeometry = new Geometry((String) value, Projection.UTM33, quality, false, true, geometryAttributes);
+        if(nonNull(enumId)) {
+            return new EnumAttribute(id, enumId);
         }
+        switch (egenskapstype) {
+            case "Assosiasjon":
+                return new AssociationAttribute(id, parseLongMember(obj, "verdi"));
+            case "Binær":
+                return new BlobAttribute(
+                    id,
+                    parseIntMember(obj, "blob_id"),
+                    parseStringMember(obj, "blob_format"),
+                    parseStringMember(obj, "href"));
+            case "Boolsk":
+                return new BooleanAttribute(id, parseBooleanMember(obj, "verdi"));
+            case "Dato":
+                return new DateAttribute(id, parseDateMember(obj, "verdi"));
+            case "Flyttall":
+                return new RealAttribute(id, parseDoubleMember(obj, "verdi"), getUnit(obj));
+            case "Geometri":
+                return new SpatialAttribute(id, GeometryParser.parseAttribute(obj));
+            case "Heltall":
+                return new IntegerAttribute(id, parseIntMember(obj, "verdi"), getUnit(obj));
+            case "Kortdato":
+                return new ShortDateAttribute(id, MonthDay.parse("--" + parseStringMember(obj, "verdi")));
+            case "Liste":
+                return new ListAttribute(
+                    id,
+                    parseInnhold(obj.getAsJsonArray("innhold")));
+            case "Stedfesting":
+                String stedfestingstype = parseStringMember(obj, "stedfestingstype");
+                switch (stedfestingstype) {
+                    case "Punkt":
+                    case "Linje":
+                        return new ReflinkExtentAttribute(
+                            id,
+                            parseLongMember(obj, "netelementid"),
+                            Direction.from(parseStringMember(obj, "retning")),
+                            SidePosition.from(parseStringMember(obj, "sideposisjon")),
+                            parseStringListMember(obj, "kjørefelt"),
+                            parseDoubleMember(obj, "fra_posisjon"),
+                            parseDoubleMember(obj, "til_posisjon")
+                        );
+                    case "Sving": return new TurnExtent(
+                        id,
+                        parseLongMember(obj, "netelementid"),
+                        PlacementParser.parsePlacementAttribute(obj.getAsJsonObject("startpunkt")),
+                        PlacementParser.parsePlacementAttribute(obj.getAsJsonObject("sluttpunkt"))
+                    );
+                    default: throw new IllegalArgumentException("Unknown stedfestingstype " + stedfestingstype);
+                }
+            case "Struktur":
+                return new StructAttribute(
+                    id,
+                    parseInnhold(obj.getAsJsonArray("innhold"))
+                    );
+            case "Tekst":
+                return new StringAttribute(id, parseStringMember(obj, "verdi"));
+            case "Tid":
+                return new TimeAttribute(id, LocalTime.parse(parseStringMember(obj, "verdi")));
+            default: throw new RuntimeException("Ukjent egenskapstype: " + egenskapstype);
+        }
+    }
 
-        return new Attribute(id, name, dataType, value, Optional.ofNullable(enumId), Optional.ofNullable(href),
-                Optional.ofNullable(blobId), Optional.ofNullable(blobFormat), Optional.ofNullable(attribGeometry));
+    private static Unit getUnit(JsonObject obj) {
+        return obj.has("enhet") ? parseUnit(obj.getAsJsonObject("enhet")) : null;
+    }
+
+    private static List<Attribute> parseInnhold(JsonArray innhold) {
+        return StreamSupport.stream(innhold.spliterator(), false)
+            .map(e -> parseAttribute(e.getAsJsonObject()))
+            .collect(toList());
     }
 
     private static Association parseAssociation(Map<String, DataType> dataTypes, JsonObject obj) {
         Integer typeId = parseIntMember(obj, "type.id");
         JsonArray objects = obj.get("vegobjekter").getAsJsonArray();
-        Set<RoadObject> roadObjects = StreamSupport.stream(objects.spliterator(), false).map(e -> {
-            RoadObject ro;
-            if (e.isJsonPrimitive()) {
-                ro = new RoadObject(e.getAsLong(), typeId, null, null, null, null, null, null, null, null, null, null);
-            } else {
-                ro = parse(dataTypes, e.getAsJsonObject());
-            }
-            return ro;
-        }).collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(RoadObject::getId))));
+        Set<RoadObject> roadObjects = StreamSupport.stream(objects.spliterator(), false)
+            .map(e -> {
+                RoadObject ro;
+                if (e.isJsonPrimitive()) {
+                    ro = new RoadObject(e.getAsLong(), typeId, null, null, null, null, null, null, null, null, null, null);
+                } else {
+                    ro = parse(dataTypes, e.getAsJsonObject());
+                }
+                return ro;
+            }).collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(RoadObject::getId))));
 
         return new Association(typeId, roadObjects);
     }
@@ -273,17 +329,17 @@ public final class RoadObjectParser {
         if (geometryElement.isPresent()) {
             JsonObject json = (JsonObject) geometryElement.get();
             return new GeometryAttributes(
-                    parseDateMember(json, "datafangstdato"),
-                    parseDateMember(json, "verifiseringsdato"),
-                    parseDateMember(json, "oppdateringsdato"),
-                    parseStringMember(json, "prosesshistorikk"),
-                    parseIntMember(json, "kommune"),
-                    parseStringMember(json, "medium"),
-                    parseIntMember(json, "sosinavn"),
-                    parseIntMember(json, "temakode"),
-                    parseBooleanMember(json, "referansegeometri"),
-                    parseDoubleMember(json, "lengde"),
-                    parseIntMember(json, "høydereferanse"));
+                parseDateMember(json, "datafangstdato"),
+                parseDateMember(json, "verifiseringsdato"),
+                parseDateMember(json, "oppdateringsdato"),
+                parseStringMember(json, "prosesshistorikk"),
+                parseIntMember(json, "kommune"),
+                parseStringMember(json, "medium"),
+                parseStringMember(json, "sosinavn"),
+                parseIntMember(json, "temakode"),
+                parseBooleanMember(json, "referansegeometri"),
+                parseDoubleMember(json, "lengde"),
+                parseIntMember(json, "høydereferanse"));
         } else {
             return null;
         }
@@ -291,24 +347,23 @@ public final class RoadObjectParser {
 
     private static Quality getQuality(JsonObject obj) {
         return getNode(obj, "kvalitet")
-                .map(JsonElement::getAsJsonObject)
-                .map(qualityElement ->
-                        new Quality(
-                                parseIntMember(qualityElement, "målemetode"),
-                                parseIntMember(qualityElement, "nøyaktighet"),
-                                parseIntMember(qualityElement, "målemetodeHøyde"),
-                                parseIntMember(qualityElement, "nøyaktighetHøyde"),
-                                parseIntMember(qualityElement, "maksimaltAvvik"),
-                                parseIntMember(qualityElement, "synbarhet"),
-                                parseDateMember(qualityElement, "verifiseringsdato")))
-                .orElse(null);
+            .map(JsonElement::getAsJsonObject)
+            .map(qualityElement ->
+                new Quality(
+                    parseIntMember(qualityElement, "målemetode"),
+                    parseIntMember(qualityElement, "nøyaktighet"),
+                    parseIntMember(qualityElement, "målemetodeHøyde"),
+                    parseIntMember(qualityElement, "nøyaktighetHøyde"),
+                    parseIntMember(qualityElement, "maksimaltAvvik"),
+                    parseIntMember(qualityElement, "synbarhet")))
+            .orElse(null);
     }
 
     public static RoadObjectTypeWithStats parseRoadObjectTypeWithStats(JsonObject o) {
         return new RoadObjectTypeWithStats(
-                o.get("id").getAsInt(),
-                o.get("navn").getAsString(),
-                parseStatistics(o.getAsJsonObject("statistikk"))
+            o.get("id").getAsInt(),
+            o.get("navn").getAsString(),
+            parseStatistics(o.getAsJsonObject("statistikk"))
         );
     }
 }
