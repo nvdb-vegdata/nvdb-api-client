@@ -11,7 +11,7 @@ This artifact will be published to _jCenter_ upon releases: http://jcenter.bintr
 
 ## Gradle
 ```gradle
-compile "no.vegvesen.nvdb:nvdbapi-client:1.0.1"
+compile "no.vegvesen.nvdb:nvdbapi-client:1.2.4"
 ```
 
 ## Maven
@@ -19,7 +19,7 @@ compile "no.vegvesen.nvdb:nvdbapi-client:1.0.1"
 <dependency>
     <groupId>no.vegvesen.nvdb</groupId>
     <artifactId>nvdb-api-client</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.4</version>
 </dependency>
 ```
 
