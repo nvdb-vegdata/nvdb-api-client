@@ -92,6 +92,7 @@
         ],
         "stedfestinger": [
           {
+            "type": "Linje",
             "veglenkesekvens": 383266,
             "startposisjon": 0.0,
             "sluttposisjon": 1.0,

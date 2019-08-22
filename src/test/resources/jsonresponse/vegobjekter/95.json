@@ -123,6 +123,7 @@
         ],
         "stedfestinger": [
           {
+            "type": "Punkt",
             "veglenkesekvens": 384011,
             "relativPosisjon": 0.07178555,
             "kortform": "0.07178555@384011",

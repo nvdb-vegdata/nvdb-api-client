@@ -1,0 +1,22 @@
+{
+  "stedfestinger": [
+    {
+      "type": "Linje",
+      "veglenkesekvens": 377022,
+      "startposisjon": 0,
+      "sluttposisjon": 0.24152711,
+      "kortform": "0.0-0.24152711@377022",
+      "kjørefelt": [],
+      "retning": "MED"
+    },
+    {
+      "type": "Linje",
+      "veglenkesekvens": 2637837,
+      "startposisjon": 0,
+      "sluttposisjon": 1,
+      "kortform": "0.0-1.0@2637837",
+      "kjørefelt": [],
+      "retning": "MED"
+    }
+  ]
+}

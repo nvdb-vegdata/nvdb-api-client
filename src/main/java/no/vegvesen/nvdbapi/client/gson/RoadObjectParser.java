@@ -125,7 +125,7 @@ public final class RoadObjectParser {
         }
     }
 
-    private static Location parseLocation(JsonObject obj) {
+    static Location parseLocation(JsonObject obj) {
         List<Integer> municipalities = parseIntListMember(obj, "kommuner");
         List<Integer> counties = parseIntListMember(obj, "fylker");
         List<ContractArea> contractAreas = parseContractAreas(obj);
@@ -264,8 +264,8 @@ public final class RoadObjectParser {
                     case "Sving": return new TurnExtent(
                         id,
                         parseLongMember(obj, "netelementid"),
-                        PlacementParser.parsePlacementAttribute(obj.getAsJsonObject("startpunkt")),
-                        PlacementParser.parsePlacementAttribute(obj.getAsJsonObject("sluttpunkt"))
+                        PlacementParser.parseRefLinkExtentPlacementAttribute(obj.getAsJsonObject("startpunkt")),
+                        PlacementParser.parseRefLinkExtentPlacementAttribute(obj.getAsJsonObject("sluttpunkt"))
                     );
                     default: throw new IllegalArgumentException("Unknown stedfestingstype " + stedfestingstype);
                 }
