@@ -96,9 +96,9 @@ public final class PlacementParser {
                                                                 String endPosField) {
         if (isNull(obj)) return null;
         Long nodeid = parseLongMember(obj, "nodeid");
-        RefLinkExtentPlacement startposisjon = parseRefLinkExtentPlacement(obj.getAsJsonObject("startposisjon"),
+        RefLinkExtentPlacement startposisjon = parseRefLinkExtentPlacement(obj.getAsJsonObject("startpunkt"),
             startPosField, endPosField);
-        RefLinkExtentPlacement sluttposisjon = parseRefLinkExtentPlacement(obj.getAsJsonObject("sluttposisjon"),
+        RefLinkExtentPlacement sluttposisjon = parseRefLinkExtentPlacement(obj.getAsJsonObject("sluttpunkt"),
             startPosField, endPosField);
 
         return new TurnExtentPlacement(nodeid, startposisjon, sluttposisjon);
@@ -107,7 +107,13 @@ public final class PlacementParser {
     private static RefLinkExtentPlacement parseRefLinkExtentPlacement(JsonObject obj, String startPosField,
                                                                       String endPosField) {
         if (isNull(obj)) return null;
-        long netElementId = parseLongMember(obj, "veglenkesekvens");
+
+        long netElementId;
+        if(obj.has("veglenkesekvens")){
+            netElementId = parseLongMember(obj, "veglenkesekvens");
+        }else{
+            netElementId = parseLongMember(obj, "netelementid");
+        }
 
         double startPos, endPos;
         if (obj.has("relativPosisjon")) {
