@@ -26,7 +26,7 @@
 package no.vegvesen.nvdbapi.client.model.roadnet;
 
 import no.vegvesen.nvdbapi.client.model.Geometry;
-import no.vegvesen.nvdbapi.client.model.roadobjects.Placement;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RefLinkExtentPlacement;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -49,7 +49,7 @@ public class Link {
     private final LocalDate measureDate;
     private final SosiMedium sosiMedium;
     private final Ltema ltema;
-    private final Placement centerLineProjection;
+    private final RefLinkExtentPlacement centerLineProjection;
     private final String typeRoad;
     private final String detailLevel;
     private final Geometry geometry;
@@ -60,7 +60,7 @@ public class Link {
     public Link(Integer partId, Boolean isConnectionLink, Boolean isDetailed, TopologyLevel topologyLevel,
                 Integer startPort, Integer endPort, Double startPos, Double endPos, Integer municipality,
                 Integer municipalityGeometry, Double length, String measureMethod, LocalDate measureDate,
-                SosiMedium sosiMedium, Ltema ltema, Placement centerLineProjection, String typeRoad, String detailLevel,
+                SosiMedium sosiMedium, Ltema ltema, RefLinkExtentPlacement centerLineProjection, String typeRoad, String detailLevel,
                 Geometry geometry, List<String> fields, LocalDate startDate, LocalDate endDate) {
         this.partId = partId;
         this.isConnectionLink = isConnectionLink;
@@ -134,7 +134,7 @@ public class Link {
         return ltema;
     }
 
-    public Placement getCenterLineProjection() {
+    public RefLinkExtentPlacement getCenterLineProjection() {
         return centerLineProjection;
     }
 

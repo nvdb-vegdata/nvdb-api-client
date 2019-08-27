@@ -3,7 +3,8 @@ package no.vegvesen.nvdbapi.client.gson;
 import no.vegvesen.nvdbapi.client.model.*;
 import no.vegvesen.nvdbapi.client.model.datakatalog.DataType;
 import no.vegvesen.nvdbapi.client.model.datakatalog.Unit;
-import no.vegvesen.nvdbapi.client.model.roadobjects.Placement;
+import no.vegvesen.nvdbapi.client.model.roadobjects.Location;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RefLinkExtentPlacement;
 import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObject;
 import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.*;
 import org.junit.jupiter.api.Test;
@@ -27,6 +28,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
 public class VegobjekterParserTest {
+
     @ParameterizedTest
     @CsvSource({"95","105"})
     void parseVegobjekter(String file) throws IOException {
@@ -39,6 +41,13 @@ public class VegobjekterParserTest {
         for (RoadObject roadObject : roadObjects) {
             assertThat(   roadObject.getLocation().getRoadSysRefs(), is(not(empty())));
         }
+    }
+
+    @ParameterizedTest
+    @CsvSource({"punkt", "linje", "sving"})
+    void parseStedfesting(String type) throws IOException {
+        Location location = parseObject("vegobjekter/lokasjon_" + type + ".json",
+            RoadObjectParser::parseLocation);
     }
 
     @Test
@@ -100,7 +109,7 @@ public class VegobjekterParserTest {
             ),
             new TurnExtent(15,
                 384011,
-                new Placement(
+                new RefLinkExtentPlacement(
                     942450,
                     0.23585116,
                     0.23585116,
@@ -108,7 +117,7 @@ public class VegobjekterParserTest {
                     SidePosition.MIDDLE,
                     emptyList()
                 ),
-                new Placement(
+                new RefLinkExtentPlacement(
                     942694,
                     0.64558392,
                     0.64558392,
