@@ -200,7 +200,7 @@ public final class RoadObjectParser {
         double endPos   = isPoint ? startPos : parseDoubleMember(obj, "sluttposisjon");
 
         return new Segment(
-            parseLongMember(obj, "veglenkesekvens"),
+            parseLongMember(obj, "veglenkesekvensid"),
             startPos,
             endPos,
             geo,
@@ -254,18 +254,18 @@ public final class RoadObjectParser {
                     case "Linje":
                         return new ReflinkExtentAttribute(
                             id,
-                            parseLongMember(obj, "netelementid"),
+                            parseLongMember(obj, "veglenkesekvensid"),
                             Direction.from(parseStringMember(obj, "retning")),
                             SidePosition.from(parseStringMember(obj, "sideposisjon")),
                             parseStringListMember(obj, "kjørefelt"),
-                            parseDoubleMember(obj, "fra_posisjon"),
-                            parseDoubleMember(obj, "til_posisjon")
+                            parseDoubleMember(obj, "startposisjon"),
+                            parseDoubleMember(obj, "sluttposisjon")
                         );
                     case "Sving": return new TurnExtent(
                         id,
-                        parseLongMember(obj, "netelementid"),
-                        PlacementParser.parseRefLinkExtentPlacementAttribute(obj.getAsJsonObject("startpunkt")),
-                        PlacementParser.parseRefLinkExtentPlacementAttribute(obj.getAsJsonObject("sluttpunkt"))
+                        parseLongMember(obj, "nodeid"),
+                        PlacementParser.parseRefLinkExtentPlacement(obj.getAsJsonObject("startpunkt")),
+                        PlacementParser.parseRefLinkExtentPlacement(obj.getAsJsonObject("sluttpunkt"))
                     );
                     default: throw new IllegalArgumentException("Unknown stedfestingstype " + stedfestingstype);
                 }

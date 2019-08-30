@@ -18,10 +18,9 @@
           "egenskapstype": "Stedfesting",
           "datatype": "GeomPunkt",
           "stedfestingstype": "Punkt",
-          "netelementid": 384011,
-          "netelementtype": 50002,
-          "fra_posisjon": 0.07178555,
-          "til_posisjon": 0.07178555,
+          "veglenkesekvensid": 384011,
+          "startposisjon": 0.07178555,
+          "sluttposisjon": 0.07178555,
           "retning": "MED",
           "kjørefelt": []
         },
@@ -124,7 +123,7 @@
         "stedfestinger": [
           {
             "type": "Punkt",
-            "veglenkesekvens": 384011,
+            "veglenkesekvensid": 384011,
             "relativPosisjon": 0.07178555,
             "kortform": "0.07178555@384011",
             "kjørefelt": [],
@@ -138,7 +137,7 @@
       },
       "vegsegmenter": [
         {
-          "veglenkesekvens": 384011,
+          "veglenkesekvensid": 384011,
           "relativPosisjon": 0.07178555,
           "startdato": "2000-11-27",
           "sluttdato": "2003-05-21",
@@ -151,7 +150,7 @@
           "vegsystemreferanse": {}
         },
         {
-          "veglenkesekvens": 384011,
+          "veglenkesekvensid": 384011,
           "relativPosisjon": 0.07178555,
           "startdato": "2003-05-21",
           "sluttdato": "2003-07-01",
@@ -164,7 +163,7 @@
           "vegsystemreferanse": {}
         },
         {
-          "veglenkesekvens": 384011,
+          "veglenkesekvensid": 384011,
           "relativPosisjon": 0.07178555,
           "startdato": "2003-07-01",
           "sluttdato": "2007-07-08",
@@ -186,7 +185,7 @@
           }
         },
         {
-          "veglenkesekvens": 384011,
+          "veglenkesekvensid": 384011,
           "relativPosisjon": 0.07178555,
           "startdato": "2007-07-08",
           "sluttdato": "2007-08-30",
@@ -208,7 +207,7 @@
           }
         },
         {
-          "veglenkesekvens": 384011,
+          "veglenkesekvensid": 384011,
           "relativPosisjon": 0.07178555,
           "startdato": "2007-08-30",
           "sluttdato": "2008-01-01",
@@ -230,7 +229,7 @@
           }
         },
         {
-          "veglenkesekvens": 384011,
+          "veglenkesekvensid": 384011,
           "relativPosisjon": 0.07178555,
           "startdato": "2008-01-01",
           "sluttdato": "2011-01-01",
@@ -252,7 +251,7 @@
           }
         },
         {
-          "veglenkesekvens": 384011,
+          "veglenkesekvensid": 384011,
           "relativPosisjon": 0.07178555,
           "startdato": "2011-01-01",
           "sluttdato": "2013-02-26",
@@ -274,7 +273,7 @@
           }
         },
         {
-          "veglenkesekvens": 384011,
+          "veglenkesekvensid": 384011,
           "relativPosisjon": 0.07178555,
           "startdato": "2013-02-26",
           "sluttdato": "2014-05-01",
@@ -296,7 +295,7 @@
           }
         },
         {
-          "veglenkesekvens": 384011,
+          "veglenkesekvensid": 384011,
           "relativPosisjon": 0.07178555,
           "startdato": "2014-05-01",
           "sluttdato": "2016-01-01",
@@ -318,7 +317,7 @@
           }
         },
         {
-          "veglenkesekvens": 384011,
+          "veglenkesekvensid": 384011,
           "relativPosisjon": 0.07178555,
           "startdato": "2016-01-01",
           "sluttdato": "2016-03-10",
@@ -340,7 +339,7 @@
           }
         },
         {
-          "veglenkesekvens": 384011,
+          "veglenkesekvensid": 384011,
           "relativPosisjon": 0.07178555,
           "startdato": "2016-03-10",
           "sluttdato": "2017-09-29",
@@ -362,7 +361,7 @@
           }
         },
         {
-          "veglenkesekvens": 384011,
+          "veglenkesekvensid": 384011,
           "relativPosisjon": 0.07178555,
           "startdato": "2017-09-29",
           "sluttdato": "2017-11-07",
@@ -384,7 +383,7 @@
           }
         },
         {
-          "veglenkesekvens": 384011,
+          "veglenkesekvensid": 384011,
           "relativPosisjon": 0.07178555,
           "startdato": "2017-11-07",
           "sluttdato": "2017-12-15",
@@ -406,7 +405,7 @@
           }
         },
         {
-          "veglenkesekvens": 384011,
+          "veglenkesekvensid": 384011,
           "relativPosisjon": 0.07178555,
           "startdato": "2017-12-15",
           "sluttdato": "2018-01-01",
@@ -428,7 +427,7 @@
           }
         },
         {
-          "veglenkesekvens": 384011,
+          "veglenkesekvensid": 384011,
           "relativPosisjon": 0.07178555,
           "startdato": "2018-01-01",
           "geometri": {

@@ -75,28 +75,11 @@ public final class GeometryParser {
         String wkt = parseStringMember(obj, "verdi");
         Projection srid = Projection.UTM33;
 
-        Quality quality = getAttributeQuality(obj);
+        Quality quality = getQuality(obj);
 
         GeometryAttributes geometryAttributes = getGeometryAttributes(obj);
 
         return new Geometry(wkt, srid, quality, false, true, geometryAttributes);
-    }
-
-    /*
-    Remove in response rev 1
-     */
-    private static Quality getAttributeQuality(JsonObject obj) {
-        if (obj.has("kvalitet")) {
-            Integer method = parseIntMember(obj, "kvalitet.målemetode");
-            Integer accuracy = parseIntMember(obj, "kvalitet.nøyaktighet");
-            Integer heightMethod = parseIntMember(obj, "kvalitet.målemetodeHøyde");
-            Integer heightAccuracy = parseIntMember(obj, "kvalitet.nøyaktighetHøyde");
-            Integer tolerance = parseIntMember(obj, "kvalitet.maksimaltAvvik");
-            Integer visibility = parseIntMember(obj, "kvalitet.synbarhet");
-            return new Quality(method, accuracy, heightMethod, heightAccuracy, tolerance, visibility);
-        } else {
-            return null;
-        }
     }
 
     private static Quality getQuality(JsonObject obj) {
