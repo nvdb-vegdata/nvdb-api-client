@@ -19,8 +19,7 @@
           "datatype": "GeomPunkt",
           "stedfestingstype": "Punkt",
           "veglenkesekvensid": 384011,
-          "startposisjon": 0.07178555,
-          "sluttposisjon": 0.07178555,
+          "relativPosisjon": 0.07178555,
           "retning": "MED",
           "kjørefelt": []
         },
