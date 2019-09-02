@@ -1,0 +1,306 @@
+{
+  "objekter": [
+    {
+      "id": 78728489,
+      "href": "https://www.vegvesen.no/nvdb/api/v3/vegobjekter/581/78728489/4",
+      "metadata": {
+        "type": {
+          "id": 581,
+          "navn": "Tunnel"
+        },
+        "versjon": 4,
+        "startdato": "2014-02-21",
+        "sist_modifisert": "2016-11-21T15:07:07"
+      },
+      "egenskaper": [
+        {
+          "id": 3913,
+          "navn": "Merknad syklende",
+          "egenskapstype": "Tekst",
+          "datatype": "Tekst",
+          "verdi": "Omkøyring utenom tunnelen"
+        },
+        {
+          "id": 3915,
+          "navn": "Kabler seksjonert",
+          "egenskapstype": "Tekst",
+          "datatype": "FlerverdiAttributt, Tekst",
+          "verdi": "Ja",
+          "enum_id": 4922
+        },
+        {
+          "id": 3916,
+          "navn": "Kabler sikret v nedgraving",
+          "egenskapstype": "Tekst",
+          "datatype": "FlerverdiAttributt, Tekst",
+          "verdi": "Ja",
+          "enum_id": 4924
+        },
+        {
+          "id": 3917,
+          "navn": "Service-/nødtelefoner til VTS",
+          "egenskapstype": "Tekst",
+          "datatype": "FlerverdiAttributt, Tekst",
+          "verdi": "Ja",
+          "enum_id": 5009
+        },
+        {
+          "id": 3918,
+          "navn": "Alarm til VTS ved fjerning av brannslokker",
+          "egenskapstype": "Tekst",
+          "datatype": "FlerverdiAttributt, Tekst",
+          "verdi": "Ja",
+          "enum_id": 4926
+        },
+        {
+          "id": 3947,
+          "navn": "Antall parallelle hovedløp",
+          "egenskapstype": "Heltall",
+          "datatype": "Flerverdiattributt, Tall",
+          "verdi": 1,
+          "enum_id": 5011,
+          "enhet": {
+            "id": 12,
+            "navn": "Stykker",
+            "kortnavn": "stk"
+          }
+        },
+        {
+          "id": 5225,
+          "navn": "Navn",
+          "egenskapstype": "Tekst",
+          "datatype": "Tekst",
+          "verdi": "Bogstunnelen"
+        },
+        {
+          "id": 8150,
+          "navn": "Sum lengde alle løp",
+          "egenskapstype": "Heltall",
+          "datatype": "Tall",
+          "verdi": 2489,
+          "enhet": {
+            "id": 1,
+            "navn": "Meter",
+            "kortnavn": "m"
+          }
+        },
+        {
+          "id": 8151,
+          "navn": "Sum lengde ramper",
+          "egenskapstype": "Heltall",
+          "datatype": "Tall",
+          "verdi": 0,
+          "enhet": {
+            "id": 1,
+            "navn": "Meter",
+            "kortnavn": "m"
+          }
+        },
+        {
+          "id": 8945,
+          "navn": "Lengde, offisiell",
+          "egenskapstype": "Heltall",
+          "datatype": "Tall",
+          "verdi": 3482,
+          "enhet": {
+            "id": 1,
+            "navn": "Meter",
+            "kortnavn": "m"
+          }
+        },
+        {
+          "id": 9131,
+          "navn": "Restriksjonsklasse",
+          "egenskapstype": "Tekst",
+          "datatype": "FlerverdiAttributt, Tekst",
+          "verdi": "a",
+          "enum_id": 12167
+        },
+        {
+          "id": 9134,
+          "navn": "Tunnelklasse, prosjektert",
+          "egenskapstype": "Tekst",
+          "datatype": "FlerverdiAttributt, Tekst",
+          "verdi": "B",
+          "enum_id": 12173
+        },
+        {
+          "id": 9506,
+          "navn": "Merknad restriksjonsklasse",
+          "egenskapstype": "Tekst",
+          "datatype": "Tekst",
+          "verdi": "Ingen restriksjoner på transport av farlig gods"
+        },
+        {
+          "id": 9507,
+          "navn": "Særskilt brannobjekt fra tidspunkt",
+          "egenskapstype": "Dato",
+          "datatype": "Dato",
+          "verdi": "2014-09-01"
+        },
+        {
+          "id": 9517,
+          "navn": "Undersjøisk",
+          "egenskapstype": "Tekst",
+          "datatype": "FlerverdiAttributt, Tekst",
+          "verdi": "Nei",
+          "enum_id": 13433
+        },
+        {
+          "id": 9518,
+          "navn": "Sykkelforbud",
+          "egenskapstype": "Tekst",
+          "datatype": "FlerverdiAttributt, Tekst",
+          "verdi": "Ja",
+          "enum_id": 13434
+        },
+        {
+          "id": 10383,
+          "navn": "Åpningsår",
+          "egenskapstype": "Heltall",
+          "datatype": "Tall",
+          "verdi": 2004
+        },
+        {
+          "id": 100581,
+          "navn": "PunktTilknytning",
+          "egenskapstype": "Stedfesting",
+          "datatype": "GeomPunkt",
+          "stedfestingstype": "Punkt",
+          "netelementid": 384020,
+          "netelementtype": 50002,
+          "fra_posisjon": 0.86445343,
+          "til_posisjon": 0.86445343,
+          "retning": "MED",
+          "kjørefelt": []
+        },
+        {
+          "id": 220710,
+          "egenskapstype": "Liste",
+          "datatype": "Liste",
+          "innhold": [
+            {
+              "id": 200710,
+              "navn": "Assosiert Tunnelløp",
+              "egenskapstype": "Assosiasjon",
+              "datatype": "Assosiasjon",
+              "verdi": 78728490
+            }
+          ]
+        }
+      ],
+      "geometri": {
+        "wkt": "POINT Z(5164.80986 6817661.87851 21.56245)",
+        "srid": 6173,
+        "egengeometri": false
+      },
+      "lokasjon": {
+        "kommuner": [
+          1416
+        ],
+        "fylker": [
+          14
+        ],
+        "kontraktsområder": [
+          {
+            "id": 145020211,
+            "nummer": 1454,
+            "navn": "1454 ELEKTRO"
+          },
+          {
+            "id": 218107773,
+            "nummer": 1405,
+            "navn": "1405 INDRE SUNNFJORD 2009-2015"
+          },
+          {
+            "id": 276453424,
+            "nummer": 1454,
+            "navn": "1454 ELEKTRO SOGN 2012-2017"
+          },
+          {
+            "id": 375350761,
+            "nummer": 1405,
+            "navn": "1405 Indre Sunnfjord 2015-2020"
+          },
+          {
+            "id": 671571191,
+            "nummer": 1454,
+            "navn": "E1454 Elektrokontrakt Sogn 2017-2022"
+          }
+        ],
+        "riksvegruter": [
+          {
+            "id": 137072909,
+            "nummer": "9",
+            "navn": "RUTE9",
+            "periode": "2006-2009"
+          },
+          {
+            "id": 137072910,
+            "nummer": "4A",
+            "navn": "RUTE4A",
+            "periode": "2010-2019"
+          },
+          {
+            "id": 495996693,
+            "nummer": "4A",
+            "navn": "RUTE4A",
+            "periode": "2014-2023 / 2018-2029"
+          }
+        ],
+        "vegsystemreferanser": [
+          {
+            "vegsystem": {
+              "id": 844866699,
+              "versjon": 1,
+              "vegkategori": "E",
+              "fase": "V",
+              "nummer": 39
+            },
+            "strekning": {
+              "id": 846167484,
+              "versjon": 1,
+              "strekning": 65,
+              "delstrekning": 1,
+              "arm": false,
+              "adskilte_løp": "Nei",
+              "trafikantgruppe": "K",
+              "meter": 20324.286,
+              "retning": "MED"
+            },
+            "kortform": "EV39 S65D1 m20324"
+          }
+        ],
+        "stedfestinger": [
+          {
+            "type": "Punkt",
+            "veglenkesekvens": 384020,
+            "relativPosisjon": 0.86445343,
+            "kortform": "0.86445343@384020",
+            "kjørefelt": [],
+            "retning": "MED"
+          }
+        ],
+        "geometri": {
+          "wkt": "POINT Z(5164.80986 6817661.87851 21.56245)",
+          "srid": 6173
+        }
+      },
+      "relasjoner": {
+        "barn": [
+          {
+            "listeid": 220710,
+            "id": 200710,
+            "type": {
+              "id": 67,
+              "navn": "Tunnelløp"
+            },
+            "vegobjekter": [
+              78728490
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
