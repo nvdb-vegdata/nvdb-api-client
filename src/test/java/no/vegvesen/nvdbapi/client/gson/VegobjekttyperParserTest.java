@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.is;
 
 public class VegobjekttyperParserTest {
     @ParameterizedTest
-    @CsvSource({"95","105"})
+    @CsvSource({"14","95","105","581"})
     void parseVegobjekttyper(String file) throws IOException {
         Map<String, DataType> datatyper = parsePlainList("vegobjekttyper/datatyper.json", AttributeTypeParser::parseDataType)
             .stream()
