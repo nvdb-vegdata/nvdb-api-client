@@ -23,7 +23,7 @@
         {
           "id": 3915,
           "navn": "Kabler seksjonert",
-          "egenskapstype": "Tekst",
+          "egenskapstype": "Tekstenum",
           "datatype": "FlerverdiAttributt, Tekst",
           "verdi": "Ja",
           "enum_id": 4922
@@ -31,7 +31,7 @@
         {
           "id": 3916,
           "navn": "Kabler sikret v nedgraving",
-          "egenskapstype": "Tekst",
+          "egenskapstype": "Tekstenum",
           "datatype": "FlerverdiAttributt, Tekst",
           "verdi": "Ja",
           "enum_id": 4924
@@ -39,7 +39,7 @@
         {
           "id": 3917,
           "navn": "Service-/nødtelefoner til VTS",
-          "egenskapstype": "Tekst",
+          "egenskapstype": "Tekstenum",
           "datatype": "FlerverdiAttributt, Tekst",
           "verdi": "Ja",
           "enum_id": 5009
@@ -47,7 +47,7 @@
         {
           "id": 3918,
           "navn": "Alarm til VTS ved fjerning av brannslokker",
-          "egenskapstype": "Tekst",
+          "egenskapstype": "Tekstenum",
           "datatype": "FlerverdiAttributt, Tekst",
           "verdi": "Ja",
           "enum_id": 4926
@@ -55,7 +55,7 @@
         {
           "id": 3947,
           "navn": "Antall parallelle hovedløp",
-          "egenskapstype": "Heltall",
+          "egenskapstype": "Heltallenum",
           "datatype": "Flerverdiattributt, Tall",
           "verdi": 1,
           "enum_id": 5011,
@@ -111,7 +111,7 @@
         {
           "id": 9131,
           "navn": "Restriksjonsklasse",
-          "egenskapstype": "Tekst",
+          "egenskapstype": "Tekstenum",
           "datatype": "FlerverdiAttributt, Tekst",
           "verdi": "a",
           "enum_id": 12167
@@ -119,7 +119,7 @@
         {
           "id": 9134,
           "navn": "Tunnelklasse, prosjektert",
-          "egenskapstype": "Tekst",
+          "egenskapstype": "Tekstenum",
           "datatype": "FlerverdiAttributt, Tekst",
           "verdi": "B",
           "enum_id": 12173
@@ -141,7 +141,7 @@
         {
           "id": 9517,
           "navn": "Undersjøisk",
-          "egenskapstype": "Tekst",
+          "egenskapstype": "Tekstenum",
           "datatype": "FlerverdiAttributt, Tekst",
           "verdi": "Nei",
           "enum_id": 13433
@@ -149,7 +149,7 @@
         {
           "id": 9518,
           "navn": "Sykkelforbud",
-          "egenskapstype": "Tekst",
+          "egenskapstype": "Tekstenum",
           "datatype": "FlerverdiAttributt, Tekst",
           "verdi": "Ja",
           "enum_id": 13434
@@ -167,10 +167,8 @@
           "egenskapstype": "Stedfesting",
           "datatype": "GeomPunkt",
           "stedfestingstype": "Punkt",
-          "netelementid": 384020,
-          "netelementtype": 50002,
-          "fra_posisjon": 0.86445343,
-          "til_posisjon": 0.86445343,
+          "veglenkesekvensid": 384020,
+          "relativPosisjon": 0.86445343,
           "retning": "MED",
           "kjørefelt": []
         },
@@ -274,7 +272,7 @@
         "stedfestinger": [
           {
             "type": "Punkt",
-            "veglenkesekvens": 384020,
+            "veglenkesekvensid": 384020,
             "relativPosisjon": 0.86445343,
             "kortform": "0.86445343@384020",
             "kjørefelt": [],

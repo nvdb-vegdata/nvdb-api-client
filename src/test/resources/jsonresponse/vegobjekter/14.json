@@ -16,7 +16,7 @@
         {
           "id": 1096,
           "navn": "Type",
-          "egenskapstype": "Tekst",
+          "egenskapstype": "Tekstenum",
           "datatype": "FlerverdiAttributt, Tekst",
           "verdi": "Nedføring i bakken uten utsvinging",
           "enum_id": 2458
@@ -36,7 +36,7 @@
         {
           "id": 4660,
           "navn": "Stolpeavstand",
-          "egenskapstype": "Flyttall",
+          "egenskapstype": "Flyttallenum",
           "datatype": "Flerverdiattributt, Tall",
           "verdi": 4,
           "enum_id": 5748,
@@ -52,10 +52,8 @@
           "egenskapstype": "Stedfesting",
           "datatype": "GeomPunkt",
           "stedfestingstype": "Punkt",
-          "netelementid": 885802,
-          "netelementtype": 50002,
-          "fra_posisjon": 0.21726374,
-          "til_posisjon": 0.21726374,
+          "veglenkesekvensid": 885802,
+          "relativPosisjon": 0.21726374,
           "retning": "MED",
           "sideposisjon": "H",
           "kjørefelt": []
@@ -168,7 +166,7 @@
         "stedfestinger": [
           {
             "type": "Punkt",
-            "veglenkesekvens": 885802,
+            "veglenkesekvensid": 885802,
             "relativPosisjon": 0.21726374,
             "kortform": "0.21726374@885802",
             "kjørefelt": [],
