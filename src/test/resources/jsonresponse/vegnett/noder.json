@@ -8,10 +8,10 @@
         "wkt": "POINT Z (100007.63000488 6502757.89990234 244.25)",
         "srid": 6173,
         "kvalitet": {
-          "metode": 0,
+          "målemetode": 0,
           "nøyaktighet": 0,
-          "høydenøyaktighet": -1,
-          "toleranse": -1,
+          "nøyaktighetHøyde": -1,
+          "maksimaltAvvik": -1,
           "synbarhet": 99
         }
       },

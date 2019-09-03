@@ -73,11 +73,6 @@ public final class PlacementParser {
         return parsePlacement(obj, "startposisjon", "sluttposisjon");
     }
 
-    // Will be fixed in response rev1
-    static RefLinkExtentPlacement parseRefLinkExtentPlacementAttribute(JsonObject obj) {
-        return parseRefLinkExtentPlacement(obj, "fra_posisjon", "til_posisjon");
-    }
-
     public static RefLinkExtentPlacement parseRefLinkExtentPlacement(JsonObject obj) {
         return parseRefLinkExtentPlacement(obj, "startposisjon", "sluttposisjon");
     }
@@ -108,12 +103,7 @@ public final class PlacementParser {
                                                                       String endPosField) {
         if (isNull(obj)) return null;
 
-        long netElementId;
-        if(obj.has("veglenkesekvens")){
-            netElementId = parseLongMember(obj, "veglenkesekvens");
-        }else{
-            netElementId = parseLongMember(obj, "netelementid");
-        }
+        long netElementId = parseLongMember(obj, "veglenkesekvensid");
 
         double startPos, endPos;
         if (obj.has("relativPosisjon")) {

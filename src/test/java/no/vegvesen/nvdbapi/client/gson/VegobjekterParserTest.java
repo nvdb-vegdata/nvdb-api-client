@@ -30,7 +30,7 @@ import static org.hamcrest.Matchers.*;
 public class VegobjekterParserTest {
 
     @ParameterizedTest
-    @CsvSource({"95","105"})
+    @CsvSource({"14","95","105","581"})
     void parseVegobjekter(String file) throws IOException {
         Map<String, DataType> datatyper = parsePlainList("vegobjekttyper/datatyper.json", AttributeTypeParser::parseDataType)
             .stream()
@@ -39,7 +39,8 @@ public class VegobjekterParserTest {
         assertThat(roadObjects.size(), is(not(0)));
 
         for (RoadObject roadObject : roadObjects) {
-            assertThat(   roadObject.getLocation().getRoadSysRefs(), is(not(empty())));
+            assertThat(roadObject.getLocation().getRoadSysRefs(), is(not(empty())));
+            assertThat(roadObject.getAttributes(), is(not(empty())));
         }
     }
 

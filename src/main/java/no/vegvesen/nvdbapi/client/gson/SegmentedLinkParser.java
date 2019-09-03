@@ -39,8 +39,8 @@ public final class SegmentedLinkParser {
 
     public static SegmentedLink parse(JsonObject obj) {
         return new SegmentedLink(
-                parseLongMember(obj, "veglenkesekvens"),
-                parseLongMember(obj, "superstedfesting.veglenkesekvens"),
+                parseLongMember(obj, "veglenkesekvensid"),
+                parseLongMember(obj, "superstedfesting.veglenkesekvensid"),
                 parseDoubleMember(obj, "startposisjon"),
                 parseDoubleMember(obj, "sluttposisjon"),
                 parseIntMember(obj, "veglenkenummer"),

@@ -1,0 +1,213 @@
+{
+  "objekter": [
+    {
+      "id": 218657887,
+      "href": "https://nvdbw01.kantega.no/nvdb/api/v3/vegobjekter/14/218657887/2",
+      "metadata": {
+        "type": {
+          "id": 14,
+          "navn": "Rekkverksende"
+        },
+        "versjon": 2,
+        "startdato": "2014-07-02",
+        "sist_modifisert": "2016-01-04T15:14:06"
+      },
+      "egenskaper": [
+        {
+          "id": 1096,
+          "navn": "Type",
+          "egenskapstype": "Tekstenum",
+          "datatype": "FlerverdiAttributt, Tekst",
+          "verdi": "Nedføring i bakken uten utsvinging",
+          "enum_id": 2458
+        },
+        {
+          "id": 1303,
+          "navn": "Lengde",
+          "egenskapstype": "Flyttall",
+          "datatype": "Tall",
+          "verdi": 4,
+          "enhet": {
+            "id": 1,
+            "navn": "Meter",
+            "kortnavn": "m"
+          }
+        },
+        {
+          "id": 4660,
+          "navn": "Stolpeavstand",
+          "egenskapstype": "Flyttallenum",
+          "datatype": "Flerverdiattributt, Tall",
+          "verdi": 4,
+          "enum_id": 5748,
+          "enhet": {
+            "id": 1,
+            "navn": "Meter",
+            "kortnavn": "m"
+          }
+        },
+        {
+          "id": 100014,
+          "navn": "PunktTilknytning",
+          "egenskapstype": "Stedfesting",
+          "datatype": "GeomPunkt",
+          "stedfestingstype": "Punkt",
+          "veglenkesekvensid": 885802,
+          "relativPosisjon": 0.21726374,
+          "retning": "MED",
+          "sideposisjon": "H",
+          "kjørefelt": []
+        },
+        {
+          "id": 221095,
+          "egenskapstype": "Liste",
+          "datatype": "Liste",
+          "innhold": [
+            {
+              "id": 201095,
+              "navn": "Assosiert Tilstand/skade, punkt",
+              "egenskapstype": "Assosiasjon",
+              "datatype": "Assosiasjon",
+              "verdi": 218657888
+            },
+            {
+              "id": 201095,
+              "navn": "Assosiert Tilstand/skade, punkt",
+              "egenskapstype": "Assosiasjon",
+              "datatype": "Assosiasjon",
+              "verdi": 526803327
+            }
+          ]
+        }
+      ],
+      "geometri": {
+        "wkt": "POINT Z(487058.90597 7628387.59223 4.4514)",
+        "srid": 6173,
+        "egengeometri": false
+      },
+      "lokasjon": {
+        "kommuner": [
+          1867
+        ],
+        "fylker": [
+          18
+        ],
+        "kontraktsområder": [
+          {
+            "id": 481729835,
+            "nummer": 1810,
+            "navn": "1810 VESTERÅLEN 2015-2021"
+          },
+          {
+            "id": 481729842,
+            "nummer": 1823,
+            "navn": "1823 1810-04 Vinterdrift Vesterålen Vest 2015-2021"
+          },
+          {
+            "id": 529386157,
+            "nummer": 5003,
+            "navn": "5003 Lofoten_Vesterålen 2014-2019"
+          },
+          {
+            "id": 579086808,
+            "nummer": 1824,
+            "navn": "1824 1810-05 Vesterålen Brøytestikk 2015-2021"
+          },
+          {
+            "id": 667848290,
+            "nummer": 1825,
+            "navn": "1825 1810-06 Drenering Vesterålen 2016-2021"
+          },
+          {
+            "id": 667848291,
+            "nummer": 1826,
+            "navn": "1826 1810-07 Faste dekker Vesterålen 2016-2021"
+          },
+          {
+            "id": 667848292,
+            "nummer": 1828,
+            "navn": "1828 1810-09 Skilt-rekkverk Vesterålen 2016-2021"
+          },
+          {
+            "id": 667848293,
+            "nummer": 1827,
+            "navn": "1827 1810-08 Grønt-renhold Vesterålen 2016-2021"
+          },
+          {
+            "id": 920624670,
+            "nummer": 5003,
+            "navn": "5003 Ofoten - Lofoten og Vesterålen 2020-2025"
+          }
+        ],
+        "riksvegruter": [],
+        "vegsystemreferanser": [
+          {
+            "vegsystem": {
+              "id": 844852880,
+              "versjon": 1,
+              "vegkategori": "F",
+              "fase": "V",
+              "nummer": 919
+            },
+            "strekning": {
+              "id": 846139939,
+              "versjon": 1,
+              "strekning": 1,
+              "delstrekning": 1,
+              "arm": false,
+              "adskilte_løp": "Nei",
+              "trafikantgruppe": "K",
+              "meter": 1326,
+              "retning": "MED"
+            },
+            "kortform": "FV919 S1D1 m1326"
+          }
+        ],
+        "stedfestinger": [
+          {
+            "type": "Punkt",
+            "veglenkesekvensid": 885802,
+            "relativPosisjon": 0.21726374,
+            "kortform": "0.21726374@885802",
+            "kjørefelt": [],
+            "sideposisjon": "H",
+            "retning": "MED"
+          }
+        ],
+        "geometri": {
+          "wkt": "POINT Z(487058.90597 7628387.59223 4.4514)",
+          "srid": 6173
+        }
+      },
+      "relasjoner": {
+        "foreldre": [
+          {
+            "listeid": 220057,
+            "id": 200057,
+            "type": {
+              "id": 5,
+              "navn": "Rekkverk"
+            },
+            "vegobjekter": [
+              89262462
+            ]
+          }
+        ],
+        "barn": [
+          {
+            "listeid": 221095,
+            "id": 201095,
+            "type": {
+              "id": 761,
+              "navn": "Tilstand/skade, punkt"
+            },
+            "vegobjekter": [
+              218657888,
+              526803327
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -43,10 +43,9 @@
               "egenskapstype": "Stedfesting",
               "datatype": "GeomLinje eller Kurve",
               "stedfestingstype": "Linje",
-              "netelementid": 383266,
-              "netelementtype": 50002,
-              "fra_posisjon": 0.0,
-              "til_posisjon": 1.0,
+              "veglenkesekvensid": 383266,
+              "startposisjon": 0.0,
+              "sluttposisjon": 1.0,
               "retning": "MED",
               "kjørefelt": []
             }
@@ -93,7 +92,7 @@
         "stedfestinger": [
           {
             "type": "Linje",
-            "veglenkesekvens": 383266,
+            "veglenkesekvensid": 383266,
             "startposisjon": 0.0,
             "sluttposisjon": 1.0,
             "kortform": "0.0-1.0@383266",
@@ -109,7 +108,7 @@
       },
       "vegsegmenter": [
         {
-          "veglenkesekvens": 383266,
+          "veglenkesekvensid": 383266,
           "startposisjon": 0.0,
           "sluttposisjon": 1.0,
           "lengde": 46,
@@ -133,7 +132,7 @@
           }
         },
         {
-          "veglenkesekvens": 383266,
+          "veglenkesekvensid": 383266,
           "startposisjon": 0.0,
           "sluttposisjon": 1.0,
           "lengde": 46,
