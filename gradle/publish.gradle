@@ -12,7 +12,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            artifactId 'nvdb-api-client'
+            artifactId 'nvdb-read-api-v3-client'
 
             from components.java
 
