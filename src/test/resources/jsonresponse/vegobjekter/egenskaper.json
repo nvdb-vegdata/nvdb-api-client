@@ -121,8 +121,7 @@
         "datatype": "GeomPunkt",
         "stedfestingstype": "Punkt",
         "veglenkesekvensid": 384011,
-        "startposisjon": 0.07178555,
-        "sluttposisjon": 0.07178555,
+        "relativPosisjon": 0.07178555,
         "retning": "MED",
         "kjørefelt": ["1"],
         "sideposisjon": "MH"
@@ -147,8 +146,7 @@
         "nodeid": 384011,
         "startpunkt": {
             "veglenkesekvensid": 942450,
-            "startposisjon": 0.23585116,
-            "sluttposisjon": 0.23585116,
+            "relativPosisjon": 0.23585116,
             "kortform": "23585116-0.23585116@942450",
             "kjørefelt": [ ],
             "retning": "MED",
@@ -156,8 +154,7 @@
         },
         "sluttpunkt": {
             "veglenkesekvensid": 942694,
-            "startposisjon": 0.64558392,
-            "sluttposisjon": 0.64558392,
+            "relativPosisjon": 0.64558392,
             "kortform": "0.64558392-0.64558392@942694",
             "kjørefelt": [ ],
             "retning": "MED",
