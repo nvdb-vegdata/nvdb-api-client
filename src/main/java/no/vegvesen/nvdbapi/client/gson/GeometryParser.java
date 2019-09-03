@@ -84,11 +84,11 @@ public final class GeometryParser {
 
     private static Quality getQuality(JsonObject obj) {
         if (obj.has("kvalitet")) {
-            Integer method = parseIntMember(obj, "kvalitet.metode");
+            Integer method = parseIntMember(obj, "kvalitet.målemetode");
             Integer accuracy = parseIntMember(obj, "kvalitet.nøyaktighet");
-            Integer heightMethod = parseIntMember(obj, "kvalitet.høydemetode");
-            Integer heightAccuracy = parseIntMember(obj, "kvalitet.høydenøyaktighet");
-            Integer tolerance = parseIntMember(obj, "kvalitet.toleranse");
+            Integer heightMethod = parseIntMember(obj, "kvalitet.målemetodeHøyde");
+            Integer heightAccuracy = parseIntMember(obj, "kvalitet.nøyaktighetHøyde");
+            Integer tolerance = parseIntMember(obj, "kvalitet.maksimaltAvvik");
             Integer visibility = parseIntMember(obj, "kvalitet.synbarhet");
             return new Quality(method, accuracy, heightMethod, heightAccuracy, tolerance, visibility);
         } else {
