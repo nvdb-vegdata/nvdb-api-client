@@ -251,6 +251,15 @@ public final class RoadObjectParser {
                 String stedfestingstype = parseStringMember(obj, "stedfestingstype");
                 switch (stedfestingstype) {
                     case "Punkt":
+                        return new ReflinkExtentAttribute(
+                            id,
+                            parseLongMember(obj, "veglenkesekvensid"),
+                            Direction.from(parseStringMember(obj, "retning")),
+                            SidePosition.from(parseStringMember(obj, "sideposisjon")),
+                            parseStringListMember(obj, "kjørefelt"),
+                            parseDoubleMember(obj, "relativPosisjon"),
+                            parseDoubleMember(obj, "relativPosisjon")
+                        );
                     case "Linje":
                         return new ReflinkExtentAttribute(
                             id,
