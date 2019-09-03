@@ -8,6 +8,7 @@ Base URL for the API is https://www.vegvesen.no/nvdb/api/v3
 
 # Artifact
 This artifact will be published to _jCenter_ upon releases: http://jcenter.bintray.com/
+See 'set me up' on [bintray](https://bintray.com/beta/#/nvdb-vegdata/vegdata/nvdb-read-api-v3-client?tab=overview)
 
 ## Gradle
 ```gradle
