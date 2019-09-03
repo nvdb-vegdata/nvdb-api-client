@@ -50,7 +50,7 @@ bintray {
     publications = ['mavenJava']
     pkg {
         repo = 'vegdata'
-        name = 'nvdb-api-client'
+        name = 'nvdb-read-api-v3-client'
         userOrg = 'nvdb-vegdata'
         licenses = ['BSD 2-Clause']
         vcsUrl = 'https://github.com/nvdb-vegdata/nvdb-api-client'
