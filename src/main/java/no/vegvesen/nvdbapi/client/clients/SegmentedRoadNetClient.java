@@ -129,14 +129,14 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         return start().path("vegnett");
     }
 
-    public final class SegmentedLinkResult extends GenericResultSet<SegmentedLink> {
+    public static final class SegmentedLinkResult extends GenericResultSet<SegmentedLink> {
 
         SegmentedLinkResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, SegmentedLinkParser::parse);
         }
     }
 
-    public final class AsyncSegmentedLinkResult extends AsyncResult<SegmentedLink> {
+    public static final class AsyncSegmentedLinkResult extends AsyncResult<SegmentedLink> {
 
         AsyncSegmentedLinkResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, SegmentedLinkParser::parse);
