@@ -29,17 +29,21 @@ import java.util.Objects;
 
 public class RefLinkPosition {
 
-    private final int id;
+    private final long id;
     private final double position;
     private final String shortName;
 
-    public RefLinkPosition(int id, double position, String shortName) {
+    public RefLinkPosition(long id, double position, String shortName) {
         this.id = id;
         this.position = position;
         this.shortName = shortName;
     }
 
-    public int getId() {
+    public RefLinkPosition(long id, double position) {
+        this(id, position, position + "@" + id);
+    }
+
+    public long getId() {
         return id;
     }
 

@@ -169,6 +169,13 @@ public final class ClientFactory implements AutoCloseable {
         return c;
     }
 
+    public RoadNetRouteClient createRoadNetRouteClient() {
+        assertIsOpen();
+        RoadNetRouteClient c = new RoadNetRouteClient(baseUrl, createClient(getDatakatalog().getVersion().getVersion()));
+        clients.add(c);
+        return c;
+    }
+
     private void assertIsOpen() {
         if (isClosed) {
             throw new IllegalStateException("Client factory is closed! Create new instance to continue.");

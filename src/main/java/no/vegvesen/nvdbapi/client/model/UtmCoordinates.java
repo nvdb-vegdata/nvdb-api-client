@@ -55,21 +55,15 @@ public final class UtmCoordinates implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         UtmCoordinates that = (UtmCoordinates) o;
-
-        if (!northing.equals(that.northing)) return false;
-        if (!easting.equals(that.easting)) return false;
-        return altitude.equals(that.altitude);
-
+        return Objects.equals(northing, that.northing) &&
+            Objects.equals(easting, that.easting) &&
+            Objects.equals(altitude, that.altitude);
     }
 
     @Override
     public int hashCode() {
-        int result = northing.hashCode();
-        result = 31 * result + easting.hashCode();
-        result = 31 * result + altitude.hashCode();
-        return result;
+        return Objects.hash(northing, easting, altitude);
     }
 
     @Override

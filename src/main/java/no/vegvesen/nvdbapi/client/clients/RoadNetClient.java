@@ -163,37 +163,37 @@ public class RoadNetClient extends AbstractJerseyClient {
         return start().path("vegnett");
     }
 
-    public final class AsyncLinkResult extends AsyncResult<LinkSequence> {
+    public static final class AsyncLinkResult extends AsyncResult<LinkSequence> {
         AsyncLinkResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, RoadNetParser::parseLinkSequence);
         }
     }
 
-    public final class LinkResult extends GenericResultSet<LinkSequence> {
+    public static final class LinkResult extends GenericResultSet<LinkSequence> {
         LinkResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, RoadNetParser::parseLinkSequence);
         }
     }
 
-    public final class NodeResult extends GenericResultSet<Node> {
+    public static final class NodeResult extends GenericResultSet<Node> {
         NodeResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, RoadNetParser::parseNode);
         }
     }
 
-    public final class AsyncNodeResult extends AsyncResult<Node> {
+    public static final class AsyncNodeResult extends AsyncResult<Node> {
         AsyncNodeResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, RoadNetParser::parseNode);
         }
     }
 
-    public final class NetElementResult extends GenericResultSet<NetElementWrapper> {
+    public static final class NetElementResult extends GenericResultSet<NetElementWrapper> {
         NetElementResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, RoadNetParser::parseNetElement);
         }
     }
 
-    public final class AsyncNetElementResult extends AsyncResult<NetElementWrapper> {
+    public static final class AsyncNetElementResult extends AsyncResult<NetElementWrapper> {
         AsyncNetElementResult(WebTarget baseTarget, Page currentPage) {
             super(baseTarget, currentPage, RoadNetParser::parseNetElement);
         }
