@@ -77,7 +77,7 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
     }
 
     private UriBuilder endpoint() {
-        return start().path("vegnett/rute");
+        return start().path("beta/vegnett/rute");
     }
 
     private Flux<RouteOnRoadNet> doRequest(WebTarget target) {
