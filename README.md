@@ -1,18 +1,18 @@
-[![Build Status](https://travis-ci.org/nvdb-vegdata/nvdb-api-client.svg?branch=master)](https://travis-ci.org/nvdb-vegdata/nvdb-api-client)
-
 # nvdb-api-client
-Open source Java client library for use with the NVDB REST API v3
+Open source Java client library for use with the NVDB REST API v3.
+
+Support or feedback: Issue on this repo or on [Gitter](https://gitter.im/nvdb-vegdata/api-les-v3)
 
 # API URL
 Base URL for the API is https://www.vegvesen.no/nvdb/api/v3
 
 # Artifact
 This artifact will be published to _jCenter_ upon releases: http://jcenter.bintray.com/
-See 'set me up' on [bintray](https://bintray.com/beta/#/nvdb-vegdata/vegdata/nvdb-read-api-v3-client?tab=overview)
+See 'set me up' on [bintray](https://bintray.com/beta/#/nvdb-vegdata/vegdata/nvdb-read-api-v3-client?tab=overview) for the latest version number.
 
 ## Gradle
 ```gradle
-compile "no.vegvesen.nvdb:nvdb-read-api-v3-client:1.0.1"
+compile "no.vegvesen.nvdb:nvdb-read-api-v3-client:$version"
 ```
 
 ## Maven
@@ -20,7 +20,7 @@ compile "no.vegvesen.nvdb:nvdb-read-api-v3-client:1.0.1"
 <dependency>
     <groupId>no.vegvesen.nvdb</groupId>
     <artifactId>nvdb-read-api-v3-client</artifactId>
-    <version>1.0.1</version>
+    <version>$version</version>
 </dependency>
 ```
 
@@ -34,12 +34,11 @@ We strongly encourage using the **X-Client-Name** header because it helps us gat
 ## Example
 To start using the library simply instantiate the factory. It takes three arguments:
 1. Base URL for the API
-2. Value for request header **User-Agent**
-3. Value for request header **X-Client-Name**
+2. Value for request header **X-Client-Name**
 
 ```java
 // First, create factory
-ClientFactory factory = new ClientFactory("https://www.vegvesen.no/nvdb/api/v3", "nvdb-read-api-v3-client", "ACME");
+ClientFactory factory = new ClientFactory("https://www.vegvesen.no/nvdb/api/v3", "nvdb-read-api-v3-client");
 // Then, create your client. Typically, there's one per root endpoint
 RoadObjectClient client = factory.createRoadObjectClient();
 
