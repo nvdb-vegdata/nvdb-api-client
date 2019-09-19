@@ -42,9 +42,11 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
 
 import static java.util.Objects.isNull;
 
@@ -63,27 +65,102 @@ public final class ClientFactory implements AutoCloseable {
     private PoolingHttpClientConnectionManager connectionManager;
     private Login.AuthTokens authTokens;
 
+    /**
+     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
+     * @param userAgent - «User-Agent» header - deprecated, is ignored
+     * @param xClientName - a name describing/name of your consumer application.
+     *
+     * @deprecated Use constructor without userAgent
+     */
+    @Deprecated
     public ClientFactory(String baseUrl, String userAgent, String xClientName) {
         this(baseUrl, userAgent, xClientName, null, null);
     }
 
+    /**
+     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
+     * @param userAgent - «User-Agent» header - deprecated, is ignored
+     * @param xClientName - a name describing/name of your consumer application.
+     * @param proxyConfig - Config if traffic have to go through proxy.
+     *
+     * @deprecated Use constructor without userAgent
+     */
+    @Deprecated
     public ClientFactory(String baseUrl, String userAgent, String xClientName, ProxyConfig proxyConfig) {
         this(baseUrl, userAgent, xClientName, null, proxyConfig);
     }
 
+    /**
+     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
+     * @param userAgent - «User-Agent» header - deprecated, is ignored
+     * @param xClientName - a name describing/name of your consumer application.
+     * @param debugLogName - Custom logger name of internal logging.
+     * @param proxyConfig - Config if traffic have to go through proxy.
+     *
+     * @deprecated Use constructor without userAgent
+     */
+    @Deprecated
     public ClientFactory(String baseUrl, String userAgent, String xClientName, String debugLogName, ProxyConfig proxyConfig) {
         this.baseUrl = baseUrl;
         this.userAgent = userAgent;
         this.xClientName = xClientName;
         this.debugLogger = Optional.ofNullable(debugLogName)
-                .filter(s -> s.trim().length() > 0)
-                .map(LoggerFactory::getLogger)
-                .orElse(null);
+            .filter(s -> s.trim().length() > 0)
+            .map(LoggerFactory::getLogger)
+            .orElse(null);
         this.clients = new ArrayList<>();
         this.connectionManager = new PoolingHttpClientConnectionManager();
         this.proxyConfig = proxyConfig;
     }
 
+    /**
+     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
+     * @param xClientName - a name describing/name of your consumer application.
+     */
+    public ClientFactory(String baseUrl, String xClientName) {
+        this(baseUrl, xClientName, (ProxyConfig) null);
+    }
+
+    /**
+     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
+     * @param xClientName - a name describing/name of your consumer application.
+     * @param proxyConfig - Config if traffic have to go through proxy.
+     */
+    public ClientFactory(String baseUrl, String xClientName, ProxyConfig proxyConfig) {
+        this.baseUrl = baseUrl;
+        this.xClientName = xClientName;
+        this.userAgent = getUserAgent();
+        this.debugLogger = LoggerFactory.getLogger("no.vegvesen.nvdbapi.Client");
+        this.clients = new ArrayList<>();
+        this.connectionManager = new PoolingHttpClientConnectionManager();
+        this.proxyConfig = proxyConfig;
+    }
+
+    private String getUserAgent() {
+        return "nvdb-api-client-" + getClientVersion();
+    }
+
+    private String getClientVersion() {
+        try {
+
+            Enumeration<URL> resources = getClass().getClassLoader()
+                .getResources("META-INF/MANIFEST.MF");
+            while (resources.hasMoreElements()) {
+                Manifest manifest = new Manifest(resources.nextElement().openStream());
+                Attributes attributes = manifest.getMainAttributes();
+                if("nvdb-api-client".equals(attributes.getValue("Implementation-Title"))) {
+                    return attributes.getValue("Implementation-Version");
+                }
+            }
+        } catch (IOException E) { /* ignore */ }
+        return "unknown";
+    }
+
+    /**
+     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
+     * @deprecated user constructor specifying xClientName
+     */
+    @Deprecated
     public ClientFactory(String baseUrl) {
         this(baseUrl, null, null, null, null);
     }
@@ -115,14 +192,14 @@ public final class ClientFactory implements AutoCloseable {
 
     private AuthClient getAuthClient() {
         return clients.stream()
-                .filter(c -> c.getClass().equals(AuthClient.class))
-                .map(AuthClient.class::cast)
-                .findFirst()
-                .orElseGet(() -> {
-                    AuthClient client = new AuthClient(baseUrl, createClient());
-                    clients.add(client);
-                    return client;
-                });
+            .filter(c -> c.getClass().equals(AuthClient.class))
+            .map(AuthClient.class::cast)
+            .findFirst()
+            .orElseGet(() -> {
+                AuthClient client = new AuthClient(baseUrl, createClient());
+                clients.add(client);
+                return client;
+            });
     }
 
     /**
@@ -207,10 +284,10 @@ public final class ClientFactory implements AutoCloseable {
         assertIsOpen();
         Datakatalog datakatalog = getDatakatalog();
         RoadObjectClient c =
-                new RoadObjectClient(
-                        baseUrl,
-                        createClient(datakatalog.getVersion().getVersion()),
-                        datakatalog);
+            new RoadObjectClient(
+                baseUrl,
+                createClient(datakatalog.getVersion().getVersion()),
+                datakatalog);
         clients.add(c);
         return c;
     }
@@ -265,13 +342,13 @@ public final class ClientFactory implements AutoCloseable {
         config.property(ApacheClientProperties.CONNECTION_MANAGER, connectionManager);
         config.register(GsonMessageBodyHandler.class);
         config.register(
-                new RequestHeaderFilter(
-                        userAgent,
-                        xClientName,
-                        datakatalogVersion,
-                        enableCompression,
-                        apiRevision,
-                        authTokens));
+            new RequestHeaderFilter(
+                userAgent,
+                xClientName,
+                datakatalogVersion,
+                enableCompression,
+                apiRevision,
+                authTokens));
 
         if (proxyConfig != null) {
             config.property(ClientProperties.PROXY_URI, proxyConfig.getUrl());
