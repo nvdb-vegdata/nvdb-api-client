@@ -43,6 +43,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
+
 public class RoadNetClient extends AbstractJerseyClient {
     private static final Logger LOG = LoggerFactory.getLogger(RoadNetClient.class);
 
@@ -55,7 +57,7 @@ public class RoadNetClient extends AbstractJerseyClient {
         WebTarget target = getClient().target(path);
         JsonElement result = JerseyHelper.execute(target);
 
-        return RoadNetParser.parseLinkSequence(result.getAsJsonObject());
+        return rt(RoadNetParser::parseLinkSequence).apply(result.getAsJsonObject());
     }
 
     public Node getNode(int id) {
@@ -63,7 +65,7 @@ public class RoadNetClient extends AbstractJerseyClient {
         WebTarget target = getClient().target(path);
         JsonElement result = JerseyHelper.execute(target);
 
-        return RoadNetParser.parseNode(result.getAsJsonObject());
+        return rt(RoadNetParser::parseNode).apply(result.getAsJsonObject());
     }
 
     public LinkResult getLinkSequences() {
@@ -165,37 +167,37 @@ public class RoadNetClient extends AbstractJerseyClient {
 
     public static final class AsyncLinkResult extends AsyncResult<LinkSequence> {
         AsyncLinkResult(WebTarget baseTarget, Page currentPage) {
-            super(baseTarget, currentPage, RoadNetParser::parseLinkSequence);
+            super(baseTarget, currentPage, rt(RoadNetParser::parseLinkSequence));
         }
     }
 
     public static final class LinkResult extends GenericResultSet<LinkSequence> {
         LinkResult(WebTarget baseTarget, Page currentPage) {
-            super(baseTarget, currentPage, RoadNetParser::parseLinkSequence);
+            super(baseTarget, currentPage, rt(RoadNetParser::parseLinkSequence));
         }
     }
 
     public static final class NodeResult extends GenericResultSet<Node> {
         NodeResult(WebTarget baseTarget, Page currentPage) {
-            super(baseTarget, currentPage, RoadNetParser::parseNode);
+            super(baseTarget, currentPage, rt(RoadNetParser::parseNode));
         }
     }
 
     public static final class AsyncNodeResult extends AsyncResult<Node> {
         AsyncNodeResult(WebTarget baseTarget, Page currentPage) {
-            super(baseTarget, currentPage, RoadNetParser::parseNode);
+            super(baseTarget, currentPage, rt(RoadNetParser::parseNode));
         }
     }
 
     public static final class NetElementResult extends GenericResultSet<NetElementWrapper> {
         NetElementResult(WebTarget baseTarget, Page currentPage) {
-            super(baseTarget, currentPage, RoadNetParser::parseNetElement);
+            super(baseTarget, currentPage, rt(RoadNetParser::parseNetElement));
         }
     }
 
     public static final class AsyncNetElementResult extends AsyncResult<NetElementWrapper> {
         AsyncNetElementResult(WebTarget baseTarget, Page currentPage) {
-            super(baseTarget, currentPage, RoadNetParser::parseNetElement);
+            super(baseTarget, currentPage, rt(RoadNetParser::parseNetElement));
         }
     }
 }

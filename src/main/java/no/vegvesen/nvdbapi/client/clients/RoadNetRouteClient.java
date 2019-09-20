@@ -40,6 +40,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
+
 public class RoadNetRouteClient extends AbstractJerseyClient {
     private static final Logger LOG = LoggerFactory.getLogger(RoadNetRouteClient.class);
 
@@ -81,6 +83,6 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
     }
 
     private Flux<RouteOnRoadNet> doRequest(WebTarget target) {
-        return new AsyncArrayResult<>(target, RouteParser::parseRoute).get();
+        return new AsyncArrayResult<>(target, rt(RouteParser::parseRoute)).get();
     }
 }

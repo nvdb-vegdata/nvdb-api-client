@@ -28,14 +28,10 @@ package no.vegvesen.nvdbapi.client.clients;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.gson.ChangesParser;
 import no.vegvesen.nvdbapi.client.gson.RoadObjectParser;
-import no.vegvesen.nvdbapi.client.model.Change;
 import no.vegvesen.nvdbapi.client.model.Page;
-import no.vegvesen.nvdbapi.client.model.datakatalog.DataType;
 import no.vegvesen.nvdbapi.client.model.datakatalog.Datakatalog;
 import no.vegvesen.nvdbapi.client.model.roadobjects.*;
-import no.vegvesen.nvdbapi.client.util.ArgUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -46,10 +42,10 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import java.io.InputStream;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.*;
-import java.util.stream.Stream;
+import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.StreamSupport;
 
 import static java.lang.String.valueOf;
@@ -58,6 +54,7 @@ import static java.util.stream.Collectors.toList;
 import static no.vegvesen.nvdbapi.client.clients.RoadObjectRequest.DEFAULT;
 import static no.vegvesen.nvdbapi.client.clients.RoadObjectRequestBuilder.convert;
 import static no.vegvesen.nvdbapi.client.clients.util.JerseyHelper.*;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
 public class RoadObjectClient extends AbstractJerseyClient {
     private static final Logger logger = LoggerFactory.getLogger(RoadObjectClient.class);
@@ -80,7 +77,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
         WebTarget target = getClient().target(path);
 
         JsonElement e = execute(target);
-        return RoadObjectParser.parseStatistics(e.getAsJsonObject());
+        return rt(RoadObjectParser::parseStatistics).apply(e.getAsJsonObject());
     }
 
     public RoadObjectsResult getRoadObjects(int featureTypeId) {
@@ -92,14 +89,15 @@ public class RoadObjectClient extends AbstractJerseyClient {
     }
 
     public List<RoadObjectType> getRoadObjectTypes(){
-        List<RoadObjectType> roadObjectTypes = new ArrayList<>();
         UriBuilder path = start();
         WebTarget target = getClient().target(path);
 
         JsonArray e = execute(target).getAsJsonArray();
-        e.forEach(p -> roadObjectTypes.add(RoadObjectParser.parseRoadObjectType(p.getAsJsonObject())));
 
-        return roadObjectTypes;
+        return StreamSupport.stream(e.getAsJsonArray().spliterator(), false)
+            .map(JsonElement::getAsJsonObject)
+            .map(rt(RoadObjectParser::parseRoadObjectType))
+            .collect(toList());
     }
 
     /**
@@ -121,16 +119,16 @@ public class RoadObjectClient extends AbstractJerseyClient {
         WebTarget target = getWebTarget(featureTypeId, request);
 
         return new RoadObjectsResult(target,
-                request.getPage(),
-                datakatalog);
+            request.getPage(),
+            datakatalog);
     }
 
     public AsyncRoadObjectsResult getRoadObjectsAsync(int featureTypeId, RoadObjectRequest request) {
         WebTarget target = getWebTarget(featureTypeId, request);
 
         return new AsyncRoadObjectsResult(target,
-                request.getPage(),
-                datakatalog);
+            request.getPage(),
+            datakatalog);
     }
 
     private WebTarget getWebTarget(int featureTypeId, RoadObjectRequest request) {
@@ -161,7 +159,8 @@ public class RoadObjectClient extends AbstractJerseyClient {
         WebTarget target = getClient().target(path);
 
         JsonObject obj = execute(target).getAsJsonObject();
-        return RoadObjectParser.parse(datakatalog.getDataTypeMap(), obj);
+
+        return rt(o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o)).apply(obj);
     }
 
     public List<RoadObject> getRoadObjectVersions(int featureTypeId, long featureId) {
@@ -178,8 +177,9 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
         JsonArray e = execute(target).getAsJsonArray();
         return StreamSupport.stream(e.spliterator(), false)
-                .map(p -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), p.getAsJsonObject()))
-                .collect(toList());
+            .map(JsonElement::getAsJsonObject)
+            .map(rt(o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o)))
+            .collect(toList());
     }
 
     public RoadObject getRoadObjectVersion(int featureTypeId, long featureId, int version){
@@ -195,12 +195,12 @@ public class RoadObjectClient extends AbstractJerseyClient {
         WebTarget target = getClient().target(path);
 
         JsonObject obj = execute(target).getAsJsonObject();
-        return RoadObjectParser.parse(datakatalog.getDataTypeMap(), obj);
+        return rt(o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o)).apply(obj);
     }
 
     public RoadObjectAttribute getBinaryAttributeRoadObject(int featureTypeId, long featureId, int version, int attributeId, int blobId){
         UriBuilder path = start(featureTypeId).path(valueOf(featureId)).path(valueOf(version))
-                .path("egenskaper").path(valueOf(attributeId)).path(valueOf(blobId)).path("binaer");
+            .path("egenskaper").path(valueOf(attributeId)).path(valueOf(blobId)).path("binaer");
 
         logger.debug("Invoking {}", path);
         WebTarget target = getClient().target(path);
@@ -236,9 +236,9 @@ public class RoadObjectClient extends AbstractJerseyClient {
         logger.debug("Invoking {}", path);
         JsonArray array = execute(target).getAsJsonArray();
         return StreamSupport.stream(array.spliterator(), false)
-                .map(JsonElement::getAsJsonObject)
-                .map(RoadObjectParser::parseRoadObjectTypeWithStats)
-                .collect(toList());
+            .map(JsonElement::getAsJsonObject)
+            .map(rt(RoadObjectParser::parseRoadObjectTypeWithStats))
+            .collect(toList());
     }
 
     private UriBuilder start(int typeId) {
@@ -306,16 +306,16 @@ public class RoadObjectClient extends AbstractJerseyClient {
         public RoadObjectsResult(WebTarget baseTarget,
                                  Page currentPage,
                                  Datakatalog datakatalog) {
-            super(baseTarget, currentPage, o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o));
+            super(baseTarget, currentPage, rt(o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o)));
         }
     }
 
     public static class AsyncRoadObjectsResult extends AsyncResult<RoadObject> {
 
         public AsyncRoadObjectsResult(WebTarget baseTarget,
-                                 Page currentPage,
-                                 Datakatalog datakatalog) {
-            super(baseTarget, currentPage, o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o));
+                                      Page currentPage,
+                                      Datakatalog datakatalog) {
+            super(baseTarget, currentPage, rt(o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o)));
         }
     }
 }

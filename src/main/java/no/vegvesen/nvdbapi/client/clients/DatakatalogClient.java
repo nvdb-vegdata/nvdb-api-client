@@ -45,6 +45,7 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static java.util.Objects.isNull;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
 public class DatakatalogClient extends AbstractJerseyClient {
     private static final Logger LOG = LoggerFactory.getLogger(DatakatalogClient.class);
@@ -68,7 +69,7 @@ public class DatakatalogClient extends AbstractJerseyClient {
         JsonElement types = JerseyHelper.execute(target);
         return StreamSupport.stream(types.getAsJsonArray().spliterator(), false)
                 .map(JsonElement::getAsJsonObject)
-                .map(AttributeTypeParser::parseDataType)
+                .map(rt(AttributeTypeParser::parseDataType))
                 .collect(Collectors.toList());
     }
 
@@ -82,7 +83,7 @@ public class DatakatalogClient extends AbstractJerseyClient {
         JsonElement units = JerseyHelper.execute(target);
         return StreamSupport.stream(units.getAsJsonArray().spliterator(), false)
                 .map(JsonElement::getAsJsonObject)
-                .map(AttributeTypeParser::parseUnit)
+                .map(rt(AttributeTypeParser::parseUnit))
                 .collect(Collectors.toList());
     }
 
@@ -91,7 +92,7 @@ public class DatakatalogClient extends AbstractJerseyClient {
         JsonElement units = JerseyHelper.execute(target);
         return StreamSupport.stream(units.getAsJsonArray().spliterator(), false)
                 .map(JsonElement::getAsJsonObject)
-                .map(FeatureTypeParser::parseCategory)
+                .map(rt(FeatureTypeParser::parseCategory))
                 .collect(Collectors.toList());
     }
 
@@ -100,7 +101,7 @@ public class DatakatalogClient extends AbstractJerseyClient {
         JsonElement units = JerseyHelper.execute(target);
         return StreamSupport.stream(units.getAsJsonArray().spliterator(), false)
                 .map(JsonElement::getAsJsonObject)
-                .map(AttributeTypeParser::parseCategory)
+                .map(rt(AttributeTypeParser::parseCategory))
                 .collect(Collectors.toList());
     }
 
@@ -144,7 +145,6 @@ public class DatakatalogClient extends AbstractJerseyClient {
 
         WebTarget target = getClient().target(url);
 
-        List<FeatureType> types = new ArrayList<>();
         Stopwatch sw = Stopwatch.createStarted();
         JsonArray array = JerseyHelper.executeOptional(target)
                                       .map(JsonElement::getAsJsonArray)
@@ -152,7 +152,12 @@ public class DatakatalogClient extends AbstractJerseyClient {
         long requestTime = sw.stop().elapsedMillis();
         sw = Stopwatch.createStarted();
         initDataTypes();
-        array.forEach(e -> types.add(FeatureTypeParser.parse(this.dataTypes, e.getAsJsonObject())));
+
+        List<FeatureType> types = StreamSupport.stream(array.getAsJsonArray().spliterator(), false)
+            .map(JsonElement::getAsJsonObject)
+            .map(rt(o -> FeatureTypeParser.parse(this.dataTypes, o)))
+            .collect(Collectors.toList());
+
         long parsingTime = sw.stop().elapsedMillis();
         LOG.debug("Request execution took {} ms. Request parsing took {} ms. Total: {} ms.", requestTime, parsingTime, requestTime + parsingTime);
         return types;
@@ -166,7 +171,7 @@ public class DatakatalogClient extends AbstractJerseyClient {
         initDataTypes();
         return JerseyHelper.executeOptional(target)
                            .map(JsonElement::getAsJsonObject)
-                           .map(o -> FeatureTypeParser.parse(this.dataTypes, o));
+                           .map(rt(o -> FeatureTypeParser.parse(this.dataTypes, o)));
     }
 
     private static String getIncludeArgument(boolean singleRequest, Include... informationToInclude) {

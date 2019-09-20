@@ -42,6 +42,8 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
+
 public class AreaClient extends AbstractJerseyClient {
 
     protected AreaClient(String baseUrl, Client client) {
@@ -51,7 +53,9 @@ public class AreaClient extends AbstractJerseyClient {
     public List<Municipality> getMunicipalities(boolean includeBoundingBox, boolean includeCenterPoint, boolean includeObjectLink, Projection projection) {
         WebTarget target = getClient().target(areaRoot().path("kommuner"));
 
-        return getAreas(includeBoundingBox, includeCenterPoint, includeObjectLink, projection, target).map(AreaParser::parseMun).collect(Collectors.toList());
+        return getAreas(includeBoundingBox, includeCenterPoint, includeObjectLink, projection, target)
+            .map(rt(AreaParser::parseMun))
+            .collect(Collectors.toList());
     }
 
     public List<Municipality> getMunicipalities() {
@@ -61,7 +65,9 @@ public class AreaClient extends AbstractJerseyClient {
     public List<County> getCountys(boolean includeBoundingBox, boolean includeCenterPoint, boolean includeObjectLink, Projection projection) {
         WebTarget target = getClient().target(areaRoot().path("fylker"));
 
-        return getAreas(includeBoundingBox, includeCenterPoint, includeObjectLink, projection, target).map(AreaParser::parseCounty).collect(Collectors.toList());
+        return getAreas(includeBoundingBox, includeCenterPoint, includeObjectLink, projection, target)
+            .map(rt(AreaParser::parseCounty))
+            .collect(Collectors.toList());
     }
 
     public List<County> getCountys() {
@@ -75,7 +81,9 @@ public class AreaClient extends AbstractJerseyClient {
 
         WebTarget target = getClient().target(path);
 
-        return getAreas(target).map(AreaParser::parseRoute).collect(Collectors.toList());
+        return getAreas(target)
+            .map(rt(AreaParser::parseRoute))
+            .collect(Collectors.toList());
     }
 
     public List<Route> getNationalRoutes() {
@@ -89,7 +97,9 @@ public class AreaClient extends AbstractJerseyClient {
 
         WebTarget target = getClient().target(path);
 
-        return getAreas(target).map(AreaParser::parseContractArea).collect(Collectors.toList());
+        return getAreas(target)
+            .map(rt(AreaParser::parseContractArea))
+            .collect(Collectors.toList());
     }
 
     public List<ContractArea> getContractAreas() {

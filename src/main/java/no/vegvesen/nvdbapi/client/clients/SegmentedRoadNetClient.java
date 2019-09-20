@@ -45,6 +45,8 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
+
 public class SegmentedRoadNetClient extends AbstractJerseyClient {
     private static final Logger LOG = LoggerFactory.getLogger(RoadNetClient.class);
 
@@ -59,8 +61,9 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         JsonElement result = JerseyHelper.execute(target);
         if (result.isJsonArray()) {
             return StreamSupport.stream(result.getAsJsonArray().spliterator(), false)
-                    .map(e -> SegmentedLinkParser.parse(e.getAsJsonObject()))
-                    .collect(Collectors.toList());
+                .map(JsonElement::getAsJsonObject)
+                .map(rt(SegmentedLinkParser::parse))
+                .collect(Collectors.toList());
         } else {
             return Collections.singletonList(SegmentedLinkParser.parse(result.getAsJsonObject()));
         }
@@ -103,9 +106,9 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         request.getDetailLevelFilter().ifPresent(v -> path.queryParam("detaljniva", v.getSosi()));
         if (!request.getTopologyLevel().isEmpty()) {
             List<String> collect = request.getTopologyLevel()
-                    .stream()
-                    .map(TopologyLevel::getApiValue)
-                    .collect(Collectors.toList());
+                .stream()
+                .map(TopologyLevel::getApiValue)
+                .collect(Collectors.toList());
             path.queryParam("topologiniva", join(collect));
         }
 
@@ -121,8 +124,8 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
             return null;
         }
         return list.stream()
-                   .map(Objects::toString)
-                   .collect(Collectors.joining(","));
+            .map(Objects::toString)
+            .collect(Collectors.joining(","));
     }
 
     private UriBuilder endpoint() {
@@ -132,14 +135,14 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
     public static final class SegmentedLinkResult extends GenericResultSet<SegmentedLink> {
 
         SegmentedLinkResult(WebTarget baseTarget, Page currentPage) {
-            super(baseTarget, currentPage, SegmentedLinkParser::parse);
+            super(baseTarget, currentPage, rt(SegmentedLinkParser::parse));
         }
     }
 
     public static final class AsyncSegmentedLinkResult extends AsyncResult<SegmentedLink> {
 
         AsyncSegmentedLinkResult(WebTarget baseTarget, Page currentPage) {
-            super(baseTarget, currentPage, SegmentedLinkParser::parse);
+            super(baseTarget, currentPage, rt(SegmentedLinkParser::parse));
         }
     }
 }

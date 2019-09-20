@@ -39,6 +39,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
+
 public class PositionClient extends AbstractJerseyClient {
 
     public PositionClient(String baseurl, Client client) {
@@ -66,7 +68,7 @@ public class PositionClient extends AbstractJerseyClient {
         List<Position.Result> collect =
                 StreamSupport.stream(results.spliterator(), false)
                              .map(JsonElement::getAsJsonObject)
-                             .map(PlacementParser::parsePosition)
+                             .map(rt(PlacementParser::parsePosition))
                              .collect(Collectors.toList());
         return new Position(collect);
     }

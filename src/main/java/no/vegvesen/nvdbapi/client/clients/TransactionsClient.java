@@ -35,6 +35,7 @@ import javax.ws.rs.core.UriBuilder;
 
 import static java.util.Objects.nonNull;
 import static no.vegvesen.nvdbapi.client.clients.RoadNetClient.join;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
 public class TransactionsClient extends AbstractJerseyClient {
 
@@ -68,12 +69,12 @@ public class TransactionsClient extends AbstractJerseyClient {
 
     public static class TransacionsResult extends GenericResultSet<Transaction>{
         protected TransacionsResult(WebTarget baseTarget, Page currentPage) {
-            super(baseTarget, currentPage, TransactionParser::parseTransaction);
+            super(baseTarget, currentPage, rt(TransactionParser::parseTransaction));
         }
     }
     public static class AsyncTransacionsResult extends AsyncResult<Transaction>{
         protected AsyncTransacionsResult(WebTarget baseTarget, Page currentPage) {
-            super(baseTarget, currentPage, TransactionParser::parseTransaction);
+            super(baseTarget, currentPage, rt(TransactionParser::parseTransaction));
         }
     }
 

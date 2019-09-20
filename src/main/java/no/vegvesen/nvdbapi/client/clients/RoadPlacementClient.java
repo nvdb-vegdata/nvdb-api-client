@@ -40,6 +40,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
+
 public class RoadPlacementClient extends AbstractJerseyClient {
 
     protected RoadPlacementClient(String baseUrl, Client client) {
@@ -85,7 +87,9 @@ public class RoadPlacementClient extends AbstractJerseyClient {
 
         JsonObject resultMap = JerseyHelper.execute(target).getAsJsonObject();
 
-        return resultMap.entrySet().stream().map(r -> RoadPlacementParser.parseRoadPlacementBulkResult(r.getKey(), r.getValue())).collect(Collectors.toList());
+        return resultMap.entrySet().stream()
+            .map(r -> RoadPlacementParser.parseRoadPlacementBulkResult(r.getKey(), r.getValue()))
+            .collect(Collectors.toList());
     }
 
     private Optional<RoadPlacement> getResults(String paramName, String queryParam, Integer municipality, Projection projection) {
@@ -99,7 +103,7 @@ public class RoadPlacementClient extends AbstractJerseyClient {
 
         return JerseyHelper.executeOptional(target)
                 .map(JsonElement::getAsJsonObject)
-                .map(RoadPlacementParser::parseRoadPlacement);
+                .map(rt(RoadPlacementParser::parseRoadPlacement));
     }
 
     private UriBuilder endpoint() {

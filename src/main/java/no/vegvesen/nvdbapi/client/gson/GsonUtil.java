@@ -41,6 +41,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -49,8 +50,7 @@ public final class GsonUtil {
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-    private GsonUtil() {
-    }
+    private GsonUtil() {}
 
     public static boolean hasNonBlankMember(JsonObject obj, String memberName) {
         return obj.has(memberName) && !Strings.isNullOrEmpty(obj.get(memberName).getAsString());
@@ -207,5 +207,15 @@ public final class GsonUtil {
         } else {
             return null;
         }
+    }
+
+    public static <T> Function<JsonObject, T> rt(Function<JsonObject, T> f) {
+        return obj -> {
+            try {
+                return f.apply(obj);
+            } catch (Exception e) {
+                throw new RuntimeException("Error processing \n" + obj, e);
+            }
+        };
     }
 }
