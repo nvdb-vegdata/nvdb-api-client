@@ -44,16 +44,16 @@ public class AttributeCommonProperties {
     private final Integer sensitiveLevel;
     private final LocalDate objectListDate;
     private final LocalDate validTo;
-    private final boolean readOnly;
+    private final Boolean readOnly;
     private final String caption;
     private final Integer complementaryattrtypeid;
     private final String planviewreftext;
     private final String heightreftext;
     private final String referencesosi;
-    private final boolean referencegeometry;
-    private final int reqheightref;
-    private final double reqaccuracyplan;
-    private final double reqaccuracyheight;
+    private final Boolean referencegeometry;
+    private final Integer reqheightref;
+    private final Double reqaccuracyplan;
+    private final Double reqaccuracyheight;
     private final List<String> conditionalRequirements;
     private final Boolean derived;
     private final Boolean required;
@@ -79,9 +79,9 @@ public class AttributeCommonProperties {
                                      String heightreftext,
                                      String referencesosi,
                                      boolean referencegeometry,
-                                     int reqheightref,
-                                     double reqaccuracyplan,
-                                     double reqaccuracyheight,
+                                     Integer reqheightref,
+                                     Double reqaccuracyplan,
+                                     Double reqaccuracyheight,
                                      List<String> conditionalRequirements,
                                      Boolean derived,
                                      Boolean required) {
