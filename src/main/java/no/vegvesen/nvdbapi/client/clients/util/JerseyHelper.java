@@ -40,7 +40,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,7 +81,7 @@ public class JerseyHelper {
             }
 
             return new JsonParser().parse(
-                    new InputStreamReader((InputStream) response.getEntity()));
+                    new InputStreamReader((InputStream) response.getEntity(), StandardCharsets.UTF_8));
         }
     }
 
@@ -109,7 +109,7 @@ public class JerseyHelper {
                 return Optional.empty();
             }
             try (InputStream is = response.readEntity(InputStream.class)) {
-                return Optional.of(new JsonParser().parse(new InputStreamReader(is)));
+                return Optional.of(new JsonParser().parse(new InputStreamReader(is, StandardCharsets.UTF_8)));
             } catch (Exception e) {
                 throw new RuntimeException("Error parsing response", e);
             }

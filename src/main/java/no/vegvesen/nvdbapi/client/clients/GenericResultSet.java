@@ -41,6 +41,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
@@ -95,7 +96,7 @@ public class GenericResultSet<T> implements ResultSet<T> {
 
         JsonObject currentResponse =
                 new JsonParser()
-                        .parse(new InputStreamReader((InputStream) response.getEntity()))
+                        .parse(new InputStreamReader((InputStream) response.getEntity(), StandardCharsets.UTF_8))
                         .getAsJsonObject();
 
         int numTotal = GsonUtil.parseIntMember(currentResponse, "metadata.antall");
