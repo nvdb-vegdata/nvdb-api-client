@@ -1,5 +1,9 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.1.0
+* Enum values have their own classes. String-, Double-, IntegerAttribute now
+is only the regular attributes.
+
 ## 1.0.4
 * Always parse responses as UTF-8. When running on windows parsing 
 of properties with æøå failed before this.
