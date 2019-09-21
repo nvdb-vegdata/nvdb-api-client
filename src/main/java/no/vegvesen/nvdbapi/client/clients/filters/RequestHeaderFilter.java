@@ -35,25 +35,26 @@ import java.util.Arrays;
 
 public class RequestHeaderFilter implements ClientRequestFilter {
     private static final String X_CLIENT = "X-Client";
+    private static final String X_SESSION = "X-Client-Session";
     private static final String DAKAT_VERSION = "X-Datakatalog-Versjon";
 
     private final String userAgent;
     private final String xClientName;
+    private final String xsessionId;
     private final String dakatVersion;
-    private final boolean enableCompression;
     private final String apiRevision;
     private final Login.AuthTokens authTokens;
 
     public RequestHeaderFilter(String userAgent,
                                String xClientName,
+                               String xsessionId,
                                String dakatVersion,
-                               boolean enableCompression,
                                String apiRevision,
                                Login.AuthTokens authTokens) {
         this.userAgent = userAgent;
         this.xClientName = xClientName;
+        this.xsessionId = xsessionId;
         this.dakatVersion = dakatVersion;
-        this.enableCompression = enableCompression;
         this.apiRevision = apiRevision;
         this.authTokens = authTokens;
     }
@@ -63,9 +64,10 @@ public class RequestHeaderFilter implements ClientRequestFilter {
         MultivaluedMap<String, Object> headers = requestContext.getHeaders();
         headers.putSingle(HttpHeaders.ACCEPT, apiRevision);
         headers.putSingle(HttpHeaders.USER_AGENT, userAgent);
-        if (enableCompression) headers.put(HttpHeaders.ACCEPT_ENCODING, Arrays.asList("gzip", "deflate"));
+        headers.put(HttpHeaders.ACCEPT_ENCODING, Arrays.asList("gzip", "deflate"));
 
         headers.putSingle(X_CLIENT, xClientName);
+        headers.putSingle(X_SESSION, xsessionId);
         if (dakatVersion != null) headers.putSingle(DAKAT_VERSION, dakatVersion);
 
         if(authTokens != null) {

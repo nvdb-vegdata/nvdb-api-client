@@ -42,18 +42,23 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 
+import static java.nio.file.StandardOpenOption.CREATE;
 import static java.util.Objects.isNull;
 
 public final class ClientFactory implements AutoCloseable {
     private final String baseUrl;
     private final String userAgent;
     private final String xClientName;
+    private final String xSession;
 
     private static final String apiRevision = "application/vnd.vegvesen.nvdb-v3-rev1+json";
     private final ProxyConfig proxyConfig;
@@ -79,8 +84,22 @@ public final class ClientFactory implements AutoCloseable {
      * @param proxyConfig - Config if traffic have to go through proxy.
      */
     public ClientFactory(String baseUrl, String xClientName, ProxyConfig proxyConfig) {
+        this(baseUrl, xClientName, null, proxyConfig);
+    }
+
+    /**
+     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
+     * @param xClientName - a name describing/name of your consumer application.
+     * @param xSession - something identifying this session. Used to tag a sequence of requests, such that
+     *                 if there are several instances that have the same xClientName it is possible to tell
+     *                 the requests of each instance apart.
+     *                 Use a uuid or something similar. not something that can identify a user, like username or email.
+     * @param proxyConfig - Config if traffic have to go through proxy.
+     */
+    public ClientFactory(String baseUrl, String xClientName, String xSession, ProxyConfig proxyConfig) {
         this.baseUrl = baseUrl;
         this.xClientName = xClientName;
+        this.xSession = Optional.ofNullable(xSession).orElseGet(this::getOrCreateSessionId);
         this.userAgent = getUserAgent();
         this.debugLogger = LoggerFactory.getLogger("no.vegvesen.nvdbapi.Client");
         this.clients = new ArrayList<>();
@@ -90,22 +109,6 @@ public final class ClientFactory implements AutoCloseable {
 
     private String getUserAgent() {
         return "nvdb-api-client-" + getClientVersion();
-    }
-
-    private String getClientVersion() {
-        try {
-
-            Enumeration<URL> resources = getClass().getClassLoader()
-                .getResources("META-INF/MANIFEST.MF");
-            while (resources.hasMoreElements()) {
-                Manifest manifest = new Manifest(resources.nextElement().openStream());
-                Attributes attributes = manifest.getMainAttributes();
-                if("nvdb-api-client".equals(attributes.getValue("Implementation-Title"))) {
-                    return attributes.getValue("Implementation-Version");
-                }
-            }
-        } catch (IOException E) { /* ignore */ }
-        return "unknown";
     }
 
     public boolean isClosed() {
@@ -182,6 +185,7 @@ public final class ClientFactory implements AutoCloseable {
         clients.add(c);
         return c;
     }
+
     public SegmentedRoadNetClient createSegmentedRoadNetService() {
         assertIsOpen();
         SegmentedRoadNetClient c = new SegmentedRoadNetClient(baseUrl, createClient(getDatakatalog().getVersion().getVersion()));
@@ -264,19 +268,13 @@ public final class ClientFactory implements AutoCloseable {
     }
 
     private Client createClient() {
-        return createClient(null, true);
+        return createClient(null);
     }
 
     private Client createClient(String datakatalogVersion) {
-        return createClient(datakatalogVersion, true);
-    }
-
-    private Client createClient(String datakatalogVersion, boolean enableCompression) {
         ClientConfig config = new ClientConfig();
-        if (enableCompression) {
-            config.register(GZipEncoder.class);
-            config.register(DeflateEncoder.class);
-        }
+        config.register(GZipEncoder.class);
+        config.register(DeflateEncoder.class);
         if (debugLogger != null) {
             config.register(new LoggingFilter(debugLogger, true));
         }
@@ -288,8 +286,8 @@ public final class ClientFactory implements AutoCloseable {
             new RequestHeaderFilter(
                 userAgent,
                 xClientName,
+                xSession,
                 datakatalogVersion,
-                enableCompression,
                 apiRevision,
                 authTokens));
 
@@ -314,5 +312,40 @@ public final class ClientFactory implements AutoCloseable {
         }
         connectionManager.close();
         isClosed = true;
+    }
+
+    private String getClientVersion() {
+        try {
+            Enumeration<URL> resources = getClass().getClassLoader()
+                .getResources("META-INF/MANIFEST.MF");
+            while (resources.hasMoreElements()) {
+                Manifest manifest = new Manifest(resources.nextElement().openStream());
+                Attributes attributes = manifest.getMainAttributes();
+                if("nvdb-api-client".equals(attributes.getValue("Implementation-Title"))) {
+                    return attributes.getValue("Implementation-Version");
+                }
+            }
+        } catch (IOException E) { /* ignore */ }
+        return "unknown";
+    }
+
+    private String getOrCreateSessionId() {
+        try {
+            String userHome = System.getProperty("user.home");
+            File dotFolder = new File(userHome, ".nvdb-api-read-v3");
+            if(!dotFolder.exists()) {
+                dotFolder.mkdir();
+            }
+            File sessionIdFile = new File(dotFolder, "session");
+            if(sessionIdFile.exists()) {
+                return Files.readAllLines(sessionIdFile.toPath(), StandardCharsets.UTF_8).get(0);
+            } else {
+                String sessionId = UUID.randomUUID().toString();
+                Files.write(sessionIdFile.toPath(), sessionId.getBytes(StandardCharsets.UTF_8), CREATE);
+                return sessionId;
+            }
+        } catch (IOException e) {
+            return UUID.randomUUID().toString();
+        }
     }
 }
