@@ -45,6 +45,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static java.util.stream.Collectors.toList;
+
 public final class GsonUtil {
 
     private static final DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("HH:mm:ss");
@@ -98,8 +100,8 @@ public final class GsonUtil {
 
     public static LocalDateTime parseDateTimeMember(JsonObject obj, String path) {
         return Optional.ofNullable(parseStringMember(obj, path))
-                .map(v -> v.contains("T") ? LocalDateTime.parse(v) : dateTimeFormatter.parse(v, LocalDateTime::from))
-                .orElse(null);
+            .map(v -> v.contains("T") ? LocalDateTime.parse(v) : dateTimeFormatter.parse(v, LocalDateTime::from))
+            .orElse(null);
     }
 
     public static LocalDate parseDateMember(JsonObject obj, String path) {
@@ -108,42 +110,42 @@ public final class GsonUtil {
 
     public static LocalTime parseTimeMember(JsonObject obj, String path) {
         return Optional.ofNullable(parseStringMember(obj, path))
-                .map(v -> LocalTime.parse(v, timeFormatter)).orElse(null);
+            .map(v -> LocalTime.parse(v, timeFormatter)).orElse(null);
     }
 
     public static LocalDate parseDateMember(JsonObject obj, String path, String pattern) {
         return Optional.ofNullable(parseStringMember(obj, path))
-                .map(s -> LocalDate.parse(s, DateTimeFormatter.ofPattern(pattern)))
-                .orElse(null);
+            .map(s -> LocalDate.parse(s, DateTimeFormatter.ofPattern(pattern)))
+            .orElse(null);
     }
 
     public static List<String> parseStringListMember(JsonObject obj, String path) {
         return getNode(obj, path)
-                .map(JsonElement::getAsJsonArray)
-                .map(a -> StreamSupport.stream(a.spliterator(), false)
-                        .map(JsonElement::getAsString)
-                        .collect(Collectors.toList()))
-                .orElse(Collections.emptyList());
+            .map(JsonElement::getAsJsonArray)
+            .map(a -> StreamSupport.stream(a.spliterator(), false)
+                .map(JsonElement::getAsString)
+                .collect(Collectors.toList()))
+            .orElse(Collections.emptyList());
 
     }
 
     public static List<Integer> parseIntListMember(JsonObject obj, String path) {
         return getNode(obj, path)
-                .map(JsonElement::getAsJsonArray)
-                .map(a -> StreamSupport.stream(a.spliterator(), false)
-                        .map(JsonElement::getAsInt)
-                        .collect(Collectors.toList()))
-                .orElse(Collections.emptyList());
+            .map(JsonElement::getAsJsonArray)
+            .map(a -> StreamSupport.stream(a.spliterator(), false)
+                .map(JsonElement::getAsInt)
+                .collect(Collectors.toList()))
+            .orElse(Collections.emptyList());
 
     }
 
     public static List<Long> parseLongListMember(JsonObject obj, String path) {
         return getNode(obj, path)
-                .map(JsonElement::getAsJsonArray)
-                .map(a -> StreamSupport.stream(a.spliterator(), false)
-                        .map(JsonElement::getAsLong)
-                        .collect(Collectors.toList()))
-                .orElse(null);
+            .map(JsonElement::getAsJsonArray)
+            .map(a -> StreamSupport.stream(a.spliterator(), false)
+                .map(JsonElement::getAsLong)
+                .collect(Collectors.toList()))
+            .orElse(null);
 
     }
 
@@ -183,14 +185,24 @@ public final class GsonUtil {
 
 
             temp = temp.map(JsonElement::getAsJsonObject)
-                       .map(o -> o.get(p))
-                       .filter(o -> !o.isJsonNull());
+                .map(o -> o.get(p))
+                .filter(o -> !o.isJsonNull());
         }
         return temp;
     }
 
     public static Optional<JsonArray> getArray(JsonObject node, String path) {
         return getNode(node, path).map(JsonElement::getAsJsonArray);
+    }
+
+    public static <T> List<T> parseArray(JsonObject obj, String path, Function<JsonObject, T> parser) {
+        return getArray(obj, path)
+            .map(array ->
+                StreamSupport.stream(array.spliterator(), false)
+                    .map(JsonElement::getAsJsonObject)
+                    .map(parser)
+                    .collect(toList()))
+            .orElseGet(Collections::emptyList);
     }
 
     public static Geometry parseGeometryMember(JsonObject obj, String path) {

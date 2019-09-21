@@ -25,12 +25,9 @@
 
 package no.vegvesen.nvdbapi.client.gson;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.datakatalog.*;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -41,64 +38,62 @@ public final class FeatureTypeParser {
     }
 
     public static FeatureType parse(Map<String, DataType> dataTypes, JsonObject obj) {
-        List<AttributeType> attributeTypes = new ArrayList<>();
-        if (obj.has("egenskapstyper")) {
-            JsonArray attributeTypeArray = obj.getAsJsonArray("egenskapstyper");
-            attributeTypeArray.forEach(e -> attributeTypes.add(AttributeTypeParser.parse(dataTypes, e.getAsJsonObject())));
-        }
+        return new FeatureType(
+            parseIntMember(obj, "id"),
+            parseStringMember(obj, "navn"),
+            parseStringMember(obj, "kortnavn"),
+            parseStringMember(obj, "beskrivelse"),
+            parseAttributeTypes(dataTypes, obj),
+            getAssociations(obj, "relasjonstyper.foreldre"),
+            getAssociations(obj, "relasjonstyper.barn"),
+            parseStringMember(obj, "veiledning"),
+            parseStringMember(obj, "sosinavn"),
+            parseStringMember(obj, "sosinvdbnavn"),
+            parseIntMember(obj, "sorteringsnummer"),
+            parseDateMember(obj, "objektliste_dato"),
+            parsePlacementType(obj),
+            parseLocationalAttribute(dataTypes, obj),
+            parseStringMember(obj, "status"),
+            parseStringMember(obj, "hovedkategori"),
+            parseBooleanMember(obj, "en_versjon"),
+            parseBooleanMember(obj, "abstrakt_type"),
+            parseBooleanMember(obj, "avledet"),
+            parseBooleanMember(obj, "må_ha_mor"),
+            parseBooleanMember(obj, "er_dataserie"),
+            parseBooleanMember(obj, "konnekteringslenke_ok"),
+            parseStringMember(obj, "tilleggsinformasjon"),
+            parseBooleanMember(obj, "sensitiv"));
+    }
 
-        List<AssociationType> parents = new ArrayList<>(), children = new ArrayList<>();
-        JsonArray childrenArray = getArray(obj, "relasjonstyper.barn").orElse(null);
-        if (childrenArray != null) {
-            childrenArray.forEach(e -> children.add(AssociationTypeParser.parse(e.getAsJsonObject())));
-        }
-        JsonArray parentsArray = getArray(obj, "relasjonstyper.foreldre").orElse(null);
-        if (parentsArray != null) {
-            parentsArray.forEach(e -> parents.add(AssociationTypeParser.parse(e.getAsJsonObject())));
-        }
-
-        String placementPath = obj.has("stedfesting.innhold") ? "stedfesting.innhold.geometritype" : "stedfesting.geometritype";
-        FeatureType.PlacementType placementType = FeatureType.PlacementType.from(parseStringMember(obj, placementPath));
-
-        AttributeType locationalAttribute = null;
+    private static AttributeType parseLocationalAttribute(Map<String, DataType> dataTypes, JsonObject obj) {
         if(obj.has("stedfesting")){
-            locationalAttribute = AttributeTypeParser.parse(dataTypes, obj.getAsJsonObject("stedfesting"));
+            return AttributeTypeParser.parse(dataTypes, obj.getAsJsonObject("stedfesting"));
+        } else {
+            return null;
         }
+    }
 
-        return new FeatureType(parseIntMember(obj, "id"),
-                parseStringMember(obj, "navn"),
-                parseStringMember(obj, "kortnavn"),
-                parseStringMember(obj, "beskrivelse"),
-                attributeTypes,
-                parents,
-                children,
-                parseStringMember(obj, "veiledning"),
-                parseStringMember(obj, "sosinavn"),
-                parseStringMember(obj, "sosinvdbnavn"),
-                parseIntMember(obj, "sorteringsnummer"),
-                parseDateMember(obj, "objektliste_dato"),
-                placementType,
-                locationalAttribute,
-                parseStringMember(obj, "status"),
-                parseStringMember(obj, "hovedkategori"),
-                parseBooleanMember(obj, "en_versjon"),
-                parseBooleanMember(obj, "abstrakt_type"),
-                parseBooleanMember(obj, "avledet"),
-                parseBooleanMember(obj, "må_ha_mor"),
-                parseBooleanMember(obj, "er_dataserie"),
-                parseBooleanMember(obj, "konnekteringslenke_ok"),
-                parseStringMember(obj, "tilleggsinformasjon"),
-                parseBooleanMember(obj, "sensitiv"));
+    private static FeatureType.PlacementType parsePlacementType(JsonObject obj) {
+        String placementPath = obj.has("stedfesting.innhold") ? "stedfesting.innhold.geometritype" : "stedfesting.geometritype";
+        return FeatureType.PlacementType.from(parseStringMember(obj, placementPath));
+    }
+
+    private static List<AssociationType> getAssociations(JsonObject obj, String path) {
+        return parseArray(obj, path, AssociationTypeParser::parse);
+    }
+
+    private static List<AttributeType> parseAttributeTypes(Map<String, DataType> dataTypes, JsonObject obj) {
+        return parseArray(obj, "egenskapstyper", e -> AttributeTypeParser.parse(dataTypes, e));
     }
 
     public static FeatureTypeCategory parseCategory(JsonObject obj) {
         return new FeatureTypeCategory(
-                parseIntMember(obj, "id"),
-                parseStringMember(obj, "navn"),
-                parseStringMember(obj, "kortnavn"),
-                parseStringMember(obj, "beskrivelse"),
-                parseIntMember(obj, "sorteringsnummer"),
-                parseDateMember(obj, "startdato"),
-                parseBooleanMember(obj, "primærkategori"));
+            parseIntMember(obj, "id"),
+            parseStringMember(obj, "navn"),
+            parseStringMember(obj, "kortnavn"),
+            parseStringMember(obj, "beskrivelse"),
+            parseIntMember(obj, "sorteringsnummer"),
+            parseDateMember(obj, "startdato"),
+            parseBooleanMember(obj, "primærkategori"));
     }
 }
