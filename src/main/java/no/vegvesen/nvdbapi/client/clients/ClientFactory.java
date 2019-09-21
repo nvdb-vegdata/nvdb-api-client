@@ -67,54 +67,6 @@ public final class ClientFactory implements AutoCloseable {
 
     /**
      * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
-     * @param userAgent - «User-Agent» header - deprecated, is ignored
-     * @param xClientName - a name describing/name of your consumer application.
-     *
-     * @deprecated Use constructor without userAgent
-     */
-    @Deprecated
-    public ClientFactory(String baseUrl, String userAgent, String xClientName) {
-        this(baseUrl, userAgent, xClientName, null, null);
-    }
-
-    /**
-     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
-     * @param userAgent - «User-Agent» header - deprecated, is ignored
-     * @param xClientName - a name describing/name of your consumer application.
-     * @param proxyConfig - Config if traffic have to go through proxy.
-     *
-     * @deprecated Use constructor without userAgent
-     */
-    @Deprecated
-    public ClientFactory(String baseUrl, String userAgent, String xClientName, ProxyConfig proxyConfig) {
-        this(baseUrl, userAgent, xClientName, null, proxyConfig);
-    }
-
-    /**
-     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
-     * @param userAgent - «User-Agent» header - deprecated, is ignored
-     * @param xClientName - a name describing/name of your consumer application.
-     * @param debugLogName - Custom logger name of internal logging.
-     * @param proxyConfig - Config if traffic have to go through proxy.
-     *
-     * @deprecated Use constructor without userAgent
-     */
-    @Deprecated
-    public ClientFactory(String baseUrl, String userAgent, String xClientName, String debugLogName, ProxyConfig proxyConfig) {
-        this.baseUrl = baseUrl;
-        this.userAgent = userAgent;
-        this.xClientName = xClientName;
-        this.debugLogger = Optional.ofNullable(debugLogName)
-            .filter(s -> s.trim().length() > 0)
-            .map(LoggerFactory::getLogger)
-            .orElse(null);
-        this.clients = new ArrayList<>();
-        this.connectionManager = new PoolingHttpClientConnectionManager();
-        this.proxyConfig = proxyConfig;
-    }
-
-    /**
-     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
      * @param xClientName - a name describing/name of your consumer application.
      */
     public ClientFactory(String baseUrl, String xClientName) {
@@ -154,15 +106,6 @@ public final class ClientFactory implements AutoCloseable {
             }
         } catch (IOException E) { /* ignore */ }
         return "unknown";
-    }
-
-    /**
-     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
-     * @deprecated user constructor specifying xClientName
-     */
-    @Deprecated
-    public ClientFactory(String baseUrl) {
-        this(baseUrl, null, null, null, null);
     }
 
     public boolean isClosed() {

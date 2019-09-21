@@ -11,7 +11,7 @@ public class RoadnetClientTest {
     void downloadRoadnet() {
         Stopwatch started = Stopwatch.createStarted();
         ClientFactory clientFactory = new ClientFactory("https://nvdbw01.kantega.no/nvdb/api/v3",
-                "Jersey", "nvdbapi-client-test");
+                "nvdbapi-client-test");
         RoadNetClient roadNetService = clientFactory.createRoadNetService();
 
         RoadNetClient.AsyncNetElementResult result = roadNetService.getNetElementsAsynk(
@@ -36,7 +36,7 @@ public class RoadnetClientTest {
     void downloadSegmentedRoadnet() {
         Stopwatch started = Stopwatch.createStarted();
         ClientFactory clientFactory = new ClientFactory("https://nvdbw01.kantega.no/nvdb/api/v3",
-            "Jersey", "nvdbapi-client-test");
+             "nvdbapi-client-test");
         SegmentedRoadNetClient segmentedRoadNetService = clientFactory.createSegmentedRoadNetService();
 
         SegmentedRoadNetClient.AsyncSegmentedLinkResult result = segmentedRoadNetService.getLinksAsync(

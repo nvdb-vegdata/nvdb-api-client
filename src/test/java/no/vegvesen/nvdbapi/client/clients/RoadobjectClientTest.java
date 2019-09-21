@@ -11,7 +11,7 @@ public class RoadobjectClientTest {
     void downloadAll() {
         Stopwatch started = Stopwatch.createStarted();
         ClientFactory clientFactory = new ClientFactory("https://nvdbw01.kantega.no/nvdb/api/v3",
-                "Jersey", "nvdbapi-client-test");
+                 "nvdbapi-client-test");
         RoadObjectClient roadNetService = clientFactory.createRoadObjectClient();
 
         RoadObjectClient.AsyncRoadObjectsResult result = roadNetService.getRoadObjectsAsync(

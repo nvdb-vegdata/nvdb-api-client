@@ -3,6 +3,8 @@
 ## 1.1.0
 * Enum values have their own classes. String-, Double-, IntegerAttribute now
 is only the regular attributes.
+* Removed deprecated constructors using `User-Agent` and the 
+constructor not specifying client id. 
 
 ## 1.0.4
 * Always parse responses as UTF-8. When running on windows parsing 
