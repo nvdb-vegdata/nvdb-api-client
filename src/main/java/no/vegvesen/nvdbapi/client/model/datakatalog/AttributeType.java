@@ -37,10 +37,6 @@ public abstract class AttributeType implements Serializable {
         this.props = props;
     }
 
-    public boolean isEnum() {
-        return false;
-    }
-
     public Integer getId() {
         return props.getId();
     }

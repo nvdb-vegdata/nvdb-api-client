@@ -25,71 +25,65 @@
 
 package no.vegvesen.nvdbapi.client.model.datakatalog;
 
-public class DoubleAttributeType extends AttributeType {
-    private final Double defaultvalue;
-    private final Double minValue;
-    private final Double maxValue;
-    private final Double absMinValue;
-    private final Double absMaxValue;
+import java.util.Set;
+
+public class IntegerEnumAttributeType extends AbstractEnumAttributeType<IntegerEnumValue> {
+    private final Integer defaultvalue;
+    private final Integer minValue;
+    private final Integer maxValue;
+    private final Integer absMinValue;
+    private final Integer absMaxValue;
     private final Integer fieldLength;
-    private final Integer decimalCount;
     private final Unit unit;
     private final Boolean complementarysign;
     private final boolean isdirectionsensitive;
     private final boolean isextentsensitive;
 
-    public DoubleAttributeType(AttributeCommonProperties props,
-                               Double defaultvalue,
-                               Double minValue,
-                               Double maxValue,
-                               Double absMinValue,
-                               Double absMaxValue,
-                               Integer fieldLength,
-                               Integer decimalCount,
-                               Unit unit,
-                               Boolean complementarysign,
-                               boolean isdirectionsensitive,
-                               boolean isextentsensitive) {
-        super(props);
+    public IntegerEnumAttributeType(AttributeCommonProperties props,
+                                    Integer defaultvalue,
+                                    Integer minValue,
+                                    Integer maxValue,
+                                    Integer absMinValue,
+                                    Integer absMaxValue,
+                                    Integer fieldLength,
+                                    Unit unit,
+                                    Set<IntegerEnumValue> values,
+                                    Boolean complementarysign, boolean isdirectionsensitive, boolean isextentsensitive) {
+        super(props, values);
         this.defaultvalue = defaultvalue;
         this.minValue = minValue;
         this.maxValue = maxValue;
         this.absMinValue = absMinValue;
         this.absMaxValue = absMaxValue;
         this.fieldLength = fieldLength;
-        this.decimalCount = decimalCount;
         this.unit = unit;
         this.complementarysign = complementarysign;
         this.isdirectionsensitive = isdirectionsensitive;
         this.isextentsensitive = isextentsensitive;
     }
 
-    public Double getDefaultvalue() {
+    public Integer getDefaultvalue() {
         return defaultvalue;
     }
 
-    public Double getMinValue() {
+    public Integer getMinValue() {
         return minValue;
     }
 
-    public Double getMaxValue() {
+    public Integer getMaxValue() {
         return maxValue;
     }
 
-    public Double getAbsMinValue() {
+    public Integer getAbsMinValue() {
         return absMinValue;
     }
 
-    public Double getAbsMaxValue() {
+    public Integer getAbsMaxValue() {
         return absMaxValue;
     }
 
     public Integer getFieldLength() {
         return fieldLength;
-    }
-
-    public Integer getDecimalCount() {
-        return decimalCount;
     }
 
     public Unit getUnit() {

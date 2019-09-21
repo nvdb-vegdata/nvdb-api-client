@@ -25,7 +25,9 @@
 
 package no.vegvesen.nvdbapi.client.model.datakatalog;
 
-public class DoubleAttributeType extends AttributeType {
+import java.util.Set;
+
+public class DoubleEnumAttributeType extends AbstractEnumAttributeType<DoubleEnumValue> {
     private final Double defaultvalue;
     private final Double minValue;
     private final Double maxValue;
@@ -38,19 +40,18 @@ public class DoubleAttributeType extends AttributeType {
     private final boolean isdirectionsensitive;
     private final boolean isextentsensitive;
 
-    public DoubleAttributeType(AttributeCommonProperties props,
-                               Double defaultvalue,
-                               Double minValue,
-                               Double maxValue,
-                               Double absMinValue,
-                               Double absMaxValue,
-                               Integer fieldLength,
-                               Integer decimalCount,
-                               Unit unit,
-                               Boolean complementarysign,
-                               boolean isdirectionsensitive,
-                               boolean isextentsensitive) {
-        super(props);
+    public DoubleEnumAttributeType(AttributeCommonProperties props,
+                                   Double defaultvalue,
+                                   Double minValue,
+                                   Double maxValue,
+                                   Double absMinValue,
+                                   Double absMaxValue,
+                                   Integer fieldLength,
+                                   Integer decimalCount,
+                                   Unit unit,
+                                   Set<DoubleEnumValue> values,
+                                   Boolean complementarysign, boolean isdirectionsensitive, boolean isextentsensitive) {
+        super(props, values);
         this.defaultvalue = defaultvalue;
         this.minValue = minValue;
         this.maxValue = maxValue;

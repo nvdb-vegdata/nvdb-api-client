@@ -25,79 +25,39 @@
 
 package no.vegvesen.nvdbapi.client.model.datakatalog;
 
-public class DoubleAttributeType extends AttributeType {
-    private final Double defaultvalue;
-    private final Double minValue;
-    private final Double maxValue;
-    private final Double absMinValue;
-    private final Double absMaxValue;
+import java.util.Set;
+
+public class StringEnumAttributeType extends AbstractEnumAttributeType<StringEnumValue> {
+
     private final Integer fieldLength;
-    private final Integer decimalCount;
-    private final Unit unit;
-    private final Boolean complementarysign;
+    private final String defaultValue;
+    private final String format;
     private final boolean isdirectionsensitive;
     private final boolean isextentsensitive;
 
-    public DoubleAttributeType(AttributeCommonProperties props,
-                               Double defaultvalue,
-                               Double minValue,
-                               Double maxValue,
-                               Double absMinValue,
-                               Double absMaxValue,
-                               Integer fieldLength,
-                               Integer decimalCount,
-                               Unit unit,
-                               Boolean complementarysign,
-                               boolean isdirectionsensitive,
-                               boolean isextentsensitive) {
-        super(props);
-        this.defaultvalue = defaultvalue;
-        this.minValue = minValue;
-        this.maxValue = maxValue;
-        this.absMinValue = absMinValue;
-        this.absMaxValue = absMaxValue;
+    public StringEnumAttributeType(AttributeCommonProperties props,
+                                   String defaultValue,
+                                   Integer fieldLength,
+                                   Set<StringEnumValue> values,
+                                   String format, boolean isdirectionsensitive, boolean isextentsensitive) {
+        super(props, values);
+        this.defaultValue = defaultValue;
         this.fieldLength = fieldLength;
-        this.decimalCount = decimalCount;
-        this.unit = unit;
-        this.complementarysign = complementarysign;
+        this.format = format;
         this.isdirectionsensitive = isdirectionsensitive;
         this.isextentsensitive = isextentsensitive;
     }
 
-    public Double getDefaultvalue() {
-        return defaultvalue;
-    }
-
-    public Double getMinValue() {
-        return minValue;
-    }
-
-    public Double getMaxValue() {
-        return maxValue;
-    }
-
-    public Double getAbsMinValue() {
-        return absMinValue;
-    }
-
-    public Double getAbsMaxValue() {
-        return absMaxValue;
+    public String getDefaultValue() {
+        return defaultValue;
     }
 
     public Integer getFieldLength() {
         return fieldLength;
     }
 
-    public Integer getDecimalCount() {
-        return decimalCount;
-    }
-
-    public Unit getUnit() {
-        return unit;
-    }
-
-    public Boolean getComplementarysign() {
-        return complementarysign;
+    public String getFormat() {
+        return format;
     }
 
     public boolean isIsdirectionsensitive() {

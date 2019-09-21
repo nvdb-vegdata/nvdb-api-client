@@ -25,9 +25,7 @@
 
 package no.vegvesen.nvdbapi.client.model.datakatalog;
 
-import java.util.Set;
-
-public class StringAttributeType extends AbstractEnumAttributeType<StringEnumValue> {
+public class StringAttributeType extends AttributeType {
 
     private final Integer fieldLength;
     private final String defaultValue;
@@ -38,9 +36,10 @@ public class StringAttributeType extends AbstractEnumAttributeType<StringEnumVal
     public StringAttributeType(AttributeCommonProperties props,
                                String defaultValue,
                                Integer fieldLength,
-                               Set<StringEnumValue> values,
-                               String format, boolean isdirectionsensitive, boolean isextentsensitive) {
-        super(props, values);
+                               String format,
+                               boolean isdirectionsensitive,
+                               boolean isextentsensitive) {
+        super(props);
         this.defaultValue = defaultValue;
         this.fieldLength = fieldLength;
         this.format = format;

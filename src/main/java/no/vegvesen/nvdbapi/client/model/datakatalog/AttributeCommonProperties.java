@@ -228,72 +228,72 @@ public class AttributeCommonProperties {
         if (o == null || getClass() != o.getClass()) return false;
         AttributeCommonProperties that = (AttributeCommonProperties) o;
         return readOnly == that.readOnly &&
-                referencegeometry == that.referencegeometry &&
-                reqheightref == that.reqheightref &&
-                Double.compare(that.reqaccuracyplan, reqaccuracyplan) == 0 &&
-                Double.compare(that.reqaccuracyheight, reqaccuracyheight) == 0 &&
-                Objects.equals(id, that.id) &&
-                Objects.equals(category, that.category) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(shortname, that.shortname) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(type, that.type) &&
-                Objects.equals(sortNumber, that.sortNumber) &&
-                Objects.equals(requirementComment, that.requirementComment) &&
-                importance == that.importance &&
-                Objects.equals(sosiName, that.sosiName) &&
-                Objects.equals(sosiNvdbName, that.sosiNvdbName) &&
-                Objects.equals(sensitiveLevel, that.sensitiveLevel) &&
-                Objects.equals(objectListDate, that.objectListDate) &&
-                Objects.equals(validTo, that.validTo) &&
-                Objects.equals(caption, that.caption) &&
-                Objects.equals(complementaryattrtypeid, that.complementaryattrtypeid) &&
-                Objects.equals(planviewreftext, that.planviewreftext) &&
-                Objects.equals(heightreftext, that.heightreftext) &&
-                Objects.equals(referencesosi, that.referencesosi) &&
-                Objects.equals(conditionalRequirements, that.conditionalRequirements) &&
-                Objects.equals(derived, that.derived) &&
-                Objects.equals(required, that.required);
+            referencegeometry == that.referencegeometry &&
+            reqheightref.equals(that.reqheightref) &&
+            Double.compare(that.reqaccuracyplan, reqaccuracyplan) == 0 &&
+            Double.compare(that.reqaccuracyheight, reqaccuracyheight) == 0 &&
+            Objects.equals(id, that.id) &&
+            Objects.equals(category, that.category) &&
+            Objects.equals(name, that.name) &&
+            Objects.equals(shortname, that.shortname) &&
+            Objects.equals(description, that.description) &&
+            Objects.equals(type, that.type) &&
+            Objects.equals(sortNumber, that.sortNumber) &&
+            Objects.equals(requirementComment, that.requirementComment) &&
+            importance == that.importance &&
+            Objects.equals(sosiName, that.sosiName) &&
+            Objects.equals(sosiNvdbName, that.sosiNvdbName) &&
+            Objects.equals(sensitiveLevel, that.sensitiveLevel) &&
+            Objects.equals(objectListDate, that.objectListDate) &&
+            Objects.equals(validTo, that.validTo) &&
+            Objects.equals(caption, that.caption) &&
+            Objects.equals(complementaryattrtypeid, that.complementaryattrtypeid) &&
+            Objects.equals(planviewreftext, that.planviewreftext) &&
+            Objects.equals(heightreftext, that.heightreftext) &&
+            Objects.equals(referencesosi, that.referencesosi) &&
+            Objects.equals(conditionalRequirements, that.conditionalRequirements) &&
+            Objects.equals(derived, that.derived) &&
+            Objects.equals(required, that.required);
     }
 
     @Override
     public int hashCode() {
         return Objects.hash(id, category, name, shortname, description, type, sortNumber, requirementComment,
-                importance, sosiName, sosiNvdbName, sensitiveLevel, objectListDate, validTo, readOnly, caption,
-                complementaryattrtypeid, planviewreftext, heightreftext, referencesosi, referencegeometry, reqheightref,
-                reqaccuracyplan, reqaccuracyheight, conditionalRequirements, derived, required);
+            importance, sosiName, sosiNvdbName, sensitiveLevel, objectListDate, validTo, readOnly, caption,
+            complementaryattrtypeid, planviewreftext, heightreftext, referencesosi, referencegeometry, reqheightref,
+            reqaccuracyplan, reqaccuracyheight, conditionalRequirements, derived, required);
     }
 
     @Override
     public String toString() {
         return "AttributeCommonProperties{" +
-                "id=" + id +
-                ", category=" + category +
-                ", name='" + name + '\'' +
-                ", shortname='" + shortname + '\'' +
-                ", description='" + description + '\'' +
-                ", type=" + type +
-                ", sortNumber=" + sortNumber +
-                ", requirementComment='" + requirementComment + '\'' +
-                ", importance=" + importance +
-                ", sosiName='" + sosiName + '\'' +
-                ", sosiNvdbName='" + sosiNvdbName + '\'' +
-                ", sensitiveLevel=" + sensitiveLevel +
-                ", objectListDate=" + objectListDate +
-                ", validTo=" + validTo +
-                ", readOnly=" + readOnly +
-                ", caption='" + caption + '\'' +
-                ", complementaryattrtypeid=" + complementaryattrtypeid +
-                ", planviewreftext='" + planviewreftext + '\'' +
-                ", heightreftext='" + heightreftext + '\'' +
-                ", referencesosi='" + referencesosi + '\'' +
-                ", referencegeometry=" + referencegeometry +
-                ", reqheightref=" + reqheightref +
-                ", reqaccuracyplan=" + reqaccuracyplan +
-                ", reqaccuracyheight=" + reqaccuracyheight +
-                ", conditionalRequirements=" + conditionalRequirements +
-                ", derived=" + derived +
-                ", required=" + required +
-                '}';
+            "id=" + id +
+            ", category=" + category +
+            ", name='" + name + '\'' +
+            ", shortname='" + shortname + '\'' +
+            ", description='" + description + '\'' +
+            ", type=" + type +
+            ", sortNumber=" + sortNumber +
+            ", requirementComment='" + requirementComment + '\'' +
+            ", importance=" + importance +
+            ", sosiName='" + sosiName + '\'' +
+            ", sosiNvdbName='" + sosiNvdbName + '\'' +
+            ", sensitiveLevel=" + sensitiveLevel +
+            ", objectListDate=" + objectListDate +
+            ", validTo=" + validTo +
+            ", readOnly=" + readOnly +
+            ", caption='" + caption + '\'' +
+            ", complementaryattrtypeid=" + complementaryattrtypeid +
+            ", planviewreftext='" + planviewreftext + '\'' +
+            ", heightreftext='" + heightreftext + '\'' +
+            ", referencesosi='" + referencesosi + '\'' +
+            ", referencegeometry=" + referencegeometry +
+            ", reqheightref=" + reqheightref +
+            ", reqaccuracyplan=" + reqaccuracyplan +
+            ", reqaccuracyheight=" + reqaccuracyheight +
+            ", conditionalRequirements=" + conditionalRequirements +
+            ", derived=" + derived +
+            ", required=" + required +
+            '}';
     }
 }

@@ -26,6 +26,7 @@
 package no.vegvesen.nvdbapi.client.gson;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.LocationalType;
 import no.vegvesen.nvdbapi.client.model.SpatialType;
@@ -33,213 +34,258 @@ import no.vegvesen.nvdbapi.client.model.datakatalog.*;
 
 import java.time.LocalDate;
 import java.util.*;
+import java.util.stream.StreamSupport;
 
+import static java.util.stream.Collectors.toSet;
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 
 public final class AttributeTypeParser {
     private AttributeTypeParser() {  }
 
     public static AttributeType parse(Map<String, DataType> typeMap, JsonObject object) {
-        String typeId = parseStringMember(object, "datatype");
-        DataType type = typeMap.get(typeId);
-
-        Integer id = parseIntMember(object, "id");
-        Integer category = parseIntMember(object, "kategori");
-        String name = parseStringMember(object, "navn");
-        String shortname = parseStringMember(object, "kortnavn");
-        String description = parseStringMember(object, "beskrivelse");
-        Integer sortNumber = parseIntMember(object, "sorteringsnummer");
-        String requirementComment = parseStringMember(object, "veiledning");
-        String sosiName = parseStringMember(object, "sosinavn");
-        String sosiNvdbName = parseStringMember(object, "sosinvdbnavn");
-        AttributeType.Importance importance = AttributeType.Importance.from(parseStringMember(object, "viktighet"));
-        Integer sensitivityLevel = parseIntMember(object, "sensitivitet");
-        LocalDate validFrom = parseDateMember(object, "objektliste_dato");
-        LocalDate validTo = parseDateMember(object, "slutt_dato");
-        Boolean derived = parseBooleanMember(object, "avledet");
-        Boolean requiredValue = parseBooleanMember(object, "obligatorisk_verdi");
-
-        AttributeCommonProperties props = new AttributeCommonProperties(
-                id,
-                category,
-                name,
-                shortname,
-                description,
-                type,
-                sortNumber,
-                requirementComment,
-                importance,
-                sosiName,
-                sosiNvdbName,
-                sensitivityLevel,
-                validFrom,
-                validTo,
-                parseBooleanMember(object, "skrivebeskyttet"),
-                parseStringMember(object, "ledetekst"),
-                parseIntMember(object, "komplementær_egenskapstype"),
-                parseStringMember(object, "grunnrissreferanse"),
-                parseStringMember(object, "høydereferanse"),
-                parseStringMember(object, "sosi_referanse"),
-                parseBooleanMember(object, "referansegeometri_tilstrekkelig"),
-                parseIntMember(object, "høydereferanse_tall"),
-                parseDoubleMember(object, "nøyaktighetskrav_grunnriss"),
-                parseDoubleMember(object, "nøyaktighetskrav_høyde"),
-                parseStringListMember(object, "tilleggskrav"),
-                derived,
-                requiredValue);
-
-        switch (type.getJavaType()) {
-            case TEXT:
-                return parseStringAttributeType(object, props);
-            case CHARACTER:
-                return new CharacterAttributeType(props,
-                        Optional.ofNullable(parseStringMember(object, "standardverdi"))
-                                .map(s -> s.charAt(0))
-                                .orElse(null),
-                        parseBooleanMember(object, "ajourhold_snu"),
-                        parseBooleanMember(object, "lengdeavhengig_verdi"));
-            case BOOLEAN:
-                return new BooleanAttributeType(props,
-                        parseBooleanMember(object, "standardverdi"),
-                        parseBooleanMember(object, "ajourhold_snu"),
-                        parseBooleanMember(object, "lengdeavhengig_verdi"));
-            case NUMBER:
-                boolean isDouble = object.has("desimaler")
-                        && parseIntMember(object, "desimaler") > 0;
-
-                if (!isDouble) {
-                    return parseIntegerAttributeType(object, props);
-                } else {
-                    return parseDoubleAttributeType(object, props);
-                }
-            case GEOMETRY: //spatial or locational
-
-                if (parseStringMember(object, "egenskapstype").equalsIgnoreCase("stedfesting")) {
-                    Boolean overlapp = parseBooleanMember(object, "overlapp_ok");
-                    String laneRelevant = parseStringMember(object, "kjørefelt_relevant");
-                    String sideposRelevant = parseStringMember(object, "sideposisjon_relevant");
-                    Boolean insideparent = parseBooleanMember(object, "innenfor_mor");
-                    String ajourholdi = parseStringMember(object, "ajourhold_i");
-                    String ajourholdsplitt = parseStringMember(object, "ajourhold_splitt");
-                    return new LocationalAttributeType(props, determineLocationalType(object),
-                            overlapp, laneRelevant, sideposRelevant,
-                            ajourholdi, ajourholdsplitt, insideparent,
-                            parseStringMember(object, "overlappsautomatikk"));
-                } else {
-                    return new SpatialAttributeType(props,
-                            determineSpatialType(object),
-                            parseIntMember(object, "dimensjoner"),
-                            parseBooleanMember(object, "innenfor_mor"));
-                }
-            case LOCAL_DATE:
-                return new DateAttributeType(props,
-                        parseDateMember(object, "standardverdi"),
-                        parseDateMember(object, "min"),
-                        parseDateMember(object, "maks"),
-                        parseStringMember(object, "format"),
-                        parseBooleanMember(object, "ajourhold_snu"),
-                        parseBooleanMember(object, "lengdeavhengig_verdi"));
-            case SHORT_DATE:
-                return new ShortDateAttributeType(props,
-                        parseIntMember(object, "standardverdi"),
-                        parseIntMember(object, "min_anbefalt"),
-                        parseIntMember(object, "maks_anbefalt"),
-                        parseStringMember(object, "format"),
-                        parseBooleanMember(object, "ajourhold_snu"),
-                        parseBooleanMember(object, "lengdeavhengig_verdi"));
-            case LOCAL_TIME:
-                return new TimeAttributeType(props,
-                        parseTimeMember(object, "standardverdi"),
-                        parseTimeMember(object, "min_anbefalt"),
-                        parseTimeMember(object, "maks_anbefalt"),
-                        parseStringMember(object, "format"),
-                        parseBooleanMember(object, "ajourhold_snu"),
-                        parseBooleanMember(object, "lengdeavhengig_verdi"));
-            case BINARY:
-                return new BinaryObjectAttributeType(
-                        props,
-                        parseStringMember(object, "mediatype"),
-                        parseBooleanMember(object, "ajourhold_snu"),
-                        parseBooleanMember(object, "lengdeavhengig_verdi"));
-            case STRUCTURE:
-                return new StructureAttributeType(props);
-            case LIST:
-                AttributeType content = parse(typeMap, object.getAsJsonObject("innhold"));
-                return new ListAttributeType(props,
-                        content,
-                        parseIntMember(object, "maksimalt_antall_verdier"),
-                        parseIntMember(object, "minimalt_antall_verdier"));
-            case ASSOCIATION:
-                return new AssociationRoleType(props,
-                        parseIntMember(object, "tilknytning"),
-                        parseIntMember(object, "vegobjekttypeid"),
-                        parseIntMember(object, "innenfor_mor"),
-                        parseDateMember(object, "startdato"),
-                        parseDateMember(object, "sluttdato"),
-                        parseIntMember(object, "assosiasjonskrav"),
-                        parseStringMember(object, "assosiasjonskravkommentar"));
+        String egenskapstype = parseStringMember(object, "egenskapstype");
+        switch (egenskapstype) {
+            case "Tekst":
+                return parseStringAttributeType(object, parseCommonProperties(typeMap, object));
+            case "Tekstenum":
+                return parseStringEnumAttributeType(object, parseCommonProperties(typeMap, object));
+            case "Boolsk":
+                return parseBooleanAttributeType(typeMap, object);
+            case "Flyttall":
+                return parseDoubleAttributeType(object, parseCommonProperties(typeMap, object));
+            case "Flyttallenum":
+                return parseDoubleEnumAttributeType(object, parseCommonProperties(typeMap, object));
+            case "Heltall":
+                return parseIntegerAttributeType(object, parseCommonProperties(typeMap, object));
+            case "Heltallenum":
+                return parseIntegerEnumAttributeType(object, parseCommonProperties(typeMap, object));
+            case "Geometri":
+                return parseSpatialAttributeType(typeMap, object);
+            case "Stedfesting":
+                return parseLocationalAttributeType(typeMap, object);
+            case "Dato":
+                return parseDateAttributeType(typeMap, object);
+            case "Kortdato":
+                return parseShortDateAttributeType(typeMap, object);
+            case "Tid":
+                return parseTimeAttributeType(typeMap, object);
+            case "Binær":
+                return parseBinaryObjectAttributeType(typeMap, object);
+            case "Struktur":
+                return new StructureAttributeType(parseCommonProperties(typeMap, object));
+            case "Liste":
+                return parseListAttributeType(typeMap, object);
+            case "Assosiasjon":
+                return parseAssociationRoleType(typeMap, object);
             default:
-                throw new UnsupportedOperationException("Unrecognized data type" + type);
+                throw new UnsupportedOperationException("Unrecognized attribute type" + egenskapstype);
         }
     }
 
-    private static AttributeType parseDoubleAttributeType(JsonObject object, AttributeCommonProperties props) {
-        Integer decimalCount = parseIntMember(object, "desimaler");
-        Double doubleDefValue = parseDoubleMember(object, "standardverdi");
-        Double doubleMinValue = parseDoubleMember(object, "min_anbefalt"), doubleMaxValue = parseDoubleMember(object, "maks_anbefalt");
-        Double doubleAbsMinValue = parseDoubleMember(object, "min"), doubleAbsMaxValue = parseDoubleMember(object, "maks");
-        Unit unit = object.has("enhet") ? parseUnit(object.getAsJsonObject("enhet")) : null;
+    private static AssociationRoleType parseAssociationRoleType(Map<String, DataType> typeMap, JsonObject object) {
+        return new AssociationRoleType(
+            parseCommonProperties(typeMap, object),
+            parseIntMember(object, "tilknytning"),
+            parseIntMember(object, "vegobjekttypeid"),
+            parseIntMember(object, "innenfor_mor"),
+            parseDateMember(object, "startdato"),
+            parseDateMember(object, "sluttdato"),
+            parseIntMember(object, "assosiasjonskrav"),
+            parseStringMember(object, "assosiasjonskravkommentar"));
+    }
 
+    private static ListAttributeType parseListAttributeType(Map<String, DataType> typeMap, JsonObject object) {
+        return new ListAttributeType(
+            parseCommonProperties(typeMap, object),
+            parse(typeMap, object.getAsJsonObject("innhold")),
+            parseIntMember(object, "maksimalt_antall_verdier"),
+            parseIntMember(object, "minimalt_antall_verdier"));
+    }
+
+    private static BinaryObjectAttributeType parseBinaryObjectAttributeType(Map<String, DataType> typeMap, JsonObject object) {
+        return new BinaryObjectAttributeType(
+            parseCommonProperties(typeMap, object),
+            parseStringMember(object, "mediatype"),
+            parseBooleanMember(object, "ajourhold_snu"),
+            parseBooleanMember(object, "lengdeavhengig_verdi"));
+    }
+
+    private static TimeAttributeType parseTimeAttributeType(Map<String, DataType> typeMap, JsonObject object) {
+        return new TimeAttributeType(
+            parseCommonProperties(typeMap, object),
+            parseTimeMember(object, "standardverdi"),
+            parseTimeMember(object, "min_anbefalt"),
+            parseTimeMember(object, "maks_anbefalt"),
+            parseStringMember(object, "format"),
+            parseBooleanMember(object, "ajourhold_snu"),
+            parseBooleanMember(object, "lengdeavhengig_verdi"));
+    }
+
+    private static ShortDateAttributeType parseShortDateAttributeType(Map<String, DataType> typeMap, JsonObject object) {
+        return new ShortDateAttributeType(
+            parseCommonProperties(typeMap, object),
+            parseIntMember(object, "standardverdi"),
+            parseIntMember(object, "min_anbefalt"),
+            parseIntMember(object, "maks_anbefalt"),
+            parseStringMember(object, "format"),
+            parseBooleanMember(object, "ajourhold_snu"),
+            parseBooleanMember(object, "lengdeavhengig_verdi"));
+    }
+
+    private static DateAttributeType parseDateAttributeType(Map<String, DataType> typeMap, JsonObject object) {
+        return new DateAttributeType(
+            parseCommonProperties(typeMap, object),
+            parseDateMember(object, "standardverdi"),
+            parseDateMember(object, "min"),
+            parseDateMember(object, "maks"),
+            parseStringMember(object, "format"),
+            parseBooleanMember(object, "ajourhold_snu"),
+            parseBooleanMember(object, "lengdeavhengig_verdi"));
+    }
+
+    private static LocationalAttributeType parseLocationalAttributeType(Map<String, DataType> typeMap, JsonObject object) {
+        return new LocationalAttributeType(
+            parseCommonProperties(typeMap, object),
+            determineLocationalType(object),
+            parseBooleanMember(object, "overlapp_ok"),
+            parseStringMember(object, "kjørefelt_relevant"),
+            parseStringMember(object, "sideposisjon_relevant"),
+            parseStringMember(object, "ajourhold_i"),
+            parseStringMember(object, "ajourhold_splitt"),
+            parseBooleanMember(object, "innenfor_mor"),
+            parseStringMember(object, "overlappsautomatikk"));
+    }
+
+    private static SpatialAttributeType parseSpatialAttributeType(Map<String, DataType> typeMap, JsonObject object) {
+        return new SpatialAttributeType(
+            parseCommonProperties(typeMap, object),
+            determineSpatialType(object),
+            parseIntMember(object, "dimensjoner"),
+            parseBooleanMember(object, "innenfor_mor"));
+    }
+
+    private static BooleanAttributeType parseBooleanAttributeType(Map<String, DataType> typeMap, JsonObject object) {
+        return new BooleanAttributeType(
+            parseCommonProperties(typeMap, object),
+            parseBooleanMember(object, "standardverdi"),
+            parseBooleanMember(object, "ajourhold_snu"),
+            parseBooleanMember(object, "lengdeavhengig_verdi"));
+    }
+
+    private static AttributeCommonProperties parseCommonProperties(Map<String, DataType> typeMap, JsonObject object) {
+        return new AttributeCommonProperties(
+            parseIntMember(object, "id"),
+            parseIntMember(object, "kategori"),
+            parseStringMember(object, "navn"),
+            parseStringMember(object, "kortnavn"),
+            parseStringMember(object, "beskrivelse"),
+            typeMap.get(parseStringMember(object, "datatype")),
+            parseIntMember(object, "sorteringsnummer"),
+            parseStringMember(object, "veiledning"),
+            AttributeType.Importance.from(parseStringMember(object, "viktighet")),
+            parseStringMember(object, "sosinavn"),
+            parseStringMember(object, "sosinvdbnavn"),
+            parseIntMember(object, "sensitivitet"),
+            parseDateMember(object, "objektliste_dato"),
+            parseDateMember(object, "slutt_dato"),
+            parseBooleanMember(object, "skrivebeskyttet"),
+            parseStringMember(object, "ledetekst"),
+            parseIntMember(object, "komplementær_egenskapstype"),
+            parseStringMember(object, "grunnrissreferanse"),
+            parseStringMember(object, "høydereferanse"),
+            parseStringMember(object, "sosi_referanse"),
+            parseBooleanMember(object, "referansegeometri_tilstrekkelig"),
+            parseIntMember(object, "høydereferanse_tall"),
+            parseDoubleMember(object, "nøyaktighetskrav_grunnriss"),
+            parseDoubleMember(object, "nøyaktighetskrav_høyde"),
+            parseStringListMember(object, "tilleggskrav"),
+            parseBooleanMember(object, "avledet"),
+            parseBooleanMember(object, "obligatorisk_verdi"));
+    }
+
+    private static DoubleAttributeType parseDoubleAttributeType(JsonObject object, AttributeCommonProperties props) {
         return new DoubleAttributeType(
-                props,
-                doubleDefValue,
-                doubleMinValue,
-                doubleMaxValue,
-                doubleAbsMinValue,
-                doubleAbsMaxValue,
-                parseIntMember(object, "feltlengde"),
-                decimalCount,
-                unit,
-                parseEnumValues(object),
-                parseBooleanMember(object, "fortegnsendring_snu"),
-                parseBooleanMember(object, "ajourhold_snu"),
-                parseBooleanMember(object, "lengdeavhengig_verdi"));
+            props,
+            parseDoubleMember(object, "standardverdi"),
+            parseDoubleMember(object, "min_anbefalt"),
+            parseDoubleMember(object, "maks_anbefalt"),
+            parseDoubleMember(object, "min"),
+            parseDoubleMember(object, "maks"),
+            parseIntMember(object, "feltlengde"),
+            parseIntMember(object, "desimaler"),
+            parseUnit(object.getAsJsonObject("enhet")),
+            parseBooleanMember(object, "fortegnsendring_snu"),
+            parseBooleanMember(object, "ajourhold_snu"),
+            parseBooleanMember(object, "lengdeavhengig_verdi"));
+    }
+
+    private static DoubleEnumAttributeType parseDoubleEnumAttributeType(JsonObject object, AttributeCommonProperties props) {
+        return new DoubleEnumAttributeType(
+            props,
+            parseDoubleMember(object, "standardverdi"),
+            parseDoubleMember(object, "min_anbefalt"),
+            parseDoubleMember(object, "maks_anbefalt"),
+            parseDoubleMember(object, "min"),
+            parseDoubleMember(object, "maks"),
+            parseIntMember(object, "feltlengde"),
+            parseIntMember(object, "desimaler"),
+            parseUnit(object.getAsJsonObject("enhet")),
+            parseEnumValues(object),
+            parseBooleanMember(object, "fortegnsendring_snu"),
+            parseBooleanMember(object, "ajourhold_snu"),
+            parseBooleanMember(object, "lengdeavhengig_verdi"));
     }
 
     private static AttributeType parseIntegerAttributeType(JsonObject object, AttributeCommonProperties props) {
-        Integer intDefValue = parseIntMember(object, "standardverdi");
-        Integer intMinValue = parseIntMember(object, "min_anbefalt"), intMaxValue = parseIntMember(object, "maks_anbefalt");
-        Integer intAbsMinValue = parseIntMember(object, "min"), intAbsMaxValue = parseIntMember(object, "maks");
-        Unit unit = object.has("enhet") ? parseUnit(object.getAsJsonObject("enhet")) : null;
-
         return new IntegerAttributeType(
-                props,
-                intDefValue,
-                intMinValue,
-                intMaxValue,
-                intAbsMinValue,
-                intAbsMaxValue,
-                parseIntMember(object, "feltlengde"),
-                unit,
-                parseEnumValues(object),
-                parseBooleanMember(object, "fortegnsendring_snu"),
-                parseBooleanMember(object, "ajourhold_snu"),
-                parseBooleanMember(object, "lengdeavhengig_verdi"));
+            props,
+            parseIntMember(object, "standardverdi"),
+            parseIntMember(object, "min_anbefalt"),
+            parseIntMember(object, "maks_anbefalt"),
+            parseIntMember(object, "min"),
+            parseIntMember(object, "maks"),
+            parseIntMember(object, "feltlengde"),
+            parseUnit(object.getAsJsonObject("enhet")),
+            parseBooleanMember(object, "fortegnsendring_snu"),
+            parseBooleanMember(object, "ajourhold_snu"),
+            parseBooleanMember(object, "lengdeavhengig_verdi"));
     }
 
-    private static AttributeType parseStringAttributeType(JsonObject object, AttributeCommonProperties props) {
-        Set<StringEnumValue> values = parseEnumValues(object);
-        Integer fieldLength = parseIntMember(object, "feltlengde");
-        String textDefaultValue = parseStringMember(object, "standardverdi");
+    private static IntegerEnumAttributeType parseIntegerEnumAttributeType(JsonObject object, AttributeCommonProperties props) {
+        return new IntegerEnumAttributeType(
+            props,
+            parseIntMember(object, "standardverdi"),
+            parseIntMember(object, "min_anbefalt"),
+            parseIntMember(object, "maks_anbefalt"),
+            parseIntMember(object, "min"),
+            parseIntMember(object, "maks"),
+            parseIntMember(object, "feltlengde"),
+            parseUnit(object.getAsJsonObject("enhet")),
+            parseEnumValues(object),
+            parseBooleanMember(object, "fortegnsendring_snu"),
+            parseBooleanMember(object, "ajourhold_snu"),
+            parseBooleanMember(object, "lengdeavhengig_verdi"));
+    }
 
+    private static StringAttributeType parseStringAttributeType(JsonObject object, AttributeCommonProperties props) {
         return new StringAttributeType(
-                props,
-                textDefaultValue,
-                fieldLength,
-                values,
-                parseStringMember(object, "format"),
-                parseBooleanMember(object, "ajourhold_snu"),
-                parseBooleanMember(object, "lengdeavhengig_verdi"));
+            props,
+            parseStringMember(object, "standardverdi"),
+            parseIntMember(object, "feltlengde"),
+            parseStringMember(object, "format"),
+            parseBooleanMember(object, "ajourhold_snu"),
+            parseBooleanMember(object, "lengdeavhengig_verdi"));
+    }
+
+    private static StringEnumAttributeType parseStringEnumAttributeType(JsonObject object, AttributeCommonProperties props) {
+        return new StringEnumAttributeType(
+            props,
+            parseStringMember(object, "standardverdi"),
+            parseIntMember(object, "feltlengde"),
+            parseEnumValues(object),
+            parseStringMember(object, "format"),
+            parseBooleanMember(object, "ajourhold_snu"),
+            parseBooleanMember(object, "lengdeavhengig_verdi"));
     }
 
     private static SpatialType determineSpatialType(JsonObject object) {
@@ -280,32 +326,21 @@ public final class AttributeTypeParser {
         if (!obj.has("tillatte_verdier")) {
             return Collections.emptySet();
         }
-        Set<T> values = new HashSet<>();
+
         JsonArray array = obj.get("tillatte_verdier").getAsJsonArray();
-        array.forEach(e -> {
-            JsonObject allowedValue = e.getAsJsonObject();
-
-            Integer id = parseIntMember(allowedValue, "id");
-            String shortValue = parseStringMember(allowedValue, "kortnavn");
-
-            String description = parseStringMember(allowedValue, "beskrivelse");
-            Integer sortNumber = parseIntMember(allowedValue, "sorteringsnummer");
-            LocalDate objectListDate = parseDateMember(allowedValue, "objektliste_dato");
-            String type = parseStringMember(allowedValue, "type");
-
-
-            values.add(
-                    createEnumValue(
-                            allowedValue,
-                            type,
-                            id,
-                            sortNumber,
-                            shortValue,
-                            description,
-                            objectListDate
-                    ));
-        });
-        return values;
+        return StreamSupport.stream(array.spliterator(), false)
+            .map(JsonElement::getAsJsonObject)
+            .map(allowedValue ->
+                AttributeTypeParser.<T>createEnumValue(
+                    allowedValue,
+                    parseStringMember(allowedValue, "type"),
+                    parseIntMember(allowedValue, "id"),
+                    parseIntMember(allowedValue, "sorteringsnummer"),
+                    parseStringMember(allowedValue, "kortnavn"),
+                    parseStringMember(allowedValue, "beskrivelse"),
+                    parseDateMember(allowedValue, "objektliste_dato")
+                ))
+            .collect(toSet());
     }
 
     @SuppressWarnings("unchecked")
@@ -319,48 +354,49 @@ public final class AttributeTypeParser {
         switch (type) {
             case "Tekst":
                 return (T) new StringEnumValue(id,
-                        sortNumber, parseStringMember(obj, "verdi"),
-                        shortValue, description, objectListDate,
-                        parseBooleanMember(obj, "standardverdi"),
-                        parseBooleanMember(obj, "kortnavn_brukbar"),
-                        parseIntMember(obj, "kortnavnlengde"),
-                        parseIntMember(obj, "komplementær_enumverdi"));
+                    sortNumber, parseStringMember(obj, "verdi"),
+                    shortValue, description, objectListDate,
+                    parseBooleanMember(obj, "standardverdi"),
+                    parseBooleanMember(obj, "kortnavn_brukbar"),
+                    parseIntMember(obj, "kortnavnlengde"),
+                    parseIntMember(obj, "komplementær_enumverdi"));
             case "Heltall":
                 return (T) new IntegerEnumValue(id,
-                        sortNumber, parseIntMember(obj, "verdi"),
-                        shortValue, description, objectListDate,
-                        parseBooleanMember(obj, "standardverdi"),
-                        parseBooleanMember(obj, "kortnavn_brukbar"),
-                        parseIntMember(obj, "kortnavnlengde"),
-                        parseIntMember(obj, "komplementær_enumverdi"));
+                    sortNumber, parseIntMember(obj, "verdi"),
+                    shortValue, description, objectListDate,
+                    parseBooleanMember(obj, "standardverdi"),
+                    parseBooleanMember(obj, "kortnavn_brukbar"),
+                    parseIntMember(obj, "kortnavnlengde"),
+                    parseIntMember(obj, "komplementær_enumverdi"));
             case "Flyttall":
                 return (T) new DoubleEnumValue(id,
-                        sortNumber, parseDoubleMember(obj, "verdi"),
-                        shortValue, description, objectListDate,
-                        parseBooleanMember(obj, "standardverdi"),
-                        parseBooleanMember(obj, "kortnavn_brukbar"),
-                        parseIntMember(obj, "kortnavnlengde"),
-                        parseIntMember(obj, "komplementær_enumverdi"));
+                    sortNumber, parseDoubleMember(obj, "verdi"),
+                    shortValue, description, objectListDate,
+                    parseBooleanMember(obj, "standardverdi"),
+                    parseBooleanMember(obj, "kortnavn_brukbar"),
+                    parseIntMember(obj, "kortnavnlengde"),
+                    parseIntMember(obj, "komplementær_enumverdi"));
             default:
                 throw new IllegalArgumentException("Could not handle enum value of type " + type);
         }
     }
 
     public static Unit parseUnit(JsonObject obj) {
-        Integer id = parseIntMember(obj, "id");
-        String name = parseStringMember(obj, "navn");
-        String shortName = parseStringMember(obj, "kortnavn");
-
-        return new Unit(id, name, shortName);
+        if(obj == null) return null;
+        return new Unit(
+            parseIntMember(obj, "id"),
+            parseStringMember(obj, "navn"),
+            parseStringMember(obj, "kortnavn"));
     }
 
     public static DataType parseDataType(JsonObject obj) {
-        Integer id = parseIntMember(obj, "id");
-        String name = parseStringMember(obj, "navn");
-        String shortName = parseStringMember(obj, "kortnavn");
-        String description = parseStringMember(obj, "beskrivelse");
 
-        return new DataType(id, name, shortName, description, determineActualType(id));
+        return new DataType(
+            parseIntMember(obj, "id"),
+            parseStringMember(obj, "navn"),
+            parseStringMember(obj, "kortnavn"),
+            parseStringMember(obj, "beskrivelse"),
+            determineActualType(parseIntMember(obj, "id")));
     }
 
     private static JavaType determineActualType(int typeId) {
@@ -411,10 +447,10 @@ public final class AttributeTypeParser {
 
     public static AttributeTypeCategory parseCategory(JsonObject obj) {
         return new AttributeTypeCategory(
-                parseIntMember(obj, "id"),
-                parseStringMember(obj, "navn"),
-                parseStringMember(obj, "kortnavn"),
-                parseStringMember(obj, "beskrivelse"),
-                parseIntMember(obj, "sorteringsnummer"));
+            parseIntMember(obj, "id"),
+            parseStringMember(obj, "navn"),
+            parseStringMember(obj, "kortnavn"),
+            parseStringMember(obj, "beskrivelse"),
+            parseIntMember(obj, "sorteringsnummer"));
     }
 }

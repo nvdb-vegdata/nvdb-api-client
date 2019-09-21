@@ -207,7 +207,7 @@ public final class FeatureType implements Serializable {
      */
     public <T extends AttributeType> T getAttributeType(Integer id, Class<T> clazz) {
         return Optional.ofNullable(getAttributeType(id))
-                .filter(attr -> clazz.isInstance(attr.getClass()))
+                .filter(clazz::isInstance)
                 .map(clazz::cast)
                 .orElse(null);
     }
