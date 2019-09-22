@@ -4,7 +4,9 @@
 * Enum values have their own classes. String-, Double-, IntegerAttribute now
 is only the regular attributes.
 * Removed deprecated constructors using `User-Agent` and the 
-constructor not specifying client id. 
+constructor not specifying client id.
+* Added constructors for `X-Client-Session`-header. If a session identifier
+is not specified a uuid is used. This uuid is stored in ~/.nvdb-api-read-v3/session
 
 ## 1.0.4
 * Always parse responses as UTF-8. When running on windows parsing 

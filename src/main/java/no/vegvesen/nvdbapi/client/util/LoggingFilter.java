@@ -107,7 +107,7 @@ public class LoggingFilter implements ClientRequestFilter, ClientResponseFilter,
     }
 
     private StringBuilder prefixId(StringBuilder b, long id) {
-        b.append(Long.toString(id)).append(" ");
+        b.append(id).append(" ");
         return b;
     }
 
@@ -121,7 +121,7 @@ public class LoggingFilter implements ClientRequestFilter, ClientResponseFilter,
         prefixId(b, id).append(NOTIFICATION_PREFIX).
                 append("LoggingFilter - Response received on thread ").append(Thread.currentThread().getName()).append("\n");
         prefixId(b, id).append(RESPONSE_PREFIX).
-                append(Integer.toString(status)).
+                append(status).
                 append("\n");
     }
 
