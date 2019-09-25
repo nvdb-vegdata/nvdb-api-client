@@ -70,7 +70,7 @@
     },{
         "id": 8,
         "navn": "Tallenum",
-        "egenskapstype": "Heltall",
+        "egenskapstype": "Heltallenum",
         "datatype": "FlerverdiAttributt, Tall",
         "verdi": 2,
         "enum_id": 1
@@ -89,9 +89,9 @@
             {
                 "id": 10001,
                 "navn": "Tallenum",
-                "egenskapstype": "Heltall",
+                "egenskapstype": "Flyttallenum",
                 "datatype": "FlerverdiAttributt, Tall",
-                "verdi": 2,
+                "verdi": 2.0,
                 "enum_id": 1
             },{
                 "id": 10002,
@@ -110,7 +110,7 @@
     },{
         "id": 12,
         "navn": "Tekstenum",
-        "egenskapstype": "Tekst",
+        "egenskapstype": "Tekstenum",
         "datatype": "FlerverdiAttributt, Tekst",
         "verdi": "bap",
         "enum_id": 1

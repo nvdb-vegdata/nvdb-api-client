@@ -218,10 +218,7 @@ public final class RoadObjectParser {
     public static Attribute parseAttribute(JsonObject obj) {
         Integer id = parseIntMember(obj, "id");
         String egenskapstype = parseStringMember(obj, "egenskapstype");
-        Integer enumId = parseIntMember(obj, "enum_id");
-        if(nonNull(enumId)) {
-            return new EnumAttribute(id, enumId);
-        }
+
         switch (egenskapstype) {
             case "Assosiasjon":
                 return new AssociationAttribute(id, parseLongMember(obj, "verdi"));
@@ -237,10 +234,14 @@ public final class RoadObjectParser {
                 return new DateAttribute(id, parseDateMember(obj, "verdi"));
             case "Flyttall":
                 return new RealAttribute(id, parseDoubleMember(obj, "verdi"), getUnit(obj));
+            case "Flyttallenum":
+                return new RealEnumAttribute(id, parseIntMember(obj, "enum_id"), parseDoubleMember(obj, "verdi"));
             case "Geometri":
                 return new SpatialAttribute(id, GeometryParser.parseAttribute(obj));
             case "Heltall":
                 return new IntegerAttribute(id, parseIntMember(obj, "verdi"), getUnit(obj));
+            case "Heltallenum":
+                return new IntegerEnumAttribute(id, parseIntMember(obj, "enum_id"), parseIntMember(obj, "verdi"));
             case "Kortdato":
                 return new ShortDateAttribute(id, MonthDay.parse("--" + parseStringMember(obj, "verdi")));
             case "Liste":
@@ -285,6 +286,8 @@ public final class RoadObjectParser {
                     );
             case "Tekst":
                 return new StringAttribute(id, parseStringMember(obj, "verdi"));
+            case "Tekstenum":
+                return new StringEnumAttribute(id, parseIntMember(obj, "enum_id"), parseStringMember(obj, "verdi"));
             case "Tid":
                 return new TimeAttribute(id, LocalTime.parse(parseStringMember(obj, "verdi")));
             default: throw new RuntimeException("Ukjent egenskapstype: " + egenskapstype);
@@ -297,7 +300,8 @@ public final class RoadObjectParser {
 
     private static List<Attribute> parseInnhold(JsonArray innhold) {
         return StreamSupport.stream(innhold.spliterator(), false)
-            .map(e -> parseAttribute(e.getAsJsonObject()))
+            .map(JsonElement::getAsJsonObject)
+            .map(RoadObjectParser::parseAttribute)
             .collect(toList());
     }
 

@@ -81,15 +81,15 @@ public class VegobjekterParserTest {
                     )
                 )),
             new IntegerAttribute(7, 1, new Unit(1, "Meter", "m")),
-            new EnumAttribute(8, 1),
+            new IntegerEnumAttribute(8, 1, 2),
             new RealAttribute(9, 1.213),
             new StructAttribute(10,
                 asList(
-                    new EnumAttribute(10001, 1),
+                    new RealEnumAttribute(10001, 1, 2.0),
                     new RealAttribute(10002, 1.213)
                 )),
             new StringAttribute(11, "øl"),
-            new EnumAttribute(12, 1),
+            new StringEnumAttribute(12, 1, "bap"),
             new ReflinkExtentAttribute(
                 13,
                 384011,

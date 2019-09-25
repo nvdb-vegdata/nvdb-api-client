@@ -1,7 +1,11 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.1.1
+* Enum attribute values have their own classes. String-, Real-, IntegerEnumAttribute now
+extends EnumAttribute. 
+
 ## 1.1.0
-* Enum values have their own classes. String-, Double-, IntegerAttribute now
+* Enum values have their own classes. String-, Double-, IntegerAttributeType now
 is only the regular attributes.
 * Removed deprecated constructors using `User-Agent` and the 
 constructor not specifying client id.

@@ -2,16 +2,22 @@ package no.vegvesen.nvdbapi.client.model.roadobjects.attribute;
 
 import java.util.Objects;
 
-public class EnumAttribute extends Attribute {
+public abstract class EnumAttribute<T> extends Attribute {
     private final Integer enumId;
+    private final T value;
 
-    public EnumAttribute(int id, Integer enumId) {
+    public EnumAttribute(int id, Integer enumId, T value) {
         super(id);
         this.enumId = enumId;
+        this.value = value;
     }
 
     public Integer getEnumId() {
         return enumId;
+    }
+
+    public T getValue() {
+        return value;
     }
 
     @Override
