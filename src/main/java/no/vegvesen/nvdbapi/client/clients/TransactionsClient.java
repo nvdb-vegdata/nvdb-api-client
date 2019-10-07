@@ -33,6 +33,8 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 
+import java.time.format.DateTimeFormatter;
+
 import static java.util.Objects.nonNull;
 import static no.vegvesen.nvdbapi.client.clients.RoadNetClient.join;
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
@@ -61,8 +63,8 @@ public class TransactionsClient extends AbstractJerseyClient {
         UriBuilder url = start().path("/transaksjoner");
 
         if(request.getIder().size() > 0) url.queryParam("ider", join(request.getIder()));
-        if(nonNull(request.getFrom())) url.queryParam("fra", request.getFrom());
-        if(nonNull(request.getTo())) url.queryParam("til", request.getTo());
+        if(nonNull(request.getFrom())) url.queryParam("fra", request.getFrom().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+        if(nonNull(request.getTo())) url.queryParam("til", request.getTo().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
 
         return getClient().target(url);
     }

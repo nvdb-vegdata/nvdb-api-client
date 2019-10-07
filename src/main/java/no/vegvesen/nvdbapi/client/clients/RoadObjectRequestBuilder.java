@@ -49,7 +49,7 @@ class RoadObjectRequestBuilder {
         request.getRoadUserGroupFilter().ifPresent(v -> map.putSingle("trafikantgruppe", v.getTextValue()));
         request.getSeparatePassagesFilter().ifPresent(v -> map.putSingle("adskiltelop", v.getTextValue()));
         request.getModifiedAfter().ifPresent(v -> map.putSingle("endret_etter",
-                v.format(DateTimeFormatter.ISO_DATE_TIME)));
+                v.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
         request.getProjection().ifPresent(v -> map.putSingle("srid", Integer.toString(v.getSrid())));
         request.getDistanceTolerance().ifPresent(v -> map.putSingle("geometritoleranse", Integer.toString(v)));
         request.getDepth().ifPresent(v -> map.putSingle("dybde", v));
