@@ -39,7 +39,7 @@ test {
 
 jar {
     manifest.attributes "Created-By": rootProject.getProperty("build.vendor")
-    manifest.attributes "Implementation-Title": project.name
+    manifest.attributes "Implementation-Title": 'nvdb-api-client'
     manifest.attributes "Implementation-Version": project.version
 }
 

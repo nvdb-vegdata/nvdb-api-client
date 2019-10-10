@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.1.3
+* Some strange Gradle behaviour made manifest contain `Implementation-Title: NVDB API Client - Release`. Pinning to `nvdb-api-client`.
+
 ## 1.1.2
 * Added `ClientFactory.logout()` for clearing its auth tokens.
 
