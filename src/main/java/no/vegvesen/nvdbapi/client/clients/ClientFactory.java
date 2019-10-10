@@ -136,6 +136,13 @@ public final class ClientFactory implements AutoCloseable {
         }
     }
 
+    /**
+     * clear the ClientFactory's auth tokens.
+     */
+    public void logout() {
+        this.authTokens = null;
+    }
+
     private AuthClient getAuthClient() {
         return clients.stream()
             .filter(c -> c.getClass().equals(AuthClient.class))

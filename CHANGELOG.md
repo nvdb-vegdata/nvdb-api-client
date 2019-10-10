@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.1.2
+* Added `ClientFactory.logout()` for clearing its auth tokens.
+
 ## 1.1.1
 * Enum attribute values have their own classes. String-, Real-, IntegerEnumAttribute now
 extends EnumAttribute. 
