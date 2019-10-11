@@ -12,16 +12,35 @@ See 'set me up' on [bintray](https://bintray.com/beta/#/nvdb-vegdata/vegdata/nvd
 
 ## Gradle
 ```gradle
-compile "no.vegvesen.nvdb:nvdb-read-api-v3-client:$version"
+dependencies {
+    compile "no.vegvesen.nvdb:nvdb-read-api-v3-client:$version"
+}
+repositories {
+	maven {
+		url  "https://dl.bintray.com/nvdb-vegdata/vegdata"
+	}
+}
 ```
 
 ## Maven
 ```xml
-<dependency>
-    <groupId>no.vegvesen.nvdb</groupId>
-    <artifactId>nvdb-read-api-v3-client</artifactId>
-    <version>$version</version>
-</dependency>
+<dependencies>
+    <dependency>
+        <groupId>no.vegvesen.nvdb</groupId>
+        <artifactId>nvdb-read-api-v3-client</artifactId>
+        <version>$version</version>
+    </dependency>
+</dependencies>
+<repositories>
+    <repository>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+        <id>bintray-nvdb-vegdata-vegdata</id>
+        <name>bintray</name>
+        <url>https://dl.bintray.com/nvdb-vegdata/vegdata</url>
+    </repository>
+</repositories>
 ```
 
 # Getting started
