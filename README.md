@@ -16,9 +16,9 @@ dependencies {
     compile "no.vegvesen.nvdb:nvdb-read-api-v3-client:$version"
 }
 repositories {
-	maven {
-		url  "https://dl.bintray.com/nvdb-vegdata/vegdata"
-	}
+   maven {
+      url  "https://dl.bintray.com/nvdb-vegdata/vegdata"
+   }
 }
 ```
 
