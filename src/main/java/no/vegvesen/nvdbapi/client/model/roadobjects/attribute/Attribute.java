@@ -15,6 +15,8 @@ public abstract class Attribute {
         return id;
     }
 
+    public abstract String getValueAsString();
+
     @Override
     public String toString() {
         return getClass().getSimpleName() + " " + id;

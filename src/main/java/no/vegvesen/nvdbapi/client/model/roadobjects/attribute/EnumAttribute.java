@@ -21,6 +21,11 @@ public abstract class EnumAttribute<T> extends Attribute {
     }
 
     @Override
+    public String getValueAsString() {
+        return enumId.toString();
+    }
+
+    @Override
     public AttributeType getAttributeType() {
         return AttributeType.ENUM;
     }

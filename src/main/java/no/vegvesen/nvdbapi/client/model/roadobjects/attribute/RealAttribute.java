@@ -28,6 +28,11 @@ public class RealAttribute extends Attribute {
         return AttributeType.REAL;
     }
 
+    @Override
+    public String getValueAsString() {
+        return String.valueOf(value);
+    }
+
     public Unit getUnit() {
         return unit;
     }

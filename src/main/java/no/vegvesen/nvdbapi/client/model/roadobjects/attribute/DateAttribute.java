@@ -1,6 +1,7 @@
 package no.vegvesen.nvdbapi.client.model.roadobjects.attribute;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class DateAttribute extends Attribute {
@@ -19,6 +20,11 @@ public class DateAttribute extends Attribute {
     @Override
     public AttributeType getAttributeType() {
         return AttributeType.DATE;
+    }
+
+    @Override
+    public String getValueAsString() {
+        return value.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
     @Override

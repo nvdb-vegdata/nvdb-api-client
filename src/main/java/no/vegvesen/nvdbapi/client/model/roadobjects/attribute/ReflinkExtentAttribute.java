@@ -51,6 +51,11 @@ public class ReflinkExtentAttribute extends LocationalAttribute {
     }
 
     @Override
+    public String getValueAsString() {
+        return startLoc + "-" + endLoc + "@" + getNetelementId();
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

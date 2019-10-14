@@ -2,6 +2,7 @@ package no.vegvesen.nvdbapi.client.model.roadobjects.attribute;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class StructAttribute extends Attribute {
     private final List<? extends Attribute> attributes;
@@ -18,6 +19,13 @@ public class StructAttribute extends Attribute {
 
     public List<? extends Attribute> getAttributes() {
         return attributes;
+    }
+
+    @Override
+    public String getValueAsString() {
+        return attributes.stream()
+            .map(Attribute::getValueAsString)
+            .collect(Collectors.joining());
     }
 
     @Override

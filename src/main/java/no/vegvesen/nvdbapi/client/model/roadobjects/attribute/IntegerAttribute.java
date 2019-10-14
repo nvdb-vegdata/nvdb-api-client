@@ -27,6 +27,11 @@ public class IntegerAttribute extends Attribute {
     }
 
     @Override
+    public String getValueAsString() {
+        return String.valueOf(value);
+    }
+
+    @Override
     public AttributeType getAttributeType() {
         return AttributeType.INTEGER;
     }

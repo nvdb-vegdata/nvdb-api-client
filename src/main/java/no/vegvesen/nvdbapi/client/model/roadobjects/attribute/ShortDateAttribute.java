@@ -1,6 +1,7 @@
 package no.vegvesen.nvdbapi.client.model.roadobjects.attribute;
 
 import java.time.MonthDay;
+import java.time.format.DateTimeFormatter;
 import java.util.Objects;
 
 public class ShortDateAttribute extends Attribute {
@@ -18,6 +19,11 @@ public class ShortDateAttribute extends Attribute {
     @Override
     public AttributeType getAttributeType() {
         return AttributeType.SHORTDATE;
+    }
+
+    @Override
+    public String getValueAsString() {
+        return value.format(DateTimeFormatter.ISO_LOCAL_DATE);
     }
 
     @Override

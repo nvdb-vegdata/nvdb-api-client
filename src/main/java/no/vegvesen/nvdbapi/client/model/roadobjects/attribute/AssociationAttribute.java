@@ -14,6 +14,11 @@ public class AssociationAttribute extends Attribute {
     }
 
     @Override
+    public String getValueAsString() {
+        return String.valueOf(featureId);
+    }
+
+    @Override
     public AttributeType getAttributeType() {
         return AttributeType.ASSOCIATION;
     }
