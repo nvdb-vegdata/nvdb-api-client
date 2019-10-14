@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.1.4
+* Added Attribute.getValueAsString, giving a toString for all attributes
+
 ## 1.1.3
 * Some strange Gradle behaviour made manifest contain `Implementation-Title: NVDB API Client - Release`. Pinning to `nvdb-api-client`.
 
