@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.1.5
+* Roadsysref with only road system returns null
+
 ## 1.1.4
 * Added Attribute.getValueAsString, giving a toString for all attributes
 

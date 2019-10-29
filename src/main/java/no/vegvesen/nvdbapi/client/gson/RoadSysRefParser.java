@@ -39,40 +39,21 @@ public final class RoadSysRefParser {
         if (isNull(obj)) return null;
 
         if(!obj.has("vegsystem")) return  null;
-
-        SideArea sideArea = parseSideArea(obj.getAsJsonObject("sideanlegg"));
-        Intersection intersection = parseIntersection(obj.getAsJsonObject("kryssystem"));
-
-        JsonObject sectionElement = obj.getAsJsonObject("strekning");
-        if (nonNull(sideArea)) {
-            sectionElement = obj.getAsJsonObject("sideanlegg");
-        } else if (nonNull(intersection)) {
-            sectionElement = obj.getAsJsonObject("kryssystem");
-        }
-        Double startMeter = parseDoubleMember(sectionElement,"fra_meter");
-        Double endMeter = parseDoubleMember(sectionElement,"til_meter");
-        Double meter = parseDoubleMember(sectionElement,"meter");
-
-        if (isNull(meter) && isNull(startMeter) && isNull(endMeter)) return null;
-
-        Section section = parseSection(obj.getAsJsonObject("strekning"));
-        RoadSystem roadSystem = parseRoadSystem(obj.getAsJsonObject("vegsystem"));
-
         return new RoadSysRef(
-                roadSystem,
-                section,
-                intersection,
-                sideArea,
-                parseStringMember(obj, "kortform"));
+            parseRoadSystem(obj.getAsJsonObject("vegsystem")),
+            parseSection(obj.getAsJsonObject("strekning")),
+            parseIntersection(obj.getAsJsonObject("kryssystem")),
+            parseSideArea(obj.getAsJsonObject("sideanlegg")),
+            parseStringMember(obj, "kortform"));
     }
 
     private static RoadSystem parseRoadSystem(JsonObject obj) {
         return new RoadSystem(
-                parseLongMember(obj, "id"),
-                parseIntMember(obj, "versjon"),
-                parseIntMember(obj,"nummer"),
-                parseStringMember(obj, "vegkategori"),
-                parseStringMember(obj, "fase"));
+            parseLongMember(obj, "id"),
+            parseIntMember(obj, "versjon"),
+            parseIntMember(obj,"nummer"),
+            parseStringMember(obj, "vegkategori"),
+            parseStringMember(obj, "fase"));
     }
 
     private static Double getFromMeter(JsonObject obj) {
@@ -86,7 +67,7 @@ public final class RoadSysRefParser {
     private static Double getToMeter(JsonObject obj) {
         Double toMeter = parseDoubleMember(obj, "til_meter");
 
-        if (isNull(toMeter) && isNull(toMeter)) {
+        if (isNull(toMeter)) {
             return parseDoubleMember(obj, "meter");
         }
         return toMeter;
@@ -95,16 +76,16 @@ public final class RoadSysRefParser {
     private static Section parseSection(JsonObject obj) {
         if (isNull(obj)) return null;
         return new Section(
-                parseLongMember(obj, "id"),
-                parseIntMember(obj, "versjon"),
-                parseIntMember(obj, "strekning"),
-                parseIntMember(obj, "delstrekning"),
-                parseBooleanMember(obj, "arm"),
-                parseStringMember(obj, "adskilte_løp"),
-                parseStringMember(obj, "trafikantgruppe"),
-                getFromMeter(obj),
-                getToMeter(obj),
-                parseStringMember(obj, "retning"));
+            parseLongMember(obj, "id"),
+            parseIntMember(obj, "versjon"),
+            parseIntMember(obj, "strekning"),
+            parseIntMember(obj, "delstrekning"),
+            parseBooleanMember(obj, "arm"),
+            parseStringMember(obj, "adskilte_løp"),
+            parseStringMember(obj, "trafikantgruppe"),
+            getFromMeter(obj),
+            getToMeter(obj),
+            parseStringMember(obj, "retning"));
     }
 
     private static Intersection parseIntersection(JsonObject obj) {
@@ -113,13 +94,13 @@ public final class RoadSysRefParser {
         Integer intersectionNumber = parseIntMember(obj, "kryssystem");
         if (nonNull(intersectionNumber)) {
             return new Intersection(
-                    parseLongMember(obj, "id"),
-                    parseIntMember(obj, "versjon"),
-                    intersectionNumber,
-                    parseIntMember(obj, "kryssdel"),
-                    getFromMeter(obj),
-                    getToMeter(obj),
-                    parseStringMember(obj, "retning"));
+                parseLongMember(obj, "id"),
+                parseIntMember(obj, "versjon"),
+                intersectionNumber,
+                parseIntMember(obj, "kryssdel"),
+                getFromMeter(obj),
+                getToMeter(obj),
+                parseStringMember(obj, "retning"));
         }
         return null;
     }
@@ -130,13 +111,13 @@ public final class RoadSysRefParser {
         Integer sideAreaNumber = parseIntMember(obj, "sideanlegg");
         if (nonNull(sideAreaNumber)) {
             return new SideArea(
-                    parseLongMember(obj, "id"),
-                    parseIntMember(obj, "versjon"),
-                    sideAreaNumber,
-                    parseIntMember(obj, "sideanleggsdel"),
-                    getFromMeter(obj),
-                    getToMeter(obj),
-                    parseStringMember(obj, "retning"));
+                parseLongMember(obj, "id"),
+                parseIntMember(obj, "versjon"),
+                sideAreaNumber,
+                parseIntMember(obj, "sideanleggsdel"),
+                getFromMeter(obj),
+                getToMeter(obj),
+                parseStringMember(obj, "retning"));
         }
         return null;
     }
