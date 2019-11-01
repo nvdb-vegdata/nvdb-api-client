@@ -76,20 +76,12 @@ public class RoadNetClient extends AbstractJerseyClient {
         return getNodes(RoadNetRequest.DEFAULT);
     }
 
-    public NetElementResult getNetElements() {
-        return getNetElements(RoadNetRequest.DEFAULT);
-    }
-
     public AsyncLinkResult getLinkSequencesAsync() {
         return getLinkSequencesAsync(RoadNetRequest.DEFAULT);
     }
 
     public AsyncNodeResult getNodesAsync() {
         return getNodesAsync(RoadNetRequest.DEFAULT);
-    }
-
-    public AsyncNetElementResult getNetElementsAsync() {
-        return getNetElementsAsynk(RoadNetRequest.DEFAULT);
     }
 
     public LinkResult getLinkSequences(RoadNetRequest request) {
@@ -110,16 +102,6 @@ public class RoadNetClient extends AbstractJerseyClient {
     public AsyncNodeResult getNodesAsync(RoadNetRequest request) {
         WebTarget target = getWebTarget(request, "/noder");
         return new AsyncNodeResult(target, request.getPage());
-    }
-
-    public NetElementResult getNetElements(RoadNetRequest request) {
-        WebTarget target = getWebTarget(request, "/elementer");
-        return new NetElementResult(target, request.getPage());
-    }
-
-    public AsyncNetElementResult getNetElementsAsynk(RoadNetRequest request) {
-        WebTarget target = getWebTarget(request, "/elementer");
-        return new AsyncNetElementResult(target, request.getPage());
     }
 
     private WebTarget getWebTarget(RoadNetRequest request, String p) {
@@ -189,15 +171,4 @@ public class RoadNetClient extends AbstractJerseyClient {
         }
     }
 
-    public static final class NetElementResult extends GenericResultSet<NetElementWrapper> {
-        NetElementResult(WebTarget baseTarget, Page currentPage) {
-            super(baseTarget, currentPage, rt(RoadNetParser::parseNetElement));
-        }
-    }
-
-    public static final class AsyncNetElementResult extends AsyncResult<NetElementWrapper> {
-        AsyncNetElementResult(WebTarget baseTarget, Page currentPage) {
-            super(baseTarget, currentPage, rt(RoadNetParser::parseNetElement));
-        }
-    }
 }
