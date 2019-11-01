@@ -8,31 +8,6 @@ public class RoadnetClientTest {
 
     @Test
     @Disabled("manual test")
-    void downloadRoadnet() {
-        Stopwatch started = Stopwatch.createStarted();
-        ClientFactory clientFactory = new ClientFactory("https://nvdbw01.kantega.no/nvdb/api/v3",
-                "nvdbapi-client-test");
-        RoadNetClient roadNetService = clientFactory.createRoadNetService();
-
-        RoadNetClient.AsyncNetElementResult result = roadNetService.getNetElementsAsynk(
-                RoadNetRequest
-                        .newBuilder()
-                        .build());
-        result.get()
-                .toStream()
-                .forEach(element -> {
-                    if(element.isLink()) {
-                        System.out.println("Linksequence: " + element.link().getId());
-                    } else {
-                        System.out.println("Node: " + element.node().getId());
-                    }
-                });
-        Stopwatch stop = started.stop();
-        System.out.println(stop.elapsedMillis());
-    }
-
-    @Test
-    @Disabled("manual test")
     void downloadSegmentedRoadnet() {
         Stopwatch started = Stopwatch.createStarted();
         ClientFactory clientFactory = new ClientFactory("https://nvdbw01.kantega.no/nvdb/api/v3",
