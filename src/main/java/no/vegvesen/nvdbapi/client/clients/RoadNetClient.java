@@ -30,7 +30,6 @@ import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
 import no.vegvesen.nvdbapi.client.gson.RoadNetParser;
 import no.vegvesen.nvdbapi.client.model.Page;
 import no.vegvesen.nvdbapi.client.model.roadnet.LinkSequence;
-import no.vegvesen.nvdbapi.client.model.roadnet.NetElementWrapper;
 import no.vegvesen.nvdbapi.client.model.roadnet.Node;
 import no.vegvesen.nvdbapi.client.model.roadnet.TopologyLevel;
 import org.slf4j.Logger;
