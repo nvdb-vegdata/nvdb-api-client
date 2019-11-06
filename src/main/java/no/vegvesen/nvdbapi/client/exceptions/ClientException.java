@@ -58,7 +58,16 @@ public class ClientException extends RuntimeException {
     }
 
     @Override
+    public String getMessage() {
+        return getErrorsText();
+    }
+
+    @Override
     public String toString() {
+        return getErrorsText();
+    }
+
+    private String getErrorsText() {
         StringBuilder sb = new StringBuilder("HTTP error ").append(statusCode).append(":\n");
         errors().forEach(e -> sb.append(String
                 .format(
