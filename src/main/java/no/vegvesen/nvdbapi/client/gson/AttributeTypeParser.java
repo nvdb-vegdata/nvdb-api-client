@@ -153,7 +153,8 @@ public final class AttributeTypeParser {
             parseStringMember(object, "ajourhold_i"),
             parseStringMember(object, "ajourhold_splitt"),
             parseBooleanMember(object, "innenfor_mor"),
-            parseStringMember(object, "overlappsautomatikk"));
+            parseStringMember(object, "overlappsautomatikk"),
+            parseBooleanMember(object, "retning_relevant"));
     }
 
     private static SpatialAttributeType parseSpatialAttributeType(Map<String, DataType> typeMap, JsonObject object) {

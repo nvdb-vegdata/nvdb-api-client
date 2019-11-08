@@ -12,13 +12,15 @@ public class LocationalAttributeType extends AttributeType {
     private final String ajourholdsplitt;
     private final String overlappsautomatikk;
     private final boolean insideparent;
+    private final Boolean directionRelevant;
 
 
     public LocationalAttributeType(AttributeCommonProperties props,
                                    LocationalType locationalType, Boolean overlapp, String laneRelevant,
                                    String sideposRelevant,
                                    String ajourholdi, String ajourholdsplitt,
-                                   boolean insideparent, String overlappsautomatikk) {
+                                   boolean insideparent, String overlappsautomatikk,
+                                   Boolean directionRelevant) {
         super(props);
         this.locationalType = locationalType;
         this.overlapp = overlapp;
@@ -28,6 +30,7 @@ public class LocationalAttributeType extends AttributeType {
         this.ajourholdsplitt = ajourholdsplitt;
         this.insideparent = insideparent;
         this.overlappsautomatikk = overlappsautomatikk;
+        this.directionRelevant = directionRelevant;
     }
 
     public LocationalType getLocationalType() {
@@ -60,5 +63,9 @@ public class LocationalAttributeType extends AttributeType {
 
     public String getOverlappsautomatikk() {
         return overlappsautomatikk;
+    }
+
+    public Boolean isDirectionRelevant() {
+        return directionRelevant;
     }
 }
