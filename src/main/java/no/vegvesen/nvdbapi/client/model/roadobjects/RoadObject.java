@@ -43,7 +43,7 @@ public class RoadObject {
     private final Location location;
     private final Geometry geometry;
     private final List<Segment> segments;
-    private final List<? extends Attribute> attributes;
+    private final List<Attribute> attributes;
     private final List<Association> children;
     private final List<Association> parents;
     private final LocalDateTime lastModified;
@@ -51,7 +51,7 @@ public class RoadObject {
     public RoadObject(long id, Integer typeId, Integer version, LocalDate startDate, LocalDate endDate,
                       List<Segment> segments,
                       Location location, Geometry geometry, LocalDateTime lastModified,
-                      List<? extends Attribute> attributes, List<Association> children, List<Association> parents) {
+                      List<Attribute> attributes, List<Association> children, List<Association> parents) {
         this.id = id;
         this.typeId = typeId;
         this.version = version;
@@ -98,7 +98,7 @@ public class RoadObject {
         return lastModified;
     }
 
-    public List<? extends Attribute> getAttributes() {
+    public List<Attribute> getAttributes() {
         return attributes;
     }
 
@@ -118,7 +118,7 @@ public class RoadObject {
             .orElse(null);
     }
 
-    public Stream<? extends Attribute> attributes() {
+    public Stream<Attribute> attributes() {
         return attributes.stream();
     }
 

@@ -1,5 +1,9 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.2.0
+* `/vegnett/elementer` has been removed
+* `<? extends Attribute>` has been replaced with `<Attribute>` 
+
 ## 1.1.5
 * Roadsysref with only road system returns null
 

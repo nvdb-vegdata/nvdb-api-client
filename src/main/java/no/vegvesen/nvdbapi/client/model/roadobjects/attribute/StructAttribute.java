@@ -5,9 +5,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class StructAttribute extends Attribute {
-    private final List<? extends Attribute> attributes;
+    private final List<Attribute> attributes;
 
-    public StructAttribute(int id, List<? extends Attribute> attributes) {
+    public StructAttribute(int id, List<Attribute> attributes) {
         super(id);
         this.attributes = attributes;
     }
@@ -17,7 +17,7 @@ public class StructAttribute extends Attribute {
         return AttributeType.STRUCT;
     }
 
-    public List<? extends Attribute> getAttributes() {
+    public List<Attribute> getAttributes() {
         return attributes;
     }
 
