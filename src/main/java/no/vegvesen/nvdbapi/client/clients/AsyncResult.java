@@ -4,6 +4,7 @@ import com.google.gson.*;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
 import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
+import no.vegvesen.nvdbapi.client.exceptions.ClientException;
 import no.vegvesen.nvdbapi.client.gson.GsonUtil;
 import no.vegvesen.nvdbapi.client.model.Page;
 import org.slf4j.Logger;
@@ -19,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
@@ -73,6 +75,7 @@ public class AsyncResult<T> {
                 sink.error(JerseyHelper.parseError(response));
                 return new PagingIndicator(false, currentPage);
             }
+            String requestId = response.getHeaderString("X-REQUEST-ID");
 
             try(JsonReader reader = gson.newJsonReader(
                     new InputStreamReader(
@@ -106,6 +109,8 @@ public class AsyncResult<T> {
                  */
                 reader.skipValue();
                 return new PagingIndicator(hasNext, currentPage.withStart(nextToken));
+            } catch (Exception e) {
+                throw new ClientException(response.getStatus(), requestId, Collections.emptyList(), e);
             }
         }
     }

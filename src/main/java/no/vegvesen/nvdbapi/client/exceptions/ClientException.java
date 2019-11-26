@@ -33,12 +33,22 @@ import static java.util.Objects.nonNull;
 
 public class ClientException extends RuntimeException {
     private final List<ApiError> errors;
+    private final String requestId;
     private final int statusCode;
 
-    public ClientException(int statusCode, List<ApiError> errors, Throwable cause) {
+    public ClientException(int statusCode, String requestId, List<ApiError> errors, Throwable cause) {
         super(cause);
         this.statusCode = statusCode;
         this.errors = Objects.requireNonNull(errors);
+        this.requestId = requestId;
+    }
+
+    public ClientException(int statusCode, List<ApiError> errors, Throwable cause) {
+        this(statusCode, null, errors, cause);
+    }
+
+    public ClientException(int statusCode, String requestId, List<ApiError> errors) {
+        this(statusCode, requestId, errors, null);
     }
 
     public ClientException(int statusCode, List<ApiError> errors) {
@@ -57,6 +67,10 @@ public class ClientException extends RuntimeException {
         return statusCode;
     }
 
+    public String getRequestId() {
+        return requestId;
+    }
+
     @Override
     public String getMessage() {
         return getErrorsText();
@@ -68,13 +82,18 @@ public class ClientException extends RuntimeException {
     }
 
     private String getErrorsText() {
-        StringBuilder sb = new StringBuilder("HTTP error ").append(statusCode).append(":\n");
-        errors().forEach(e -> sb.append(String
+        StringBuilder message = new StringBuilder("HTTP error ").append(statusCode);
+        if (requestId != null) {
+            message
+                .append(" for request ").append(requestId);
+        }
+        message.append(":\n");
+        errors().forEach(e -> message.append(String
                 .format(
                         "Error %d: %s %s\n",
                         e.getErrorCode(),
                         e.getErrorMessage(),
                         nonNull(e.getErrorMessageDetails()) ? e.getErrorMessageDetails() : "")));
-        return sb.toString();
+        return message.toString();
     }
 }

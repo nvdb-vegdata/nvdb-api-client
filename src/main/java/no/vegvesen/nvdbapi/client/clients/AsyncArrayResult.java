@@ -5,6 +5,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
 import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
+import no.vegvesen.nvdbapi.client.exceptions.ClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.function.Function;
@@ -63,6 +65,7 @@ public class AsyncArrayResult<T> {
             if (!JerseyHelper.isSuccess(response)) {
                 sink.error(JerseyHelper.parseError(response));
             }
+            String requestId = response.getHeaderString("X-REQUEST-ID");
 
             try(JsonReader reader = gson.newJsonReader(
                 new InputStreamReader(
@@ -83,6 +86,8 @@ public class AsyncArrayResult<T> {
                  https://stackoverflow.com/questions/8635112/java-malformedchunkcodingexception
                  */
                 reader.skipValue();
+            } catch (Exception e) {
+                throw new ClientException(response.getStatus(), requestId, Collections.emptyList(), e);
             }
         }
     }

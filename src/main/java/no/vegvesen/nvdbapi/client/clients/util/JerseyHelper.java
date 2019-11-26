@@ -41,6 +41,7 @@ import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,7 +57,8 @@ public class JerseyHelper {
 
     public static ClientException parseError(Response response) {
         List<ApiError> errors = JsonExceptionParser.parse(response.readEntity(String.class));
-        return new ClientException(response.getStatus(), errors);
+        String requestId = response.getHeaderString("X-REQUEST-ID");
+        return new ClientException(response.getStatus(), requestId, errors);
     }
 
     public static <T> T execute(Invocation inv, Class<T> responseClass) {
@@ -79,9 +81,13 @@ public class JerseyHelper {
             if (!isSuccess(response)) {
                 throw parseError(response);
             }
-
-            return new JsonParser().parse(
-                    new InputStreamReader((InputStream) response.getEntity(), StandardCharsets.UTF_8));
+            String requestId = response.getHeaderString("X-REQUEST-ID");
+            try {
+                return JsonParser.parseReader(
+                        new InputStreamReader((InputStream) response.getEntity(), StandardCharsets.UTF_8));
+            } catch (Exception e) {
+                throw new ClientException(response.getStatus(), requestId, Collections.emptyList(), e);
+            }
         }
     }
 
@@ -108,10 +114,12 @@ public class JerseyHelper {
             if (response.getStatus() == 204) {
                 return Optional.empty();
             }
+            String requestId = response.getHeaderString("X-REQUEST-ID");
+
             try (InputStream is = response.readEntity(InputStream.class)) {
-                return Optional.of(new JsonParser().parse(new InputStreamReader(is, StandardCharsets.UTF_8)));
+                return Optional.of(JsonParser.parseReader(new InputStreamReader(is, StandardCharsets.UTF_8)));
             } catch (Exception e) {
-                throw new RuntimeException("Error parsing response", e);
+                throw new ClientException(response.getStatus(), requestId, Collections.emptyList(), e);
             }
         }
     }
