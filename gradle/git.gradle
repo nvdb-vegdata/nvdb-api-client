@@ -23,6 +23,6 @@ ext {
     git_branch = repo.branch.current.name
     build_date = iso8601.format(new Date())
     build_builder = "${System.getProperty("user.name")}@${InetAddress.getLocalHost().getHostName()}"
-    versionBranch = (branch == 'V3') ? '' : ".${branch}"
+    versionBranch = (branch == 'master') ? '' : ".${branch}"
 }
 repo.close()
