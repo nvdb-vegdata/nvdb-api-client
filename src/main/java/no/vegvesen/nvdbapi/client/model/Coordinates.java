@@ -18,7 +18,7 @@ public class Coordinates {
     }
 
     public static Coordinates utm33(double easting, double northing) {
-        return new Coordinates(Projection.WGS84, easting, northing);
+        return new Coordinates(Projection.UTM33, easting, northing);
     }
 
     public Projection getProjection() {

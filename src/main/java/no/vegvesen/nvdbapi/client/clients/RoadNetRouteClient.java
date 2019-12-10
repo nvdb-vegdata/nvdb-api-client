@@ -70,6 +70,9 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
             Coordinates startCoordinates = request.getStartCoordinates();
             path.queryParam("start", startCoordinates);
             path.queryParam("slutt", request.getEndCoordinates());
+            path.queryParam("maks_avstand", request.getDistanceThreshold());
+            path.queryParam("omkrets", request.getCircumferenceAroundPoints());
+
             if(startCoordinates.getProjection() != Projection.UTM33) {
                 path.queryParam("srid", startCoordinates.getProjection().getSrid());
             }
