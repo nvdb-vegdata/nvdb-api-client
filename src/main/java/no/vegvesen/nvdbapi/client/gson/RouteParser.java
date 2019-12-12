@@ -7,12 +7,16 @@ import no.vegvesen.nvdbapi.client.model.RouteOnRoadNet;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import static java.util.Objects.nonNull;
+
 public class RouteParser {
     public static RouteOnRoadNet parseRoute(JsonObject obj) {
         if(obj==null) return null;
+        JsonObject start = obj.getAsJsonObject("start");
+        JsonObject slutt = obj.getAsJsonObject("slutt");
         return new RouteOnRoadNet(
-            RoadPlacementParser.parseRoadPlacement(obj.getAsJsonObject("start")),
-            RoadPlacementParser.parseRoadPlacement(obj.getAsJsonObject("slutt")),
+            nonNull(start) ? RoadPlacementParser.parseRoadPlacement(start) : null,
+            nonNull(slutt) ? RoadPlacementParser.parseRoadPlacement(slutt) : null,
             StreamSupport.stream(
                 obj.getAsJsonArray("elementer").spliterator(), false)
                 .map(JsonElement::getAsJsonObject)

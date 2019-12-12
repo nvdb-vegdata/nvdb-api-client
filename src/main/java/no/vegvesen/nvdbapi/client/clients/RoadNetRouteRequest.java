@@ -11,6 +11,7 @@ public class RoadNetRouteRequest {
     private final Coordinates endCoordinates;
     private final int distanceThreshold;
     private final int circumferenceAroundPoints;
+    private final Optional<String> roadRefFilter;
 
     private RoadNetRouteRequest(RefLinkPosition startReflinkPosition,
                                RefLinkPosition endReflinkPosition,
@@ -85,19 +86,18 @@ public class RoadNetRouteRequest {
             return this;
         }
 
+        public Builder withRoadRefFilter(String filter) {
+            this.roadRefFilter = Optional.ofNullable(filter);
+            return this;
+        }
+
         public Builder withCircumferenceAroundPoints(int circumferenceAroundPoints) {
             this.circumferenceAroundPoints = circumferenceAroundPoints;
             return this;
         }
 
         public RoadNetRouteRequest build() {
-            return new RoadNetRouteRequest(
-                    startReflinkPosition,
-                    endReflinkPosition,
-                    startCoordinates,
-                    endCoordinates,
-                    distanceThreshold,
-                    circumferenceAroundPoints);
+            return new RoadNetRouteRequest(this);
         }
     }
 }
