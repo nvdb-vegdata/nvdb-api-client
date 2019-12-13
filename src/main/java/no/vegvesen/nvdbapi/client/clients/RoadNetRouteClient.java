@@ -27,6 +27,7 @@ package no.vegvesen.nvdbapi.client.clients;
 
 import no.vegvesen.nvdbapi.client.gson.RouteParser;
 import no.vegvesen.nvdbapi.client.model.Coordinates;
+import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.Projection;
 import no.vegvesen.nvdbapi.client.model.RouteOnRoadNet;
 import org.slf4j.Logger;
@@ -63,7 +64,14 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
 
         UriBuilder path = endpoint();
 
-        if(request.usesReflinkPosition()) {
+        if (request.usesGeometry()) {
+            Geometry geometry = request.getGeometry();
+            path.queryParam("geometri", geometry.getWkt());
+            if (geometry.getProjection() != Projection.UTM33) {
+                path.queryParam("srid", geometry.getProjection().getSrid());
+            }
+        }
+        else if(request.usesReflinkPosition()) {
             path.queryParam("start", request.getStartReflinkPosition());
             path.queryParam("slutt", request.getEndReflinkPosition());
         } else {

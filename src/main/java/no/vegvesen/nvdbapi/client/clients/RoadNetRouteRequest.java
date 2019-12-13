@@ -1,7 +1,12 @@
 package no.vegvesen.nvdbapi.client.clients;
 
 import no.vegvesen.nvdbapi.client.model.Coordinates;
+import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.RefLinkPosition;
+
+import java.util.Optional;
+
+import static java.util.Objects.nonNull;
 
 public class RoadNetRouteRequest {
 
@@ -9,22 +14,20 @@ public class RoadNetRouteRequest {
     private final RefLinkPosition endReflinkPosition;
     private final Coordinates startCoordinates;
     private final Coordinates endCoordinates;
+    private final Geometry geometry;
     private final int distanceThreshold;
     private final int circumferenceAroundPoints;
     private final Optional<String> roadRefFilter;
 
-    private RoadNetRouteRequest(RefLinkPosition startReflinkPosition,
-                               RefLinkPosition endReflinkPosition,
-                               Coordinates startCoordinates,
-                               Coordinates endCoordinates,
-                               int distanceThreshold,
-                               int circumferenceAroundPoints) {
-        this.startReflinkPosition = startReflinkPosition;
-        this.endReflinkPosition = endReflinkPosition;
-        this.startCoordinates = startCoordinates;
-        this.endCoordinates = endCoordinates;
-        this.distanceThreshold = distanceThreshold;
-        this.circumferenceAroundPoints = circumferenceAroundPoints;
+    private RoadNetRouteRequest(Builder b) {
+        this.startReflinkPosition = b.startReflinkPosition;
+        this.endReflinkPosition = b.endReflinkPosition;
+        this.startCoordinates = b.startCoordinates;
+        this.endCoordinates = b.endCoordinates;
+        this.geometry = b.geometry;
+        this.distanceThreshold = b.distanceThreshold;
+        this.circumferenceAroundPoints = b.circumferenceAroundPoints;
+        this.roadRefFilter = b.roadRefFilter;
     }
 
     public RefLinkPosition getStartReflinkPosition() {
@@ -51,12 +54,20 @@ public class RoadNetRouteRequest {
         return circumferenceAroundPoints;
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     public boolean usesReflinkPosition() {
         return startReflinkPosition != null;
     }
 
-    public static Builder builder() {
-        return new Builder();
+    public boolean usesGeometry() {
+        return nonNull(geometry);
+    }
+
+    public Geometry getGeometry() {
+        return geometry;
     }
 
     public static class Builder {
@@ -66,6 +77,8 @@ public class RoadNetRouteRequest {
         private Coordinates endCoordinates;
         private int distanceThreshold;
         private int circumferenceAroundPoints;
+        private Geometry geometry;
+        private Optional<String> roadRefFilter;
 
         public Builder between(RefLinkPosition startReflinkPosition,
                                RefLinkPosition endReflinkPosition) {
@@ -93,6 +106,11 @@ public class RoadNetRouteRequest {
 
         public Builder withCircumferenceAroundPoints(int circumferenceAroundPoints) {
             this.circumferenceAroundPoints = circumferenceAroundPoints;
+            return this;
+        }
+
+        public Builder fromGeometry(Geometry geometry) {
+            this.geometry = geometry;
             return this;
         }
 
