@@ -67,6 +67,7 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
         if (request.usesGeometry()) {
             Geometry geometry = request.getGeometry();
             path.queryParam("geometri", geometry.getWkt());
+            path.queryParam("maks_avstand", request.getDistanceThreshold());
             if (geometry.getProjection() != Projection.UTM33) {
                 path.queryParam("srid", geometry.getProjection().getSrid());
             }
