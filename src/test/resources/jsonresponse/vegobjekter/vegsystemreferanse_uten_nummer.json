@@ -1,0 +1,21 @@
+{
+  "vegsystem": {
+    "id": 1005921633,
+    "versjon": 1,
+    "vegkategori": "K",
+    "fase": "V"
+  },
+  "strekning": {
+    "id": -1,
+    "versjon": -1,
+    "strekning": 1,
+    "delstrekning": 1,
+    "arm": false,
+    "adskilte_løp": "Nei",
+    "trafikantgruppe": "K",
+    "fra_meter": 0.0,
+    "til_meter": 58.0,
+    "retning": "MED"
+  },
+  "kortform": "KVnull S1D1 m0-58"
+}

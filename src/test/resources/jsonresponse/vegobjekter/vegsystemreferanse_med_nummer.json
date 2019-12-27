@@ -1,0 +1,22 @@
+{
+  "vegsystem": {
+    "id": 1002135037,
+    "versjon": 1,
+    "vegkategori": "K",
+    "fase": "V",
+    "nummer": 17
+  },
+  "strekning": {
+    "id": -1,
+    "versjon": -1,
+    "strekning": 1,
+    "delstrekning": 1,
+    "arm": false,
+    "adskilte_løp": "Nei",
+    "trafikantgruppe": "K",
+    "fra_meter": 0.0,
+    "til_meter": 58.0,
+    "retning": "MED"
+  },
+  "kortform": "KV17 S1D1 m0-58"
+}
