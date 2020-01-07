@@ -1,5 +1,13 @@
 # Changelog for NVDB API LES V3 Client
 
+
+## 1.2.2
+* Fixed NPE when Roadsystem does not have number.
+* Changes in roadnet route part of client.
+
+## 1.2.1
+* Changes in roadnet route part of client.  
+
 ## 1.2.0
 * `/vegnett/elementer` has been removed
 * `<? extends Attribute>` has been replaced with `<Attribute>` 
