@@ -1,5 +1,7 @@
 package no.vegvesen.nvdbapi.client.model.roadnet.roadsysref;
 
+import no.vegvesen.nvdbapi.client.model.Direction;
+
 import java.util.Objects;
 
 public class SideArea {
@@ -9,10 +11,10 @@ public class SideArea {
     public final int part;
     public final double startMeter;
     public final Double endMeter;
-    public final String direction;
+    public final Direction direction;
 
 
-    public SideArea(Long id, Integer version, int number, int part, double startMeter, Double endMeter, String direction) {
+    public SideArea(Long id, Integer version, int number, int part, double startMeter, Double endMeter, Direction direction) {
         this.id = id;
         this.version = version;
         this.number = number;

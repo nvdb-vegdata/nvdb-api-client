@@ -1,5 +1,7 @@
 package no.vegvesen.nvdbapi.client.model.roadnet.roadsysref;
 
+import no.vegvesen.nvdbapi.client.model.Direction;
+
 import java.util.Objects;
 
 public class Intersection {
@@ -9,11 +11,16 @@ public class Intersection {
     public final int part;
     public final double startMeter;
     public final Double endMeter;
-    public final String direction;
+    public final Direction direction;
 
 
-    public Intersection(Long id, Integer version, int number, int part, double startMeter, Double endMeter,
-                        String direction) {
+    public Intersection(Long id,
+                        Integer version,
+                        int number,
+                        int part,
+                        double startMeter,
+                        Double endMeter,
+                        Direction direction) {
         this.number = number;
         this.part = part;
         this.id = id;

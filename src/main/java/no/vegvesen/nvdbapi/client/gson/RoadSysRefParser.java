@@ -26,6 +26,8 @@
 package no.vegvesen.nvdbapi.client.gson;
 
 import com.google.gson.JsonObject;
+import no.vegvesen.nvdbapi.client.model.Direction;
+import no.vegvesen.nvdbapi.client.model.roadnet.SeparatePassages;
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.*;
 
 import static java.util.Objects.isNull;
@@ -52,8 +54,8 @@ public final class RoadSysRefParser {
             parseLongMember(obj, "id"),
             parseIntMember(obj, "versjon"),
             parseIntMember(obj,"nummer"),
-            parseStringMember(obj, "vegkategori"),
-            parseStringMember(obj, "fase"));
+            RoadCategory.valueOf(parseStringMember(obj, "vegkategori")),
+            Phase.valueOf(parseStringMember(obj, "fase")));
     }
 
     private static Double getFromMeter(JsonObject obj) {
@@ -80,12 +82,12 @@ public final class RoadSysRefParser {
             parseIntMember(obj, "versjon"),
             parseIntMember(obj, "strekning"),
             parseIntMember(obj, "delstrekning"),
-            parseBooleanMember(obj, "arm"),
-            parseStringMember(obj, "adskilte_løp"),
+            parseOptionalStringMember(obj, "arm").map("Ja"::equals).orElse(null),
+            parseOptionalStringMember(obj, "adskilte_løp").map(SeparatePassages::fromValue).orElse(null),
             parseStringMember(obj, "trafikantgruppe"),
             getFromMeter(obj),
             getToMeter(obj),
-            parseStringMember(obj, "retning"));
+            Direction.from(parseStringMember(obj, "retning")));
     }
 
     private static Intersection parseIntersection(JsonObject obj) {
@@ -100,7 +102,7 @@ public final class RoadSysRefParser {
                 parseIntMember(obj, "kryssdel"),
                 getFromMeter(obj),
                 getToMeter(obj),
-                parseStringMember(obj, "retning"));
+                Direction.from(parseStringMember(obj, "retning")));
         }
         return null;
     }
@@ -117,7 +119,7 @@ public final class RoadSysRefParser {
                 parseIntMember(obj, "sideanleggsdel"),
                 getFromMeter(obj),
                 getToMeter(obj),
-                parseStringMember(obj, "retning"));
+                Direction.from(parseStringMember(obj, "retning")));
         }
         return null;
     }

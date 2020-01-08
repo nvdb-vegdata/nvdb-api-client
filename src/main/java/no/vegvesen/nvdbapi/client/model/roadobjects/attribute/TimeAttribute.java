@@ -24,7 +24,7 @@ public class TimeAttribute extends Attribute {
 
     @Override
     public String getValueAsString() {
-        return value.format(DateTimeFormatter.ISO_LOCAL_DATE);
+        return value.format(DateTimeFormatter.ISO_LOCAL_TIME);
     }
 
     @Override

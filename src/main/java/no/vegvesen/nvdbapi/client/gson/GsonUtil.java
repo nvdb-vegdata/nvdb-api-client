@@ -90,6 +90,13 @@ public final class GsonUtil {
         return e.map(JsonElement::getAsString).orElse(null);
     }
 
+    public static Optional<String> parseOptionalStringMember(JsonObject obj, String path) {
+        return getNode(obj, path)
+            .map(JsonElement::getAsJsonPrimitive)
+            .filter(JsonPrimitive::isString)
+            .map(JsonElement::getAsString);
+    }
+
     public static Boolean parseBooleanMember(JsonObject obj, String path) {
         Optional<JsonPrimitive> e = getNode(obj, path).map(JsonElement::getAsJsonPrimitive);
         if (e.isPresent() && !e.get().isBoolean()) {

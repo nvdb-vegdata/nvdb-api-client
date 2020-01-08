@@ -6,10 +6,14 @@ public class RoadSystem {
     public final Long id;
     public final Integer version;
     public final Integer roadNumber;
-    public final String roadCategory;
-    public final String phase;
+    public final RoadCategory roadCategory;
+    public final Phase phase;
 
-    public RoadSystem(Long id, Integer version, Integer roadNumber, String roadCategory, String phase) {
+    public RoadSystem(Long id,
+                      Integer version,
+                      Integer roadNumber,
+                      RoadCategory roadCategory,
+                      Phase phase) {
         this.id = id;
         this.version = version;
         this.roadNumber = roadNumber;
@@ -18,7 +22,7 @@ public class RoadSystem {
     }
 
     public String getCategoryPhaseNumberAsString(){
-        return roadCategory + phase + roadNumber;
+        return roadCategory.toString() + phase.toString() + (roadNumber == null ? "" : roadNumber);
     }
 
     @Override
