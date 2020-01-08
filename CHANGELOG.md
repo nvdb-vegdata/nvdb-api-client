@@ -1,8 +1,10 @@
 # Changelog for NVDB API LES V3 Client
 
-## 1.2.3
+## 1.3.0
 * Fixed bug when parsing RoadSysRef of road segments in object.
 * Fixed bug when formatting TimeAttribute.
+* Section.direction, Intersection.direction, SideArea.direction changed from 
+String to Direction.
 
 ## 1.2.2
 * Fixed NPE when Roadsystem does not have number.

@@ -9,7 +9,11 @@ public class RoadSystem {
     public final String roadCategory;
     public final String phase;
 
-    public RoadSystem(Long id, Integer version, Integer roadNumber, String roadCategory, String phase) {
+    public RoadSystem(Long id,
+                      Integer version,
+                      Integer roadNumber,
+                      String roadCategory,
+                      String phase) {
         this.id = id;
         this.version = version;
         this.roadNumber = roadNumber;

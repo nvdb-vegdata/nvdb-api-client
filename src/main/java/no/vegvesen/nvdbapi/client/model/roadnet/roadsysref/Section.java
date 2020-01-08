@@ -1,9 +1,10 @@
 package no.vegvesen.nvdbapi.client.model.roadnet.roadsysref;
 
+import no.vegvesen.nvdbapi.client.model.Direction;
+
 import java.util.Objects;
 
 public class Section {
-
 
     public final Long id;
     public final Integer version;
@@ -14,16 +15,18 @@ public class Section {
     public final String trafficType;
     public final double startMeter;
     public final Double endMeter;
-    public final String direction;
+    public final Direction direction;
 
-    public Section(Long id, Integer version, int sectionNumber,
+    public Section(Long id,
+                   Integer version,
+                   int sectionNumber,
                    int sectionPartNumber,
                    Boolean arm,
                    String sepratePassages,
                    String trafficType,
                    double startMeter,
                    Double endMeter,
-                   String direction) {
+                   Direction direction) {
         this.id = id;
         this.version = version;
         this.sectionNumber = sectionNumber;
