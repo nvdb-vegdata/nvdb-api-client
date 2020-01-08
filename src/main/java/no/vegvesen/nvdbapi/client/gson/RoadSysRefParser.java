@@ -27,6 +27,7 @@ package no.vegvesen.nvdbapi.client.gson;
 
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.Direction;
+import no.vegvesen.nvdbapi.client.model.roadnet.SeparatePassages;
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.*;
 
 import static java.util.Objects.isNull;
@@ -82,7 +83,7 @@ public final class RoadSysRefParser {
             parseIntMember(obj, "strekning"),
             parseIntMember(obj, "delstrekning"),
             parseOptionalStringMember(obj, "arm").map("Ja"::equals).orElse(null),
-            parseStringMember(obj, "adskilte_løp"),
+            parseOptionalStringMember(obj, "adskilte_løp").map(SeparatePassages::fromValue).orElse(null),
             parseStringMember(obj, "trafikantgruppe"),
             getFromMeter(obj),
             getToMeter(obj),

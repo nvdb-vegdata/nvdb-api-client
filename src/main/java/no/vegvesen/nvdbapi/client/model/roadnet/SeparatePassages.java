@@ -11,7 +11,7 @@ public enum SeparatePassages {
         this.textValue = text;
     }
 
-    SeparatePassages fromValue(String textValue) {
+    public static SeparatePassages fromValue(String textValue) {
         switch(textValue.toUpperCase()) {
             case "MED" : return MED;
             case "NEI" : return NEI;
