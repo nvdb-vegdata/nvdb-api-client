@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.2.3
+* Fixed bug when parsing RoadSysRef of road segments in object.
+* Fixed bug when formatting TimeAttribute.
 
 ## 1.2.2
 * Fixed NPE when Roadsystem does not have number.

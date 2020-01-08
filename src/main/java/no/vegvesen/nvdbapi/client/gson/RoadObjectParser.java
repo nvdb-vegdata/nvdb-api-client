@@ -190,7 +190,7 @@ public final class RoadObjectParser {
 
         RoadSysRef ref = null;
         if (obj.has("vegsystemreferanse")) {
-            ref = RoadSysRefParser.parse(obj);
+            ref = RoadSysRefParser.parse(obj.getAsJsonObject("vegsystemreferanse"));
         }
 
         Integer length = parseIntMember(obj, "lengde");
