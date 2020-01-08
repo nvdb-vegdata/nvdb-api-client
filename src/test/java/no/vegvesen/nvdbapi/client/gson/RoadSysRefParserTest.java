@@ -38,7 +38,7 @@ public class RoadSysRefParserTest {
         assertThat(roadSystemMissingNumber, equalTo(roadSystemMissingNumberCopy));
         assertThat(roadSystemMissingNumber, not(equalTo(roadSystemOk)));
 
-        assertThat(roadSystemMissingNumber.getCategoryPhaseNumberAsString(), equalTo("KVnull"));
+        assertThat(roadSystemMissingNumber.getCategoryPhaseNumberAsString(), equalTo("KV"));
 
         assertThat(roadSystemMissingNumber.hashCode(), equalTo(roadSystemMissingNumberCopy.hashCode()));
         assertThat(roadSystemMissingNumber.hashCode(), not(equalTo(roadSystemOk.hashCode())));

@@ -54,8 +54,8 @@ public final class RoadSysRefParser {
             parseLongMember(obj, "id"),
             parseIntMember(obj, "versjon"),
             parseIntMember(obj,"nummer"),
-            parseStringMember(obj, "vegkategori"),
-            parseStringMember(obj, "fase"));
+            RoadCategory.valueOf(parseStringMember(obj, "vegkategori")),
+            Phase.valueOf(parseStringMember(obj, "fase")));
     }
 
     private static Double getFromMeter(JsonObject obj) {
