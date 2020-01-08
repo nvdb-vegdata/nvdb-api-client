@@ -38,7 +38,6 @@ import java.util.Optional;
 
 public final class JsonExceptionParser {
     private static final Logger LOG = LoggerFactory.getLogger(JsonExceptionParser.class);
-    private static final JsonParser parser = new JsonParser();
 
     private JsonExceptionParser() {
     }
@@ -51,7 +50,7 @@ public final class JsonExceptionParser {
     public static List<ApiError> parse(String json) {
         JsonArray errors;
         try {
-            errors = parser.parse(json).getAsJsonArray();
+            errors = JsonParser.parseString(json).getAsJsonArray();
         } catch (Exception ex) {
             LOG.warn("Could not parse '{}' as json.", json);
             return Collections.emptyList();
