@@ -80,7 +80,7 @@ public final class RoadSysRefParser {
             parseIntMember(obj, "versjon"),
             parseIntMember(obj, "strekning"),
             parseIntMember(obj, "delstrekning"),
-            parseBooleanMember(obj, "arm"),
+            parseOptionalStringMember(obj, "arm").map("Ja"::equals).orElse(null),
             parseStringMember(obj, "adskilte_løp"),
             parseStringMember(obj, "trafikantgruppe"),
             getFromMeter(obj),
