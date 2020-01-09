@@ -31,22 +31,22 @@ import java.util.Optional;
 
 public class RefLinkRequest {
 
-    private final int id;
+    private final long linksequenceId;
     private final double position;
     private final Projection projection;
 
-    public RefLinkRequest(int id, double position) {
-        this(id, position, null);
+    public RefLinkRequest(int linksequenceId, double position) {
+        this(linksequenceId, position, null);
     }
 
-    public RefLinkRequest(int id, double position, Projection projection) {
-        this.id = id;
+    public RefLinkRequest(int linksequenceId, double position, Projection projection) {
+        this.linksequenceId = linksequenceId;
         this.position = position;
         this.projection = projection;
     }
 
-    public int getId() {
-        return id;
+    public long getLinksequenceId() {
+        return linksequenceId;
     }
 
     public double getPosition() {
@@ -58,7 +58,7 @@ public class RefLinkRequest {
     }
 
     public String getQueryParam() {
-        return position + "@" + id;
+        return position + "@" + linksequenceId;
     }
 
     @Override

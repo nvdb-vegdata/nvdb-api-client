@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.4.0
+* RefLinkRequest.id (int) -> linksequenceId (long)
+
 ## 1.3.0
 * Fixed bug when parsing RoadSysRef of road segments in object.
 * Fixed bug when formatting TimeAttribute.
