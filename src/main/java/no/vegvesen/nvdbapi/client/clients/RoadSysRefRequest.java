@@ -26,6 +26,8 @@
 package no.vegvesen.nvdbapi.client.clients;
 
 import no.vegvesen.nvdbapi.client.model.Projection;
+import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.Phase;
+import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadCategory;
 
 import java.util.Optional;
 
@@ -35,8 +37,8 @@ public class RoadSysRefRequest {
 
     // RoadSystem
     private final Integer roadNumber;
-    private final String roadCategory;
-    private final String phase;
+    private final RoadCategory roadCategory;
+    private final Phase phase;
 
     // Secion
     private final Integer sectionNumber;
@@ -82,11 +84,11 @@ public class RoadSysRefRequest {
         return roadNumber;
     }
 
-    public String getRoadCategory() {
+    public RoadCategory getRoadCategory() {
         return roadCategory;
     }
 
-    public String getPhase() {
+    public Phase getPhase() {
         return phase;
     }
 
@@ -135,7 +137,7 @@ public class RoadSysRefRequest {
     }
 
     public String getQueryParam() {
-        return this.getRoadCategory() + this.getPhase() + this.getRoadNumber() +
+        return this.getRoadCategory().name() + this.getPhase() + this.getRoadNumber() +
                 "S" + this.getSectionNumber() + "D" + this.getSectionPartNumber() + "M" + this.getSectionMeter() +
                 (nonNull(this.getInterSectionPart()) ? "KD" + this.getInterSectionPart() + "M" + this.getInterSectionMeter() : "") +
                 (nonNull(this.getSideAreaPart()) ? "SD" + this.getSideAreaPart() + "M" + this.getSideAreaMeter() : "");
@@ -148,8 +150,8 @@ public class RoadSysRefRequest {
 
     public final static class Builder {
         private Integer roadNumber;
-        private String roadCategory;
-        private String phase;
+        private RoadCategory roadCategory;
+        private Phase phase;
         private Integer sectionNumber;
         private Integer sectionPartNumber;
         private Integer sectionMeter;
@@ -167,13 +169,24 @@ public class RoadSysRefRequest {
             return this;
         }
 
-        public Builder withRoadCategory(String roadCategory) {
+        public Builder withRoadCategory(RoadCategory roadCategory) {
             this.roadCategory = roadCategory;
             return this;
         }
 
-        public Builder withPhase(String phase) {
+        public Builder withRoadCategory(String roadCategory) {
+            this.roadCategory = RoadCategory.valueOf(roadCategory);
+            return this;
+        }
+
+        public Builder withPhase(Phase phase) {
             this.phase = phase;
+            return this;
+        }
+
+
+        public Builder withPhase(String phase) {
+            this.phase = Phase.valueOf(phase);
             return this;
         }
 
