@@ -35,11 +35,11 @@ public class RefLinkRequest {
     private final double position;
     private final Projection projection;
 
-    public RefLinkRequest(int linksequenceId, double position) {
+    public RefLinkRequest(long linksequenceId, double position) {
         this(linksequenceId, position, null);
     }
 
-    public RefLinkRequest(int linksequenceId, double position, Projection projection) {
+    public RefLinkRequest(long linksequenceId, double position, Projection projection) {
         this.linksequenceId = linksequenceId;
         this.position = position;
         this.projection = projection;
