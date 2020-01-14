@@ -34,11 +34,16 @@ public class RoadPlacement {
     private final RoadSysRef roadSysRef;
     private final RefLinkPosition refLinkPosition;
     private final Geometry point;
+    private final Integer municipality;
 
-    public RoadPlacement(RoadSysRef roadSysRef, RefLinkPosition refLinkPosition, Geometry point) {
+    public RoadPlacement(RoadSysRef roadSysRef,
+                         RefLinkPosition refLinkPosition,
+                         Geometry point,
+                         Integer municipality) {
         this.roadSysRef = roadSysRef;
         this.refLinkPosition = refLinkPosition;
         this.point = point;
+        this.municipality = municipality;
     }
 
     public RoadSysRef getRoadSysRef() {
@@ -51,6 +56,10 @@ public class RoadPlacement {
 
     public Geometry getPoint() {
         return point;
+    }
+
+    public Integer getMunicipality() {
+        return municipality;
     }
 
     @Override
@@ -69,11 +78,12 @@ public class RoadPlacement {
         RoadPlacement that = (RoadPlacement) o;
         return Objects.equals(roadSysRef, that.roadSysRef) &&
                 Objects.equals(refLinkPosition, that.refLinkPosition) &&
-                Objects.equals(point, that.point);
+                Objects.equals(point, that.point) &&
+                Objects.equals(municipality, that.municipality);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roadSysRef, refLinkPosition, point);
+        return Objects.hash(roadSysRef, refLinkPosition, point, municipality);
     }
 }

@@ -1,32 +1,34 @@
 {
-  "vegsystemreferanse": {
-    "vegsystem": {
-      "id": 888834101,
-      "versjon": 1,
-      "vegkategori": "F",
-      "fase": "V",
-      "nummer": 913
+    "vegsystemreferanse": {
+        "vegsystem": {
+            "id": 1002151780,
+            "versjon": 1,
+            "vegkategori": "F",
+            "fase": "V",
+            "nummer": 4854
+        },
+        "strekning": {
+            "id": 1003459800,
+            "versjon": 1,
+            "strekning": 2,
+            "delstrekning": 20,
+            "arm": true,
+            "adskilte_løp": "Nei",
+            "trafikantgruppe": "K",
+            "meter": 670.915,
+            "retning": "MED"
+        },
+        "kortform": "FV4854 S2D20 m671"
     },
-    "strekning": {
-      "id": 888831530,
-      "versjon": 1,
-      "strekning": 1,
-      "delstrekning": 1,
-      "arm": false,
-      "adskilte_løp": "N",
-      "trafikantgruppe": "K",
-      "meter": 962.957
+    "veglenkesekvens": {
+        "veglenkesekvensid": 320753,
+        "relativPosisjon": 0.99627,
+        "kortform": "0.99627@320753"
     },
-    "kortform": "FV913 S1D1 M962"
-  },
-  "veglenkesekvens": {
-    "veglenkesekvensid": 320753,
-    "relativPosisjon": 0.99636,
-    "kortform": "0.99636@320753"
-  },
-  "geometri": {
-    "wkt": "POINT Z(-74439 6617648 13.89832087)",
-    "srid": 6173
-  },
-  "avstand": 1
+    "geometri": {
+        "wkt": "POINT Z (-74438.97348200531 6617647.572239492 13.89376250961657)",
+        "srid": 6173
+    },
+    "avstand": 0.429,
+    "kommune": 1151
 }

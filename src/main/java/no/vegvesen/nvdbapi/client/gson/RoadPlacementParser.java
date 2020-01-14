@@ -50,8 +50,8 @@ public final class RoadPlacementParser {
         RoadSysRef roadRef = RoadSysRefParser.parse(obj.getAsJsonObject("vegsystemreferanse"));
         RefLinkPosition refLinkPosition = ShortRefLinkParser.parseShortRefLink(obj.getAsJsonObject("veglenkesekvens"));
         Geometry point = GeometryParser.parse(obj.getAsJsonObject("geometri"));
-
-       return new RoadPlacement(roadRef, refLinkPosition, point);
+        Integer municipality = obj.has("kommune") ? obj.getAsJsonPrimitive("kommune").getAsInt() : null;
+        return new RoadPlacement(roadRef, refLinkPosition, point, municipality);
     }
 
 }

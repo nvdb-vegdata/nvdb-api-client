@@ -4,6 +4,7 @@
 * RefLinkRequest.id (int) -> linksequenceId (long)
 * RoadSysRefRequest.roadCategory,.phase changed to enums
 * SegmentedLink.linkType, .detailLevel, .roadType changed to enums
+* RoadPlacement.municipality was missing
 
 ## 1.3.0
 * Fixed bug when parsing RoadSysRef of road segments in object.
