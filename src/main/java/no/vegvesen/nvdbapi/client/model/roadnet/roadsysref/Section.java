@@ -9,8 +9,8 @@ public class Section {
 
     public final Long id;
     public final Integer version;
-    public final int sectionNumber;
-    public final int sectionPartNumber;
+    public final Integer sectionNumber;
+    public final Integer sectionPartNumber;
     public final Boolean arm;
     public final SeparatePassages sepratePassages;
     public final String trafficType;
@@ -20,8 +20,8 @@ public class Section {
 
     public Section(Long id,
                    Integer version,
-                   int sectionNumber,
-                   int sectionPartNumber,
+                   Integer sectionNumber,
+                   Integer sectionPartNumber,
                    Boolean arm,
                    SeparatePassages sepratePassages,
                    String trafficType,
