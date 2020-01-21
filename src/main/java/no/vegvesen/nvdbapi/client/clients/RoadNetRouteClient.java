@@ -25,6 +25,8 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
+import com.google.gson.JsonObject;
+import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
 import no.vegvesen.nvdbapi.client.gson.RouteParser;
 import no.vegvesen.nvdbapi.client.model.Coordinates;
 import no.vegvesen.nvdbapi.client.model.Geometry;
@@ -32,16 +34,11 @@ import no.vegvesen.nvdbapi.client.model.Projection;
 import no.vegvesen.nvdbapi.client.model.RouteOnRoadNet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import reactor.core.publisher.Flux;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
-import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-
-import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
 public class RoadNetRouteClient extends AbstractJerseyClient {
     private static final Logger LOG = LoggerFactory.getLogger(RoadNetRouteClient.class);
@@ -50,13 +47,10 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
         super(baseUrl, client);
     }
 
-    public List<RouteOnRoadNet> getRoutesOnRoadnet(RoadNetRouteRequest request) {
-        return getRoutesOnRoadnetAsync(request).toStream().collect(Collectors.toList());
-    }
-
-    public Flux<RouteOnRoadNet> getRoutesOnRoadnetAsync(RoadNetRouteRequest request) {
+    public RouteOnRoadNet getRoutesOnRoadnet(RoadNetRouteRequest request) {
         WebTarget target = getWebTarget(request);
-        return doRequest(target);
+        JsonObject result = JerseyHelper.execute(target).getAsJsonObject();
+        return  RouteParser.parseRoute(result);
     }
 
     private WebTarget getWebTarget(RoadNetRouteRequest request) {
@@ -92,9 +86,5 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
 
     private UriBuilder endpoint() {
         return start().path("beta/vegnett/rute");
-    }
-
-    private Flux<RouteOnRoadNet> doRequest(WebTarget target) {
-        return new AsyncArrayResult<>(target, rt(RouteParser::parseRoute)).get();
     }
 }
