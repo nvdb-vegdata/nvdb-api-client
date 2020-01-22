@@ -43,4 +43,15 @@ class Helper {
         JsonElement response = new JsonParser().parse(new InputStreamReader(resource));
         return mapper.apply(response.getAsJsonObject());
     }
+
+    static <T> List<T> parseList(String file, Function<JsonObject, T> mapper) throws IOException {
+        try(InputStream resource = Helper.class.getResourceAsStream("/jsonresponse/" + file)) {
+            JsonElement response = new JsonParser().parse(new InputStreamReader(resource));
+            return StreamSupport.stream(response.getAsJsonArray().spliterator(), false)
+                    .map(JsonElement::getAsJsonObject)
+                    .map(mapper)
+                    .collect(Collectors.toList());
+
+        }
+    }
 }

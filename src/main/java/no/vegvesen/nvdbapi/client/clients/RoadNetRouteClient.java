@@ -25,7 +25,7 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
-import com.google.gson.JsonObject;
+import com.google.gson.JsonArray;
 import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
 import no.vegvesen.nvdbapi.client.gson.RouteParser;
 import no.vegvesen.nvdbapi.client.model.Coordinates;
@@ -47,9 +47,9 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
         super(baseUrl, client);
     }
 
-    public RouteOnRoadNet getRoutesOnRoadnet(RoadNetRouteRequest request) {
+    public RouteOnRoadNet getRouteOnRoadnet(RoadNetRouteRequest request) {
         WebTarget target = getWebTarget(request);
-        JsonObject result = JerseyHelper.execute(target).getAsJsonObject();
+        JsonArray result = JerseyHelper.execute(target).getAsJsonArray();
         return  RouteParser.parseRoute(result);
     }
 
