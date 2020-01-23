@@ -18,6 +18,7 @@ public class RoadNetRouteRequest {
     private final int distanceThreshold;
     private final int circumferenceAroundPoints;
     private final Optional<String> roadRefFilter;
+    private final boolean briefResponse;
 
     private RoadNetRouteRequest(Builder b) {
         this.startReflinkPosition = b.startReflinkPosition;
@@ -28,6 +29,7 @@ public class RoadNetRouteRequest {
         this.distanceThreshold = b.distanceThreshold;
         this.circumferenceAroundPoints = b.circumferenceAroundPoints;
         this.roadRefFilter = b.roadRefFilter;
+        this.briefResponse = b.briefReponse;
     }
 
     public RefLinkPosition getStartReflinkPosition() {
@@ -70,6 +72,10 @@ public class RoadNetRouteRequest {
         return geometry;
     }
 
+    public boolean isBriefResponse() {
+        return briefResponse;
+    }
+
     public static class Builder {
         private RefLinkPosition startReflinkPosition;
         private RefLinkPosition endReflinkPosition;
@@ -79,6 +85,7 @@ public class RoadNetRouteRequest {
         private int circumferenceAroundPoints;
         private Geometry geometry;
         private Optional<String> roadRefFilter;
+        private boolean briefReponse = false;
 
         public Builder between(RefLinkPosition startReflinkPosition,
                                RefLinkPosition endReflinkPosition) {
@@ -111,6 +118,11 @@ public class RoadNetRouteRequest {
 
         public Builder fromGeometry(Geometry geometry) {
             this.geometry = geometry;
+            return this;
+        }
+
+        public Builder withBriefResponse(boolean briefResponse) {
+            this.briefReponse = briefResponse;
             return this;
         }
 

@@ -1,0 +1,16 @@
+[
+  {
+    "type": "Linje",
+    "veglenkesekvensid": 1148895,
+    "startposisjon": 0.7039142,
+    "sluttposisjon": 0.76357326,
+    "kortform": "0.7039142-0.76357326@1148895"
+  },
+  {
+    "type": "Linje",
+    "veglenkesekvensid": 1148895,
+    "startposisjon": 0.62366945,
+    "sluttposisjon": 0.7039142,
+    "kortform": "0.62366945-0.7039142@1148895"
+  }
+]

@@ -50,13 +50,21 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
     public RouteOnRoadNet getRouteOnRoadnet(RoadNetRouteRequest request) {
         WebTarget target = getWebTarget(request);
         JsonArray result = JerseyHelper.execute(target).getAsJsonArray();
-        return  RouteParser.parseRoute(result);
+        if (request.isBriefResponse()) {
+            return RouteParser.parseBrief(result);
+        } else {
+            return RouteParser.parseDetailed(result);
+        }
     }
 
     private WebTarget getWebTarget(RoadNetRouteRequest request) {
         Objects.requireNonNull(request, "Missing page info argument.");
 
         UriBuilder path = endpoint();
+
+        if (request.isBriefResponse()) {
+            path.queryParam("kortform", true);
+        }
 
         if (request.usesGeometry()) {
             Geometry geometry = request.getGeometry();

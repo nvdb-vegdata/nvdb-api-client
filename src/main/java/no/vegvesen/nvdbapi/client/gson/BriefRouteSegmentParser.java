@@ -26,38 +26,22 @@
 package no.vegvesen.nvdbapi.client.gson;
 
 import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.model.roadnet.*;
+import no.vegvesen.nvdbapi.client.model.roadnet.BriefRouteSegment;
 
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
-import static no.vegvesen.nvdbapi.client.gson.RoadObjectParser.parseContractAreas;
-import static no.vegvesen.nvdbapi.client.gson.RoadObjectParser.parseRoutes;
 
-public final class RouteSegmentParser {
+public final class BriefRouteSegmentParser {
 
-    private RouteSegmentParser() {
+    private BriefRouteSegmentParser() {
     }
 
-    public static RouteSegment parse(JsonObject obj) {
-        return new RouteSegment(
+    public static BriefRouteSegment parse(JsonObject obj) {
+        return new BriefRouteSegment(
                 parseLongMember(obj, "veglenkesekvensid"),
-                parseLongMember(obj, "superstedfesting.veglenkesekvensid"),
                 parseDoubleMember(obj, "startposisjon"),
                 parseDoubleMember(obj, "sluttposisjon"),
-                parseIntMember(obj, "veglenkenummer"),
-                DetailLevel.fromTextValue(parseStringMember(obj, "detaljnivå")),
-                TypeOfRoad.fromTextValue(parseStringMember(obj, "typeVeg")),
-                parseStringMember(obj, "startnode"),
-                parseStringMember(obj, "sluttnode"),
-                parseDateMember(obj, "metadata.startdato"),
-                parseDateMember(obj, "metadata.sluttdato"),
-                parseIntMember(obj, "fylke"),
-                parseIntMember(obj, "kommune"),
-                GsonUtil.parseGeometryMember(obj, "geometri"),
-                parseDoubleMember(obj, "lengde"),
-                GsonUtil.parseRoadSysRefMember(obj, "vegsystemreferanse"),
-                RefLinkPartType.fromValue(parseStringMember(obj,"type")),
-                parseContractAreas(obj),
-                parseRoutes(obj));
+                parseStringMember(obj, "kortform"),
+                parseStringMember(obj, "type"));
     }
 
 }

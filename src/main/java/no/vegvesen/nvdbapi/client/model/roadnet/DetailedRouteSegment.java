@@ -29,6 +29,7 @@ import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
 import no.vegvesen.nvdbapi.client.model.areas.Route;
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
+import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RouteSegment;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -36,14 +37,14 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-public final class RouteSegment implements Serializable {
+public final class DetailedRouteSegment implements Serializable, RouteSegment {
 
     private final long id;
     private final double start;
     private final double end;
     private final Geometry geometry;
-    private final double length;
-    private final int linkNumber;
+    private final Double length;
+    private final Integer linkNumber;
     private final RefLinkPartType linkType;
     private final List<ContractArea> contractAreas;
     private final List<Route> routes;
@@ -60,25 +61,25 @@ public final class RouteSegment implements Serializable {
     private final String startNode;
     private final String endNode;
 
-    public RouteSegment(long id,
-                        Long superLinkId,
-                        double start,
-                        double end,
-                        int linkNumber,
-                        DetailLevel detailLevel,
-                        TypeOfRoad roadType,
-                        String startNode,
-                        String endNode,
-                        LocalDate fromDate,
-                        LocalDate toDate,
-                        Integer county,
-                        Integer municipality,
-                        Geometry geometry,
-                        double length,
-                        RoadSysRef roadRef,
-                        RefLinkPartType linkType,
-                        List<ContractArea> contractAreas,
-                        List<Route> routes) {
+    public DetailedRouteSegment(long id,
+                                Long superLinkId,
+                                double start,
+                                double end,
+                                Integer linkNumber,
+                                DetailLevel detailLevel,
+                                TypeOfRoad roadType,
+                                String startNode,
+                                String endNode,
+                                LocalDate fromDate,
+                                LocalDate toDate,
+                                Integer county,
+                                Integer municipality,
+                                Geometry geometry,
+                                Double length,
+                                RoadSysRef roadRef,
+                                RefLinkPartType linkType,
+                                List<ContractArea> contractAreas,
+                                List<Route> routes) {
         this.id = id;
         this.superLinkId = superLinkId;
         this.start = start;
@@ -180,7 +181,7 @@ public final class RouteSegment implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        RouteSegment that = (RouteSegment) o;
+        DetailedRouteSegment that = (DetailedRouteSegment) o;
         return id == that.id &&
                 Double.compare(that.start, start) == 0 &&
                 Double.compare(that.end, end) == 0 &&

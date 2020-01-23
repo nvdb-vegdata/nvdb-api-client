@@ -8,14 +8,22 @@ import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class RouteParser {
-    public static RouteOnRoadNet parseRoute(JsonArray obj) {
+    public static RouteOnRoadNet parseDetailed(JsonArray obj) {
         if(obj==null) return null;
         return new RouteOnRoadNet(
             StreamSupport.stream(
-                obj.spliterator(), false)
-                .map(JsonElement::getAsJsonObject)
-                .map(RouteSegmentParser::parse)
-                .collect(Collectors.toList())
-        );
+                    obj.spliterator(), false)
+                    .map(JsonElement::getAsJsonObject)
+                    .map(DetailedRouteSegmentParser::parse)
+                    .collect(Collectors.toList()));
+    }
+    public static RouteOnRoadNet parseBrief(JsonArray obj) {
+        if(obj==null) return null;
+        return new RouteOnRoadNet(
+                StreamSupport.stream(
+                        obj.spliterator(), false)
+                        .map(JsonElement::getAsJsonObject)
+                        .map(BriefRouteSegmentParser::parse)
+                        .collect(Collectors.toList()));
     }
 }
