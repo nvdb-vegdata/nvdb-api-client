@@ -26,7 +26,7 @@
 package no.vegvesen.nvdbapi.client.gson;
 
 import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.model.roadnet.BriefRouteSegment;
+import no.vegvesen.nvdbapi.client.model.roadnet.route.BriefRouteSegment;
 
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 

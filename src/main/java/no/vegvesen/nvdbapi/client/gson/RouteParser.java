@@ -2,7 +2,7 @@ package no.vegvesen.nvdbapi.client.gson;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import no.vegvesen.nvdbapi.client.model.RouteOnRoadNet;
+import no.vegvesen.nvdbapi.client.model.roadnet.route.RouteOnRoadNet;
 
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;

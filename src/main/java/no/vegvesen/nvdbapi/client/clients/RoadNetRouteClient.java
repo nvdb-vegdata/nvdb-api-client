@@ -31,7 +31,7 @@ import no.vegvesen.nvdbapi.client.gson.RouteParser;
 import no.vegvesen.nvdbapi.client.model.Coordinates;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.Projection;
-import no.vegvesen.nvdbapi.client.model.RouteOnRoadNet;
+import no.vegvesen.nvdbapi.client.model.roadnet.route.RouteOnRoadNet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

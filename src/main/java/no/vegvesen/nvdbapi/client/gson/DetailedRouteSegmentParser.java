@@ -27,6 +27,7 @@ package no.vegvesen.nvdbapi.client.gson;
 
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.roadnet.*;
+import no.vegvesen.nvdbapi.client.model.roadnet.route.DetailedRouteSegment;
 
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 import static no.vegvesen.nvdbapi.client.gson.RoadObjectParser.parseContractAreas;

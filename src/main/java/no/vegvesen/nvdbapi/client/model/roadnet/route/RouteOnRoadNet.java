@@ -1,6 +1,4 @@
-package no.vegvesen.nvdbapi.client.model;
-
-import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RouteSegment;
+package no.vegvesen.nvdbapi.client.model.roadnet.route;
 
 import java.util.List;
 import java.util.Objects;

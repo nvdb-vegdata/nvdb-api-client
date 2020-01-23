@@ -23,13 +23,15 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package no.vegvesen.nvdbapi.client.model.roadnet;
+package no.vegvesen.nvdbapi.client.model.roadnet.route;
 
 import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
 import no.vegvesen.nvdbapi.client.model.areas.Route;
+import no.vegvesen.nvdbapi.client.model.roadnet.DetailLevel;
+import no.vegvesen.nvdbapi.client.model.roadnet.RefLinkPartType;
+import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
-import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RouteSegment;
 
 import java.io.Serializable;
 import java.time.LocalDate;

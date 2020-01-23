@@ -23,9 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package no.vegvesen.nvdbapi.client.model.roadnet;
-
-import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RouteSegment;
+package no.vegvesen.nvdbapi.client.model.roadnet.route;
 
 import java.io.Serializable;
 import java.util.Objects;

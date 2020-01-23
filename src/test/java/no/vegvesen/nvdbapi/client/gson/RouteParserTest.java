@@ -4,8 +4,8 @@ import static no.vegvesen.nvdbapi.client.gson.Helper.parseList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.*;
 
-import no.vegvesen.nvdbapi.client.model.roadnet.BriefRouteSegment;
-import no.vegvesen.nvdbapi.client.model.roadnet.DetailedRouteSegment;
+import no.vegvesen.nvdbapi.client.model.roadnet.route.BriefRouteSegment;
+import no.vegvesen.nvdbapi.client.model.roadnet.route.DetailedRouteSegment;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
