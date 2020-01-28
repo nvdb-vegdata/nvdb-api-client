@@ -1,0 +1,104 @@
+[
+  {
+    "href": "http://localhost:12002/vegnett/veglenkesekvenser/segmentert/1148895",
+    "metadata": {
+      "startdato": "2019-01-01"
+    },
+    "veglenkesekvensid": 1148895,
+    "startposisjon": 0.7039142,
+    "sluttposisjon": 0.76357326,
+    "kortform": "0.7039142-0.76357326@1148895",
+    "veglenkenummer": 6,
+    "startnode": "1186897",
+    "sluttnode": "1186776",
+    "type": "HOVED",
+    "detaljnivå": "Vegtrase og kjørebane",
+    "typeVeg": "Enkel bilveg",
+    "typeVeg_sosi": "enkelBilveg",
+    "feltoversikt": [
+      "2"
+    ],
+    "geometri": {
+      "wkt": "LINESTRING Z(226604.3 6564519.6 6.2, 226595.8 6564519 6, 226567.1 6564521.2 7, 226565.884 6564521.136 7)",
+      "srid": 6173
+    },
+    "lengde": 38.523,
+    "fylke": 7,
+    "kommune": 710,
+    "vegsystemreferanse": {
+      "vegsystem": {
+        "id": 558950,
+        "versjon": 1,
+        "vegkategori": "K",
+        "fase": "V",
+        "nummer": 18000
+      },
+      "strekning": {
+        "id": 1218641,
+        "versjon": 1,
+        "strekning": 2,
+        "delstrekning": 1,
+        "arm": false,
+        "adskilte_løp": "Nei",
+        "trafikantgruppe": "K",
+        "fra_meter": 94.109,
+        "til_meter": 132.652,
+        "retning": "MED"
+      },
+      "kortform": "KV18000 S2D1 m94-133"
+    },
+    "kontraktsområder": [],
+    "riksvegruter": []
+  },
+  {
+    "href": "http://localhost:12002/vegnett/veglenkesekvenser/segmentert/1148895",
+    "metadata": {
+      "startdato": "2019-01-01"
+    },
+    "veglenkesekvensid": 1148895,
+    "startposisjon": 0.62366945,
+    "sluttposisjon": 0.7039142,
+    "kortform": "0.62366945-0.7039142@1148895",
+    "veglenkenummer": 5,
+    "startnode": "1186986",
+    "sluttnode": "1186897",
+    "type": "HOVED",
+    "detaljnivå": "Vegtrase og kjørebane",
+    "typeVeg": "Enkel bilveg",
+    "typeVeg_sosi": "enkelBilveg",
+    "feltoversikt": [
+      "2"
+    ],
+    "geometri": {
+      "wkt": "LINESTRING Z(226656.263 6564526.033 6, 226623.3 6564523.4 6, 226604.3 6564519.6 6.2)",
+      "srid": 6173
+    },
+    "lengde": 52.444,
+    "fylke": 7,
+    "kommune": 710,
+    "vegsystemreferanse": {
+      "vegsystem": {
+        "id": 558950,
+        "versjon": 1,
+        "vegkategori": "K",
+        "fase": "V",
+        "nummer": 18000
+      },
+      "strekning": {
+        "id": 1218641,
+        "versjon": 1,
+        "strekning": 2,
+        "delstrekning": 1,
+        "arm": false,
+        "adskilte_løp": "Nei",
+        "trafikantgruppe": "K",
+        "fra_meter": 41.663,
+        "til_meter": 94.109,
+        "retning": "MED"
+      },
+      "kortform": "KV18000 S2D1 m42-94"
+    },
+    "kontraktsområder": [],
+    "riksvegruter": []
+  }
+]
