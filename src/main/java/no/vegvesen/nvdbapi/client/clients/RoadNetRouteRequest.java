@@ -14,6 +14,8 @@ public class RoadNetRouteRequest {
     private final RefLinkPosition endReflinkPosition;
     private final Coordinates startCoordinates;
     private final Coordinates endCoordinates;
+    private final boolean connectionLinks;
+    private final boolean detailedLinks;
     private final Geometry geometry;
     private final int distanceThreshold;
     private final int circumferenceAroundPoints;
@@ -30,6 +32,16 @@ public class RoadNetRouteRequest {
         this.circumferenceAroundPoints = b.circumferenceAroundPoints;
         this.roadRefFilter = b.roadRefFilter;
         this.briefResponse = b.briefReponse;
+        this.connectionLinks = b.connectionLinks;
+        this.detailedLinks = b.detailedLinks;
+    }
+
+    public boolean isConnectionLinks() {
+        return connectionLinks;
+    }
+
+    public boolean isDetailedLinks() {
+        return detailedLinks;
     }
 
     public RefLinkPosition getStartReflinkPosition() {
@@ -81,11 +93,13 @@ public class RoadNetRouteRequest {
         private RefLinkPosition endReflinkPosition;
         private Coordinates startCoordinates;
         private Coordinates endCoordinates;
-        private int distanceThreshold;
-        private int circumferenceAroundPoints;
+        private int distanceThreshold = 10;
+        private int circumferenceAroundPoints = 100;
         private Geometry geometry;
         private Optional<String> roadRefFilter;
         private boolean briefReponse = false;
+        private boolean connectionLinks = false;
+        private boolean detailedLinks = false;
 
         public Builder between(RefLinkPosition startReflinkPosition,
                                RefLinkPosition endReflinkPosition) {
@@ -123,6 +137,16 @@ public class RoadNetRouteRequest {
 
         public Builder withBriefResponse(boolean briefResponse) {
             this.briefReponse = briefResponse;
+            return this;
+        }
+
+        public Builder withConnectionLinks(boolean connectionLinks) {
+            this.connectionLinks = connectionLinks;
+            return this;
+        }
+
+        public Builder withDetailedLinks(boolean detailedLinks) {
+            this.detailedLinks = detailedLinks;
             return this;
         }
 
