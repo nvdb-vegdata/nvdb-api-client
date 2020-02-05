@@ -42,8 +42,8 @@ public class RoadNetRequest {
     private final List<Integer> counties;
     private final List<Integer> municipalities;
     private final List<TopologyLevel> topologyLevel;
-    private final List<Integer> superId;
-    private final List<Integer> id;
+    private final List<Long> superId;
+    private final List<Long> id;
     private final Optional<Projection> projection;
     private final Optional<String> bbox;
     private final Optional<String> contractArea;
@@ -142,7 +142,7 @@ public class RoadNetRequest {
         return topologyLevel;
     }
 
-    public List<Integer> getSuperId() {
+    public List<Long> getSuperId() {
         return superId;
     }
 
@@ -162,7 +162,7 @@ public class RoadNetRequest {
         return nationalRoute;
     }
 
-    public List<Integer> getId() {
+    public List<Long> getId() {
         return id;
     }
 
@@ -185,8 +185,8 @@ public class RoadNetRequest {
         private List<Integer> counties = Collections.emptyList();
         private List<Integer> municipalities = Collections.emptyList();
         private List<TopologyLevel> topologyLevel = Collections.emptyList();
-        private List<Integer> superId = Collections.emptyList();
-        private List<Integer> id = Collections.emptyList();
+        private List<Long> superId = Collections.emptyList();
+        private List<Long> id = Collections.emptyList();
         private Optional<String> bbox = Optional.empty();
         private Optional<Projection> projection = Optional.empty();
         private Optional<String> contractArea = Optional.empty();
@@ -288,12 +288,12 @@ public class RoadNetRequest {
             return this;
         }
 
-        public Builder withSuperId(List<Integer> superId) {
+        public Builder withSuperId(List<Long> superId) {
             this.superId = Optional.ofNullable(superId).orElse(Collections.emptyList());
             return this;
         }
 
-        public Builder withId(List<Integer> id) {
+        public Builder withId(List<Long> id) {
             this.id = Optional.ofNullable(id).orElse(Collections.emptyList());
             return this;
         }

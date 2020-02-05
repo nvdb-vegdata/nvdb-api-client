@@ -1,5 +1,9 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.5.0
+* RoadNetRequest.id, .superId changed from `List<Integer>` to `List<Long>`
+* Added `SegmentedLink.topologyLevel`
+
 ## 1.4.0
 * RefLinkRequest.id (int) -> linksequenceId (long)
 * RoadSysRefRequest.roadCategory,.phase changed to enums
