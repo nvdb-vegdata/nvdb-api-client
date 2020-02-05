@@ -26,10 +26,7 @@
 package no.vegvesen.nvdbapi.client.gson;
 
 import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.model.roadnet.DetailLevel;
-import no.vegvesen.nvdbapi.client.model.roadnet.RefLinkPartType;
-import no.vegvesen.nvdbapi.client.model.roadnet.SegmentedLink;
-import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
+import no.vegvesen.nvdbapi.client.model.roadnet.*;
 
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 import static no.vegvesen.nvdbapi.client.gson.RoadObjectParser.parseContractAreas;
@@ -49,6 +46,7 @@ public final class SegmentedLinkParser {
                 parseIntMember(obj, "veglenkenummer"),
                 parseIntMember(obj, "segmentnummer"),
                 DetailLevel.fromTextValue(parseStringMember(obj, "detaljnivå")),
+                TopologyLevel.fromValue(parseStringMember(obj, "topologinivå")),
                 TypeOfRoad.fromTextValue(parseStringMember(obj, "typeVeg")),
                 parseStringMember(obj, "startnode"),
                 parseStringMember(obj, "sluttnode"),
