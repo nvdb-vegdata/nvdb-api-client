@@ -1,6 +1,7 @@
 package no.vegvesen.nvdbapi.client.model.roadnet.roadsysref;
 
 import no.vegvesen.nvdbapi.client.model.Direction;
+import no.vegvesen.nvdbapi.client.model.roadnet.RoadUserGroup;
 import no.vegvesen.nvdbapi.client.model.roadnet.SeparatePassages;
 
 import java.util.Objects;
@@ -13,7 +14,7 @@ public class Section {
     public final Integer sectionPartNumber;
     public final Boolean arm;
     public final SeparatePassages sepratePassages;
-    public final String trafficType;
+    public final RoadUserGroup trafficType;
     public final double startMeter;
     public final Double endMeter;
     public final Direction direction;
@@ -24,7 +25,7 @@ public class Section {
                    Integer sectionPartNumber,
                    Boolean arm,
                    SeparatePassages sepratePassages,
-                   String trafficType,
+                   RoadUserGroup trafficType,
                    double startMeter,
                    Double endMeter,
                    Direction direction) {

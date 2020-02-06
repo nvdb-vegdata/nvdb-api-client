@@ -10,7 +10,7 @@ public enum RoadUserGroup {
         this.textValue = text;
     }
 
-    RoadUserGroup fromValue(String textValue) {
+    public static RoadUserGroup fromValue(String textValue) {
         switch (textValue.toUpperCase()) {
             case "G": return GAENDE;
             case "K": return KJORENDE;

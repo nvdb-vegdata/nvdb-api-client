@@ -5,6 +5,7 @@
 * Added `SegmentedLink.topologyLevel`
 * `Section.arm` is boolean
 * `Node.id` changed from `Integer` to `Long`
+* `Section.trafficType` changed from `String`to `RoadUserGroup`
 
 ## 1.4.0
 * RefLinkRequest.id (int) -> linksequenceId (long)
