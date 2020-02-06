@@ -3,6 +3,7 @@
 ## 1.5.0
 * RoadNetRequest.id, .superId changed from `List<Integer>` to `List<Long>`
 * Added `SegmentedLink.topologyLevel`
+* `Section.arm` is boolean
 
 ## 1.4.0
 * RefLinkRequest.id (int) -> linksequenceId (long)
