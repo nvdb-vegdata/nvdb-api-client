@@ -33,13 +33,13 @@ import java.util.Objects;
 
 public class Node {
 
-    private final Integer id;
+    private final Long id;
     private final Geometry geometry;
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final List<Port> ports;
 
-    public Node(Integer id, Geometry geometry, LocalDate startDate, LocalDate endDate, List<Port> ports) {
+    public Node(Long id, Geometry geometry, LocalDate startDate, LocalDate endDate, List<Port> ports) {
         this.id = id;
         this.geometry = geometry;
         this.startDate = startDate;
@@ -47,7 +47,7 @@ public class Node {
         this.ports = ports;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
@@ -81,7 +81,6 @@ public class Node {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(getId(), getGeometry(), getStartDate(), getEndDate(), getPorts());
     }
 

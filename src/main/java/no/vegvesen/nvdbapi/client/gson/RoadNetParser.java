@@ -59,7 +59,7 @@ public final class RoadNetParser {
     public static Node parseNode(JsonObject obj){
         if(obj==null) return null;
 
-        Integer id = parseIntMember(obj, "id");
+        Long id = parseLongMember(obj, "id");
         Geometry geometry = GeometryParser.parse(obj.getAsJsonObject("geometri"));
         LocalDate startDate = parseDateMember(obj, "startdato");
         LocalDate endDate = parseDateMember(obj, "sluttdato");
