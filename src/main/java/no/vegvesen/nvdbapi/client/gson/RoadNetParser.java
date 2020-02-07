@@ -89,7 +89,7 @@ public final class RoadNetParser {
                         SosiMedium.from(parseStringMember(o, "medium")),
                         Ltema.from(parseIntMember(o, "geometri.temakode")),
                         PlacementParser.parseRefLinkExtentPlacement(o.getAsJsonObject("superstedfesting")),
-                        parseStringMember(o, "typeVeg"),
+                        TypeOfRoad.fromTextValue(parseStringMember(o, "typeVeg")),
                         parseStringMember(o, "detaljnivå"),
                         GeometryParser.parse(o.getAsJsonObject("geometri")),
                         parseFields(o.getAsJsonArray("feltoversikt")),

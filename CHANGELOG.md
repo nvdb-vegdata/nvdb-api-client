@@ -6,6 +6,7 @@
 * `Section.arm` is boolean
 * `Node.id` changed from `Integer` to `Long`
 * `Section.trafficType` changed from `String`to `RoadUserGroup`
+* `Link.typeRoad` changed from `String` to `TypeOfRoad`
 
 ## 1.4.0
 * RefLinkRequest.id (int) -> linksequenceId (long)
