@@ -324,7 +324,7 @@ public final class RoadObjectParser {
 
     public static Statistics parseStatistics(JsonObject obj) {
         int numFound = parseIntMember(obj, "antall");
-        long length = parseLongMember(obj, "lengde");
+        double length = parseDoubleMember(obj, "lengde");
 
         return new Statistics(numFound, length);
     }

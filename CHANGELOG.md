@@ -1,4 +1,6 @@
 # Changelog for NVDB API LES V3 Client
+## 1.6.0
+* `Statistics.length` changed from `long` to `double`
 
 ## 1.5.0
 * RoadNetRequest.id, .superId changed from `List<Integer>` to `List<Long>`
