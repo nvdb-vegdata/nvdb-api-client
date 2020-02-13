@@ -159,10 +159,10 @@ public final class RoadObjectParser {
 
         Geometry geo = GeometryParser.parse(obj.getAsJsonObject("geometri"));
 
-        Integer municipality = parseIntMember(obj, "kommune");
-        Integer county = parseIntMember(obj, "fylke");
-        Integer region  = parseIntMember(obj, "region");
-        Integer department = parseIntMember(obj, "vegavdeling");
+        Integer municipality = Optional.ofNullable(parseIntMember(obj, "kommune")).orElse(0);
+        Integer county = Optional.ofNullable(parseIntMember(obj, "fylke")).orElse(0);
+        Integer region  = Optional.ofNullable(parseIntMember(obj, "region")).orElse(0);
+        Integer department = Optional.ofNullable(parseIntMember(obj, "vegavdeling")).orElse(0);
 
         RoadRef ref = null;
         if (obj.has("vegreferanse")) {
