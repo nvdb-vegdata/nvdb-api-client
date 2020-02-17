@@ -20,6 +20,7 @@ public class RoadNetRouteRequest {
     private final int distanceThreshold;
     private final int circumferenceAroundPoints;
     private final Optional<String> roadRefFilter;
+    private final Optional<String> roadUserGroup;
     private final boolean briefResponse;
 
     private RoadNetRouteRequest(Builder b) {
@@ -34,6 +35,15 @@ public class RoadNetRouteRequest {
         this.briefResponse = b.briefReponse;
         this.connectionLinks = b.connectionLinks;
         this.detailedLinks = b.detailedLinks;
+        this.roadUserGroup = b.roadUserGroup;
+    }
+
+    public Optional<String> getRoadRefFilter() {
+        return roadRefFilter;
+    }
+
+    public Optional<String> getRoadUserGroup() {
+        return roadUserGroup;
     }
 
     public boolean isConnectionLinks() {
@@ -96,7 +106,8 @@ public class RoadNetRouteRequest {
         private int distanceThreshold = 10;
         private int circumferenceAroundPoints = 100;
         private Geometry geometry;
-        private Optional<String> roadRefFilter;
+        private Optional<String> roadRefFilter = Optional.empty();
+        private Optional<String> roadUserGroup = Optional.empty();
         private boolean briefReponse = false;
         private boolean connectionLinks = false;
         private boolean detailedLinks = false;
@@ -122,6 +133,11 @@ public class RoadNetRouteRequest {
 
         public Builder withRoadRefFilter(String filter) {
             this.roadRefFilter = Optional.ofNullable(filter);
+            return this;
+        }
+
+        public Builder withRoadUserGroup(String roadUserGroup) {
+            this.roadUserGroup = Optional.ofNullable(roadUserGroup);
             return this;
         }
 
