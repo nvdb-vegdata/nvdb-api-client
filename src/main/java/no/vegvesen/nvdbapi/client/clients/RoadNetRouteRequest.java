@@ -3,6 +3,7 @@ package no.vegvesen.nvdbapi.client.clients;
 import no.vegvesen.nvdbapi.client.model.Coordinates;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.RefLinkPosition;
+import no.vegvesen.nvdbapi.client.model.roadnet.RoadUserGroup;
 
 import java.util.Optional;
 
@@ -20,7 +21,7 @@ public class RoadNetRouteRequest {
     private final int distanceThreshold;
     private final int circumferenceAroundPoints;
     private final Optional<String> roadRefFilter;
-    private final Optional<String> roadUserGroup;
+    private final Optional<RoadUserGroup> roadUserGroup;
     private final boolean briefResponse;
 
     private RoadNetRouteRequest(Builder b) {
@@ -42,7 +43,7 @@ public class RoadNetRouteRequest {
         return roadRefFilter;
     }
 
-    public Optional<String> getRoadUserGroup() {
+    public Optional<RoadUserGroup> getRoadUserGroup() {
         return roadUserGroup;
     }
 
@@ -107,7 +108,7 @@ public class RoadNetRouteRequest {
         private int circumferenceAroundPoints = 100;
         private Geometry geometry;
         private Optional<String> roadRefFilter = Optional.empty();
-        private Optional<String> roadUserGroup = Optional.empty();
+        private Optional<RoadUserGroup> roadUserGroup = Optional.empty();
         private boolean briefReponse = false;
         private boolean connectionLinks = false;
         private boolean detailedLinks = false;
@@ -136,7 +137,7 @@ public class RoadNetRouteRequest {
             return this;
         }
 
-        public Builder withRoadUserGroup(String roadUserGroup) {
+        public Builder withRoadUserGroup(RoadUserGroup roadUserGroup) {
             this.roadUserGroup = Optional.ofNullable(roadUserGroup);
             return this;
         }
