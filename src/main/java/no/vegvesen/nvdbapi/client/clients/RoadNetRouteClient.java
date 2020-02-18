@@ -66,7 +66,7 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
         path.queryParam("konnekteringslenker", request.isConnectionLinks());
         path.queryParam("detaljerte_lenker", request.isDetailedLinks());
         request.getRoadRefFilter().ifPresent(v -> path.queryParam("vegsystemreferanse", v));
-        request.getRoadUserGroup().ifPresent(v -> path.queryParam("trafikantgruppe", v));
+        request.getRoadUserGroup().ifPresent(v -> path.queryParam("trafikantgruppe", v.getTextValue()));
 
         if (request.usesGeometry()) {
             Geometry geometry = request.getGeometry();
