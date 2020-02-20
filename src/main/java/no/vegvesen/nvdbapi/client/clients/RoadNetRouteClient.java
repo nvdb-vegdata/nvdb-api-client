@@ -39,6 +39,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class RoadNetRouteClient extends AbstractJerseyClient {
     private static final Logger LOG = LoggerFactory.getLogger(RoadNetRouteClient.class);
@@ -67,6 +68,10 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
         path.queryParam("detaljerte_lenker", request.isDetailedLinks());
         request.getRoadRefFilter().ifPresent(v -> path.queryParam("vegsystemreferanse", v));
         request.getRoadUserGroup().ifPresent(v -> path.queryParam("trafikantgruppe", v.getTextValue()));
+        if (!request.getTypeOfRoad().isEmpty()) path.queryParam("typeveg", request.getTypeOfRoad()
+                .stream()
+                .map(v -> v.getTypeOfRoadSosi())
+                .collect(Collectors.joining(",")));
 
         if (request.usesGeometry()) {
             Geometry geometry = request.getGeometry();

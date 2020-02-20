@@ -4,9 +4,12 @@ import no.vegvesen.nvdbapi.client.model.Coordinates;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.RefLinkPosition;
 import no.vegvesen.nvdbapi.client.model.roadnet.RoadUserGroup;
+import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
 
+import java.util.List;
 import java.util.Optional;
 
+import static java.util.Collections.emptyList;
 import static java.util.Objects.nonNull;
 
 public class RoadNetRouteRequest {
@@ -22,6 +25,7 @@ public class RoadNetRouteRequest {
     private final int circumferenceAroundPoints;
     private final Optional<String> roadRefFilter;
     private final Optional<RoadUserGroup> roadUserGroup;
+    private final List<TypeOfRoad> typeOfRoad;
     private final boolean briefResponse;
 
     private RoadNetRouteRequest(Builder b) {
@@ -37,6 +41,11 @@ public class RoadNetRouteRequest {
         this.connectionLinks = b.connectionLinks;
         this.detailedLinks = b.detailedLinks;
         this.roadUserGroup = b.roadUserGroup;
+        this.typeOfRoad = b.typeOfRoad;
+    }
+
+    public List<TypeOfRoad> getTypeOfRoad() {
+        return typeOfRoad;
     }
 
     public Optional<String> getRoadRefFilter() {
@@ -112,6 +121,7 @@ public class RoadNetRouteRequest {
         private boolean briefReponse = false;
         private boolean connectionLinks = false;
         private boolean detailedLinks = false;
+        private List<TypeOfRoad> typeOfRoad = emptyList();
 
         public Builder between(RefLinkPosition startReflinkPosition,
                                RefLinkPosition endReflinkPosition) {
@@ -139,6 +149,11 @@ public class RoadNetRouteRequest {
 
         public Builder withRoadUserGroup(RoadUserGroup roadUserGroup) {
             this.roadUserGroup = Optional.ofNullable(roadUserGroup);
+            return this;
+        }
+
+        public Builder withTypeOfRoad(List<TypeOfRoad> typeOfRoad) {
+            this.typeOfRoad = typeOfRoad;
             return this;
         }
 
