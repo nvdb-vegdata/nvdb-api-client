@@ -49,6 +49,7 @@ public final class SegmentedLink implements Serializable {
     private final List<ContractArea> contractAreas;
     private final List<Route> routes;
     private final DetailLevel detailLevel;
+    private final TopologyLevel topologyLevel;
     private final TypeOfRoad roadType;
 
 
@@ -62,7 +63,8 @@ public final class SegmentedLink implements Serializable {
     private final String endNode;
 
     public SegmentedLink(long id, Long superLinkId, double start, double end,
-                         int linkNumber, int segmentNumber, DetailLevel detailLevel, TypeOfRoad roadType,
+                         int linkNumber, int segmentNumber, DetailLevel detailLevel,
+                         TopologyLevel topologyLevel, TypeOfRoad roadType,
                          String startNode, String endNode,
                          LocalDate fromDate, LocalDate toDate,
                          Integer county,
@@ -91,6 +93,7 @@ public final class SegmentedLink implements Serializable {
         this.linkType = linkType;
         this.contractAreas = contractAreas;
         this.routes = routes;
+        this.topologyLevel = topologyLevel;
     }
 
     public long getId() {
@@ -119,6 +122,10 @@ public final class SegmentedLink implements Serializable {
 
     public RefLinkPartType getLinkType() {
         return linkType;
+    }
+
+    public TopologyLevel getTopologyLevel() {
+        return topologyLevel;
     }
 
     public DetailLevel getDetailLevel() {

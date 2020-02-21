@@ -74,8 +74,10 @@ public final class FeatureTypeParser {
     }
 
     private static FeatureType.PlacementType parsePlacementType(JsonObject obj) {
-        String placementPath = obj.has("stedfesting.innhold") ? "stedfesting.innhold.geometritype" : "stedfesting.geometritype";
-        return FeatureType.PlacementType.from(parseStringMember(obj, placementPath));
+        JsonObject stedfesting = obj.getAsJsonObject("stedfesting");
+        if(stedfesting == null) return null;
+        JsonObject stedfestingObj = stedfesting.has("innhold") ? stedfesting.getAsJsonObject("innhold") : stedfesting;
+        return FeatureType.PlacementType.from(parseStringMember(stedfestingObj, "stedfestingstype"));
     }
 
     private static List<AssociationType> getAssociations(JsonObject obj, String path) {

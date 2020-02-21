@@ -30,9 +30,9 @@ import java.util.Objects;
 public class Statistics {
 
     private final int numFound;
-    private final long length;
+    private final double length;
 
-    public Statistics(int numFound, long length) {
+    public Statistics(int numFound, double length) {
         this.numFound = numFound;
         this.length = length;
     }
@@ -41,7 +41,7 @@ public class Statistics {
         return numFound;
     }
 
-    public long getLength() {
+    public double getLength() {
         return length;
     }
 

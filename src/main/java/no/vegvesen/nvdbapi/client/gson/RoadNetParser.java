@@ -59,7 +59,7 @@ public final class RoadNetParser {
     public static Node parseNode(JsonObject obj){
         if(obj==null) return null;
 
-        Integer id = parseIntMember(obj, "id");
+        Long id = parseLongMember(obj, "id");
         Geometry geometry = GeometryParser.parse(obj.getAsJsonObject("geometri"));
         LocalDate startDate = parseDateMember(obj, "startdato");
         LocalDate endDate = parseDateMember(obj, "sluttdato");
@@ -89,7 +89,7 @@ public final class RoadNetParser {
                         SosiMedium.from(parseStringMember(o, "medium")),
                         Ltema.from(parseIntMember(o, "geometri.temakode")),
                         PlacementParser.parseRefLinkExtentPlacement(o.getAsJsonObject("superstedfesting")),
-                        parseStringMember(o, "typeVeg"),
+                        TypeOfRoad.fromTextValue(parseStringMember(o, "typeVeg")),
                         parseStringMember(o, "detaljnivå"),
                         GeometryParser.parse(o.getAsJsonObject("geometri")),
                         parseFields(o.getAsJsonArray("feltoversikt")),

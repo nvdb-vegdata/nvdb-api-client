@@ -1,4 +1,14 @@
 # Changelog for NVDB API LES V3 Client
+## 1.6.0
+* `Statistics.length` changed from `long` to `double`
+
+## 1.5.0
+* RoadNetRequest.id, .superId changed from `List<Integer>` to `List<Long>`
+* Added `SegmentedLink.topologyLevel`
+* `Section.arm` is boolean
+* `Node.id` changed from `Integer` to `Long`
+* `Section.trafficType` changed from `String`to `RoadUserGroup`
+* `Link.typeRoad` changed from `String` to `TypeOfRoad`
 
 ## 1.4.0
 * RefLinkRequest.id (int) -> linksequenceId (long)

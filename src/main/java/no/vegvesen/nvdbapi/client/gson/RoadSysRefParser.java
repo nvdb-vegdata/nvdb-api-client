@@ -27,6 +27,7 @@ package no.vegvesen.nvdbapi.client.gson;
 
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.Direction;
+import no.vegvesen.nvdbapi.client.model.roadnet.RoadUserGroup;
 import no.vegvesen.nvdbapi.client.model.roadnet.SeparatePassages;
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.*;
 
@@ -82,9 +83,9 @@ public final class RoadSysRefParser {
             parseIntMember(obj, "versjon"),
             parseIntMember(obj, "strekning"),
             parseIntMember(obj, "delstrekning"),
-            parseOptionalStringMember(obj, "arm").map("Ja"::equals).orElse(null),
+            parseBooleanMember(obj, "arm"),
             parseOptionalStringMember(obj, "adskilte_løp").map(SeparatePassages::fromValue).orElse(null),
-            parseStringMember(obj, "trafikantgruppe"),
+            RoadUserGroup.fromValue(parseStringMember(obj, "trafikantgruppe")),
             getFromMeter(obj),
             getToMeter(obj),
             Direction.from(parseStringMember(obj, "retning")));

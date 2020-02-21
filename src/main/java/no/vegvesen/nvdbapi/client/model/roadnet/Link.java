@@ -50,7 +50,7 @@ public class Link {
     private final SosiMedium sosiMedium;
     private final Ltema ltema;
     private final RefLinkExtentPlacement centerLineProjection;
-    private final String typeRoad;
+    private final TypeOfRoad typeRoad;
     private final String detailLevel;
     private final Geometry geometry;
     private final List<String> fields;
@@ -60,8 +60,8 @@ public class Link {
     public Link(Integer partId, Boolean isConnectionLink, Boolean isDetailed, TopologyLevel topologyLevel,
                 Integer startPort, Integer endPort, Double startPos, Double endPos, Integer municipality,
                 Integer municipalityGeometry, Double length, String measureMethod, LocalDate measureDate,
-                SosiMedium sosiMedium, Ltema ltema, RefLinkExtentPlacement centerLineProjection, String typeRoad, String detailLevel,
-                Geometry geometry, List<String> fields, LocalDate startDate, LocalDate endDate) {
+                SosiMedium sosiMedium, Ltema ltema, RefLinkExtentPlacement centerLineProjection, TypeOfRoad typeRoad,
+                String detailLevel, Geometry geometry, List<String> fields, LocalDate startDate, LocalDate endDate) {
         this.partId = partId;
         this.isConnectionLink = isConnectionLink;
         this.isDetailed = isDetailed;
@@ -138,7 +138,7 @@ public class Link {
         return centerLineProjection;
     }
 
-    public String getTypeRoad() {
+    public TypeOfRoad getTypeRoad() {
         return typeRoad;
     }
 
