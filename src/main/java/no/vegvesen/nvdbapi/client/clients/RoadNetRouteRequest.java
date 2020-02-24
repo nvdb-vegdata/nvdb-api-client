@@ -3,9 +3,13 @@ package no.vegvesen.nvdbapi.client.clients;
 import no.vegvesen.nvdbapi.client.model.Coordinates;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.RefLinkPosition;
+import no.vegvesen.nvdbapi.client.model.roadnet.RoadUserGroup;
+import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
 
+import java.util.List;
 import java.util.Optional;
 
+import static java.util.Collections.emptyList;
 import static java.util.Objects.nonNull;
 
 public class RoadNetRouteRequest {
@@ -14,10 +18,14 @@ public class RoadNetRouteRequest {
     private final RefLinkPosition endReflinkPosition;
     private final Coordinates startCoordinates;
     private final Coordinates endCoordinates;
+    private final boolean connectionLinks;
+    private final boolean detailedLinks;
     private final Geometry geometry;
     private final int distanceThreshold;
     private final int circumferenceAroundPoints;
     private final Optional<String> roadRefFilter;
+    private final Optional<RoadUserGroup> roadUserGroup;
+    private final List<TypeOfRoad> typeOfRoad;
     private final boolean briefResponse;
 
     private RoadNetRouteRequest(Builder b) {
@@ -30,6 +38,30 @@ public class RoadNetRouteRequest {
         this.circumferenceAroundPoints = b.circumferenceAroundPoints;
         this.roadRefFilter = b.roadRefFilter;
         this.briefResponse = b.briefReponse;
+        this.connectionLinks = b.connectionLinks;
+        this.detailedLinks = b.detailedLinks;
+        this.roadUserGroup = b.roadUserGroup;
+        this.typeOfRoad = b.typeOfRoad;
+    }
+
+    public List<TypeOfRoad> getTypeOfRoad() {
+        return typeOfRoad;
+    }
+
+    public Optional<String> getRoadRefFilter() {
+        return roadRefFilter;
+    }
+
+    public Optional<RoadUserGroup> getRoadUserGroup() {
+        return roadUserGroup;
+    }
+
+    public boolean isConnectionLinks() {
+        return connectionLinks;
+    }
+
+    public boolean isDetailedLinks() {
+        return detailedLinks;
     }
 
     public RefLinkPosition getStartReflinkPosition() {
@@ -81,11 +113,15 @@ public class RoadNetRouteRequest {
         private RefLinkPosition endReflinkPosition;
         private Coordinates startCoordinates;
         private Coordinates endCoordinates;
-        private int distanceThreshold;
-        private int circumferenceAroundPoints;
+        private int distanceThreshold = 10;
+        private int circumferenceAroundPoints = 100;
         private Geometry geometry;
-        private Optional<String> roadRefFilter;
+        private Optional<String> roadRefFilter = Optional.empty();
+        private Optional<RoadUserGroup> roadUserGroup = Optional.empty();
         private boolean briefReponse = false;
+        private boolean connectionLinks = false;
+        private boolean detailedLinks = false;
+        private List<TypeOfRoad> typeOfRoad = emptyList();
 
         public Builder between(RefLinkPosition startReflinkPosition,
                                RefLinkPosition endReflinkPosition) {
@@ -111,6 +147,16 @@ public class RoadNetRouteRequest {
             return this;
         }
 
+        public Builder withRoadUserGroup(RoadUserGroup roadUserGroup) {
+            this.roadUserGroup = Optional.ofNullable(roadUserGroup);
+            return this;
+        }
+
+        public Builder withTypeOfRoad(List<TypeOfRoad> typeOfRoad) {
+            this.typeOfRoad = typeOfRoad;
+            return this;
+        }
+
         public Builder withCircumferenceAroundPoints(int circumferenceAroundPoints) {
             this.circumferenceAroundPoints = circumferenceAroundPoints;
             return this;
@@ -123,6 +169,16 @@ public class RoadNetRouteRequest {
 
         public Builder withBriefResponse(boolean briefResponse) {
             this.briefReponse = briefResponse;
+            return this;
+        }
+
+        public Builder withConnectionLinks(boolean connectionLinks) {
+            this.connectionLinks = connectionLinks;
+            return this;
+        }
+
+        public Builder withDetailedLinks(boolean detailedLinks) {
+            this.detailedLinks = detailedLinks;
             return this;
         }
 

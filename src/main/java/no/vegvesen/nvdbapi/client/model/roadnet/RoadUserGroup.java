@@ -1,5 +1,7 @@
 package no.vegvesen.nvdbapi.client.model.roadnet;
 
+import static java.util.Objects.isNull;
+
 public enum RoadUserGroup {
     KJORENDE("K"),
     GAENDE("G");
@@ -11,6 +13,7 @@ public enum RoadUserGroup {
     }
 
     public static RoadUserGroup fromValue(String textValue) {
+        if (isNull(textValue)) return null;
         switch (textValue.toUpperCase()) {
             case "G": return GAENDE;
             case "K": return KJORENDE;

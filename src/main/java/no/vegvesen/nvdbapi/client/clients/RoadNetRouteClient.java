@@ -39,6 +39,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class RoadNetRouteClient extends AbstractJerseyClient {
     private static final Logger LOG = LoggerFactory.getLogger(RoadNetRouteClient.class);
@@ -62,9 +63,15 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
 
         UriBuilder path = endpoint();
 
-        if (request.isBriefResponse()) {
-            path.queryParam("kortform", true);
-        }
+        path.queryParam("kortform", request.isBriefResponse());
+        path.queryParam("konnekteringslenker", request.isConnectionLinks());
+        path.queryParam("detaljerte_lenker", request.isDetailedLinks());
+        request.getRoadRefFilter().ifPresent(v -> path.queryParam("vegsystemreferanse", v));
+        request.getRoadUserGroup().ifPresent(v -> path.queryParam("trafikantgruppe", v.getTextValue()));
+        if (!request.getTypeOfRoad().isEmpty()) path.queryParam("typeveg", request.getTypeOfRoad()
+                .stream()
+                .map(v -> v.getTypeOfRoadSosi())
+                .collect(Collectors.joining(",")));
 
         if (request.usesGeometry()) {
             Geometry geometry = request.getGeometry();
@@ -73,8 +80,7 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
             if (geometry.getProjection() != Projection.UTM33) {
                 path.queryParam("srid", geometry.getProjection().getSrid());
             }
-        }
-        else if(request.usesReflinkPosition()) {
+        } else if(request.usesReflinkPosition()) {
             path.queryParam("start", request.getStartReflinkPosition());
             path.queryParam("slutt", request.getEndReflinkPosition());
         } else {
