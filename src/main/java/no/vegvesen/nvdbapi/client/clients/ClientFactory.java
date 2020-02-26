@@ -25,6 +25,7 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
+import no.vegvesen.nvdbapi.client.ClientConfiguration;
 import no.vegvesen.nvdbapi.client.ProxyConfig;
 import no.vegvesen.nvdbapi.client.clients.filters.RequestHeaderFilter;
 import no.vegvesen.nvdbapi.client.gson.GsonMessageBodyHandler;
@@ -62,6 +63,7 @@ public final class ClientFactory implements AutoCloseable {
 
     private static final String apiRevision = "application/vnd.vegvesen.nvdb-v3-rev1+json";
     private final ProxyConfig proxyConfig;
+    private final ClientConfiguration clientConfig;
 
     private Datakatalog datakatalog;
     private List<AbstractJerseyClient> clients;
@@ -81,10 +83,29 @@ public final class ClientFactory implements AutoCloseable {
     /**
      * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
      * @param xClientName - a name describing/name of your consumer application.
+     * @param clientConfiguration - a client configuration for setting timeouts
+     */
+    public ClientFactory(String baseUrl, String xClientName, ClientConfiguration clientConfiguration) {
+       this(baseUrl, xClientName, null, null, clientConfiguration);
+    }
+
+    /**
+     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
+     * @param xClientName - a name describing/name of your consumer application.
      * @param proxyConfig - Config if traffic have to go through proxy.
      */
     public ClientFactory(String baseUrl, String xClientName, ProxyConfig proxyConfig) {
         this(baseUrl, xClientName, null, proxyConfig);
+    }
+
+    /**
+     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
+     * @param xClientName - a name describing/name of your consumer application.
+     * @param proxyConfig - Config if traffic have to go through proxy.
+     * @param clientConfiguration - a client configuration for setting timeouts
+     */
+    public ClientFactory(String baseUrl, String xClientName, ProxyConfig proxyConfig, ClientConfiguration clientConfiguration) {
+        this(baseUrl, xClientName, null, proxyConfig, clientConfiguration);
     }
 
     /**
@@ -97,6 +118,20 @@ public final class ClientFactory implements AutoCloseable {
      * @param proxyConfig - Config if traffic have to go through proxy.
      */
     public ClientFactory(String baseUrl, String xClientName, String xSession, ProxyConfig proxyConfig) {
+        this(baseUrl, xClientName, xSession, proxyConfig, null);
+    }
+
+    /**
+     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
+     * @param xClientName - a name describing/name of your consumer application.
+     * @param xSession - something identifying this session. Used to tag a sequence of requests, such that
+     *                 if there are several instances that have the same xClientName it is possible to tell
+     *                 the requests of each instance apart.
+     *                 Use a uuid or something similar. not something that can identify a user, like username or email.
+     * @param proxyConfig - Config if traffic have to go through proxy.
+     * @param clientConfig - a client configuration for setting timeouts
+     */
+    public ClientFactory(String baseUrl, String xClientName, String xSession, ProxyConfig proxyConfig, ClientConfiguration clientConfig) {
         this.baseUrl = baseUrl;
         this.xClientName = xClientName;
         this.xSession = Optional.ofNullable(xSession).orElseGet(this::getOrCreateSessionId);
@@ -105,6 +140,7 @@ public final class ClientFactory implements AutoCloseable {
         this.clients = new ArrayList<>();
         this.connectionManager = new PoolingHttpClientConnectionManager();
         this.proxyConfig = proxyConfig;
+        this.clientConfig = clientConfig;
     }
 
     private String getUserAgent() {
@@ -304,6 +340,10 @@ public final class ClientFactory implements AutoCloseable {
                 config.property(ClientProperties.PROXY_USERNAME, proxyConfig.getUsername());
                 config.property(ClientProperties.PROXY_PASSWORD, proxyConfig.getPassword());
             }
+        }
+        if (clientConfig != null) {
+            config.property(ClientProperties.READ_TIMEOUT, clientConfig.getReadTimeout());
+            config.property(ClientProperties.CONNECT_TIMEOUT, clientConfig.getConnectTimeout());
         }
         return ClientBuilder.newBuilder().withConfig(config).build();
     }
