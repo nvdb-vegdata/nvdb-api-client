@@ -25,22 +25,26 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
-import no.vegvesen.nvdbapi.client.gson.AreaParser;
-import no.vegvesen.nvdbapi.client.model.Projection;
-import no.vegvesen.nvdbapi.client.model.areas.*;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.UriBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.UriBuilder;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
+import no.vegvesen.nvdbapi.client.gson.AreaParser;
+import no.vegvesen.nvdbapi.client.model.Projection;
+import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
+import no.vegvesen.nvdbapi.client.model.areas.County;
+import no.vegvesen.nvdbapi.client.model.areas.Municipality;
+import no.vegvesen.nvdbapi.client.model.areas.Route;
 
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
@@ -142,7 +146,7 @@ public class AreaClient extends AbstractJerseyClient {
             inkluder.add("vegobjekt");
         }
 
-        return inkluder.stream().collect(Collectors.joining(","));
+        return String.join(",", inkluder);
     }
 
     private UriBuilder areaRoot() {
