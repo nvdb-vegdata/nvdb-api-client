@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 
 import no.vegvesen.nvdbapi.client.ClientConfiguration.ClientConfigurationBuilder;
 
+import java.util.Random;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.configureFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -24,7 +26,7 @@ public class ClientConfigurationTest {
 
     @BeforeAll
     public static void setUp() {
-        wireMockServer = new WireMockServer(options().port(8089));
+        wireMockServer = new WireMockServer(options().port(1024 + new Random().nextInt(20000)));
         wireMockServer.start();
     }
 
