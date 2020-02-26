@@ -25,20 +25,18 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
-import com.google.gson.Gson;
-import no.vegvesen.nvdbapi.client.util.Strings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.UriBuilder;
 import java.io.Serializable;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.core.UriBuilder;
+
+import com.google.gson.Gson;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 abstract class AbstractJerseyClient implements AutoCloseable, Serializable {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -82,37 +80,12 @@ abstract class AbstractJerseyClient implements AutoCloseable, Serializable {
         }
     }
 
-    private String extractLink(MultivaluedMap<String, String> headers, String rel) {
-        if (!headers.containsKey("Link")) {
-            return null;
-        }
-
-        return headers.get("Link")
-                .stream().filter(l -> isLink(l, rel))
-                .findFirst().map(s -> s.substring(0, s.lastIndexOf(";")).trim()).orElse(null);
-    }
-
-    private boolean isLink(String val, String rel) {
-        if (Strings.isNullOrEmpty(val)) {
-            return false;
-        }
-
-        String withoutSpaces = val.replaceAll(" ", "");
-        int idx = withoutSpaces.lastIndexOf("rel=");
-        if (idx < 0) {
-            return false;
-        }
-
-        String actualRel = withoutSpaces.substring(idx + "rel=".length());
-        return actualRel.equalsIgnoreCase(rel);
-    }
-
     public boolean isClosed() {
         return isClosed;
     }
 
     @Override
-    public void close() throws Exception {
+    public void close() {
         if (isClosed) {
             return;
         }

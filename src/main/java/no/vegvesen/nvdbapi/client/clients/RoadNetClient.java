@@ -25,28 +25,25 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
+import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.UriBuilder;
+
 import com.google.gson.JsonElement;
+
 import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
 import no.vegvesen.nvdbapi.client.gson.RoadNetParser;
 import no.vegvesen.nvdbapi.client.model.Page;
 import no.vegvesen.nvdbapi.client.model.roadnet.LinkSequence;
 import no.vegvesen.nvdbapi.client.model.roadnet.Node;
 import no.vegvesen.nvdbapi.client.model.roadnet.TopologyLevel;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.UriBuilder;
-import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
 public class RoadNetClient extends AbstractJerseyClient {
-    private static final Logger LOG = LoggerFactory.getLogger(RoadNetClient.class);
-
     public RoadNetClient(String baseUrl, Client client) {
         super(baseUrl, client);
     }

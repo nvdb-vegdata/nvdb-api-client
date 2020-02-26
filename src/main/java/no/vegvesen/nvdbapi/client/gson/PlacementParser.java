@@ -25,22 +25,29 @@
 
 package no.vegvesen.nvdbapi.client.gson;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.model.*;
-import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
-import no.vegvesen.nvdbapi.client.model.roadobjects.Placement;
-import no.vegvesen.nvdbapi.client.model.roadobjects.RefLinkExtentPlacement;
-import no.vegvesen.nvdbapi.client.model.roadobjects.TurnExtentPlacement;
-
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import no.vegvesen.nvdbapi.client.model.Direction;
+import no.vegvesen.nvdbapi.client.model.Position;
+import no.vegvesen.nvdbapi.client.model.RoadPlacement;
+import no.vegvesen.nvdbapi.client.model.SidePosition;
+import no.vegvesen.nvdbapi.client.model.roadobjects.Placement;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RefLinkExtentPlacement;
+import no.vegvesen.nvdbapi.client.model.roadobjects.TurnExtentPlacement;
+
 import static java.util.Objects.isNull;
-import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
+
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseDoubleMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseLongMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseStringListMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseStringMember;
 
 public final class PlacementParser {
 

@@ -25,25 +25,23 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
+import java.util.Objects;
+import java.util.stream.Collectors;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.UriBuilder;
+
 import com.google.gson.JsonArray;
+
 import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
 import no.vegvesen.nvdbapi.client.gson.RouteParser;
 import no.vegvesen.nvdbapi.client.model.Coordinates;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.Projection;
+import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
 import no.vegvesen.nvdbapi.client.model.roadnet.route.RouteOnRoadNet;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.UriBuilder;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 public class RoadNetRouteClient extends AbstractJerseyClient {
-    private static final Logger LOG = LoggerFactory.getLogger(RoadNetRouteClient.class);
-
     public RoadNetRouteClient(String baseUrl, Client client) {
         super(baseUrl, client);
     }
@@ -70,7 +68,7 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
         request.getRoadUserGroup().ifPresent(v -> path.queryParam("trafikantgruppe", v.getTextValue()));
         if (!request.getTypeOfRoad().isEmpty()) path.queryParam("typeveg", request.getTypeOfRoad()
                 .stream()
-                .map(v -> v.getTypeOfRoadSosi())
+                .map(TypeOfRoad::getTypeOfRoadSosi)
                 .collect(Collectors.joining(",")));
 
         if (request.usesGeometry()) {

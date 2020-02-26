@@ -25,30 +25,27 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
-import com.google.gson.JsonElement;
-import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
-import no.vegvesen.nvdbapi.client.gson.SegmentedLinkParser;
-import no.vegvesen.nvdbapi.client.model.Page;
-import no.vegvesen.nvdbapi.client.model.roadnet.SegmentedLink;
-import no.vegvesen.nvdbapi.client.model.roadnet.TopologyLevel;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.UriBuilder;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.UriBuilder;
+
+import com.google.gson.JsonElement;
+
+import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
+import no.vegvesen.nvdbapi.client.gson.SegmentedLinkParser;
+import no.vegvesen.nvdbapi.client.model.Page;
+import no.vegvesen.nvdbapi.client.model.roadnet.SegmentedLink;
+import no.vegvesen.nvdbapi.client.model.roadnet.TopologyLevel;
 
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
 public class SegmentedRoadNetClient extends AbstractJerseyClient {
-    private static final Logger LOG = LoggerFactory.getLogger(RoadNetClient.class);
 
     public SegmentedRoadNetClient(String baseUrl, Client client) {
         super(baseUrl, client);
