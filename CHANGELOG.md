@@ -1,4 +1,8 @@
 # Changelog for NVDB API LES V3 Client
+
+## 1.7.0
+* `ClientConfiguration` has been added to allow setting read and connect timeouts for Jersey client.
+
 ## 1.6.0
 * `Statistics.length` changed from `long` to `double`
 

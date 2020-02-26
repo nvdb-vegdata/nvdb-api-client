@@ -67,6 +67,16 @@ RoadObject ro = client.getRoadObject(534, 1);
 // Remember to close your factory when you're done using it
 factory.close();
 ```
+ ### Setting timeouts for Jersey client.
+ To set a connect and read timeout for the nvdb-api-client. An instance of `ClientConfiguration` can be added when creating the `ClientFactory`
+ 
+ ```java
+// Add a read timeout of 5000 millis and connect timeout of 1000 millis
+ClientConfiguration clientConfig = new ClientConfiguration(5000, 1000);
+// Create a factory with timeout settings.
+ClientFactory factory = new ClientFactory("https://www.vegvesen.no/nvdb/api/v3", "nvdb-read-api-v3-client", clientConfig);
+```
+
 # How to build 
 The repo contains the Gradle wrapper. The client is built running:
 ```bash
