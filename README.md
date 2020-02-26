@@ -58,7 +58,7 @@ To start using the library simply instantiate the factory. It takes three argume
 ```java
 // First, create factory
 ClientFactory factory = new ClientFactory("https://www.vegvesen.no/nvdb/api/v3", "nvdb-read-api-v3-client");
-// Then, create your client. Typically, there's one per root endpoint
+// Then, create your client. Typically, there's one per root endpoint   
 RoadObjectClient client = factory.createRoadObjectClient();
 
 // Example single object download
@@ -72,7 +72,12 @@ factory.close();
  
  ```java
 // Add a read timeout of 5000 millis and connect timeout of 1000 millis
-ClientConfiguration clientConfig = new ClientConfiguration(5000, 1000);
+ClientConfiguration clientConfig = 
+    ClientConfigurationBuilder.builder()
+       .withReadTimeout(5000)
+       .withConnectTimeout(1000)
+       .build();
+
 // Create a factory with timeout settings.
 ClientFactory factory = new ClientFactory("https://www.vegvesen.no/nvdb/api/v3", "nvdb-read-api-v3-client", clientConfig);
 ```

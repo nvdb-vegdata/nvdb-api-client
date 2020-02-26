@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import no.vegvesen.nvdbapi.client.ClientConfiguration;
+import no.vegvesen.nvdbapi.client.ClientConfiguration.ClientConfigurationBuilder;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.configureFor;
@@ -43,8 +43,12 @@ public class ClientConfigurationTest {
                         .withFixedDelay(delayInMillis)));
 
         ClientFactory clientFactory = new ClientFactory(wireMockServer.baseUrl(),
-                "nvdbapi-client-test", new ClientConfiguration(delayInMillis - 100, delayInMillis * 10));
+                "nvdbapi-client-test", ClientConfigurationBuilder.builder()
+                                                                 .withReadTimeout(delayInMillis - 100)
+                                                                 .withConnectTimeout(delayInMillis * 10)
+                                                                 .build());
         Exception exception = Assertions.assertThrows(ProcessingException.class, clientFactory::createAreaClient);
-        assertTrue(exception.getMessage().contains("Timeout"));
+        assertTrue(exception.getMessage()
+                            .contains("Timeout"));
     }
 }
