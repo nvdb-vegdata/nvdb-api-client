@@ -25,15 +25,6 @@
 
 package no.vegvesen.nvdbapi.client.gson;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonPrimitive;
-import no.vegvesen.nvdbapi.client.model.Geometry;
-import no.vegvesen.nvdbapi.client.model.datakatalog.JavaType;
-import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
-import no.vegvesen.nvdbapi.client.util.Strings;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -44,6 +35,16 @@ import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+
+import no.vegvesen.nvdbapi.client.model.Geometry;
+import no.vegvesen.nvdbapi.client.model.datakatalog.JavaType;
+import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
+import no.vegvesen.nvdbapi.client.util.Strings;
 
 import static java.util.stream.Collectors.toList;
 
@@ -67,18 +68,12 @@ public final class GsonUtil {
     }
 
     public static Integer parseIntMember(JsonObject obj, String path) {
-        Optional<JsonPrimitive> e = getNode(obj, path).map(JsonElement::getAsJsonPrimitive);
-        if (e.isPresent() && !e.get().isNumber()) {
-            throw new IllegalArgumentException(path + " did not contain a number.");
-        }
+        Optional<JsonPrimitive> e = parseNodeToJsonPrimitive(obj, path);
         return e.map(JsonElement::getAsInt).orElse(null);
     }
 
     public static Long parseLongMember(JsonObject obj, String path) {
-        Optional<JsonPrimitive> e = getNode(obj, path).map(JsonElement::getAsJsonPrimitive);
-        if (e.isPresent() && !e.get().isNumber()) {
-            throw new IllegalArgumentException(path + " did not contain a number.");
-        }
+        Optional<JsonPrimitive> e = parseNodeToJsonPrimitive(obj, path);
         return e.map(JsonElement::getAsLong).orElse(null);
     }
 
@@ -236,5 +231,13 @@ public final class GsonUtil {
                 throw new RuntimeException("Error processing \n" + obj, e);
             }
         };
+    }
+
+    private static Optional<JsonPrimitive> parseNodeToJsonPrimitive(JsonObject obj, String path) {
+        Optional<JsonPrimitive> jsonElement = getNode(obj, path).map(JsonElement::getAsJsonPrimitive);
+        if (jsonElement.isPresent() && !jsonElement.get().isNumber()) {
+            throw new IllegalArgumentException(path + " did not contain a number.");
+        }
+        return jsonElement;
     }
 }
