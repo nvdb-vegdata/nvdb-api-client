@@ -25,35 +25,44 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.gson.RoadObjectParser;
-import no.vegvesen.nvdbapi.client.model.Page;
-import no.vegvesen.nvdbapi.client.model.datakatalog.Datakatalog;
-import no.vegvesen.nvdbapi.client.model.roadobjects.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.StreamSupport;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import no.vegvesen.nvdbapi.client.gson.RoadObjectParser;
+import no.vegvesen.nvdbapi.client.model.Page;
+import no.vegvesen.nvdbapi.client.model.datakatalog.Datakatalog;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObject;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObjectAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObjectType;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObjectTypeWithStats;
+import no.vegvesen.nvdbapi.client.model.roadobjects.Statistics;
 
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
+
 import static no.vegvesen.nvdbapi.client.clients.RoadObjectRequest.DEFAULT;
 import static no.vegvesen.nvdbapi.client.clients.RoadObjectRequestBuilder.convert;
-import static no.vegvesen.nvdbapi.client.clients.util.JerseyHelper.*;
+import static no.vegvesen.nvdbapi.client.clients.util.JerseyHelper.MEDIA_TYPE;
+import static no.vegvesen.nvdbapi.client.clients.util.JerseyHelper.execute;
+import static no.vegvesen.nvdbapi.client.clients.util.JerseyHelper.isSuccess;
+import static no.vegvesen.nvdbapi.client.clients.util.JerseyHelper.parseError;
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
 public class RoadObjectClient extends AbstractJerseyClient {
@@ -112,23 +121,23 @@ public class RoadObjectClient extends AbstractJerseyClient {
         applyRequestParameters(path, queryParameters);
         WebTarget target = getClient().target(path);
 
-        return new RoadObjectsResult(target, extractPage(queryParameters), datakatalog);
+        return new RoadObjectsResult(target, extractPage(queryParameters));
     }
 
     public RoadObjectsResult getRoadObjects(int featureTypeId, RoadObjectRequest request) {
         WebTarget target = getWebTarget(featureTypeId, request);
 
         return new RoadObjectsResult(target,
-            request.getPage(),
-            datakatalog);
+            request.getPage()
+        );
     }
 
     public AsyncRoadObjectsResult getRoadObjectsAsync(int featureTypeId, RoadObjectRequest request) {
         WebTarget target = getWebTarget(featureTypeId, request);
 
         return new AsyncRoadObjectsResult(target,
-            request.getPage(),
-            datakatalog);
+            request.getPage()
+        );
     }
 
     private WebTarget getWebTarget(int featureTypeId, RoadObjectRequest request) {
@@ -160,7 +169,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
         JsonObject obj = execute(target).getAsJsonObject();
 
-        return rt(o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o)).apply(obj);
+        return rt(RoadObjectParser::parse).apply(obj);
     }
 
     public List<RoadObject> getRoadObjectVersions(int featureTypeId, long featureId) {
@@ -178,7 +187,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
         JsonArray e = execute(target).getAsJsonArray();
         return StreamSupport.stream(e.spliterator(), false)
             .map(JsonElement::getAsJsonObject)
-            .map(rt(o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o)))
+            .map(rt(RoadObjectParser::parse))
             .collect(toList());
     }
 
@@ -195,7 +204,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
         WebTarget target = getClient().target(path);
 
         JsonObject obj = execute(target).getAsJsonObject();
-        return rt(o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o)).apply(obj);
+        return rt(RoadObjectParser::parse).apply(obj);
     }
 
     public RoadObjectAttribute getBinaryAttributeRoadObject(int featureTypeId, long featureId, int version, int attributeId, int blobId){
@@ -222,7 +231,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
     }
 
     private static void applyRequestParameters(UriBuilder path, MultivaluedMap<String, String> params) {
-        params.forEach((k, values) -> path.queryParam(k, (Object[]) values.toArray(new String[0])));
+        params.forEach((k, values) -> path.queryParam(k, values.toArray(new Object[0])));
     }
 
     public List<RoadObjectTypeWithStats> getSummary() {
@@ -304,18 +313,16 @@ public class RoadObjectClient extends AbstractJerseyClient {
     public static class RoadObjectsResult extends GenericResultSet<RoadObject> {
 
         public RoadObjectsResult(WebTarget baseTarget,
-                                 Page currentPage,
-                                 Datakatalog datakatalog) {
-            super(baseTarget, currentPage, rt(o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o)));
+                                 Page currentPage) {
+            super(baseTarget, currentPage, rt(RoadObjectParser::parse));
         }
     }
 
     public static class AsyncRoadObjectsResult extends AsyncResult<RoadObject> {
 
         public AsyncRoadObjectsResult(WebTarget baseTarget,
-                                      Page currentPage,
-                                      Datakatalog datakatalog) {
-            super(baseTarget, currentPage, rt(o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o)));
+                                      Page currentPage) {
+            super(baseTarget, currentPage, rt(RoadObjectParser::parse));
         }
     }
 }

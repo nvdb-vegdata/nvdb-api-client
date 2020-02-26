@@ -1,10 +1,10 @@
 package no.vegvesen.nvdbapi.client.model.roadnet.roadsysref;
 
+import java.util.Objects;
+
 import no.vegvesen.nvdbapi.client.model.Direction;
 import no.vegvesen.nvdbapi.client.model.roadnet.RoadUserGroup;
 import no.vegvesen.nvdbapi.client.model.roadnet.SeparatePassages;
-
-import java.util.Objects;
 
 public class Section {
 
@@ -69,8 +69,8 @@ public class Section {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Section section = (Section) o;
-        return sectionNumber == section.sectionNumber &&
-                sectionPartNumber == section.sectionPartNumber &&
+        return sectionNumber.equals(section.sectionNumber) &&
+                sectionPartNumber.equals(section.sectionPartNumber) &&
                 Double.compare(section.startMeter, startMeter) == 0 &&
                 Objects.equals(id, section.id) &&
                 Objects.equals(version, section.version) &&

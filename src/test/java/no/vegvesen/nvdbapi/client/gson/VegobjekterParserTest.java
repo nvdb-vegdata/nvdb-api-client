@@ -1,41 +1,63 @@
 package no.vegvesen.nvdbapi.client.gson;
 
-import no.vegvesen.nvdbapi.client.model.*;
-import no.vegvesen.nvdbapi.client.model.datakatalog.DataType;
-import no.vegvesen.nvdbapi.client.model.datakatalog.Unit;
-import no.vegvesen.nvdbapi.client.model.roadobjects.Location;
-import no.vegvesen.nvdbapi.client.model.roadobjects.RefLinkExtentPlacement;
-import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObject;
-import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.*;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.CsvSource;
-
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.MonthDay;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
+
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+
+import no.vegvesen.nvdbapi.client.model.Direction;
+import no.vegvesen.nvdbapi.client.model.Geometry;
+import no.vegvesen.nvdbapi.client.model.GeometryAttributes;
+import no.vegvesen.nvdbapi.client.model.Projection;
+import no.vegvesen.nvdbapi.client.model.Quality;
+import no.vegvesen.nvdbapi.client.model.SidePosition;
+import no.vegvesen.nvdbapi.client.model.datakatalog.Unit;
+import no.vegvesen.nvdbapi.client.model.roadobjects.Location;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RefLinkExtentPlacement;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObject;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.AssociationAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.Attribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.BlobAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.BooleanAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.DateAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.IntegerAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.IntegerEnumAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.ListAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.RealAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.RealEnumAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.ReflinkExtentAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.ShortDateAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.SpatialAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.StringAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.StringEnumAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.StructAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.TimeAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.TurnExtent;
 
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
-import static java.util.stream.Collectors.toMap;
-import static no.vegvesen.nvdbapi.client.gson.Helper.*;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.empty;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
+
+import static no.vegvesen.nvdbapi.client.gson.Helper.parseObject;
+import static no.vegvesen.nvdbapi.client.gson.Helper.parseObjekterList;
+import static no.vegvesen.nvdbapi.client.gson.Helper.parsePlainList;
 
 public class VegobjekterParserTest {
 
     @ParameterizedTest
     @CsvSource({"14","95","105","581"})
     void parseVegobjekter(String file) throws IOException {
-        Map<String, DataType> datatyper = parsePlainList("vegobjekttyper/datatyper.json", AttributeTypeParser::parseDataType)
-            .stream()
-            .collect(toMap(DataType::getName, Function.identity()));
-        List<RoadObject> roadObjects = parseObjekterList("vegobjekter/" + file + ".json", e -> RoadObjectParser.parse(datatyper, e));
+        List<RoadObject> roadObjects = parseObjekterList("vegobjekter/" + file + ".json", RoadObjectParser::parse);
         assertThat(roadObjects.size(), is(not(0)));
 
         for (RoadObject roadObject : roadObjects) {

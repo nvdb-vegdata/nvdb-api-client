@@ -27,19 +27,17 @@ package no.vegvesen.nvdbapi.client.gson;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+
 import no.vegvesen.nvdbapi.client.model.Change;
-import no.vegvesen.nvdbapi.client.model.datakatalog.DataType;
 import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObject;
 
-import java.util.Map;
-
-import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseStringMember;
 
 public class ChangesParser {
     private ChangesParser() {
     }
 
-    public static Change parse(Map<String, DataType> dataTypes, JsonObject obj, int typeId) {
+    public static Change parse(JsonObject obj, int typeId) {
 
         Change.Type type = Change.Type.from(parseStringMember(obj, "type"));
 
@@ -49,7 +47,7 @@ public class ChangesParser {
         if (e.isJsonPrimitive()) {
             featureId = e.getAsLong();
         } else {
-            roadObject = RoadObjectParser.parse(dataTypes, obj.getAsJsonObject("vegobjekt"));
+            roadObject = RoadObjectParser.parse(obj.getAsJsonObject("vegobjekt"));
             featureId = roadObject.getId();
         }
 

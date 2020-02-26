@@ -25,20 +25,35 @@
 
 package no.vegvesen.nvdbapi.client.gson;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.model.Geometry;
-import no.vegvesen.nvdbapi.client.model.roadnet.*;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
-import static java.util.Objects.isNull;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+import no.vegvesen.nvdbapi.client.model.Geometry;
+import no.vegvesen.nvdbapi.client.model.roadnet.Link;
+import no.vegvesen.nvdbapi.client.model.roadnet.LinkSequence;
+import no.vegvesen.nvdbapi.client.model.roadnet.Ltema;
+import no.vegvesen.nvdbapi.client.model.roadnet.NetElementType;
+import no.vegvesen.nvdbapi.client.model.roadnet.Node;
+import no.vegvesen.nvdbapi.client.model.roadnet.Port;
+import no.vegvesen.nvdbapi.client.model.roadnet.PortConnection;
+import no.vegvesen.nvdbapi.client.model.roadnet.SosiMedium;
+import no.vegvesen.nvdbapi.client.model.roadnet.TopologyLevel;
+import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
+
 import static java.util.stream.Collectors.toList;
-import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
+
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseBooleanMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseDateMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseDoubleMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseIntMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseLongMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseStringMember;
 
 public final class RoadNetParser {
 

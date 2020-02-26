@@ -25,38 +25,78 @@
 
 package no.vegvesen.nvdbapi.client.gson;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.MonthDay;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.model.*;
+
+import no.vegvesen.nvdbapi.client.model.Direction;
+import no.vegvesen.nvdbapi.client.model.Geometry;
+import no.vegvesen.nvdbapi.client.model.SidePosition;
 import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
 import no.vegvesen.nvdbapi.client.model.areas.Route;
-import no.vegvesen.nvdbapi.client.model.datakatalog.DataType;
 import no.vegvesen.nvdbapi.client.model.datakatalog.Unit;
 import no.vegvesen.nvdbapi.client.model.roadnet.DetailLevel;
 import no.vegvesen.nvdbapi.client.model.roadnet.RefLinkPartType;
 import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
-import no.vegvesen.nvdbapi.client.model.roadobjects.*;
-import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.*;
+import no.vegvesen.nvdbapi.client.model.roadobjects.Association;
+import no.vegvesen.nvdbapi.client.model.roadobjects.Location;
+import no.vegvesen.nvdbapi.client.model.roadobjects.Placement;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObject;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObjectType;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObjectTypeWithStats;
+import no.vegvesen.nvdbapi.client.model.roadobjects.Segment;
+import no.vegvesen.nvdbapi.client.model.roadobjects.Statistics;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.AssociationAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.Attribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.BlobAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.BooleanAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.DateAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.IntegerAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.IntegerEnumAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.ListAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.RealAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.RealEnumAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.ReflinkExtentAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.ShortDateAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.SpatialAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.StringAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.StringEnumAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.StructAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.TimeAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.TurnExtent;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.MonthDay;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
+
 import static no.vegvesen.nvdbapi.client.gson.AttributeTypeParser.parseUnit;
-import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.getArray;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseBooleanMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseDateMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseDateTimeMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseDoubleMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseIntListMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseIntMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseLongMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseStringListMember;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseStringMember;
 
 public final class RoadObjectParser {
     private RoadObjectParser() {}
 
-    public static RoadObject parse(Map<String, DataType> dataTypes, JsonObject obj) {
+    public static RoadObject parse(JsonObject obj) {
         Integer id = parseIntMember(obj, "id");
 
         Integer typeId = parseIntMember(obj, "metadata.type.id");
@@ -66,9 +106,9 @@ public final class RoadObjectParser {
 
         List<Attribute> attributes = parseAttributes(obj);
 
-        List<Association> childrenList = parseChildren(dataTypes, obj);
+        List<Association> childrenList = parseChildren(obj);
 
-        List<Association> parentList = parseParents(dataTypes, obj);
+        List<Association> parentList = parseParents(obj);
 
         Location location = Optional.ofNullable(obj.get("lokasjon"))
             .map(e -> parseLocation(e.getAsJsonObject())).orElse(null);
@@ -95,22 +135,22 @@ public final class RoadObjectParser {
         return segments;
     }
 
-    private static List<Association> parseParents(Map<String, DataType> dataTypes, JsonObject obj) {
+    private static List<Association> parseParents(JsonObject obj) {
         List<Association> parentList = Collections.emptyList();
         JsonArray parents = getArray(obj, "relasjoner.foreldre").orElse(null);
-        return getAssociations(dataTypes, parentList, parents);
+        return getAssociations(parentList, parents);
     }
 
-    private static List<Association> parseChildren(Map<String, DataType> dataTypes, JsonObject obj) {
+    private static List<Association> parseChildren(JsonObject obj) {
         List<Association> childrenList = Collections.emptyList();
         JsonArray children = getArray(obj, "relasjoner.barn").orElse(null);
-        return getAssociations(dataTypes, childrenList, children);
+        return getAssociations(childrenList, children);
     }
 
-    private static List<Association> getAssociations(Map<String, DataType> dataTypes, List<Association> parentList, JsonArray parents) {
+    private static List<Association> getAssociations(List<Association> parentList, JsonArray parents) {
         if (parents != null) {
             parentList = StreamSupport.stream(parents.spliterator(), false)
-                .map(e -> parseAssociation(dataTypes, e.getAsJsonObject()))
+                .map(e -> parseAssociation(e.getAsJsonObject()))
                 .collect(toList());
         }
         return parentList;
@@ -305,7 +345,7 @@ public final class RoadObjectParser {
             .collect(toList());
     }
 
-    private static Association parseAssociation(Map<String, DataType> dataTypes, JsonObject obj) {
+    private static Association parseAssociation(JsonObject obj) {
         Integer typeId = parseIntMember(obj, "type.id");
         JsonArray objects = obj.get("vegobjekter").getAsJsonArray();
         Set<RoadObject> roadObjects = StreamSupport.stream(objects.spliterator(), false)
@@ -314,7 +354,7 @@ public final class RoadObjectParser {
                 if (e.isJsonPrimitive()) {
                     ro = new RoadObject(e.getAsLong(), typeId, null, null, null, null, null, null, null, null, null, null);
                 } else {
-                    ro = parse(dataTypes, e.getAsJsonObject());
+                    ro = parse(e.getAsJsonObject());
                 }
                 return ro;
             }).collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(RoadObject::getId))));
@@ -335,41 +375,6 @@ public final class RoadObjectParser {
         String name = parseStringMember(obj, "navn");
 
         return new RoadObjectType(id, name, parseStatistics(obj.getAsJsonObject("statistikk")));
-    }
-
-    private static GeometryAttributes getGeometryAttributes(JsonObject obj) {
-        Optional<JsonElement> geometryElement = getNode(obj, "geometriattributt");
-        if (geometryElement.isPresent()) {
-            JsonObject json = (JsonObject) geometryElement.get();
-            return new GeometryAttributes(
-                parseDateMember(json, "datafangstdato"),
-                parseDateMember(json, "verifiseringsdato"),
-                parseDateMember(json, "oppdateringsdato"),
-                parseStringMember(json, "prosesshistorikk"),
-                parseIntMember(json, "kommune"),
-                parseStringMember(json, "medium"),
-                parseStringMember(json, "sosinavn"),
-                parseIntMember(json, "temakode"),
-                parseBooleanMember(json, "referansegeometri"),
-                parseDoubleMember(json, "lengde"),
-                parseIntMember(json, "høydereferanse"));
-        } else {
-            return null;
-        }
-    }
-
-    private static Quality getQuality(JsonObject obj) {
-        return getNode(obj, "kvalitet")
-            .map(JsonElement::getAsJsonObject)
-            .map(qualityElement ->
-                new Quality(
-                    parseIntMember(qualityElement, "målemetode"),
-                    parseIntMember(qualityElement, "nøyaktighet"),
-                    parseIntMember(qualityElement, "målemetodeHøyde"),
-                    parseIntMember(qualityElement, "nøyaktighetHøyde"),
-                    parseIntMember(qualityElement, "maksimaltAvvik"),
-                    parseIntMember(qualityElement, "synbarhet")))
-            .orElse(null);
     }
 
     public static RoadObjectTypeWithStats parseRoadObjectTypeWithStats(JsonObject o) {

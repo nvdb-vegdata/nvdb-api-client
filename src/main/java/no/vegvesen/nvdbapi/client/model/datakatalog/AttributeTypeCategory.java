@@ -25,9 +25,7 @@
 package no.vegvesen.nvdbapi.client.model.datakatalog;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.util.Objects;
-import java.util.Optional;
 
 public class AttributeTypeCategory implements Serializable {
     private final int id;

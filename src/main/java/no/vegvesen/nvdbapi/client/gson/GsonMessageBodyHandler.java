@@ -32,7 +32,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Type;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.Produces;
 import javax.ws.rs.WebApplicationException;
@@ -45,13 +44,13 @@ import javax.ws.rs.ext.Provider;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 @Provider
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 public class GsonMessageBodyHandler implements MessageBodyWriter<Object>,
         MessageBodyReader<Object> {
-
-    private static final String UTF_8 = "UTF-8";
 
     private Gson gson;
 
@@ -73,17 +72,15 @@ public class GsonMessageBodyHandler implements MessageBodyWriter<Object>,
     public Object readFrom(Class<Object> type, Type type1, Annotation[] antns,
                            MediaType mt, MultivaluedMap<String, String> mm, InputStream in)
             throws IOException, WebApplicationException {
-        InputStreamReader streamReader = new InputStreamReader(in, UTF_8);
-        try {
+        try (InputStreamReader streamReader = new InputStreamReader(in, UTF_8)) {
             Type jsonType;
             if (type.equals(type1)) {
                 jsonType = type;
-            } else {
+            }
+            else {
                 jsonType = type1;
             }
             return getGson().fromJson(streamReader, jsonType);
-        } finally {
-            streamReader.close();
         }
     }
 
@@ -104,17 +101,15 @@ public class GsonMessageBodyHandler implements MessageBodyWriter<Object>,
                         Annotation[] annotations, MediaType mediaType,
                         MultivaluedMap<String, Object> httpHeaders, OutputStream entityStream)
             throws IOException, WebApplicationException {
-        OutputStreamWriter writer = new OutputStreamWriter(entityStream, UTF_8);
-        try {
+        try (OutputStreamWriter writer = new OutputStreamWriter(entityStream, UTF_8)) {
             Type jsonType;
             if (type.equals(genericType)) {
                 jsonType = type;
-            } else {
+            }
+            else {
                 jsonType = genericType;
             }
             getGson().toJson(object, jsonType, writer);
-        } finally {
-            writer.close();
         }
     }
 

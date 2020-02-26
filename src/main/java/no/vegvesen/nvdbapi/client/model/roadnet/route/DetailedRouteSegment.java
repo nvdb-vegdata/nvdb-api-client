@@ -25,6 +25,12 @@
 
 package no.vegvesen.nvdbapi.client.model.roadnet.route;
 
+import java.io.Serializable;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
+
 import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
 import no.vegvesen.nvdbapi.client.model.areas.Route;
@@ -32,12 +38,6 @@ import no.vegvesen.nvdbapi.client.model.roadnet.DetailLevel;
 import no.vegvesen.nvdbapi.client.model.roadnet.RefLinkPartType;
 import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
-
-import java.io.Serializable;
-import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 public final class DetailedRouteSegment implements Serializable, RouteSegment {
 
@@ -188,7 +188,7 @@ public final class DetailedRouteSegment implements Serializable, RouteSegment {
                 Double.compare(that.start, start) == 0 &&
                 Double.compare(that.end, end) == 0 &&
                 Double.compare(that.length, length) == 0 &&
-                linkNumber == that.linkNumber &&
+                linkNumber.equals(that.linkNumber) &&
                 Objects.equals(geometry, that.geometry) &&
                 Objects.equals(linkType, that.linkType) &&
                 Objects.equals(contractAreas, that.contractAreas) &&
