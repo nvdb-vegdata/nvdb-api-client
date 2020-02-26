@@ -25,35 +25,44 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.gson.RoadObjectParser;
-import no.vegvesen.nvdbapi.client.model.Page;
-import no.vegvesen.nvdbapi.client.model.datakatalog.Datakatalog;
-import no.vegvesen.nvdbapi.client.model.roadobjects.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriBuilder;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.StreamSupport;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import no.vegvesen.nvdbapi.client.gson.RoadObjectParser;
+import no.vegvesen.nvdbapi.client.model.Page;
+import no.vegvesen.nvdbapi.client.model.datakatalog.Datakatalog;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObject;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObjectAttribute;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObjectType;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObjectTypeWithStats;
+import no.vegvesen.nvdbapi.client.model.roadobjects.Statistics;
 
 import static java.lang.String.valueOf;
 import static java.util.Arrays.asList;
 import static java.util.stream.Collectors.toList;
+
 import static no.vegvesen.nvdbapi.client.clients.RoadObjectRequest.DEFAULT;
 import static no.vegvesen.nvdbapi.client.clients.RoadObjectRequestBuilder.convert;
-import static no.vegvesen.nvdbapi.client.clients.util.JerseyHelper.*;
+import static no.vegvesen.nvdbapi.client.clients.util.JerseyHelper.MEDIA_TYPE;
+import static no.vegvesen.nvdbapi.client.clients.util.JerseyHelper.execute;
+import static no.vegvesen.nvdbapi.client.clients.util.JerseyHelper.isSuccess;
+import static no.vegvesen.nvdbapi.client.clients.util.JerseyHelper.parseError;
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
 public class RoadObjectClient extends AbstractJerseyClient {
@@ -222,7 +231,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
     }
 
     private static void applyRequestParameters(UriBuilder path, MultivaluedMap<String, String> params) {
-        params.forEach((k, values) -> path.queryParam(k, (Object[]) values.toArray(new String[0])));
+        params.forEach((k, values) -> path.queryParam(k, values.toArray(new Object[0])));
     }
 
     public List<RoadObjectTypeWithStats> getSummary() {
