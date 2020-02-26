@@ -32,7 +32,6 @@ import java.time.MonthDay;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
@@ -48,7 +47,6 @@ import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.SidePosition;
 import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
 import no.vegvesen.nvdbapi.client.model.areas.Route;
-import no.vegvesen.nvdbapi.client.model.datakatalog.DataType;
 import no.vegvesen.nvdbapi.client.model.datakatalog.Unit;
 import no.vegvesen.nvdbapi.client.model.roadnet.DetailLevel;
 import no.vegvesen.nvdbapi.client.model.roadnet.RefLinkPartType;
@@ -98,7 +96,7 @@ import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseStringMember;
 public final class RoadObjectParser {
     private RoadObjectParser() {}
 
-    public static RoadObject parse(Map<String, DataType> dataTypes, JsonObject obj) {
+    public static RoadObject parse(JsonObject obj) {
         Integer id = parseIntMember(obj, "id");
 
         Integer typeId = parseIntMember(obj, "metadata.type.id");
@@ -108,9 +106,9 @@ public final class RoadObjectParser {
 
         List<Attribute> attributes = parseAttributes(obj);
 
-        List<Association> childrenList = parseChildren(dataTypes, obj);
+        List<Association> childrenList = parseChildren(obj);
 
-        List<Association> parentList = parseParents(dataTypes, obj);
+        List<Association> parentList = parseParents(obj);
 
         Location location = Optional.ofNullable(obj.get("lokasjon"))
             .map(e -> parseLocation(e.getAsJsonObject())).orElse(null);
@@ -137,22 +135,22 @@ public final class RoadObjectParser {
         return segments;
     }
 
-    private static List<Association> parseParents(Map<String, DataType> dataTypes, JsonObject obj) {
+    private static List<Association> parseParents(JsonObject obj) {
         List<Association> parentList = Collections.emptyList();
         JsonArray parents = getArray(obj, "relasjoner.foreldre").orElse(null);
-        return getAssociations(dataTypes, parentList, parents);
+        return getAssociations(parentList, parents);
     }
 
-    private static List<Association> parseChildren(Map<String, DataType> dataTypes, JsonObject obj) {
+    private static List<Association> parseChildren(JsonObject obj) {
         List<Association> childrenList = Collections.emptyList();
         JsonArray children = getArray(obj, "relasjoner.barn").orElse(null);
-        return getAssociations(dataTypes, childrenList, children);
+        return getAssociations(childrenList, children);
     }
 
-    private static List<Association> getAssociations(Map<String, DataType> dataTypes, List<Association> parentList, JsonArray parents) {
+    private static List<Association> getAssociations(List<Association> parentList, JsonArray parents) {
         if (parents != null) {
             parentList = StreamSupport.stream(parents.spliterator(), false)
-                .map(e -> parseAssociation(dataTypes, e.getAsJsonObject()))
+                .map(e -> parseAssociation(e.getAsJsonObject()))
                 .collect(toList());
         }
         return parentList;
@@ -347,7 +345,7 @@ public final class RoadObjectParser {
             .collect(toList());
     }
 
-    private static Association parseAssociation(Map<String, DataType> dataTypes, JsonObject obj) {
+    private static Association parseAssociation(JsonObject obj) {
         Integer typeId = parseIntMember(obj, "type.id");
         JsonArray objects = obj.get("vegobjekter").getAsJsonArray();
         Set<RoadObject> roadObjects = StreamSupport.stream(objects.spliterator(), false)
@@ -356,7 +354,7 @@ public final class RoadObjectParser {
                 if (e.isJsonPrimitive()) {
                     ro = new RoadObject(e.getAsLong(), typeId, null, null, null, null, null, null, null, null, null, null);
                 } else {
-                    ro = parse(dataTypes, e.getAsJsonObject());
+                    ro = parse(e.getAsJsonObject());
                 }
                 return ro;
             }).collect(Collectors.toCollection(() -> new TreeSet<>(Comparator.comparing(RoadObject::getId))));

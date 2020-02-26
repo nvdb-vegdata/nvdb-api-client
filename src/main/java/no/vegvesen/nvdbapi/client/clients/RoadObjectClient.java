@@ -121,23 +121,23 @@ public class RoadObjectClient extends AbstractJerseyClient {
         applyRequestParameters(path, queryParameters);
         WebTarget target = getClient().target(path);
 
-        return new RoadObjectsResult(target, extractPage(queryParameters), datakatalog);
+        return new RoadObjectsResult(target, extractPage(queryParameters));
     }
 
     public RoadObjectsResult getRoadObjects(int featureTypeId, RoadObjectRequest request) {
         WebTarget target = getWebTarget(featureTypeId, request);
 
         return new RoadObjectsResult(target,
-            request.getPage(),
-            datakatalog);
+            request.getPage()
+        );
     }
 
     public AsyncRoadObjectsResult getRoadObjectsAsync(int featureTypeId, RoadObjectRequest request) {
         WebTarget target = getWebTarget(featureTypeId, request);
 
         return new AsyncRoadObjectsResult(target,
-            request.getPage(),
-            datakatalog);
+            request.getPage()
+        );
     }
 
     private WebTarget getWebTarget(int featureTypeId, RoadObjectRequest request) {
@@ -169,7 +169,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
         JsonObject obj = execute(target).getAsJsonObject();
 
-        return rt(o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o)).apply(obj);
+        return rt(RoadObjectParser::parse).apply(obj);
     }
 
     public List<RoadObject> getRoadObjectVersions(int featureTypeId, long featureId) {
@@ -187,7 +187,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
         JsonArray e = execute(target).getAsJsonArray();
         return StreamSupport.stream(e.spliterator(), false)
             .map(JsonElement::getAsJsonObject)
-            .map(rt(o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o)))
+            .map(rt(RoadObjectParser::parse))
             .collect(toList());
     }
 
@@ -204,7 +204,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
         WebTarget target = getClient().target(path);
 
         JsonObject obj = execute(target).getAsJsonObject();
-        return rt(o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o)).apply(obj);
+        return rt(RoadObjectParser::parse).apply(obj);
     }
 
     public RoadObjectAttribute getBinaryAttributeRoadObject(int featureTypeId, long featureId, int version, int attributeId, int blobId){
@@ -313,18 +313,16 @@ public class RoadObjectClient extends AbstractJerseyClient {
     public static class RoadObjectsResult extends GenericResultSet<RoadObject> {
 
         public RoadObjectsResult(WebTarget baseTarget,
-                                 Page currentPage,
-                                 Datakatalog datakatalog) {
-            super(baseTarget, currentPage, rt(o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o)));
+                                 Page currentPage) {
+            super(baseTarget, currentPage, rt(RoadObjectParser::parse));
         }
     }
 
     public static class AsyncRoadObjectsResult extends AsyncResult<RoadObject> {
 
         public AsyncRoadObjectsResult(WebTarget baseTarget,
-                                      Page currentPage,
-                                      Datakatalog datakatalog) {
-            super(baseTarget, currentPage, rt(o -> RoadObjectParser.parse(datakatalog.getDataTypeMap(), o)));
+                                      Page currentPage) {
+            super(baseTarget, currentPage, rt(RoadObjectParser::parse));
         }
     }
 }
