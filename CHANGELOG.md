@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.6.1
+* Use Datakatalog only in `RoadObjectClient`
+
 ## 1.6.0
 * `Statistics.length` changed from `long` to `double`
 * `ClientConfiguration` has been added to allow setting read and connect timeouts for Jersey client.
