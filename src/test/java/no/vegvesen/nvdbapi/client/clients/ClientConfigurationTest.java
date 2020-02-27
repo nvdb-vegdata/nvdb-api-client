@@ -49,7 +49,7 @@ public class ClientConfigurationTest {
                                                                  .withReadTimeout(delayInMillis - 100)
                                                                  .withConnectTimeout(delayInMillis * 10)
                                                                  .build());
-        Exception exception = Assertions.assertThrows(ProcessingException.class, clientFactory::createAreaClient);
+        Exception exception = Assertions.assertThrows(ProcessingException.class, clientFactory::getDatakatalog);
         assertTrue(exception.getMessage()
                             .contains("Timeout"));
     }
