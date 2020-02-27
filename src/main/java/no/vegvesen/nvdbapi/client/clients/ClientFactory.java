@@ -25,12 +25,21 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
-import no.vegvesen.nvdbapi.client.ClientConfiguration;
-import no.vegvesen.nvdbapi.client.ProxyConfig;
-import no.vegvesen.nvdbapi.client.clients.filters.RequestHeaderFilter;
-import no.vegvesen.nvdbapi.client.gson.GsonMessageBodyHandler;
-import no.vegvesen.nvdbapi.client.model.datakatalog.Datakatalog;
-import no.vegvesen.nvdbapi.client.util.LoggingFilter;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.jar.Attributes;
+import java.util.jar.Manifest;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.glassfish.jersey.apache.connector.ApacheClientProperties;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
@@ -41,16 +50,12 @@ import org.glassfish.jersey.message.GZipEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.util.*;
-import java.util.jar.Attributes;
-import java.util.jar.Manifest;
+import no.vegvesen.nvdbapi.client.ClientConfiguration;
+import no.vegvesen.nvdbapi.client.ProxyConfig;
+import no.vegvesen.nvdbapi.client.clients.filters.RequestHeaderFilter;
+import no.vegvesen.nvdbapi.client.gson.GsonMessageBodyHandler;
+import no.vegvesen.nvdbapi.client.model.datakatalog.Datakatalog;
+import no.vegvesen.nvdbapi.client.util.LoggingFilter;
 
 import static java.nio.file.StandardOpenOption.CREATE;
 import static java.util.Objects.isNull;
@@ -224,21 +229,21 @@ public final class ClientFactory implements AutoCloseable {
 
     public RoadNetClient createRoadNetService() {
         assertIsOpen();
-        RoadNetClient c = new RoadNetClient(baseUrl, createClient(getDatakatalog().getVersion().getVersion()));
+        RoadNetClient c = new RoadNetClient(baseUrl, createClient());
         clients.add(c);
         return c;
     }
 
     public SegmentedRoadNetClient createSegmentedRoadNetService() {
         assertIsOpen();
-        SegmentedRoadNetClient c = new SegmentedRoadNetClient(baseUrl, createClient(getDatakatalog().getVersion().getVersion()));
+        SegmentedRoadNetClient c = new SegmentedRoadNetClient(baseUrl, createClient());
         clients.add(c);
         return c;
     }
 
     public RoadNetRouteClient createRoadNetRouteClient() {
         assertIsOpen();
-        RoadNetRouteClient c = new RoadNetRouteClient(baseUrl, createClient(getDatakatalog().getVersion().getVersion()));
+        RoadNetRouteClient c = new RoadNetRouteClient(baseUrl, createClient());
         clients.add(c);
         return c;
     }
@@ -265,7 +270,7 @@ public final class ClientFactory implements AutoCloseable {
 
     public AreaClient createAreaClient() {
         assertIsOpen();
-        AreaClient c = new AreaClient(baseUrl, createClient(getDatakatalog().getVersion().getVersion()));
+        AreaClient c = new AreaClient(baseUrl, createClient());
         clients.add(c);
         return c;
     }
@@ -284,14 +289,14 @@ public final class ClientFactory implements AutoCloseable {
 
     public PositionClient createPlacementClient() {
         assertIsOpen();
-        PositionClient c = new PositionClient(baseUrl, createClient(getDatakatalog().getVersion().getVersion()));
+        PositionClient c = new PositionClient(baseUrl, createClient());
         clients.add(c);
         return c;
     }
 
     public RoadPlacementClient createRoadPlacementClient() {
         assertIsOpen();
-        RoadPlacementClient c = new RoadPlacementClient(baseUrl, createClient(getDatakatalog().getVersion().getVersion()));
+        RoadPlacementClient c = new RoadPlacementClient(baseUrl, createClient());
         clients.add(c);
         return c;
     }
