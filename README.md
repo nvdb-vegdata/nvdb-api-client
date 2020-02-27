@@ -67,6 +67,19 @@ RoadObject ro = client.getRoadObject(534, 1);
 // Remember to close your factory when you're done using it
 factory.close();
 ```
+
+Please note that when the factory is closed all clients created by it will also be closed. So the following code will not work
+
+```java
+RoadObjectClient client;
+try (ClientFactory factory = new ClientFactory("https://www.vegvesen.no/nvdb/api/v3", "nvdb-read-api-v3-client")) {
+    client = factory.createRoadObjectClient();
+}
+
+// Won't work because client is closed after the try-with-resources block.
+RoadObject ro = client.getRoadObject(534, 1);
+```
+
  ### Setting timeouts for Jersey client.
  To set a connect and read timeout for the nvdb-api-client. An instance of `ClientConfiguration` can be added when creating the `ClientFactory`
  
