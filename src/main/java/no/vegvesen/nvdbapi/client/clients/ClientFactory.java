@@ -277,12 +277,11 @@ public final class ClientFactory implements AutoCloseable {
 
     public RoadObjectClient createRoadObjectClient() {
         assertIsOpen();
-        Datakatalog datakatalog = getDatakatalog();
         RoadObjectClient c =
             new RoadObjectClient(
                 baseUrl,
-                createClient(datakatalog.getVersion().getVersion()),
-                datakatalog);
+                createClient()
+            );
         clients.add(c);
         return c;
     }
@@ -316,10 +315,6 @@ public final class ClientFactory implements AutoCloseable {
     }
 
     private Client createClient() {
-        return createClient(null);
-    }
-
-    private Client createClient(String datakatalogVersion) {
         ClientConfig config = new ClientConfig();
         config.register(GZipEncoder.class);
         config.register(DeflateEncoder.class);
@@ -335,7 +330,6 @@ public final class ClientFactory implements AutoCloseable {
                 userAgent,
                 xClientName,
                 xSession,
-                datakatalogVersion,
                 apiRevision,
                 authTokens));
 

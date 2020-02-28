@@ -67,15 +67,9 @@ import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
 public class RoadObjectClient extends AbstractJerseyClient {
     private static final Logger logger = LoggerFactory.getLogger(RoadObjectClient.class);
-    private final Datakatalog datakatalog;
 
-    protected RoadObjectClient(String baseUrl, Client client, Datakatalog datakatalog) {
+    protected RoadObjectClient(String baseUrl, Client client) {
         super(baseUrl, client);
-        this.datakatalog = datakatalog;
-    }
-
-    public Datakatalog getDatakatalog() {
-        return datakatalog;
     }
 
     public Statistics getStats(int featureTypeId, RoadObjectRequest request) {
