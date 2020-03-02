@@ -55,6 +55,7 @@ import no.vegvesen.nvdbapi.client.ProxyConfig;
 import no.vegvesen.nvdbapi.client.clients.filters.RequestHeaderFilter;
 import no.vegvesen.nvdbapi.client.gson.GsonMessageBodyHandler;
 import no.vegvesen.nvdbapi.client.model.datakatalog.Datakatalog;
+import no.vegvesen.nvdbapi.client.model.datakatalog.Version;
 import no.vegvesen.nvdbapi.client.util.LoggingFilter;
 
 import static java.nio.file.StandardOpenOption.CREATE;
@@ -71,6 +72,7 @@ public final class ClientFactory implements AutoCloseable {
     private final ClientConfiguration clientConfig;
 
     private Datakatalog datakatalog;
+    private Version datakatalogVersion;
     private List<AbstractJerseyClient> clients;
     private boolean isClosed;
     private final Logger debugLogger;
@@ -268,6 +270,13 @@ public final class ClientFactory implements AutoCloseable {
         return datakatalog;
     }
 
+    public Version getDatakatalogVersion() {
+        if (datakatalogVersion == null) {
+            datakatalogVersion = createDatakatalogClient().getVersion();
+        }
+        return datakatalogVersion;
+    }
+
     public AreaClient createAreaClient() {
         assertIsOpen();
         AreaClient c = new AreaClient(baseUrl, createClient());
@@ -277,12 +286,11 @@ public final class ClientFactory implements AutoCloseable {
 
     public RoadObjectClient createRoadObjectClient() {
         assertIsOpen();
-        Datakatalog datakatalog = getDatakatalog();
         RoadObjectClient c =
             new RoadObjectClient(
                 baseUrl,
-                createClient(datakatalog.getVersion().getVersion()),
-                datakatalog);
+                createClient(getDatakatalogVersion().getVersion())
+            );
         clients.add(c);
         return c;
     }
