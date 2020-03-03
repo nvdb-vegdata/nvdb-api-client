@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.7.0
+* Only fetch the datakatalog version when creating `RoadObjectClient`, `RoadObjectClient.getDatakatalog()`.
+
 ## 1.6.1
 * Use Datakatalog only in `RoadObjectClient`
 
