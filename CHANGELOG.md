@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.7.1
+* CRS 6173 replaced with 5973
+ 
 ## 1.7.0
 * Only fetch the datakatalog version when creating `RoadObjectClient`, `RoadObjectClient.getDatakatalog()`.
 
