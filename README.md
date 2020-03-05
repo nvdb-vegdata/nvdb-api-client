@@ -4,7 +4,7 @@ Open source Java client library for use with the NVDB REST API v3.
 Support or feedback: Issue on this repo or on [Gitter](https://gitter.im/nvdb-vegdata/api-les-v3)
 
 # API URL
-Base URL for the API is https://www.vegvesen.no/nvdb/api/v3
+Base URL for the API is https://nvdbapiles-v3.atlas.vegvesen.no
 
 # Artifact
 This artifact will be published to _jCenter_ upon releases: http://jcenter.bintray.com/
