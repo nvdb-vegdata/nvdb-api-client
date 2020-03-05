@@ -31,7 +31,15 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public class Projection implements Serializable {
-    public static final Projection UTM33 = new Projection(6173, "utm33");
+    /**
+     * ETRS89 / UTM zone 33 + NN2000 height
+     * https://epsg.io/5973
+     */
+    public static final Projection UTM33 = new Projection(5973, "utm33");
+    /**
+     * WGS 84
+     * https://epsg.io/4326
+     */
     public static final Projection WGS84 = new Projection(4326, "wgs84");
 
     private final String alias;

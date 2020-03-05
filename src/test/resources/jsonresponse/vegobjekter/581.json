@@ -189,7 +189,7 @@
       ],
       "geometri": {
         "wkt": "POINT Z(5164.80986 6817661.87851 21.56245)",
-        "srid": 6173,
+        "srid": 5973,
         "egengeometri": false
       },
       "lokasjon": {
@@ -281,7 +281,7 @@
         ],
         "geometri": {
           "wkt": "POINT Z(5164.80986 6817661.87851 21.56245)",
-          "srid": 6173
+          "srid": 5973
         }
       },
       "relasjoner": {

@@ -40,7 +40,7 @@
       ],
       "geometri": {
         "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
-        "srid": 6173,
+        "srid": 5973,
         "egengeometri": false
       },
       "lokasjon": {
@@ -131,7 +131,7 @@
         ],
         "geometri": {
           "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
-          "srid": 6173
+          "srid": 5973
         }
       },
       "vegsegmenter": [
@@ -142,7 +142,7 @@
           "sluttdato": "2003-05-21",
           "geometri": {
             "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
-            "srid": 6173
+            "srid": 5973
           },
           "kommune": 1421,
           "fylke": 14,
@@ -155,7 +155,7 @@
           "sluttdato": "2003-07-01",
           "geometri": {
             "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
-            "srid": 6173
+            "srid": 5973
           },
           "kommune": 1421,
           "fylke": 14,
@@ -168,7 +168,7 @@
           "sluttdato": "2007-07-08",
           "geometri": {
             "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
-            "srid": 6173
+            "srid": 5973
           },
           "kommune": 1421,
           "fylke": 14,
@@ -190,7 +190,7 @@
           "sluttdato": "2007-08-30",
           "geometri": {
             "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
-            "srid": 6173
+            "srid": 5973
           },
           "kommune": 1421,
           "fylke": 14,
@@ -212,7 +212,7 @@
           "sluttdato": "2008-01-01",
           "geometri": {
             "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
-            "srid": 6173
+            "srid": 5973
           },
           "kommune": 1421,
           "fylke": 14,
@@ -234,7 +234,7 @@
           "sluttdato": "2011-01-01",
           "geometri": {
             "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
-            "srid": 6173
+            "srid": 5973
           },
           "kommune": 1421,
           "fylke": 14,
@@ -256,7 +256,7 @@
           "sluttdato": "2013-02-26",
           "geometri": {
             "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
-            "srid": 6173
+            "srid": 5973
           },
           "kommune": 1421,
           "fylke": 14,
@@ -278,7 +278,7 @@
           "sluttdato": "2014-05-01",
           "geometri": {
             "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
-            "srid": 6173
+            "srid": 5973
           },
           "kommune": 1421,
           "fylke": 14,
@@ -300,7 +300,7 @@
           "sluttdato": "2016-01-01",
           "geometri": {
             "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
-            "srid": 6173
+            "srid": 5973
           },
           "kommune": 1421,
           "fylke": 14,
@@ -322,7 +322,7 @@
           "sluttdato": "2016-03-10",
           "geometri": {
             "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
-            "srid": 6173
+            "srid": 5973
           },
           "kommune": 1421,
           "fylke": 14,
@@ -344,7 +344,7 @@
           "sluttdato": "2017-09-29",
           "geometri": {
             "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
-            "srid": 6173
+            "srid": 5973
           },
           "kommune": 1421,
           "fylke": 14,
@@ -366,7 +366,7 @@
           "sluttdato": "2017-11-07",
           "geometri": {
             "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
-            "srid": 6173
+            "srid": 5973
           },
           "kommune": 1421,
           "fylke": 14,
@@ -388,7 +388,7 @@
           "sluttdato": "2017-12-15",
           "geometri": {
             "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
-            "srid": 6173
+            "srid": 5973
           },
           "kommune": 1421,
           "fylke": 14,
@@ -410,7 +410,7 @@
           "sluttdato": "2018-01-01",
           "geometri": {
             "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
-            "srid": 6173
+            "srid": 5973
           },
           "kommune": 1421,
           "fylke": 14,
@@ -431,7 +431,7 @@
           "startdato": "2018-01-01",
           "geometri": {
             "wkt": "POINT Z(88206.76856 6783844.94758 259.86262)",
-            "srid": 6173
+            "srid": 5973
           },
           "kommune": 1421,
           "fylke": 14,
