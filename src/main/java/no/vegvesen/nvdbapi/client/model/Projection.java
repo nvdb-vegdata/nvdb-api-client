@@ -32,7 +32,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 public class Projection implements Serializable {
-    public static final Projection UTM33 = new Projection(6173, "utm33");
+    public static final Projection UTM33 = new Projection(5973, "utm33");
     public static final Projection UTM33_32633 = new Projection(32633, "utm33");
     public static final Projection WGS84 = new Projection(4326, "wgs84");
 
