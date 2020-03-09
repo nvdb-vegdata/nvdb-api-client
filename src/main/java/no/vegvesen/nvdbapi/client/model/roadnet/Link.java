@@ -174,6 +174,7 @@ public class Link {
         if (o == null || getClass() != o.getClass()) return false;
         Link link = (Link) o;
         return Objects.equals(partId, link.partId) &&
+                linkType == link.linkType &&
                 topologyLevel == link.topologyLevel &&
                 Objects.equals(startPort, link.startPort) &&
                 Objects.equals(endPort, link.endPort) &&
@@ -197,7 +198,7 @@ public class Link {
 
     @Override
     public int hashCode() {
-        return Objects.hash(partId, topologyLevel, startPort, endPort, municipality,
+        return Objects.hash(partId, linkType, topologyLevel, startPort, endPort, municipality,
                 municipalityGeometry, length, measureMethod, measureDate, sosiMedium, ltema, centerLineProjection,
                 typeRoad, detailLevel, geometry, fields, startDate, endDate, startPos, endPos);
     }
@@ -206,6 +207,7 @@ public class Link {
     public String toString() {
         return "Link{" +
             "partId=" + partId +
+            ", linkType=" + linkType +
             ", topologyLevel=" + topologyLevel +
             ", startPort=" + startPort +
             ", endPort=" + endPort +
