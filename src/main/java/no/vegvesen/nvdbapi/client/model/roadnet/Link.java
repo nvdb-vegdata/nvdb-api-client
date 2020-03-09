@@ -35,8 +35,7 @@ import java.util.Objects;
 public class Link {
 
     private final Integer partId;
-    private final Boolean isConnectionLink;
-    private final Boolean isDetailed;
+    private final LinkType linkType;
     private final TopologyLevel topologyLevel;
     private final Integer startPort;
     private final Integer endPort;
@@ -57,14 +56,13 @@ public class Link {
     private final LocalDate startDate;
     private final LocalDate endDate;
 
-    public Link(Integer partId, Boolean isConnectionLink, Boolean isDetailed, TopologyLevel topologyLevel,
+    public Link(Integer partId, LinkType linkType, TopologyLevel topologyLevel,
                 Integer startPort, Integer endPort, Double startPos, Double endPos, Integer municipality,
                 Integer municipalityGeometry, Double length, String measureMethod, LocalDate measureDate,
                 SosiMedium sosiMedium, Ltema ltema, RefLinkExtentPlacement centerLineProjection, TypeOfRoad typeRoad,
                 String detailLevel, Geometry geometry, List<String> fields, LocalDate startDate, LocalDate endDate) {
         this.partId = partId;
-        this.isConnectionLink = isConnectionLink;
-        this.isDetailed = isDetailed;
+        this.linkType = linkType;
         this.topologyLevel = topologyLevel;
         this.startPort = startPort;
         this.endPort = endPort;
@@ -90,12 +88,8 @@ public class Link {
         return partId;
     }
 
-    public Boolean getConnectionLink() {
-        return isConnectionLink;
-    }
-
-    public Boolean getDetailed() {
-        return isDetailed;
+    public LinkType getLinkType() {
+        return linkType;
     }
 
     public TopologyLevel getTopologyLevel() {
@@ -180,8 +174,6 @@ public class Link {
         if (o == null || getClass() != o.getClass()) return false;
         Link link = (Link) o;
         return Objects.equals(partId, link.partId) &&
-                Objects.equals(isConnectionLink, link.isConnectionLink) &&
-                Objects.equals(isDetailed, link.isDetailed) &&
                 topologyLevel == link.topologyLevel &&
                 Objects.equals(startPort, link.startPort) &&
                 Objects.equals(endPort, link.endPort) &&
@@ -205,7 +197,7 @@ public class Link {
 
     @Override
     public int hashCode() {
-        return Objects.hash(partId, isConnectionLink, isDetailed, topologyLevel, startPort, endPort, municipality,
+        return Objects.hash(partId, topologyLevel, startPort, endPort, municipality,
                 municipalityGeometry, length, measureMethod, measureDate, sosiMedium, ltema, centerLineProjection,
                 typeRoad, detailLevel, geometry, fields, startDate, endDate, startPos, endPos);
     }
@@ -214,8 +206,6 @@ public class Link {
     public String toString() {
         return "Link{" +
             "partId=" + partId +
-            ", isConnectionLink=" + isConnectionLink +
-            ", isDetailed=" + isDetailed +
             ", topologyLevel=" + topologyLevel +
             ", startPort=" + startPort +
             ", endPort=" + endPort +

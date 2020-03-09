@@ -35,16 +35,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import no.vegvesen.nvdbapi.client.model.Geometry;
-import no.vegvesen.nvdbapi.client.model.roadnet.Link;
-import no.vegvesen.nvdbapi.client.model.roadnet.LinkSequence;
-import no.vegvesen.nvdbapi.client.model.roadnet.Ltema;
-import no.vegvesen.nvdbapi.client.model.roadnet.NetElementType;
-import no.vegvesen.nvdbapi.client.model.roadnet.Node;
-import no.vegvesen.nvdbapi.client.model.roadnet.Port;
-import no.vegvesen.nvdbapi.client.model.roadnet.PortConnection;
-import no.vegvesen.nvdbapi.client.model.roadnet.SosiMedium;
-import no.vegvesen.nvdbapi.client.model.roadnet.TopologyLevel;
-import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
+import no.vegvesen.nvdbapi.client.model.roadnet.*;
 
 import static java.util.stream.Collectors.toList;
 
@@ -89,8 +80,7 @@ public final class RoadNetParser {
                 .map(JsonElement::getAsJsonObject)
                 .map(o -> new Link(
                         parseIntMember(o, "veglenkenummer"),
-                        parseBooleanMember(o, "konnekteringslenke"),
-                        parseBooleanMember(o, "detaljert"),
+                        parseType(o, "type"),
                         TopologyLevel.fromValue(parseStringMember(o, "topologinivå")),
                         parseIntMember(o, "startport"),
                         parseIntMember(o, "sluttport"),
@@ -112,6 +102,10 @@ public final class RoadNetParser {
                         parseDateMember(o, "sluttdato")
                 ))
                 .collect(toList());
+    }
+
+    private static LinkType parseType(JsonObject o, String type) {
+        return LinkType.valueOf(o.get(type).getAsString().toUpperCase());
     }
 
     private static List<String> parseFields(JsonArray obj) {
