@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.8.0
+* `Link.getConnectionLink()` and `Link.getDetailed()` replaced by `Link.getLinkType`
+ 
 ## 1.7.1
 * CRS 6173 replaced with 5973
  
