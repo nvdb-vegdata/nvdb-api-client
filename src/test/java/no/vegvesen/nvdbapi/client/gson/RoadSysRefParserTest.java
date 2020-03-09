@@ -13,21 +13,21 @@ import static org.hamcrest.Matchers.notNullValue;
 public class RoadSysRefParserTest {
 
     @Test
-    void parseRoadSystemWithNumber() {
+    void parseRoadSystemWithNumber() throws Exception {
         RoadSysRef roadSysRef = parseObject("vegobjekter/vegsystemreferanse_med_nummer.json", RoadSysRefParser::parse);
         assertThat(roadSysRef, notNullValue());
         assertThat(roadSysRef.shortForm, equalTo("KV17 S1D1 m0-58"));
     }
 
     @Test
-    void parseRoadSystemWithoutNumber() {
+    void parseRoadSystemWithoutNumber() throws Exception {
         RoadSysRef roadSysRef = parseObject("vegobjekter/vegsystemreferanse_uten_nummer.json", RoadSysRefParser::parse);
         assertThat(roadSysRef, notNullValue());
         assertThat(roadSysRef.shortForm, equalTo("KVnull S1D1 m0-58"));
     }
 
     @Test
-    void roadSystemWithoutNumberOperations() {
+    void roadSystemWithoutNumberOperations() throws Exception {
         RoadSysRef roadSysRefOk = parseObject("vegobjekter/vegsystemreferanse_med_nummer.json", RoadSysRefParser::parse);
         RoadSystem roadSystemOk = roadSysRefOk.getRoadSystem();
         RoadSysRef roadSysRefMissingNumber = parseObject("vegobjekter/vegsystemreferanse_uten_nummer.json", RoadSysRefParser::parse);

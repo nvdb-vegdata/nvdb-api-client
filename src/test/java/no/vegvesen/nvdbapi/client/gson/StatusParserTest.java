@@ -10,7 +10,7 @@ import static org.hamcrest.Matchers.*;
 public class StatusParserTest {
 
     @Test
-    void parseStatus() {
+    void parseStatus() throws Exception {
         Status status = parseObject("status.json", StatusParser::parseStatus);
         assertThat(status, is(notNullValue()));
     }

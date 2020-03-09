@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class StatsParserTest {
 
     @Test
-    void parseStats() {
+    void parseStats() throws Exception {
         Statistics statistics = parseObject("vegobjekter/105_statistikk.json", RoadObjectParser::parseStatistics);
         assertNotNull(statistics);
     }
