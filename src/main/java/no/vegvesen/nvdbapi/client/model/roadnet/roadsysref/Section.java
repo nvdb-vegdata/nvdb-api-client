@@ -60,7 +60,7 @@ public class Section {
     public String getSectionAndPartAsString() {
         return "S" +
                 sectionNumber +
-                "DS" +
+                "D" +
                 sectionPartNumber;
     }
 

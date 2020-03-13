@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.8.1
+* `Section.getSectionAndPartAsString()` returned SX*DS*Y, should be SX*D*Y
+ 
 ## 1.8.0
 * `Link.getConnectionLink()` and `Link.getDetailed()` replaced by `Link.getLinkType`
  
