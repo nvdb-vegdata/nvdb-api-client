@@ -42,6 +42,7 @@ import javax.ws.rs.core.UriBuilder;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import static java.util.Objects.isNull;
@@ -65,22 +66,28 @@ public class DatakatalogClient extends AbstractJerseyClient {
     }
 
     public List<DataType> getDataTypes() {
-        WebTarget target = getClient().target(endpoint()).path("datatyper");
-        JsonElement types = JerseyHelper.execute(target);
-        return StreamSupport.stream(types.getAsJsonArray().spliterator(), false)
-                .map(JsonElement::getAsJsonObject)
-                .map(rt(AttributeTypeParser::parseDataType))
+        return getDataTypeStream()
                 .collect(Collectors.toList());
     }
 
+    private Stream<DataType> getDataTypeStream() {
+        WebTarget target = getClient().target(endpoint()).path("datatyper");
+        JsonElement types = JerseyHelper.executeOptional(target)
+            .orElseThrow(() -> new IllegalStateException("Could not get response for datatyper"));
+        return StreamSupport.stream(types.getAsJsonArray().spliterator(), false)
+            .map(JsonElement::getAsJsonObject)
+            .map(rt(AttributeTypeParser::parseDataType));
+    }
+
     public Map<String, DataType> getDataTypeMap() {
-        return getDataTypes().stream()
+        return getDataTypeStream()
                              .collect(Collectors.toMap(DataType::getName, Function.identity()));
     }
 
     public List<Unit> getUnits() {
         WebTarget target = getClient().target(endpoint()).path("enheter");
-        JsonElement units = JerseyHelper.execute(target);
+        JsonElement units = JerseyHelper.executeOptional(target)
+            .orElseThrow(() -> new IllegalStateException("Could not get response for enheter"));
         return StreamSupport.stream(units.getAsJsonArray().spliterator(), false)
                 .map(JsonElement::getAsJsonObject)
                 .map(rt(AttributeTypeParser::parseUnit))

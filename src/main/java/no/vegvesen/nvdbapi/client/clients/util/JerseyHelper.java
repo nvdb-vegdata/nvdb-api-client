@@ -37,6 +37,7 @@ import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -44,6 +45,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+
+import static javax.ws.rs.core.HttpHeaders.IF_NONE_MATCH;
+import static no.vegvesen.nvdbapi.client.clients.ClientFactory.*;
 
 public class JerseyHelper {
     private static final Logger logger = LoggerFactory.getLogger(JerseyHelper.class);
@@ -101,8 +105,15 @@ public class JerseyHelper {
     }
 
     public static Optional<JsonElement> executeOptional(WebTarget target) {
-        Invocation inv = target.request().buildGet();
+        Invocation.Builder request = target.request();
+        String path = target.getUri().getPath();
+        getEtag(path)
+            .ifPresent(etag -> request.header(IF_NONE_MATCH, etag));
+        Invocation inv = request.buildGet();
         try(Response response = execute(inv, Response.class)) {
+            if(response.getStatus() == Response.Status.NOT_MODIFIED.getStatusCode()) {
+                return getResponse(path);
+            }
 
             if (!isSuccess(response)) {
                 if (response.getStatus() == 404) {
@@ -115,6 +126,14 @@ public class JerseyHelper {
                 return Optional.empty();
             }
             String requestId = response.getHeaderString("X-REQUEST-ID");
+            String etag = response.getHeaderString(HttpHeaders.ETAG);
+            if(etag != null) {
+                String body = response.readEntity(String.class);
+                setEtag(path, etag, body);
+                return Optional.of(
+                    JsonParser.parseString(body)
+                );
+            }
 
             try (InputStream is = response.readEntity(InputStream.class)) {
                 return Optional.of(JsonParser.parseReader(new InputStreamReader(is, StandardCharsets.UTF_8)));

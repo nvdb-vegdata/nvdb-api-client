@@ -26,6 +26,7 @@
 package no.vegvesen.nvdbapi.client.clients;
 
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -40,6 +41,9 @@ import java.util.jar.Manifest;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+import com.google.gson.stream.JsonReader;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.glassfish.jersey.apache.connector.ApacheClientProperties;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
@@ -391,11 +395,7 @@ public final class ClientFactory implements AutoCloseable {
 
     private String getOrCreateSessionId() {
         try {
-            String userHome = System.getProperty("user.home");
-            File dotFolder = new File(userHome, ".nvdb-api-read-v3");
-            if(!dotFolder.exists()) {
-                dotFolder.mkdir();
-            }
+            File dotFolder = getClientHome();
             File sessionIdFile = new File(dotFolder, "session");
             if(sessionIdFile.exists()) {
                 return Files.readAllLines(sessionIdFile.toPath(), StandardCharsets.UTF_8).get(0);
@@ -406,6 +406,53 @@ public final class ClientFactory implements AutoCloseable {
             }
         } catch (IOException e) {
             return UUID.randomUUID().toString();
+        }
+    }
+
+    private static File getClientHome() {
+        String userHome = System.getProperty("user.home");
+        File dotFolder = new File(userHome, ".nvdb-api-read-v3");
+        if(!dotFolder.exists()) {
+            dotFolder.mkdir();
+        }
+        return dotFolder;
+    }
+
+    public static Optional<String> getEtag(String resource) {
+        File etagFile = new File(getClientHome(), resource.replace('/', '_') + ".etag");
+        if(etagFile.exists()) {
+            try {
+                return Optional.of(Files.readAllLines(etagFile.toPath(), StandardCharsets.UTF_8).get(0));
+            } catch (IOException e) {
+                LoggerFactory.getLogger(ClientFactory.class).error("Error getting etag for {}", resource, e);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public static Optional<JsonElement> getResponse(String resource) {
+        File etagFile = new File(getClientHome(), resource.replace('/', '_') + ".json");
+        if(etagFile.exists()) {
+            try {
+                return Optional.of(
+                    JsonParser.parseReader(new JsonReader(new FileReader(etagFile)))
+                );
+            } catch (IOException e) {
+                LoggerFactory.getLogger(ClientFactory.class).error("Error getting body for {}", resource, e);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public static void setEtag(String resource, String etag, String body) {
+        try {
+            String r = resource.replace('/', '_');
+            File etagFile = new File(getClientHome(), r + ".etag");
+            Files.write(etagFile.toPath(), etag.getBytes(StandardCharsets.UTF_8), CREATE);
+            File bodyFile = new File(getClientHome(), r + ".json");
+            Files.write(bodyFile.toPath(), body.getBytes(StandardCharsets.UTF_8), CREATE);
+        } catch (IOException e) {
+            LoggerFactory.getLogger(ClientFactory.class).error("Error setting etag for {}", resource, e);
         }
     }
 }
