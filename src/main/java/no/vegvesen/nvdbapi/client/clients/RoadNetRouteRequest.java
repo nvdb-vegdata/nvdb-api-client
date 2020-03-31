@@ -6,6 +6,7 @@ import no.vegvesen.nvdbapi.client.model.RefLinkPosition;
 import no.vegvesen.nvdbapi.client.model.roadnet.RoadUserGroup;
 import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +28,7 @@ public class RoadNetRouteRequest {
     private final Optional<RoadUserGroup> roadUserGroup;
     private final List<TypeOfRoad> typeOfRoad;
     private final boolean briefResponse;
+    private final Optional<LocalDate> pointInTime;
 
     private RoadNetRouteRequest(Builder b) {
         this.startReflinkPosition = b.startReflinkPosition;
@@ -42,6 +44,11 @@ public class RoadNetRouteRequest {
         this.detailedLinks = b.detailedLinks;
         this.roadUserGroup = b.roadUserGroup;
         this.typeOfRoad = b.typeOfRoad;
+        this.pointInTime = b.pointInTime;
+    }
+
+    public Optional<LocalDate> getPointInTime() {
+        return pointInTime;
     }
 
     public List<TypeOfRoad> getTypeOfRoad() {
@@ -122,6 +129,7 @@ public class RoadNetRouteRequest {
         private boolean connectionLinks = false;
         private boolean detailedLinks = false;
         private List<TypeOfRoad> typeOfRoad = emptyList();
+        private Optional<LocalDate> pointInTime = Optional.empty();
 
         public Builder between(RefLinkPosition startReflinkPosition,
                                RefLinkPosition endReflinkPosition) {
@@ -134,6 +142,11 @@ public class RoadNetRouteRequest {
                                Coordinates endCoordinates) {
             this.startCoordinates = startCoordinates;
             this.endCoordinates = endCoordinates;
+            return this;
+        }
+
+        public Builder withPointInTime(LocalDate pointInTime) {
+            this.pointInTime = Optional.ofNullable(pointInTime);
             return this;
         }
 
