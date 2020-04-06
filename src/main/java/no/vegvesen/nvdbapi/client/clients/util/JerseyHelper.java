@@ -41,6 +41,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.List;
@@ -106,7 +107,8 @@ public class JerseyHelper {
 
     public static Optional<JsonElement> executeOptional(WebTarget target) {
         Invocation.Builder request = target.request();
-        String path = target.getUri().getPath();
+        URI uri = target.getUri();
+        String path = uri.getPath() + uri.getQuery();
         getEtag(path)
             .ifPresent(etag -> request.header(IF_NONE_MATCH, etag));
         Invocation inv = request.buildGet();
