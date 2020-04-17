@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.8.3
+* query parameters was not used when storing etag.
+
 ## 1.8.2
 * Datakatalog client use etag information to cache responses.
 
