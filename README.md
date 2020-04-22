@@ -57,7 +57,7 @@ To start using the library simply instantiate the factory. It takes three argume
 
 ```java
 // First, create factory
-ClientFactory factory = new ClientFactory("https://www.vegvesen.no/nvdb/api/v3", "nvdb-read-api-v3-client");
+ClientFactory factory = new ClientFactory("https://nvdbapiles-v3.atlas.vegvesen.no", "nvdb-read-api-v3-client");
 // Then, create your client. Typically, there's one per root endpoint   
 RoadObjectClient client = factory.createRoadObjectClient();
 
@@ -72,7 +72,7 @@ Please note that when the factory is closed all clients created by it will also 
 
 ```java
 RoadObjectClient client;
-try (ClientFactory factory = new ClientFactory("https://www.vegvesen.no/nvdb/api/v3", "nvdb-read-api-v3-client")) {
+try (ClientFactory factory = new ClientFactory("https://nvdbapiles-v3.atlas.vegvesen.no", "nvdb-read-api-v3-client")) {
     client = factory.createRoadObjectClient();
 }
 
@@ -92,7 +92,7 @@ ClientConfiguration clientConfig =
        .build();
 
 // Create a factory with timeout settings.
-ClientFactory factory = new ClientFactory("https://www.vegvesen.no/nvdb/api/v3", "nvdb-read-api-v3-client", clientConfig);
+ClientFactory factory = new ClientFactory("https://nvdbapiles-v3.atlas.vegvesen.no", "nvdb-read-api-v3-client", clientConfig);
 ```
 
 # How to build 
