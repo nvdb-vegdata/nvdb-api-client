@@ -52,8 +52,8 @@ public final class JsonExceptionParser {
         try {
             errors = JsonParser.parseString(json).getAsJsonArray();
         } catch (Exception ex) {
-            LOG.warn("Could not parse '{}' as json.", json);
-            return Collections.emptyList();
+            LOG.warn("Could not parse '{}' as json (exception: {})", json, ex.getClass().getName());
+            throw ex;
         }
         List<ApiError> apiErrors = new ArrayList<>();
         errors.forEach(n -> {
