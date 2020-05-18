@@ -26,9 +26,11 @@
 package no.vegvesen.nvdbapi.client.model.roadnet;
 
 import no.vegvesen.nvdbapi.client.model.Geometry;
+import no.vegvesen.nvdbapi.client.model.RoadPlacement;
 import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
 import no.vegvesen.nvdbapi.client.model.areas.Route;
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RefLinkExtentPlacement;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -53,7 +55,7 @@ public final class SegmentedLink implements Serializable {
     private final TypeOfRoad roadType;
 
 
-    private final Long superLinkId;
+    private final RefLinkExtentPlacement superLinkExtent;
     private final Integer county;
     private final Integer municipality;
     private final RoadSysRef roadRef;
@@ -62,10 +64,11 @@ public final class SegmentedLink implements Serializable {
     private final String startNode;
     private final String endNode;
 
-    public SegmentedLink(long id, Long superLinkId, double start, double end,
+    public SegmentedLink(long id, double start, double end,
                          int linkNumber, int segmentNumber, DetailLevel detailLevel,
                          TopologyLevel topologyLevel, TypeOfRoad roadType,
                          String startNode, String endNode,
+                         RefLinkExtentPlacement superLinkExtent,
                          LocalDate fromDate, LocalDate toDate,
                          Integer county,
                          Integer municipality,
@@ -74,7 +77,6 @@ public final class SegmentedLink implements Serializable {
                          List<ContractArea> contractAreas,
                          List<Route> routes) {
         this.id = id;
-        this.superLinkId = superLinkId;
         this.start = start;
         this.end = end;
         this.linkNumber = linkNumber;
@@ -87,6 +89,7 @@ public final class SegmentedLink implements Serializable {
         this.toDate = toDate;
         this.startNode = startNode;
         this.endNode = endNode;
+        this.superLinkExtent = superLinkExtent;
         this.length = length;
         this.roadRef = roadRef;
         this.geometry = geometry;
@@ -100,8 +103,8 @@ public final class SegmentedLink implements Serializable {
         return id;
     }
 
-    public Optional<Long> getSuperLinkId() {
-        return Optional.ofNullable(superLinkId);
+    public Optional<RefLinkExtentPlacement> getSuperLinkExtent() {
+        return Optional.ofNullable(superLinkExtent);
     }
 
     public double getStart() {
@@ -197,7 +200,7 @@ public final class SegmentedLink implements Serializable {
                 Objects.equals(routes, that.routes) &&
                 Objects.equals(detailLevel, that.detailLevel) &&
                 Objects.equals(roadType, that.roadType) &&
-                Objects.equals(superLinkId, that.superLinkId) &&
+                Objects.equals(superLinkExtent, that.superLinkExtent) &&
                 Objects.equals(county, that.county) &&
                 Objects.equals(municipality, that.municipality) &&
                 Objects.equals(roadRef, that.roadRef) &&
@@ -209,6 +212,6 @@ public final class SegmentedLink implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, start, end, geometry, length, linkNumber, segmentNumber, linkType, contractAreas, routes, detailLevel, roadType, superLinkId, county, municipality, roadRef, fromDate, toDate, startNode, endNode);
+        return Objects.hash(id, start, end, geometry, length, linkNumber, segmentNumber, linkType, contractAreas, routes, detailLevel, roadType, superLinkExtent, county, municipality, roadRef, fromDate, toDate, startNode, endNode);
     }
 }

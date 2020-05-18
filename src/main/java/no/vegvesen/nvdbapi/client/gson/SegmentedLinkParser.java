@@ -26,7 +26,10 @@
 package no.vegvesen.nvdbapi.client.gson;
 
 import com.google.gson.JsonObject;
+import no.vegvesen.nvdbapi.client.model.Direction;
+import no.vegvesen.nvdbapi.client.model.SidePosition;
 import no.vegvesen.nvdbapi.client.model.roadnet.*;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RefLinkExtentPlacement;
 
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 import static no.vegvesen.nvdbapi.client.gson.RoadObjectParser.parseContractAreas;
@@ -40,7 +43,6 @@ public final class SegmentedLinkParser {
     public static SegmentedLink parse(JsonObject obj) {
         return new SegmentedLink(
                 parseLongMember(obj, "veglenkesekvensid"),
-                parseLongMember(obj, "superstedfesting.veglenkesekvensid"),
                 parseDoubleMember(obj, "startposisjon"),
                 parseDoubleMember(obj, "sluttposisjon"),
                 parseIntMember(obj, "veglenkenummer"),
@@ -50,6 +52,7 @@ public final class SegmentedLinkParser {
                 TypeOfRoad.fromTextValue(parseStringMember(obj, "typeVeg")),
                 parseStringMember(obj, "startnode"),
                 parseStringMember(obj, "sluttnode"),
+                parseSuperlinkExtent(obj),
                 parseDateMember(obj, "metadata.startdato"),
                 parseDateMember(obj, "metadata.sluttdato"),
                 parseIntMember(obj, "fylke"),
@@ -60,6 +63,22 @@ public final class SegmentedLinkParser {
                 RefLinkPartType.fromValue(parseStringMember(obj,"type")),
                 parseContractAreas(obj),
                 parseRoutes(obj));
+    }
+
+    private static RefLinkExtentPlacement parseSuperlinkExtent(JsonObject obj) {
+        Long superLinkId = parseLongMember(obj, "superstedfesting.veglenkesekvensid");
+        if(superLinkId != null) {
+            return new RefLinkExtentPlacement(
+                superLinkId,
+                parseDoubleMember(obj, "superstedfesting.startposisjon"),
+                parseDoubleMember(obj, "superstedfesting.sluttposisjon"),
+                parseOptionalStringMember(obj, "superstedfesting.retning").map(Direction::from).orElse(null),
+                parseOptionalStringMember(obj, "superstedfesting.sideposisjon").map(SidePosition::from).orElse(null),
+                parseStringListMember(obj, "superstedfesting.kjørefelt")
+            );
+        } else {
+            return null;
+        }
     }
 
 }

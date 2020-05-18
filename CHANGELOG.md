@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.9.0
+* `SegmentedLink.superLinkId` replaced with `.superLinkExtent`
+
 ## 1.8.3
 * query parameters was not used when storing etag.
 
