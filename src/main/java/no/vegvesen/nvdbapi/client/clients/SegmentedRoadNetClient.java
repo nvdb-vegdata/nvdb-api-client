@@ -89,6 +89,7 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         UriBuilder path = endpoint().path("/veglenkesekvenser/segmentert");
         if (!request.getCounties().isEmpty()) path.queryParam("fylke", join(request.getCounties()));
         if (!request.getMunicipalities().isEmpty()) path.queryParam("kommune", join(request.getMunicipalities()));
+        request.getContractArea().ifPresent(v -> path.queryParam("kontraktsomrade", v));
         request.getBbox().ifPresent(v -> path.queryParam("kartutsnitt", v));
         request.getBpolygon().ifPresent(v -> path.queryParam("polygon", v));
         request.getProjection().ifPresent(v -> path.queryParam("srid", v.getSrid()));
