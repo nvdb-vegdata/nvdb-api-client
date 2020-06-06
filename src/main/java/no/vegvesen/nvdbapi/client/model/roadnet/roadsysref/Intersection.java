@@ -1,6 +1,7 @@
 package no.vegvesen.nvdbapi.client.model.roadnet.roadsysref;
 
 import no.vegvesen.nvdbapi.client.model.Direction;
+import no.vegvesen.nvdbapi.client.model.roadnet.RoadUserGroup;
 
 import java.util.Objects;
 
@@ -12,7 +13,7 @@ public class Intersection {
     public final double startMeter;
     public final Double endMeter;
     public final Direction direction;
-
+    public final RoadUserGroup trafficType;
 
     public Intersection(Long id,
                         Integer version,
@@ -20,7 +21,7 @@ public class Intersection {
                         int part,
                         double startMeter,
                         Double endMeter,
-                        Direction direction) {
+                        Direction direction, RoadUserGroup trafficType) {
         this.number = number;
         this.part = part;
         this.id = id;
@@ -28,6 +29,7 @@ public class Intersection {
         this.startMeter = startMeter;
         this.endMeter = endMeter;
         this.direction = direction;
+        this.trafficType = trafficType;
     }
 
     @Override

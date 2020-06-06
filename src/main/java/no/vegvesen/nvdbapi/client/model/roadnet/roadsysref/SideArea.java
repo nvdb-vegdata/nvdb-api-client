@@ -1,6 +1,7 @@
 package no.vegvesen.nvdbapi.client.model.roadnet.roadsysref;
 
 import no.vegvesen.nvdbapi.client.model.Direction;
+import no.vegvesen.nvdbapi.client.model.roadnet.RoadUserGroup;
 
 import java.util.Objects;
 
@@ -12,9 +13,9 @@ public class SideArea {
     public final double startMeter;
     public final Double endMeter;
     public final Direction direction;
+    public final RoadUserGroup trafficType;
 
-
-    public SideArea(Long id, Integer version, int number, int part, double startMeter, Double endMeter, Direction direction) {
+    public SideArea(Long id, Integer version, int number, int part, double startMeter, Double endMeter, Direction direction, RoadUserGroup trafficType) {
         this.id = id;
         this.version = version;
         this.number = number;
@@ -22,6 +23,7 @@ public class SideArea {
         this.startMeter = startMeter;
         this.endMeter = endMeter;
         this.direction = direction;
+        this.trafficType = trafficType;
     }
 
     @Override
