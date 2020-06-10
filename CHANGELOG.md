@@ -1,7 +1,11 @@
 # Changelog for NVDB API LES V3 Client
 
 ## 1.9.0
-* `SegmentedLink.superLinkId` replaced with `.superLinkExtent`
+* Use java.io.tmpdir instead of user.home for json caching 
+
+## 1.8.4 (should have been 1.9.0)
+* `SegmentedLink.superLinkId` replaced with `.superLinkExtent` 
+* SegmentedRoadNetClient did not user contract parameter
 
 ## 1.8.3
 * query parameters was not used when storing etag.
