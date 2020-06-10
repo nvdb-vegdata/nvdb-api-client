@@ -410,7 +410,7 @@ public final class ClientFactory implements AutoCloseable {
     }
 
     private static File getClientHome() {
-        String userHome = System.getProperty("user.home");
+        String userHome = System.getProperty("java.io.tmpdir");
         File dotFolder = new File(userHome, ".nvdb-api-read-v3");
         if(!dotFolder.exists()) {
             dotFolder.mkdir();
