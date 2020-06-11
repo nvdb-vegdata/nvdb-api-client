@@ -103,7 +103,8 @@ public final class RoadSysRefParser {
                 parseIntMember(obj, "kryssdel"),
                 getFromMeter(obj),
                 getToMeter(obj),
-                Direction.from(parseStringMember(obj, "retning")));
+                Direction.from(parseStringMember(obj, "retning")),
+                RoadUserGroup.fromValue(parseStringMember(obj, "trafikantgruppe")));
         }
         return null;
     }
@@ -120,7 +121,8 @@ public final class RoadSysRefParser {
                 parseIntMember(obj, "sideanleggsdel"),
                 getFromMeter(obj),
                 getToMeter(obj),
-                Direction.from(parseStringMember(obj, "retning")));
+                Direction.from(parseStringMember(obj, "retning")),
+                RoadUserGroup.fromValue(parseStringMember(obj, "trafikantgruppe")));
         }
         return null;
     }
