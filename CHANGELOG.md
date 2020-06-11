@@ -1,4 +1,6 @@
 # Changelog for NVDB API LES V3 Client
+## 1.9.1
+* `Intersection` and `SideArea` was missing field `trafficType`/`trafikantgruppe`.
 
 ## 1.9.0
 * Use java.io.tmpdir instead of user.home for json caching 
