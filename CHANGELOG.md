@@ -8,7 +8,7 @@
   ```java
     clientFactory.createRoadObjectClient(
       DatakatalogPolicy.builder()
-      .(() -> { /* do something */})    
+      .onDatakatalogUpdateCallback(() -> { /* do something */})    
       .build()
     )
   ```
