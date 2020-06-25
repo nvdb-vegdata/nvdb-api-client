@@ -12,6 +12,7 @@
       .build()
     )
   ```
+* SegmentedRoadNetClient did not use national route parameter.
 
 ## 1.9.1
 * `Intersection` and `SideArea` was missing field `trafficType`/`trafikantgruppe`.
@@ -21,7 +22,7 @@
 
 ## 1.8.4 (should have been 1.9.0)
 * `SegmentedLink.superLinkId` replaced with `.superLinkExtent` 
-* SegmentedRoadNetClient did not user contract parameter
+* SegmentedRoadNetClient did not use contract parameter
 
 ## 1.8.3
 * query parameters was not used when storing etag.
