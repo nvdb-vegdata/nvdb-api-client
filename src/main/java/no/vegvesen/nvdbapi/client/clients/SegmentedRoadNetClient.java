@@ -90,6 +90,7 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         if (!request.getCounties().isEmpty()) path.queryParam("fylke", join(request.getCounties()));
         if (!request.getMunicipalities().isEmpty()) path.queryParam("kommune", join(request.getMunicipalities()));
         request.getContractArea().ifPresent(v -> path.queryParam("kontraktsomrade", v));
+        request.getNationalRoute().ifPresent(v -> path.queryParam("riksvegrute", v));
         request.getBbox().ifPresent(v -> path.queryParam("kartutsnitt", v));
         request.getBpolygon().ifPresent(v -> path.queryParam("polygon", v));
         request.getProjection().ifPresent(v -> path.queryParam("srid", v.getSrid()));
@@ -103,11 +104,11 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         request.getRefLinkPartTypeFilter().ifPresent(v -> path.queryParam("veglenketype", v.getRefLinkPartType()));
         request.getDetailLevelFilter().ifPresent(v -> path.queryParam("detaljniva", v.getSosi()));
         if (!request.getTopologyLevel().isEmpty()) {
-            List<String> collect = request.getTopologyLevel()
+            String topologiniva = request.getTopologyLevel()
                 .stream()
                 .map(TopologyLevel::getApiValue)
-                .collect(Collectors.toList());
-            path.queryParam("topologiniva", join(collect));
+                .collect(Collectors.joining(","));
+            path.queryParam("topologiniva", topologiniva);
         }
 
         path.queryParam("historisk", request.isHistory());

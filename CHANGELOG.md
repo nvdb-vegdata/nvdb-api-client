@@ -1,4 +1,19 @@
 # Changelog for NVDB API LES V3 Client
+
+## 1.10.0
+* Clients no longer send header `X-Datakatalog-Versjon` by default.
+  When NVDB API LES V3 has a different version of Datakatalogen than the version in this header 
+  `HTTP 422: Nåværende datakatalogversjon i APIet er: {new version}` is returned.
+* It is possible to define a callback for `RoadObjectClient` that is called when Datakatalog version changes.
+  ```java
+    clientFactory.createRoadObjectClient(
+      DatakatalogPolicy.builder()
+      .onDatakatalogUpdateCallback(() -> { /* do something */})    
+      .build()
+    )
+  ```
+* SegmentedRoadNetClient did not use national route parameter.
+
 ## 1.9.1
 * `Intersection` and `SideArea` was missing field `trafficType`/`trafikantgruppe`.
 
@@ -7,7 +22,7 @@
 
 ## 1.8.4 (should have been 1.9.0)
 * `SegmentedLink.superLinkId` replaced with `.superLinkExtent` 
-* SegmentedRoadNetClient did not user contract parameter
+* SegmentedRoadNetClient did not use contract parameter
 
 ## 1.8.3
 * query parameters was not used when storing etag.
