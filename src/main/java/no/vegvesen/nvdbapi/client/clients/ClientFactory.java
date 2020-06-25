@@ -36,6 +36,7 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
 import javax.ws.rs.client.Client;
@@ -77,14 +78,14 @@ public final class ClientFactory implements AutoCloseable {
 
     private Datakatalog datakatalog;
     private Version datakatalogVersion;
-    private List<AbstractJerseyClient> clients;
+    private final List<AbstractJerseyClient> clients;
     private boolean isClosed;
     private final Logger debugLogger;
-    private PoolingHttpClientConnectionManager connectionManager;
+    private final PoolingHttpClientConnectionManager connectionManager;
     private Login.AuthTokens authTokens;
 
     /**
-     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
+     * @param baseUrl - what base url to use. For production: https://nvdbapiles-v3.atlas.vegvesen.no
      * @param xClientName - a name describing/name of your consumer application.
      */
     public ClientFactory(String baseUrl, String xClientName) {
@@ -92,7 +93,7 @@ public final class ClientFactory implements AutoCloseable {
     }
 
     /**
-     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
+     * @param baseUrl - what base url to use. For production: https://nvdbapiles-v3.atlas.vegvesen.no
      * @param xClientName - a name describing/name of your consumer application.
      * @param clientConfiguration - a client configuration for setting timeouts
      */
@@ -101,7 +102,7 @@ public final class ClientFactory implements AutoCloseable {
     }
 
     /**
-     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
+     * @param baseUrl - what base url to use. For production: https://nvdbapiles-v3.atlas.vegvesen.no
      * @param xClientName - a name describing/name of your consumer application.
      * @param proxyConfig - Config if traffic have to go through proxy.
      */
@@ -110,7 +111,7 @@ public final class ClientFactory implements AutoCloseable {
     }
 
     /**
-     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
+     * @param baseUrl - what base url to use. For production: https://nvdbapiles-v3.atlas.vegvesen.no
      * @param xClientName - a name describing/name of your consumer application.
      * @param proxyConfig - Config if traffic have to go through proxy.
      * @param clientConfiguration - a client configuration for setting timeouts
@@ -120,7 +121,7 @@ public final class ClientFactory implements AutoCloseable {
     }
 
     /**
-     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
+     * @param baseUrl - what base url to use. For production: https://nvdbapiles-v3.atlas.vegvesen.no
      * @param xClientName - a name describing/name of your consumer application.
      * @param xSession - something identifying this session. Used to tag a sequence of requests, such that
      *                 if there are several instances that have the same xClientName it is possible to tell
@@ -133,7 +134,7 @@ public final class ClientFactory implements AutoCloseable {
     }
 
     /**
-     * @param baseUrl - what base url to use. For production: https://apilesv3.atlas.vegvesen.no
+     * @param baseUrl - what base url to use. For production: https://nvdbapiles-v3.atlas.vegvesen.no
      * @param xClientName - a name describing/name of your consumer application.
      * @param xSession - something identifying this session. Used to tag a sequence of requests, such that
      *                 if there are several instances that have the same xClientName it is possible to tell
@@ -289,11 +290,17 @@ public final class ClientFactory implements AutoCloseable {
     }
 
     public RoadObjectClient createRoadObjectClient() {
+        return createRoadObjectClient(DatakatalogPolicy.defaultPolicy());
+    }
+
+     public RoadObjectClient createRoadObjectClient(DatakatalogPolicy datakatalogPolicy) {
         assertIsOpen();
-        RoadObjectClient c =
+         String version = getDatakatalogVersion().getVersion();
+
+         RoadObjectClient c =
             new RoadObjectClient(
                 baseUrl,
-                createClient(getDatakatalogVersion().getVersion())
+                createClient(config -> config.register(datakatalogPolicy.getFilter(version)))
             );
         clients.add(c);
         return c;
@@ -328,28 +335,26 @@ public final class ClientFactory implements AutoCloseable {
     }
 
     private Client createClient() {
-        return createClient(null);
+        return createClient(Function.identity());
     }
 
-    private Client createClient(String datakatalogVersion) {
-        ClientConfig config = new ClientConfig();
-        config.register(GZipEncoder.class);
-        config.register(DeflateEncoder.class);
+    private Client createClient(Function<ClientConfig, ClientConfig> clientConfigCustomizer) {
+        ClientConfig config = new ClientConfig()
+            .register(GZipEncoder.class)
+            .register(DeflateEncoder.class)
+            .connectorProvider(new ApacheConnectorProvider())
+            .property(ApacheClientProperties.CONNECTION_MANAGER, connectionManager)
+            .register(GsonMessageBodyHandler.class)
+            .register(
+                new RequestHeaderFilter(
+                    userAgent,
+                    xClientName,
+                    xSession,
+                    apiRevision,
+                    authTokens));
         if (debugLogger != null) {
             config.register(new LoggingFilter(debugLogger, true));
         }
-        config.connectorProvider(new ApacheConnectorProvider());
-
-        config.property(ApacheClientProperties.CONNECTION_MANAGER, connectionManager);
-        config.register(GsonMessageBodyHandler.class);
-        config.register(
-            new RequestHeaderFilter(
-                userAgent,
-                xClientName,
-                xSession,
-                datakatalogVersion,
-                apiRevision,
-                authTokens));
 
         if (proxyConfig != null) {
             config.property(ClientProperties.PROXY_URI, proxyConfig.getUrl());
@@ -362,7 +367,12 @@ public final class ClientFactory implements AutoCloseable {
             config.property(ClientProperties.READ_TIMEOUT, clientConfig.getReadTimeout());
             config.property(ClientProperties.CONNECT_TIMEOUT, clientConfig.getConnectTimeout());
         }
-        return ClientBuilder.newBuilder().withConfig(config).build();
+
+        return ClientBuilder.newBuilder()
+            .withConfig(
+                clientConfigCustomizer.apply(config)
+            )
+            .build();
     }
 
     @Override

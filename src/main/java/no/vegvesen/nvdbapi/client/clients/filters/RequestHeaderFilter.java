@@ -36,25 +36,21 @@ import java.util.Arrays;
 public class RequestHeaderFilter implements ClientRequestFilter {
     private static final String X_CLIENT = "X-Client";
     private static final String X_SESSION = "X-Client-Session";
-    private static final String DAKAT_VERSION = "X-Datakatalog-Versjon";
 
     private final String userAgent;
     private final String xClientName;
     private final String xsessionId;
-    private final String dakatVersion;
     private final String apiRevision;
     private final Login.AuthTokens authTokens;
 
     public RequestHeaderFilter(String userAgent,
                                String xClientName,
                                String xsessionId,
-                               String dakatVersion,
                                String apiRevision,
                                Login.AuthTokens authTokens) {
         this.userAgent = userAgent;
         this.xClientName = xClientName;
         this.xsessionId = xsessionId;
-        this.dakatVersion = dakatVersion;
         this.apiRevision = apiRevision;
         this.authTokens = authTokens;
     }
@@ -68,7 +64,6 @@ public class RequestHeaderFilter implements ClientRequestFilter {
 
         headers.putSingle(X_CLIENT, xClientName);
         headers.putSingle(X_SESSION, xsessionId);
-        if (dakatVersion != null) headers.putSingle(DAKAT_VERSION, dakatVersion);
 
         if(authTokens != null) {
             headers.putSingle(HttpHeaders.AUTHORIZATION, "Bearer " + authTokens.idToken);

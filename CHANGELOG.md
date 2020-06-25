@@ -1,4 +1,18 @@
 # Changelog for NVDB API LES V3 Client
+
+## 1.10.0
+* Clients no longer send header `X-Datakatalog-Versjon` by default.
+  When NVDB API LES V3 has a different version of Datakatalogen than the version in this header 
+  `HTTP 422: Nåværende datakatalogversjon i APIet er: {new version}` is returned.
+* It is possible to define a callback for `RoadObjectClient` that is called when Datakatalog version changes.
+  ```java
+    clientFactory.createRoadObjectClient(
+      DatakatalogPolicy.builder()
+      .(() -> { /* do something */})    
+      .build()
+    )
+  ```
+
 ## 1.9.1
 * `Intersection` and `SideArea` was missing field `trafficType`/`trafikantgruppe`.
 
