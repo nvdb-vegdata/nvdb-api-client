@@ -25,12 +25,16 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
+import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
 import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
@@ -54,6 +58,21 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
         } else {
             return RouteParser.parseDetailed(result);
         }
+    }
+
+    public RouteOnRoadNet postRouteOnRoadnet(RoadNetRouteRequest request) {
+        WebTarget target = getWebTarget();
+        Entity<Map<String, String>> entity = Entity.entity(request.getJsonObject(), MediaType.APPLICATION_JSON);
+        JsonArray result = JerseyHelper.execute(target, entity).getAsJsonArray();
+        if (request.isBriefResponse()) {
+            return RouteParser.parseBrief(result);
+        } else {
+            return RouteParser.parseDetailed(result);
+        }
+    }
+
+    private WebTarget getWebTarget() {
+        return getClient().target(endpoint());
     }
 
     private WebTarget getWebTarget(RoadNetRouteRequest request) {

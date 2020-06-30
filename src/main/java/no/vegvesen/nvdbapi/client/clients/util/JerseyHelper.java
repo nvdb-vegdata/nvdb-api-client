@@ -34,6 +34,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.WebApplicationException;
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.GenericType;
@@ -76,11 +77,23 @@ public class JerseyHelper {
     }
 
     public static JsonElement execute(WebTarget target) {
-        return execute(target, MEDIA_TYPE);
+        return execute(target, null, MEDIA_TYPE);
     }
 
-    public static JsonElement execute(WebTarget target, String mediaType) {
-        Invocation invocation = target.request().accept(mediaType).buildGet();
+    public static JsonElement execute(WebTarget target, Entity<?> entity) {
+        return execute(target, entity, MEDIA_TYPE);
+    }
+
+    public static JsonElement execute(WebTarget target, Entity<?> entity, String mediaType) {
+
+        Invocation invocation;
+
+        if (entity != null) {
+            invocation = target.request().accept(mediaType).buildPost(entity);
+        } else {
+            invocation = target.request().accept(mediaType).buildGet();
+        }
+
         try(Response response = execute(invocation, Response.class)) {
 
             if (!isSuccess(response)) {

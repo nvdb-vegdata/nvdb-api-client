@@ -7,7 +7,9 @@ import no.vegvesen.nvdbapi.client.model.roadnet.RoadUserGroup;
 import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
 
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static java.util.Collections.emptyList;
@@ -95,10 +97,6 @@ public class RoadNetRouteRequest {
         return circumferenceAroundPoints;
     }
 
-    public static Builder builder() {
-        return new Builder();
-    }
-
     public boolean usesReflinkPosition() {
         return startReflinkPosition != null;
     }
@@ -113,6 +111,28 @@ public class RoadNetRouteRequest {
 
     public boolean isBriefResponse() {
         return briefResponse;
+    }
+
+    public Map<String, String> getJsonObject() {
+        Map<String, String> jsonMap = new HashMap<>();
+
+        if (startReflinkPosition != null) jsonMap.put("start", String.valueOf(startReflinkPosition));
+        if (endReflinkPosition != null) jsonMap.put("slutt", String.valueOf(endReflinkPosition));
+        if (geometry != null) jsonMap.put("geometri", geometry.toString(false));
+        jsonMap.put("kortform", String.valueOf(briefResponse));
+        jsonMap.put("konnekteringslenker", String.valueOf(connectionLinks));
+        jsonMap.put("detaljerte_lenker", String.valueOf(detailedLinks));
+        jsonMap.put("maks_avstand", String.valueOf(distanceThreshold));
+        jsonMap.put("omkrets", String.valueOf(circumferenceAroundPoints));
+        roadRefFilter.ifPresent(s -> jsonMap.put("vegsystemreferanse", s));
+        roadUserGroup.ifPresent(userGroup -> jsonMap.put("trafikantgruppe", userGroup.getTextValue()));
+        if (pointInTime.isPresent()) jsonMap.put("tidspunkt", String.valueOf(pointInTime));
+
+        return jsonMap;
+    }
+
+    public static Builder builder() {
+        return new Builder();
     }
 
     public static class Builder {
