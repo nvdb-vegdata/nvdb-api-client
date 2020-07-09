@@ -81,6 +81,8 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
         UriBuilder path = endpoint();
 
         request.getPointInTime().ifPresent(v -> path.queryParam("tidspunkt", v));
+        request.getStartPointInTime().ifPresent(v -> path.queryParam("tidspunkt_start", v));
+        request.getEndPointInTime().ifPresent(v -> path.queryParam("tidspunkt_slutt", v));
         path.queryParam("kortform", request.isBriefResponse());
         path.queryParam("konnekteringslenker", request.isConnectionLinks());
         path.queryParam("detaljerte_lenker", request.isDetailedLinks());

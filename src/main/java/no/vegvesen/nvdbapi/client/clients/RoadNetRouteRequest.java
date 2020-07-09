@@ -31,6 +31,8 @@ public class RoadNetRouteRequest {
     private final List<TypeOfRoad> typeOfRoad;
     private final boolean briefResponse;
     private final Optional<LocalDate> pointInTime;
+    private final Optional<LocalDate> startPointInTime;
+    private final Optional<LocalDate> endPointInTime;
 
     private RoadNetRouteRequest(Builder b) {
         this.startReflinkPosition = b.startReflinkPosition;
@@ -47,10 +49,8 @@ public class RoadNetRouteRequest {
         this.roadUserGroup = b.roadUserGroup;
         this.typeOfRoad = b.typeOfRoad;
         this.pointInTime = b.pointInTime;
-    }
-
-    public Optional<LocalDate> getPointInTime() {
-        return pointInTime;
+        this.startPointInTime = b.startPointInTime;
+        this.endPointInTime = b.endPointInTime;
     }
 
     public List<TypeOfRoad> getTypeOfRoad() {
@@ -113,6 +113,18 @@ public class RoadNetRouteRequest {
         return briefResponse;
     }
 
+    public Optional<LocalDate> getPointInTime() {
+        return pointInTime;
+    }
+
+    public Optional<LocalDate> getStartPointInTime() {
+        return startPointInTime;
+    }
+
+    public Optional<LocalDate> getEndPointInTime() {
+        return endPointInTime;
+    }
+
     public Map<String, String> getJsonObject() {
         Map<String, String> jsonMap = new HashMap<>();
 
@@ -127,6 +139,8 @@ public class RoadNetRouteRequest {
         roadRefFilter.ifPresent(s -> jsonMap.put("vegsystemreferanse", s));
         roadUserGroup.ifPresent(userGroup -> jsonMap.put("trafikantgruppe", userGroup.getTextValue()));
         if (pointInTime.isPresent()) jsonMap.put("tidspunkt", String.valueOf(pointInTime));
+        if (startPointInTime.isPresent()) jsonMap.put("tidspunkt_start", String.valueOf(startPointInTime));
+        if (endPointInTime.isPresent()) jsonMap.put("tidspunkt_slutt", String.valueOf(endPointInTime));
 
         return jsonMap;
     }
@@ -150,6 +164,8 @@ public class RoadNetRouteRequest {
         private boolean detailedLinks = false;
         private List<TypeOfRoad> typeOfRoad = emptyList();
         private Optional<LocalDate> pointInTime = Optional.empty();
+        private Optional<LocalDate> startPointInTime = Optional.empty();
+        private Optional<LocalDate> endPointInTime = Optional.empty();
 
         public Builder between(RefLinkPosition startReflinkPosition,
                                RefLinkPosition endReflinkPosition) {
@@ -167,6 +183,16 @@ public class RoadNetRouteRequest {
 
         public Builder withPointInTime(LocalDate pointInTime) {
             this.pointInTime = Optional.ofNullable(pointInTime);
+            return this;
+        }
+
+        public Builder withStartPointInTime(LocalDate startPointInTime) {
+            this.startPointInTime = Optional.ofNullable(startPointInTime);
+            return this;
+        }
+
+        public Builder withEndPointInTime(LocalDate endPointInTime) {
+            this.endPointInTime = Optional.ofNullable(endPointInTime);
             return this;
         }
 
