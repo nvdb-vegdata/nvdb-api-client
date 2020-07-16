@@ -14,7 +14,7 @@ public class ListAttribute extends Attribute {
 
     @Override
     public AttributeType getAttributeType() {
-        return AttributeType.STRUCT;
+        return AttributeType.LIST;
     }
 
     public List<Attribute> getAttributes() {

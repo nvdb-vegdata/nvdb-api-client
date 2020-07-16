@@ -2,9 +2,9 @@ package no.vegvesen.nvdbapi.client.model.datakatalog;
 
 public class ListAttributeType extends AttributeType {
 
-    private Integer max;
-    private Integer min;
-    private AttributeType content;
+    private final Integer max;
+    private final Integer min;
+    private final AttributeType content;
 
     public ListAttributeType(AttributeCommonProperties props,
                              AttributeType content,
