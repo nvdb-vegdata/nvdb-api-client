@@ -50,6 +50,7 @@ public class RoadObjectRequest {
     private final String refLinkFilter;
     private final Set<RoadObjectClient.Include> includes;
     private final Set<RoadObjectClient.IncludeGeometry> includeGeometries;
+    private final Set<RoadObjectClient.IncludeAttribute> includeAttributes;
     private final List<OverlapFilter> overlapFilters;
     private final List<Integer> municipalities;
     private final List<Integer> counties;
@@ -75,6 +76,7 @@ public class RoadObjectRequest {
         projection = b.projection;
         includes = b.includes;
         includeGeometries = b.includeGeometries;
+        includeAttributes = b.includeAttributes;
         distanceTolerance = b.distanceTolerance;
         attributeFilter = b.attributeFilter;
         bbox = b.bbox;
@@ -134,6 +136,10 @@ public class RoadObjectRequest {
 
     public Set<RoadObjectClient.IncludeGeometry> getIncludeGeometries() {
         return this.includeGeometries;
+    }
+
+    public Set<RoadObjectClient.IncludeAttribute> getIncludeAttributes() {
+        return includeAttributes;
     }
 
     public List<OverlapFilter> getOverlapFilters() {
@@ -281,6 +287,7 @@ public class RoadObjectRequest {
         private Integer distanceTolerance = null;
         private Set<RoadObjectClient.Include> includes = Collections.emptySet();
         private Set<RoadObjectClient.IncludeGeometry> includeGeometries = Collections.emptySet();
+        private Set<RoadObjectClient.IncludeAttribute> includeAttributes = Collections.emptySet();
         private String attributeFilter = null;
         private String bbox = null;
         private String bpolygon = null;
@@ -366,6 +373,17 @@ public class RoadObjectRequest {
 
         public Builder withIncludeGeometries(Set<RoadObjectClient.IncludeGeometry> includes) {
             this.includeGeometries = includes;
+            return this;
+        }
+
+        public Builder withIncludeAttributes(Set<RoadObjectClient.IncludeAttribute> includeAttributes) {
+            this.includeAttributes = includeAttributes;
+            return this;
+        }
+
+
+        public Builder withIncludeAttributes(RoadObjectClient.IncludeAttribute... includeAttributes) {
+            this.includeAttributes = new HashSet<>(Arrays.asList(includeAttributes));
             return this;
         }
 

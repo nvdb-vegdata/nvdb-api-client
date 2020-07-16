@@ -1,5 +1,9 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.11.0
+* ListAttribute.getAttributeType() returned STRUCT
+* Support `?inkluder_egenskaper`
+
 ## 1.10.0
 * Clients no longer send header `X-Datakatalog-Versjon` by default.
   When NVDB API LES V3 has a different version of Datakatalogen than the version in this header 
