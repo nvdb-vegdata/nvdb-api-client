@@ -55,6 +55,7 @@ class RoadObjectRequestBuilder {
         request.getDepth().ifPresent(v -> map.putSingle("dybde", v));
         getIncludeArgument(request.getIncludes()).ifPresent(v -> map.putSingle("inkluder", v));
         getIncludeGeometriesArgument(request.getIncludeGeometries()).ifPresent(v -> map.putSingle("inkludergeometri", v));
+        getIncludeAttributesArgument(request.getIncludeAttributes()).ifPresent(v -> map.putSingle("inkluder_egenskaper", v));
         request.getAttributeFilter().ifPresent(v -> map.putSingle("egenskap", v));
         request.getBpolygon().ifPresent(v -> map.putSingle("polygon", v));
         request.getBbox().ifPresent(v -> map.putSingle("kartutsnitt", v));
@@ -113,6 +114,19 @@ class RoadObjectRequestBuilder {
         return Optional.of(values.stream()
                 .map(RoadObjectClient.IncludeGeometry::stringValue)
                 .collect(Collectors.joining(",")));
+    }
+
+    private static Optional<String> getIncludeAttributesArgument(Set<RoadObjectClient.IncludeAttribute> values) {
+        // Defaults
+        if (values == null
+            || values.isEmpty()
+            || values.equals(RoadObjectClient.IncludeAttribute.all())) {
+            return Optional.empty();
+        }
+
+        return Optional.of(values.stream()
+            .map(RoadObjectClient.IncludeAttribute::stringValue)
+            .collect(Collectors.joining(",")));
     }
 
     private static Optional<String> flatten(List<?> set) {

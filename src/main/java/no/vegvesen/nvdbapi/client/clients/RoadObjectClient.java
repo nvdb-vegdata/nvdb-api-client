@@ -303,6 +303,26 @@ public class RoadObjectClient extends AbstractJerseyClient {
         }
     }
 
+    public enum IncludeAttribute {
+        BASE("basis"),
+        ASSOCIATIONS("assosiasjon"),
+        PLACEMENTS("stedfesting"),
+        GEOMETRY("geometri");
+
+        private final String value;
+        IncludeAttribute(String stringValue) {
+            this.value = stringValue;
+        }
+
+        public String stringValue() {
+            return value;
+        }
+
+        public static Set<IncludeAttribute> all() {
+            return EnumSet.allOf(IncludeAttribute.class);
+        }
+    }
+
     public static class RoadObjectsResult extends GenericResultSet<RoadObject> {
 
         public RoadObjectsResult(WebTarget baseTarget,
