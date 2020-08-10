@@ -23,7 +23,7 @@ public class ShortDateAttribute extends Attribute {
 
     @Override
     public String getValueAsString() {
-        return value.format(DateTimeFormatter.ISO_LOCAL_DATE);
+        return value.format(DateTimeFormatter.ofPattern("--MM-dd"));
     }
 
     @Override
