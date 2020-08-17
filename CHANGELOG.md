@@ -1,6 +1,6 @@
 # Changelog for NVDB API LES V3 Client
 
-## 1.11.0
+## 1.10.1
 * ListAttribute.getAttributeType() returned STRUCT
 * Support `?inkluder_egenskaper`
 
