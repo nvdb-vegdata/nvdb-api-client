@@ -4,6 +4,8 @@
 * All `ClientFactory.create_*_Client` has been renamed to `get_*_Client`. These methods used to return a new instance each
 time, now a previously created instance is returned if one exists. 
 * Calling `close()` on a client returned from `ClientFactory.create_*_Client` removes it from the ClientFactory.
+* `roadobject.segments` has a field `retning` with possible values `MED`/`MOT`. This is the same value as the `retning`
+on the roadnet placement for the segment. 
 
 ## 1.10.1
 * ListAttribute.getAttributeType() returned STRUCT

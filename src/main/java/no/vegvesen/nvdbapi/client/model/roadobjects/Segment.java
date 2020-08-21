@@ -25,6 +25,7 @@
 
 package no.vegvesen.nvdbapi.client.model.roadobjects;
 
+import no.vegvesen.nvdbapi.client.model.Direction;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.roadnet.DetailLevel;
 import no.vegvesen.nvdbapi.client.model.roadnet.RefLinkPartType;
@@ -39,6 +40,7 @@ public class Segment {
     private final long netElementId;
     private final double startPosition;
     private final double endPosition;
+    private final Direction direction;
     private final Geometry geometry;
     private final int municipality;
     private final int county;
@@ -53,6 +55,7 @@ public class Segment {
     public Segment(long netElementId,
                    double startPosition,
                    double endPosition,
+                   Direction direction,
                    Geometry geometry,
                    int municipality,
                    int county,
@@ -66,6 +69,7 @@ public class Segment {
         this.netElementId = netElementId;
         this.startPosition = startPosition;
         this.endPosition = endPosition;
+        this.direction = direction;
         this.geometry = geometry;
         this.municipality = municipality;
         this.county = county;
@@ -100,6 +104,10 @@ public class Segment {
 
     public double getEndPosition() {
         return endPosition;
+    }
+
+    public Direction getDirection() {
+        return direction;
     }
 
     public RoadSysRef getRoadSysRef() {
@@ -138,6 +146,7 @@ public class Segment {
         return netElementId == segment.netElementId &&
                 Double.compare(segment.startPosition, startPosition) == 0 &&
                 Double.compare(segment.endPosition, endPosition) == 0 &&
+                segment.direction == this.direction &&
                 municipality == segment.municipality &&
                 county == segment.county &&
                 Objects.equals(geometry, segment.geometry) &&
@@ -152,7 +161,7 @@ public class Segment {
 
     @Override
     public int hashCode() {
-        return Objects.hash(netElementId, startPosition, endPosition, geometry, municipality, county,
+        return Objects.hash(netElementId, startPosition, endPosition, direction, geometry, municipality, county,
                 roadSysRef, length, startDate, endDate, typeOfRoad, detailLevel, refLinkPartType);
     }
 }

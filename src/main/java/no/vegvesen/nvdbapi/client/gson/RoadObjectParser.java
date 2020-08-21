@@ -136,24 +136,23 @@ public final class RoadObjectParser {
     }
 
     private static List<Association> parseParents(JsonObject obj) {
-        List<Association> parentList = Collections.emptyList();
         JsonArray parents = getArray(obj, "relasjoner.foreldre").orElse(null);
-        return getAssociations(parentList, parents);
+        return getAssociations(parents);
     }
 
     private static List<Association> parseChildren(JsonObject obj) {
-        List<Association> childrenList = Collections.emptyList();
         JsonArray children = getArray(obj, "relasjoner.barn").orElse(null);
-        return getAssociations(childrenList, children);
+        return getAssociations(children);
     }
 
-    private static List<Association> getAssociations(List<Association> parentList, JsonArray parents) {
+    private static List<Association> getAssociations(JsonArray parents) {
         if (parents != null) {
-            parentList = StreamSupport.stream(parents.spliterator(), false)
+            return StreamSupport.stream(parents.spliterator(), false)
                 .map(e -> parseAssociation(e.getAsJsonObject()))
                 .collect(toList());
+        } else {
+            return Collections.emptyList();
         }
-        return parentList;
     }
 
     static List<Attribute> parseAttributes(JsonObject obj) {
@@ -243,6 +242,7 @@ public final class RoadObjectParser {
             parseLongMember(obj, "veglenkesekvensid"),
             startPos,
             endPos,
+            Direction.from(parseStringMember(obj, "retning")),
             geo,
             municipality,
             county,
