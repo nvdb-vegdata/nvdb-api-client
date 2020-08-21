@@ -27,6 +27,7 @@ package no.vegvesen.nvdbapi.client.clients;
 
 import java.util.Map;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
@@ -34,7 +35,6 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
 import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
@@ -46,8 +46,8 @@ import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
 import no.vegvesen.nvdbapi.client.model.roadnet.route.RouteOnRoadNet;
 
 public class RoadNetRouteClient extends AbstractJerseyClient {
-    public RoadNetRouteClient(String baseUrl, Client client) {
-        super(baseUrl, client);
+    RoadNetRouteClient(String baseUrl, Client client, Consumer<AbstractJerseyClient> onClose) {
+        super(baseUrl, client, onClose);
     }
 
     public RouteOnRoadNet getRouteOnRoadnet(RoadNetRouteRequest request) {

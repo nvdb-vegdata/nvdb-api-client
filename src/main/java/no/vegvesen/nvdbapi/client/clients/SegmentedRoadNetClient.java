@@ -29,6 +29,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import javax.ws.rs.client.Client;
@@ -47,8 +48,8 @@ import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
 public class SegmentedRoadNetClient extends AbstractJerseyClient {
 
-    public SegmentedRoadNetClient(String baseUrl, Client client) {
-        super(baseUrl, client);
+    SegmentedRoadNetClient(String baseUrl, Client client, Consumer<AbstractJerseyClient> onClose) {
+        super(baseUrl, client, onClose);
     }
 
     public List<SegmentedLink> getLinks(int id) {

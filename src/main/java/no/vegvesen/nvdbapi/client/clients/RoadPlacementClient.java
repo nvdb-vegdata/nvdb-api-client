@@ -38,14 +38,15 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
 public class RoadPlacementClient extends AbstractJerseyClient {
 
-    protected RoadPlacementClient(String baseUrl, Client client) {
-        super(baseUrl, client);
+    RoadPlacementClient(String baseUrl, Client client, Consumer<AbstractJerseyClient> onClose) {
+        super(baseUrl, client, onClose);
     }
 
     /**

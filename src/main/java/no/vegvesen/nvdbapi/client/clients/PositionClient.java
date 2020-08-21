@@ -36,6 +36,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -43,8 +44,8 @@ import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
 public class PositionClient extends AbstractJerseyClient {
 
-    public PositionClient(String baseurl, Client client) {
-        super(baseurl, client);
+    PositionClient(String baseurl, Client client, Consumer<AbstractJerseyClient> onClose) {
+        super(baseurl, client, onClose);
     }
 
     public Position getPlacement(PositionRequest req) {

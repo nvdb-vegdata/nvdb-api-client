@@ -40,6 +40,7 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -53,8 +54,8 @@ public class DatakatalogClient extends AbstractJerseyClient {
 
     private Map<String, DataType> dataTypes;
 
-    protected DatakatalogClient(String baseUrl, Client client) {
-        super(baseUrl, client);
+    DatakatalogClient(String baseUrl, Client client, Consumer<AbstractJerseyClient> onClose) {
+        super(baseUrl, client, onClose);
     }
 
     public Version getVersion() {

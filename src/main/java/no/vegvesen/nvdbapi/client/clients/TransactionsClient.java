@@ -34,6 +34,7 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
 
 import java.time.format.DateTimeFormatter;
+import java.util.function.Consumer;
 
 import static java.util.Objects.nonNull;
 import static no.vegvesen.nvdbapi.client.clients.RoadNetClient.join;
@@ -41,8 +42,8 @@ import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
 public class TransactionsClient extends AbstractJerseyClient {
 
-    protected TransactionsClient(String baseUrl, Client client) {
-        super(baseUrl, client);
+    TransactionsClient(String baseUrl, Client client, Consumer<AbstractJerseyClient> onClose) {
+        super(baseUrl, client, onClose);
     }
 
     public TransacionsResult getTransactions() {

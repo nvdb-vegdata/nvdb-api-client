@@ -1,5 +1,10 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.11.0
+* All `ClientFactory.create_*_Client` has been renamed to `get_*_Client`. These methods used to return a new instance each
+time, now a previously created instance is returned if one exists. 
+* Calling `close()` on a client returned from `ClientFactory.create_*_Client` removes it from the ClientFactory.
+
 ## 1.10.1
 * ListAttribute.getAttributeType() returned STRUCT
 * Support `?inkluder_egenskaper`

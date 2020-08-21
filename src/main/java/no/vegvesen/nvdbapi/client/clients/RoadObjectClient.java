@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.StreamSupport;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Invocation;
@@ -67,8 +68,8 @@ import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 public class RoadObjectClient extends AbstractJerseyClient {
     private static final Logger logger = LoggerFactory.getLogger(RoadObjectClient.class);
 
-    protected RoadObjectClient(String baseUrl, Client client) {
-        super(baseUrl, client);
+    RoadObjectClient(String baseUrl, Client client, Consumer<AbstractJerseyClient> onClose) {
+        super(baseUrl, client, onClose);
     }
 
     public Statistics getStats(int featureTypeId, RoadObjectRequest request) {

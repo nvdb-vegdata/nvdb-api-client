@@ -31,6 +31,7 @@ import java.net.URLDecoder;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Consumer;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.core.UriBuilder;
 
@@ -42,18 +43,22 @@ abstract class AbstractJerseyClient implements AutoCloseable, Serializable {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final String baseUrl;
     private final Client client;
+    private final Consumer<AbstractJerseyClient> onClose;
     private boolean isClosed;
 
-    protected AbstractJerseyClient(String baseUrl, Client client) {
+    AbstractJerseyClient(String baseUrl,
+                         Client client,
+                         Consumer<AbstractJerseyClient> onClose) {
         this.baseUrl = baseUrl;
         this.client = client;
+        this.onClose = onClose;
     }
 
-    protected Client getClient() {
+    Client getClient() {
         return client;
     }
 
-    protected UriBuilder start() {
+    UriBuilder start() {
         return UriBuilder.fromUri(baseUrl);
     }
 
@@ -90,6 +95,7 @@ abstract class AbstractJerseyClient implements AutoCloseable, Serializable {
             return;
         }
         client.close();
+        onClose.accept(this);
         isClosed = true;
     }
 }

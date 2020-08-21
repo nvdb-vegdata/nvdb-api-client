@@ -27,6 +27,7 @@ package no.vegvesen.nvdbapi.client.clients;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
@@ -44,8 +45,8 @@ import no.vegvesen.nvdbapi.client.model.roadnet.TopologyLevel;
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
 public class RoadNetClient extends AbstractJerseyClient {
-    public RoadNetClient(String baseUrl, Client client) {
-        super(baseUrl, client);
+    RoadNetClient(String baseUrl, Client client, Consumer<AbstractJerseyClient> onClose) {
+        super(baseUrl, client, onClose);
     }
 
     public LinkSequence getLinkSequence(int id) {

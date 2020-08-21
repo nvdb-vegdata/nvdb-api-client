@@ -33,11 +33,12 @@ import no.vegvesen.nvdbapi.client.model.Status;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
+import java.util.function.Consumer;
 
 public class StatusClient extends AbstractJerseyClient {
 
-    protected StatusClient(String baseUrl, Client client) {
-        super(baseUrl, client);
+    StatusClient(String baseUrl, Client client, Consumer<AbstractJerseyClient> onClose) {
+        super(baseUrl, client, onClose);
     }
 
     public Status getStatus() {

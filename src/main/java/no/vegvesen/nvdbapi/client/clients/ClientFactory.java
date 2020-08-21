@@ -31,11 +31,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
@@ -78,7 +75,7 @@ public final class ClientFactory implements AutoCloseable {
 
     private Datakatalog datakatalog;
     private Version datakatalogVersion;
-    private final List<AbstractJerseyClient> clients;
+    private final Map<Class<? extends AbstractJerseyClient>, AbstractJerseyClient> clients;
     private boolean isClosed;
     private final Logger debugLogger;
     private final PoolingHttpClientConnectionManager connectionManager;
@@ -98,7 +95,7 @@ public final class ClientFactory implements AutoCloseable {
      * @param clientConfiguration - a client configuration for setting timeouts
      */
     public ClientFactory(String baseUrl, String xClientName, ClientConfiguration clientConfiguration) {
-       this(baseUrl, xClientName, null, null, clientConfiguration);
+        this(baseUrl, xClientName, null, null, clientConfiguration);
     }
 
     /**
@@ -149,7 +146,7 @@ public final class ClientFactory implements AutoCloseable {
         this.xSession = Optional.ofNullable(xSession).orElseGet(this::getOrCreateSessionId);
         this.userAgent = getUserAgent();
         this.debugLogger = LoggerFactory.getLogger("no.vegvesen.nvdbapi.Client");
-        this.clients = new ArrayList<>();
+        this.clients = new HashMap<>();
         this.connectionManager = new PoolingHttpClientConnectionManager();
         this.proxyConfig = proxyConfig;
         this.clientConfig = clientConfig;
@@ -192,15 +189,7 @@ public final class ClientFactory implements AutoCloseable {
     }
 
     private AuthClient getAuthClient() {
-        return clients.stream()
-            .filter(c -> c.getClass().equals(AuthClient.class))
-            .map(AuthClient.class::cast)
-            .findFirst()
-            .orElseGet(() -> {
-                AuthClient client = new AuthClient(baseUrl, createClient());
-                clients.add(client);
-                return client;
-            });
+        return getOrCreateClient(AuthClient.class, AuthClient::new);
     }
 
     /**
@@ -234,25 +223,25 @@ public final class ClientFactory implements AutoCloseable {
         return refresh(this.authTokens.refreshToken);
     }
 
-    public RoadNetClient createRoadNetService() {
-        assertIsOpen();
-        RoadNetClient c = new RoadNetClient(baseUrl, createClient());
-        clients.add(c);
-        return c;
+    /**
+     * @return a new instance of {@code RoadNetClient}, or existing if one exists
+     */
+    public RoadNetClient getRoadNetService() {
+        return getOrCreateClient(RoadNetClient.class, RoadNetClient::new);
     }
 
-    public SegmentedRoadNetClient createSegmentedRoadNetService() {
-        assertIsOpen();
-        SegmentedRoadNetClient c = new SegmentedRoadNetClient(baseUrl, createClient());
-        clients.add(c);
-        return c;
+    /**
+     * @return a new instance of {@code SegmentedRoadNetClient}, or existing if one exists
+     */
+    public SegmentedRoadNetClient getSegmentedRoadNetService() {
+        return getOrCreateClient(SegmentedRoadNetClient.class, SegmentedRoadNetClient::new);
     }
 
-    public RoadNetRouteClient createRoadNetRouteClient() {
-        assertIsOpen();
-        RoadNetRouteClient c = new RoadNetRouteClient(baseUrl, createClient());
-        clients.add(c);
-        return c;
+    /**
+     * @return a new instance of {@code RoadNetRouteClient}, or existing if one exists
+     */
+    public RoadNetRouteClient getRoadNetRouteClient() {
+        return getOrCreateClient(RoadNetRouteClient.class, RoadNetRouteClient::new);
     }
 
     private void assertIsOpen() {
@@ -261,77 +250,80 @@ public final class ClientFactory implements AutoCloseable {
         }
     }
 
-    public DatakatalogClient createDatakatalogClient() {
-        assertIsOpen();
-        DatakatalogClient c = new DatakatalogClient(baseUrl, createClient());
-        clients.add(c);
-        return c;
+    /**
+     * @return a new instance of {@code DatakatalogClient}, or existing if one exists
+     */
+    public DatakatalogClient getDatakatalogClient() {
+        return getOrCreateClient(DatakatalogClient.class, DatakatalogClient::new);
     }
 
     public Datakatalog getDatakatalog() {
         if (datakatalog == null) {
-            datakatalog = createDatakatalogClient().getDatakalog();
+            datakatalog = getDatakatalogClient().getDatakalog();
         }
         return datakatalog;
     }
 
     public Version getDatakatalogVersion() {
         if (datakatalogVersion == null) {
-            datakatalogVersion = createDatakatalogClient().getVersion();
+            datakatalogVersion = getDatakatalogClient().getVersion();
         }
         return datakatalogVersion;
     }
 
-    public AreaClient createAreaClient() {
-        assertIsOpen();
-        AreaClient c = new AreaClient(baseUrl, createClient());
-        clients.add(c);
-        return c;
+    /**
+     * @return a new instance of {@code AreaClient}, or existing if one exists
+     */
+    public AreaClient getAreaClient() {
+        return getOrCreateClient(AreaClient.class, AreaClient::new);
     }
 
-    public RoadObjectClient createRoadObjectClient() {
-        return createRoadObjectClient(DatakatalogPolicy.defaultPolicy());
+    /**
+     * @return a new instance of {@code RoadObjectClient}, or existing if one exists
+     */
+    public RoadObjectClient getRoadObjectClient() {
+        return getRoadObjectClient(DatakatalogPolicy.defaultPolicy());
     }
 
-     public RoadObjectClient createRoadObjectClient(DatakatalogPolicy datakatalogPolicy) {
-        assertIsOpen();
-         String version = getDatakatalogVersion().getVersion();
-
-         RoadObjectClient c =
-            new RoadObjectClient(
-                baseUrl,
-                createClient(config -> config.register(datakatalogPolicy.getFilter(version)))
-            );
-        clients.add(c);
-        return c;
+    /**
+     * @param datakatalogPolicy How to handle that the Datakatalog is updated.
+     * @return a new instance of {@code RoadObjectClient}, or existing if one exists
+     */
+    public RoadObjectClient getRoadObjectClient(DatakatalogPolicy datakatalogPolicy) {
+        String version = getDatakatalogVersion().getVersion();
+        return getOrCreateClient(
+            RoadObjectClient.class,
+            RoadObjectClient::new,
+            config -> config.register(datakatalogPolicy.getFilter(version))
+        );
     }
 
-    public PositionClient createPlacementClient() {
-        assertIsOpen();
-        PositionClient c = new PositionClient(baseUrl, createClient());
-        clients.add(c);
-        return c;
+    /**
+     * @return a new instance of {@code PositionClient}, or existing if one exists
+     */
+    public PositionClient getPlacementClient() {
+        return getOrCreateClient(PositionClient.class, PositionClient::new);
     }
 
-    public RoadPlacementClient createRoadPlacementClient() {
-        assertIsOpen();
-        RoadPlacementClient c = new RoadPlacementClient(baseUrl, createClient());
-        clients.add(c);
-        return c;
+    /**
+     * @return a new instance of {@code RoadPlacementClient}, or existing if one exists
+     */
+    public RoadPlacementClient getRoadPlacementClient() {
+        return getOrCreateClient(RoadPlacementClient.class, RoadPlacementClient::new);
     }
 
-    public StatusClient createStatusClient() {
-        assertIsOpen();
-        StatusClient c = new StatusClient(baseUrl, createClient());
-        clients.add(c);
-        return c;
+    /**
+     * @return a new instance of {@code StatusClient}, or existing if one exists
+     */
+    public StatusClient getStatusClient() {
+        return getOrCreateClient(StatusClient.class, StatusClient::new);
     }
 
-    public TransactionsClient createTransactionsClient(){
-        assertIsOpen();
-        TransactionsClient c = new TransactionsClient(baseUrl, createClient());
-        clients.add(c);
-        return c;
+    /**
+     * @return a new instance of {@code TransactionsClient}, or existing if one exists
+     */
+    public TransactionsClient getTransactionsClient(){
+        return getOrCreateClient(TransactionsClient.class, TransactionsClient::new);
     }
 
     private Client createClient() {
@@ -377,15 +369,39 @@ public final class ClientFactory implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        if (!clients.isEmpty()) {
-            for (AbstractJerseyClient client : clients) {
-                if (!client.isClosed()) {
-                    client.close();
-                }
+        for (AbstractJerseyClient client : clients.values()) {
+            if (!client.isClosed()) {
+                client.close();
             }
         }
         connectionManager.close();
         isClosed = true;
+    }
+
+    private <T extends AbstractJerseyClient> T getOrCreateClient(
+        Class<T> type,
+        ClientConstructor<T> clientConstructor) {
+        return getOrCreateClient(type, clientConstructor, Function.identity());
+    }
+
+    @SuppressWarnings("unchecked")
+    private <T extends AbstractJerseyClient> T getOrCreateClient(
+        Class<T> type,
+        ClientConstructor<T> clientConstructor,
+        Function<ClientConfig, ClientConfig> clientConfigCustomizer) {
+        assertIsOpen();
+        return (T) clients.computeIfAbsent(
+            type,
+            aClass -> clientConstructor.apply(
+                baseUrl,
+                createClient(clientConfigCustomizer),
+                c -> clients.remove(type))
+        );
+    }
+
+    @FunctionalInterface
+    private interface ClientConstructor<C extends AbstractJerseyClient> {
+        C apply(String url, Client client, Consumer<AbstractJerseyClient> onClose);
     }
 
     private String getClientVersion() {

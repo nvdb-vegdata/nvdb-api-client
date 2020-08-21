@@ -7,13 +7,14 @@ import javax.ws.rs.core.UriBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 import static java.util.Collections.singletonMap;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
 class AuthClient extends AbstractJerseyClient {
-    protected AuthClient(String baseUrl, Client client) {
-        super(baseUrl, client);
+    AuthClient(String baseUrl, Client client, Consumer<AbstractJerseyClient> onClose) {
+        super(baseUrl, client, onClose);
     }
 
     public Login login(String username, String password) {

@@ -12,7 +12,7 @@ public class TransactionsClientTest {
         Stopwatch started = Stopwatch.createStarted();
         ClientFactory clientFactory = new ClientFactory("https://nvdbw01.kantega.no/nvdb/api/v3",
                 "nvdbapi-client-test");
-        TransactionsClient roadNetService = clientFactory.createTransactionsClient();
+        TransactionsClient roadNetService = clientFactory.getTransactionsClient();
 
         TransactionsClient.AsyncTransacionsResult result = roadNetService
                 .getTransactionsAsync(TransactionsRequest.DEFAULT);

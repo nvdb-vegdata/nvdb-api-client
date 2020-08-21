@@ -27,6 +27,7 @@ package no.vegvesen.nvdbapi.client.clients;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -50,8 +51,8 @@ import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
 public class AreaClient extends AbstractJerseyClient {
 
-    protected AreaClient(String baseUrl, Client client) {
-        super(baseUrl, client);
+    AreaClient(String baseUrl, Client client, Consumer<AbstractJerseyClient> onClose) {
+        super(baseUrl, client, onClose);
     }
 
     public List<Municipality> getMunicipalities(boolean includeBoundingBox, boolean includeCenterPoint, boolean includeObjectLink, Projection projection) {

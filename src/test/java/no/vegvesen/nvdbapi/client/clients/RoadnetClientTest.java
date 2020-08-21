@@ -12,7 +12,7 @@ public class RoadnetClientTest {
         Stopwatch started = Stopwatch.createStarted();
         ClientFactory clientFactory = new ClientFactory("https://nvdbw01.kantega.no/nvdb/api/v3",
              "nvdbapi-client-test");
-        SegmentedRoadNetClient segmentedRoadNetService = clientFactory.createSegmentedRoadNetService();
+        SegmentedRoadNetClient segmentedRoadNetService = clientFactory.getSegmentedRoadNetService();
 
         SegmentedRoadNetClient.AsyncSegmentedLinkResult result = segmentedRoadNetService.getLinksAsync(
             RoadNetRequest
