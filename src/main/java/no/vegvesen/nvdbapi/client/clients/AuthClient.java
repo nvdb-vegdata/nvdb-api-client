@@ -18,13 +18,17 @@ class AuthClient extends AbstractJerseyClient {
     }
 
     public Login login(String username, String password) {
+        return login(username, password, "employee");
+    }
+
+    public Login login(String username, String password, String userType) {
         UriBuilder path = start()
             .path("auth")
             .path("login");
         WebTarget target = getClient().target(path);
         try {
             Login.AuthTokens authTokens = target.request()
-                .post(Entity.entity(credentialsJson(username, password), APPLICATION_JSON_TYPE), Login.AuthTokens.class);
+                    .post(Entity.entity(credentialsJson(username, password, userType), APPLICATION_JSON_TYPE), Login.AuthTokens.class);
             return Login.success(authTokens);
         } catch (Exception e) {
             return Login.failed(e.getMessage());
@@ -51,10 +55,11 @@ class AuthClient extends AbstractJerseyClient {
     }
 
 
-    private Map<String, String> credentialsJson(String username, String password) {
+    private Map<String, String> credentialsJson(String username, String password, String userType) {
         Map<String, String> credentials = new HashMap<>();
         credentials.put("username", username);
         credentials.put("password", password);
+        credentials.put("user_type", userType);
         return credentials;
     }
 }
