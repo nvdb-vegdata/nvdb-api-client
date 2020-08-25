@@ -182,6 +182,27 @@ public final class ClientFactory implements AutoCloseable {
     }
 
     /**
+     * Variant authentication for service accounts using username and password.
+     * If successful the {@code AuthTokens} recieved is used in followinf calls.
+     * @param username -
+     * @param password -
+     * @return {@code Login} containing either {@code AuthTokens} if successful or {@code Failure} if not
+     */
+    public Login serviceLogin(String username, String password) {
+        try {
+            AuthClient client = getAuthClient();
+            Login login = client.login(username, password,"serviceaccount");
+            if(login.isSuccessful()) {
+                this.authTokens = login.authTokens;
+            }
+            return login;
+        } catch (Exception e) {
+            debugLogger.error("Login failed", e);
+            return Login.failed(e.getMessage());
+        }
+    }
+
+    /**
      * clear the ClientFactory's auth tokens.
      */
     public void logout() {
