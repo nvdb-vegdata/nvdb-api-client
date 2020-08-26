@@ -3,7 +3,6 @@ package no.vegvesen.nvdbapi.client.clients;
 import com.google.gson.*;
 import com.google.gson.internal.Streams;
 import com.google.gson.stream.JsonReader;
-import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
 import no.vegvesen.nvdbapi.client.exceptions.ClientException;
 import no.vegvesen.nvdbapi.client.gson.GsonUtil;
 import no.vegvesen.nvdbapi.client.model.Page;

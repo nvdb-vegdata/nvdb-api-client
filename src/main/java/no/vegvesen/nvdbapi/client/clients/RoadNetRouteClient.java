@@ -38,7 +38,6 @@ import javax.ws.rs.core.UriBuilder;
 import com.google.gson.JsonArray;
 
 import com.google.gson.JsonObject;
-import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
 import no.vegvesen.nvdbapi.client.gson.RouteParser;
 import no.vegvesen.nvdbapi.client.model.Coordinates;
 import no.vegvesen.nvdbapi.client.model.Geometry;

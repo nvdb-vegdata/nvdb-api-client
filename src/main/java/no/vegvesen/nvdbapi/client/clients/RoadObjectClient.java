@@ -59,10 +59,10 @@ import static java.util.stream.Collectors.toList;
 
 import static no.vegvesen.nvdbapi.client.clients.RoadObjectRequest.DEFAULT;
 import static no.vegvesen.nvdbapi.client.clients.RoadObjectRequestBuilder.convert;
-import static no.vegvesen.nvdbapi.client.clients.util.JerseyHelper.MEDIA_TYPE;
-import static no.vegvesen.nvdbapi.client.clients.util.JerseyHelper.execute;
-import static no.vegvesen.nvdbapi.client.clients.util.JerseyHelper.isSuccess;
-import static no.vegvesen.nvdbapi.client.clients.util.JerseyHelper.parseError;
+import static no.vegvesen.nvdbapi.client.clients.JerseyHelper.MEDIA_TYPE;
+import static no.vegvesen.nvdbapi.client.clients.JerseyHelper.execute;
+import static no.vegvesen.nvdbapi.client.clients.JerseyHelper.isSuccess;
+import static no.vegvesen.nvdbapi.client.clients.JerseyHelper.parseError;
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
 public class RoadObjectClient extends AbstractJerseyClient {

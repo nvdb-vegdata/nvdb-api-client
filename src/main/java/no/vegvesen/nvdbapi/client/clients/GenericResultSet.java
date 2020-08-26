@@ -26,7 +26,6 @@
 package no.vegvesen.nvdbapi.client.clients;
 
 import com.google.gson.*;
-import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
 import no.vegvesen.nvdbapi.client.exceptions.ClientException;
 import no.vegvesen.nvdbapi.client.gson.GsonUtil;
 import no.vegvesen.nvdbapi.client.model.Page;

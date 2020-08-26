@@ -73,7 +73,7 @@ public final class ClientFactory implements AutoCloseable {
     private final String xClientName;
     private final String xSession;
 
-    private static final String apiRevision = "application/vnd.vegvesen.nvdb-v3-rev1+json";
+    static final String apiRevision = "application/vnd.vegvesen.nvdb-v3-rev1+json";
     private final ProxyConfig proxyConfig;
     private final ClientConfiguration clientConfig;
 

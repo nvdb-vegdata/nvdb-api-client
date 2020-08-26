@@ -27,7 +27,6 @@ package no.vegvesen.nvdbapi.client.clients;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
 import no.vegvesen.nvdbapi.client.gson.PlacementParser;
 import no.vegvesen.nvdbapi.client.model.Position;
 

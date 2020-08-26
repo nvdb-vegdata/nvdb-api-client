@@ -38,7 +38,6 @@ import javax.ws.rs.core.UriBuilder;
 
 import com.google.gson.JsonElement;
 
-import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
 import no.vegvesen.nvdbapi.client.gson.SegmentedLinkParser;
 import no.vegvesen.nvdbapi.client.model.Page;
 import no.vegvesen.nvdbapi.client.model.roadnet.SegmentedLink;

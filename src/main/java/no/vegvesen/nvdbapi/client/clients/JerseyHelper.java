@@ -23,7 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package no.vegvesen.nvdbapi.client.clients.util;
+package no.vegvesen.nvdbapi.client.clients;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -51,23 +51,23 @@ import java.util.Optional;
 import static javax.ws.rs.core.HttpHeaders.IF_NONE_MATCH;
 import static no.vegvesen.nvdbapi.client.clients.ClientFactory.*;
 
-public class JerseyHelper {
+class JerseyHelper {
     private static final Logger logger = LoggerFactory.getLogger(JerseyHelper.class);
-    public static final String MEDIA_TYPE = "application/vnd.vegvesen.nvdb-v3+json";
+    static final String MEDIA_TYPE = apiRevision;
 
     private JerseyHelper() {}
 
-    public static boolean isSuccess(Response response) {
+    static boolean isSuccess(Response response) {
         return 200 <= response.getStatus() && response.getStatus() < 300;
     }
 
-    public static ClientException parseError(Response response) {
+    static ClientException parseError(Response response) {
         List<ApiError> errors = JsonExceptionParser.parse(response.readEntity(String.class));
         String requestId = response.getHeaderString("X-REQUEST-ID");
         return new ClientException(response.getStatus(), requestId, errors);
     }
 
-    public static <T> T execute(Invocation inv, Class<T> responseClass) {
+    static <T> T execute(Invocation inv, Class<T> responseClass) {
         try {
             return inv.invoke(responseClass);
         } catch (WebApplicationException ex) {
@@ -76,15 +76,15 @@ public class JerseyHelper {
         }
     }
 
-    public static JsonElement execute(WebTarget target) {
+    static JsonElement execute(WebTarget target) {
         return execute(target, null, MEDIA_TYPE);
     }
 
-    public static JsonElement execute(WebTarget target, Entity<?> entity) {
+    static JsonElement execute(WebTarget target, Entity<?> entity) {
         return execute(target, entity, MEDIA_TYPE);
     }
 
-    public static JsonElement execute(WebTarget target, Entity<?> entity, String mediaType) {
+    static JsonElement execute(WebTarget target, Entity<?> entity, String mediaType) {
 
         Invocation invocation;
 
@@ -109,7 +109,7 @@ public class JerseyHelper {
         }
     }
 
-    public static <T> T execute(Invocation inv, GenericType<T> responseType) {
+    static <T> T execute(Invocation inv, GenericType<T> responseType) {
         try {
             return inv.invoke(responseType);
         } catch (WebApplicationException ex) {
@@ -118,7 +118,7 @@ public class JerseyHelper {
         }
     }
 
-    public static Optional<JsonElement> executeOptional(WebTarget target) {
+    static Optional<JsonElement> executeOptional(WebTarget target) {
         Invocation.Builder request = target.request();
         URI uri = target.getUri();
         String path = uri.getPath() + uri.getQuery();
