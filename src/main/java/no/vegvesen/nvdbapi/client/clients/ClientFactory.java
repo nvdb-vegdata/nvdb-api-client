@@ -376,7 +376,7 @@ public final class ClientFactory implements AutoCloseable {
                     xClientName,
                     xSession,
                     apiRevision,
-                    authTokens));
+                    () -> authTokens));
         if (debugLogger != null) {
             config.register(new LoggingFilter(debugLogger, true));
         }

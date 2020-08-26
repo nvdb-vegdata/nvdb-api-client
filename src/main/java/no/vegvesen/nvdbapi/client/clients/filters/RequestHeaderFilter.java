@@ -32,6 +32,7 @@ import javax.ws.rs.client.ClientRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MultivaluedMap;
 import java.util.Arrays;
+import java.util.function.Supplier;
 
 public class RequestHeaderFilter implements ClientRequestFilter {
     private static final String X_CLIENT = "X-Client";
@@ -41,18 +42,18 @@ public class RequestHeaderFilter implements ClientRequestFilter {
     private final String xClientName;
     private final String xsessionId;
     private final String apiRevision;
-    private final Login.AuthTokens authTokens;
+    private final Supplier<Login.AuthTokens> authTokensProvider;
 
     public RequestHeaderFilter(String userAgent,
                                String xClientName,
                                String xsessionId,
                                String apiRevision,
-                               Login.AuthTokens authTokens) {
+                               Supplier<Login.AuthTokens> authTokensProvider) {
         this.userAgent = userAgent;
         this.xClientName = xClientName;
         this.xsessionId = xsessionId;
         this.apiRevision = apiRevision;
-        this.authTokens = authTokens;
+        this.authTokensProvider = authTokensProvider;
     }
 
     @Override
@@ -65,6 +66,7 @@ public class RequestHeaderFilter implements ClientRequestFilter {
         headers.putSingle(X_CLIENT, xClientName);
         headers.putSingle(X_SESSION, xsessionId);
 
+        Login.AuthTokens authTokens = authTokensProvider.get();
         if(authTokens != null) {
             headers.putSingle(HttpHeaders.AUTHORIZATION, "Bearer " + authTokens.idToken);
         }

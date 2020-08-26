@@ -8,6 +8,7 @@ time, now a previously created instance is returned if one exists.
 on the roadnet placement for the segment. 
 * `ClientFactory.serviceLogin(username, password)` added for authenticating with service account.
 * Fix that closing a client cause all other clients to fail with message about closed connection pool.
+* Existing clients use updated login information. 
 
 ## 1.10.1
 * ListAttribute.getAttributeType() returned STRUCT
