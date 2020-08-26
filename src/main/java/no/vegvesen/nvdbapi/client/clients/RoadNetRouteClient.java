@@ -37,6 +37,7 @@ import javax.ws.rs.core.UriBuilder;
 
 import com.google.gson.JsonArray;
 
+import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.clients.util.JerseyHelper;
 import no.vegvesen.nvdbapi.client.gson.RouteParser;
 import no.vegvesen.nvdbapi.client.model.Coordinates;
@@ -52,22 +53,24 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
 
     public RouteOnRoadNet getRouteOnRoadnet(RoadNetRouteRequest request) {
         WebTarget target = getWebTarget(request);
-        JsonArray result = JerseyHelper.execute(target).getAsJsonArray();
+        JsonObject result = JerseyHelper.execute(target).getAsJsonObject();
+        JsonArray segmenter = result.getAsJsonArray("vegnettsrutesegmenter");
         if (request.isBriefResponse()) {
-            return RouteParser.parseBrief(result);
+            return RouteParser.parseBrief(segmenter);
         } else {
-            return RouteParser.parseDetailed(result);
+            return RouteParser.parseDetailed(segmenter);
         }
     }
 
     public RouteOnRoadNet postRouteOnRoadnet(RoadNetRouteRequest request) {
         WebTarget target = getWebTarget();
         Entity<Map<String, String>> entity = Entity.entity(request.getJsonObject(), MediaType.APPLICATION_JSON);
-        JsonArray result = JerseyHelper.execute(target, entity).getAsJsonArray();
+        JsonObject result = JerseyHelper.execute(target, entity).getAsJsonObject();
+        JsonArray segmenter = result.getAsJsonArray("vegnettsrutesegmenter");
         if (request.isBriefResponse()) {
-            return RouteParser.parseBrief(result);
+            return RouteParser.parseBrief(segmenter);
         } else {
-            return RouteParser.parseDetailed(result);
+            return RouteParser.parseDetailed(segmenter);
         }
     }
 
