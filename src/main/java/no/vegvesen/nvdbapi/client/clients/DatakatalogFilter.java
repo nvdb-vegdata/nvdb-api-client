@@ -1,6 +1,5 @@
-package no.vegvesen.nvdbapi.client.clients.filters;
+package no.vegvesen.nvdbapi.client.clients;
 
-import no.vegvesen.nvdbapi.client.clients.DatakatalogUpdateCallback;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -12,7 +11,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import java.io.IOException;
 import java.util.Objects;
 
-public class DatakatalogFilter implements ClientRequestFilter, ClientResponseFilter {
+class DatakatalogFilter implements ClientRequestFilter, ClientResponseFilter {
     private static final Logger log = LoggerFactory.getLogger("no.vegvesen.nvdbapi.Client.Datakatalog");
     private static final String DAKAT_VERSION = "X-Datakatalog-Versjon";
     private final boolean sendDatakatalogVersion;
@@ -20,7 +19,7 @@ public class DatakatalogFilter implements ClientRequestFilter, ClientResponseFil
 
     private String dakatVersion;
 
-    public DatakatalogFilter(String dakatVersion,
+    DatakatalogFilter(String dakatVersion,
                              boolean sendDatakatalogVersion,
                              DatakatalogUpdateCallback callback) {
         this.dakatVersion = dakatVersion;

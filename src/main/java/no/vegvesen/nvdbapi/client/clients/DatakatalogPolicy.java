@@ -1,7 +1,5 @@
 package no.vegvesen.nvdbapi.client.clients;
 
-import no.vegvesen.nvdbapi.client.clients.filters.DatakatalogFilter;
-
 public class DatakatalogPolicy {
     private final boolean sendDakatHeader;
     private final DatakatalogUpdateCallback callback;
