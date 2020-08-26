@@ -23,9 +23,7 @@
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package no.vegvesen.nvdbapi.client.clients.filters;
-
-import no.vegvesen.nvdbapi.client.clients.Login;
+package no.vegvesen.nvdbapi.client.clients;
 
 import javax.ws.rs.client.ClientRequestContext;
 import javax.ws.rs.client.ClientRequestFilter;
@@ -34,7 +32,7 @@ import javax.ws.rs.core.MultivaluedMap;
 import java.util.Arrays;
 import java.util.function.Supplier;
 
-public class RequestHeaderFilter implements ClientRequestFilter {
+class RequestHeaderFilter implements ClientRequestFilter {
     private static final String X_CLIENT = "X-Client";
     private static final String X_SESSION = "X-Client-Session";
 
@@ -44,7 +42,7 @@ public class RequestHeaderFilter implements ClientRequestFilter {
     private final String apiRevision;
     private final Supplier<Login.AuthTokens> authTokensProvider;
 
-    public RequestHeaderFilter(String userAgent,
+    RequestHeaderFilter(String userAgent,
                                String xClientName,
                                String xsessionId,
                                String apiRevision,

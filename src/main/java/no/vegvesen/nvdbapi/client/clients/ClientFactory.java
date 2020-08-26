@@ -58,7 +58,6 @@ import org.slf4j.LoggerFactory;
 
 import no.vegvesen.nvdbapi.client.ClientConfiguration;
 import no.vegvesen.nvdbapi.client.ProxyConfig;
-import no.vegvesen.nvdbapi.client.clients.filters.RequestHeaderFilter;
 import no.vegvesen.nvdbapi.client.gson.GsonMessageBodyHandler;
 import no.vegvesen.nvdbapi.client.model.datakatalog.Datakatalog;
 import no.vegvesen.nvdbapi.client.model.datakatalog.Version;
