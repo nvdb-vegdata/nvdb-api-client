@@ -26,6 +26,7 @@
 package no.vegvesen.nvdbapi.client.model.areas;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 
 public final class Route implements Serializable {
@@ -35,13 +36,18 @@ public final class Route implements Serializable {
     private final String name;
     private final String description;
     private final String period;
+    private final List<Integer> counties;
+    private final List<Integer> municipalities;
 
-    public Route(long id, String number, String name, String description, String period) {
+    public Route(long id, String number, String name, String description, String period,
+                 List<Integer> counties, List<Integer> municipalities) {
         this.id = id;
         this.number = number;
         this.name = name;
         this.description = description;
         this.period = period;
+        this.counties = counties;
+        this.municipalities = municipalities;
     }
 
     public long getId() {
@@ -64,20 +70,30 @@ public final class Route implements Serializable {
         return period;
     }
 
+    public List<Integer> getCounties() {
+        return counties;
+    }
+
+    public List<Integer> getMunicipalities() {
+        return municipalities;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Route route = (Route) o;
-        return Objects.equals(id, route.id) &&
-                Objects.equals(number, route.number) &&
-                Objects.equals(name, route.name) &&
-                Objects.equals(description, route.description) &&
-                Objects.equals(period, route.period);
+        return id == route.id &&
+            Objects.equals(number, route.number) &&
+            Objects.equals(name, route.name) &&
+            Objects.equals(description, route.description) &&
+            Objects.equals(period, route.period) &&
+            Objects.equals(counties, route.counties) &&
+            Objects.equals(municipalities, route.municipalities);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, number, name, description, period);
+        return Objects.hash(id, number, name, description, period, counties, municipalities);
     }
 }

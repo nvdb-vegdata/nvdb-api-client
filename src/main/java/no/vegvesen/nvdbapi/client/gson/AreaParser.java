@@ -29,9 +29,10 @@ import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.areas.*;
 
-import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseIntMember;
-import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseLongMember;
-import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseStringMember;
+import java.util.List;
+
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseIntListMember;
 
 public final class AreaParser {
 
@@ -69,7 +70,9 @@ public final class AreaParser {
                 parseStringMember(obj, "nummer"),
                 parseStringMember(obj, "navn"),
                 parseStringMember(obj, "beskrivelse"),
-                parseStringMember(obj, "periode"));
+                parseStringMember(obj, "periode"),
+                parseIntListMember(obj, "fylker"),
+                parseIntListMember(obj, "kommuner"));
     }
 
     public static ContractArea parseContractArea(JsonObject obj) {
@@ -77,7 +80,10 @@ public final class AreaParser {
                 parseLongMember(obj, "id"),
                 parseIntMember(obj, "nummer"),
                 parseStringMember(obj, "navn"),
-                parseStringMember(obj, "type"));
+                parseStringMember(obj, "type"),
+                parseIntListMember(obj, "fylker"),
+                parseIntListMember(obj, "kommuner")
+        );
     }
 
     private static RoadObjectId parseId(JsonObject obj) {
