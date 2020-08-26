@@ -33,6 +33,7 @@ public class DatakatalogPolicy {
          * NVDB API LES has a mechanism that checks header «X-Datakatalog-Versjon», and if it differs from the
          * current version of Datakatalogen, returns HTTP 422: Nåværende datakatalogversjon i APIet er: {new version}
          * @param sendDakatHeader - true if header «X-Datakatalog-Versjon» should be sent.
+         * @return this
          */
         public Builder sendDakatHeader(boolean sendDakatHeader) {
             this.sendDakatHeader = sendDakatHeader;
@@ -42,6 +43,7 @@ public class DatakatalogPolicy {
         /**
          * The given callback is called when the version of Datakatalogen has changed.
          * @param callback when Datakatalog version has changed.
+         * @return this
          */
         public Builder onDatakatalogUpdateCallback(DatakatalogUpdateCallback callback) {
             this.callback = callback;
