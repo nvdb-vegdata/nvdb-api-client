@@ -7,6 +7,7 @@ time, now a previously created instance is returned if one exists.
 * `roadobject.segments` has a field `retning` with possible values `MED`/`MOT`. This is the same value as the `retning`
 on the roadnet placement for the segment. 
 * `ClientFactory.serviceLogin(username, password)` added for authenticating with service account.
+* Fix that closing a client cause all other clients to fail with message about closed connection pool.
 
 ## 1.10.1
 * ListAttribute.getAttributeType() returned STRUCT

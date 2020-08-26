@@ -25,9 +25,11 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -42,7 +44,9 @@ import javax.ws.rs.client.ClientBuilder;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import com.google.gson.stream.JsonReader;
+import org.apache.http.conn.HttpClientConnectionManager;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.pool.ConnPoolControl;
 import org.glassfish.jersey.apache.connector.ApacheClientProperties;
 import org.glassfish.jersey.apache.connector.ApacheConnectorProvider;
 import org.glassfish.jersey.client.ClientConfig;
@@ -79,6 +83,13 @@ public final class ClientFactory implements AutoCloseable {
     private boolean isClosed;
     private final Logger debugLogger;
     private final PoolingHttpClientConnectionManager connectionManager;
+    /*
+     * Each of or Clients have their own {@code javax.ws.rs.client.Client}, that share a
+     * {@code org.apache.http.impl.conn.PoolingHttpClientConnectionManager}.
+     * If {@code close()} is called on our client, the connection manager is shutdown.
+     */
+    private final HttpClientConnectionManager notCloseableConnectionManager;
+
     private Login.AuthTokens authTokens;
 
     /**
@@ -148,6 +159,7 @@ public final class ClientFactory implements AutoCloseable {
         this.debugLogger = LoggerFactory.getLogger("no.vegvesen.nvdbapi.Client");
         this.clients = new HashMap<>();
         this.connectionManager = new PoolingHttpClientConnectionManager();
+        this.notCloseableConnectionManager = getConnectionManager(connectionManager);
         this.proxyConfig = proxyConfig;
         this.clientConfig = clientConfig;
     }
@@ -356,7 +368,7 @@ public final class ClientFactory implements AutoCloseable {
             .register(GZipEncoder.class)
             .register(DeflateEncoder.class)
             .connectorProvider(new ApacheConnectorProvider())
-            .property(ApacheClientProperties.CONNECTION_MANAGER, connectionManager)
+            .property(ApacheClientProperties.CONNECTION_MANAGER, notCloseableConnectionManager)
             .register(GsonMessageBodyHandler.class)
             .register(
                 new RequestHeaderFilter(
@@ -501,5 +513,18 @@ public final class ClientFactory implements AutoCloseable {
         } catch (IOException e) {
             LoggerFactory.getLogger(ClientFactory.class).error("Error setting etag for {}", resource, e);
         }
+    }
+
+    private static HttpClientConnectionManager getConnectionManager(PoolingHttpClientConnectionManager connectionManager) {
+        return (HttpClientConnectionManager) Proxy.newProxyInstance(
+            PoolingHttpClientConnectionManager.class.getClassLoader(),
+            new Class[]{HttpClientConnectionManager.class, ConnPoolControl.class, Closeable.class},
+            (proxy, method, args) -> {
+                if(method.getName().equals("shutdown")) {
+                    return null;
+                } else {
+                    return method.invoke(connectionManager, args);
+                }
+            });
     }
 }
