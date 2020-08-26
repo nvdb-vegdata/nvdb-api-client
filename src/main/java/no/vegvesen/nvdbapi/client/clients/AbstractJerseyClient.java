@@ -25,22 +25,13 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
-import java.io.Serializable;
-import java.net.URL;
-import java.net.URLDecoder;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.function.Consumer;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.core.UriBuilder;
-
-import com.google.gson.Gson;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.io.Serializable;
+import java.util.function.Consumer;
 
 abstract class AbstractJerseyClient implements AutoCloseable, Serializable {
-    private final Logger log = LoggerFactory.getLogger(getClass());
     private final String baseUrl;
     private final Client client;
     private final Consumer<AbstractJerseyClient> onClose;
@@ -60,29 +51,6 @@ abstract class AbstractJerseyClient implements AutoCloseable, Serializable {
 
     UriBuilder start() {
         return UriBuilder.fromUri(baseUrl);
-    }
-
-    protected void logEntity(Object obj) {
-        logEntity("{}", obj);
-    }
-
-    protected void logEntity(String logMessage, Object obj) {
-        log.debug(logMessage, Optional.ofNullable(obj).map(o -> new Gson().toJson(o)));
-    }
-
-    protected static Map<String, String> splitQuery(String url) {
-        try {
-            Map<String, String> query_pairs = new LinkedHashMap<>();
-            String query = new URL(url).getQuery();
-            String[] pairs = query.split("&");
-            for (String pair : pairs) {
-                int idx = pair.indexOf("=");
-                query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
-            }
-            return query_pairs;
-        } catch (Exception ex) {
-            throw new RuntimeException(ex);
-        }
     }
 
     public boolean isClosed() {
