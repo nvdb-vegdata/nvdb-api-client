@@ -26,6 +26,7 @@
 package no.vegvesen.nvdbapi.client.model.areas;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -35,12 +36,17 @@ public final class ContractArea implements Serializable {
     private final Integer number;
     private final String name;
     private final String type;
+    private final List<Integer> counties;
+    private final List<Integer> municipalities;
 
-    public ContractArea(long id, Integer number, String name, String type) {
+    public ContractArea(long id, Integer number, String name, String type,
+          List<Integer> counties, List<Integer> municipalities) {
         this.id = id;
         this.number = number;
         this.name = name;
         this.type = type;
+        this.counties = counties;
+        this.municipalities = municipalities;
     }
 
     public long getId() {
@@ -59,19 +65,29 @@ public final class ContractArea implements Serializable {
         return type;
     }
 
+    public List<Integer> getCounties() {
+        return counties;
+    }
+
+    public List<Integer> getMunicipalities() {
+        return municipalities;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ContractArea that = (ContractArea) o;
-        return Objects.equals(id, that.id) &&
-                Objects.equals(number, that.number) &&
-                Objects.equals(name, that.name) &&
-                Objects.equals(type, that.type);
+        return id == that.id &&
+            Objects.equals(number, that.number) &&
+            Objects.equals(name, that.name) &&
+            Objects.equals(type, that.type) &&
+            Objects.equals(counties, that.counties) &&
+            Objects.equals(municipalities, that.municipalities);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, number, name, type);
+        return Objects.hash(id, number, name, type, counties, municipalities);
     }
 }

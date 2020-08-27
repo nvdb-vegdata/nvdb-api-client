@@ -9,6 +9,7 @@ on the roadnet placement for the segment.
 * `ClientFactory.serviceLogin(username, password)` added for authenticating with service account.
 * Fix that closing a client cause all other clients to fail with message about closed connection pool.
 * Existing clients use updated login information. 
+* Contract and Route now has `.municipalities` and `.counties`
 
 ## 1.10.1
 * ListAttribute.getAttributeType() returned STRUCT
