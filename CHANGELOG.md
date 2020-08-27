@@ -10,6 +10,7 @@ on the roadnet placement for the segment.
 * Fix that closing a client cause all other clients to fail with message about closed connection pool.
 * Existing clients use updated login information. 
 * Contract and Route now has `.municipalities` and `.counties`
+* Reponses from `/beta/vegnett/rute` [has changed](https://github.com/nvdb-vegdata/nvdb-api-client/commit/2932d0b9c28eb1e182b028dbeaab87ed3c9765a3#diff-f457b5f7152c9026cd604bc51abf9eab)
 
 ## 1.10.1
 * ListAttribute.getAttributeType() returned STRUCT

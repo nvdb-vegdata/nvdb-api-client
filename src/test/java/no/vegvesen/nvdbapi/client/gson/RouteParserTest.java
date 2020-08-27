@@ -1,27 +1,29 @@
 package no.vegvesen.nvdbapi.client.gson;
 
-import static no.vegvesen.nvdbapi.client.gson.Helper.parseList;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-
-import no.vegvesen.nvdbapi.client.model.roadnet.route.BriefRouteSegment;
-import no.vegvesen.nvdbapi.client.model.roadnet.route.DetailedRouteSegment;
+import no.vegvesen.nvdbapi.client.model.roadnet.route.RouteOnRoadNet;
+import no.vegvesen.nvdbapi.client.model.roadnet.route.RouteSegment;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.util.List;
 
+import static no.vegvesen.nvdbapi.client.gson.Helper.parseObject;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
 
 public class RouteParserTest {
     @Test
     void parseDeatiledRouteSegments() throws IOException {
-        List<DetailedRouteSegment> detailedRouteSegments = parseList("rute/rute_langtformat.json", DetailedRouteSegmentParser::parse);
+        RouteOnRoadNet route = parseObject("rute/rute_langtformat.json", RouteParser::parseDetailed);
+        List<RouteSegment> detailedRouteSegments = route.getSegments();
         assertThat(detailedRouteSegments.size(), is(2));
     }
 
     @Test
     void parseBriefRouteSegments() throws IOException {
-        List<BriefRouteSegment> routeSegmentDetaileds = parseList("rute/rute_kortformat.json", BriefRouteSegmentParser::parse);
+        RouteOnRoadNet route = parseObject("rute/rute_kortformat.json", RouteParser::parseBrief);
+        List<RouteSegment> routeSegmentDetaileds = route.getSegments();
         assertThat(routeSegmentDetaileds.size(), is(2));
     }
 

@@ -53,11 +53,10 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
     public RouteOnRoadNet getRouteOnRoadnet(RoadNetRouteRequest request) {
         WebTarget target = getWebTarget(request);
         JsonObject result = JerseyHelper.execute(target).getAsJsonObject();
-        JsonArray segmenter = result.getAsJsonArray("vegnettsrutesegmenter");
         if (request.isBriefResponse()) {
-            return RouteParser.parseBrief(segmenter);
+            return RouteParser.parseBrief(result);
         } else {
-            return RouteParser.parseDetailed(segmenter);
+            return RouteParser.parseDetailed(result);
         }
     }
 
@@ -65,11 +64,10 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
         WebTarget target = getWebTarget();
         Entity<Map<String, String>> entity = Entity.entity(request.getJsonObject(), MediaType.APPLICATION_JSON);
         JsonObject result = JerseyHelper.execute(target, entity).getAsJsonObject();
-        JsonArray segmenter = result.getAsJsonArray("vegnettsrutesegmenter");
         if (request.isBriefResponse()) {
-            return RouteParser.parseBrief(segmenter);
+            return RouteParser.parseBrief(result);
         } else {
-            return RouteParser.parseDetailed(segmenter);
+            return RouteParser.parseDetailed(result);
         }
     }
 
