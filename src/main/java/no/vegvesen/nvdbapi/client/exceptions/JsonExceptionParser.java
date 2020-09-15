@@ -25,16 +25,16 @@
 
 package no.vegvesen.nvdbapi.client.exceptions;
 
-import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 public final class JsonExceptionParser {
     private static final Logger LOG = LoggerFactory.getLogger(JsonExceptionParser.class);
@@ -48,22 +48,27 @@ public final class JsonExceptionParser {
     }
 
     public static List<ApiError> parse(String json) {
-        JsonArray errors;
+        if(json.contains("<html>")) {
+            return Collections.singletonList(
+                new ApiError(504,
+                    "Server did not respond correctly",
+                    json, ""));
+        }
         try {
-            errors = JsonParser.parseString(json).getAsJsonArray();
+            return StreamSupport.stream(
+                JsonParser.parseString(json).getAsJsonArray().spliterator(), false
+            )
+                .map(n -> new ApiError(
+                    readInt(n, "code"),
+                    readText(n, "message"),
+                    readText(n, "message_detailed"),
+                    readText(n, "help_url")
+                ))
+                .collect(Collectors.toList());
         } catch (Exception ex) {
             LOG.warn("Could not parse '{}' as json (exception: {})", json, ex.getClass().getName());
             throw ex;
         }
-        List<ApiError> apiErrors = new ArrayList<>();
-        errors.forEach(n -> {
-            Integer errorCode = readInt(n, "code");
-            String message = readText(n, "message");
-            String details = readText(n, "message_detailed");
-            String helpUrl = readText(n, "help_url");
-            apiErrors.add(new ApiError(errorCode, message, details, helpUrl));
-        });
-        return apiErrors;
     }
 
     private static Integer readInt(JsonElement e, String name) {
