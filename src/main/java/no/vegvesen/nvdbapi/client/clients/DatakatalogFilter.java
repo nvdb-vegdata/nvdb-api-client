@@ -38,7 +38,7 @@ class DatakatalogFilter implements ClientRequestFilter, ClientResponseFilter {
     @Override
     public void filter(ClientRequestContext requestContext, ClientResponseContext responseContext) throws IOException {
         String dakatVersion = responseContext.getHeaderString(DAKAT_VERSION);
-        if(!Objects.equals(dakatVersion, this.dakatVersion)) {
+        if(!Objects.equals(dakatVersion, this.dakatVersion) && dakatVersion != null) {
             log.info("Datakatalog version changed from {} to {}", this.dakatVersion, dakatVersion);
             this.dakatVersion = dakatVersion;
             callback.onDatakatalogUpdate();
