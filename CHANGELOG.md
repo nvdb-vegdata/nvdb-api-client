@@ -1,8 +1,11 @@
 # Changelog for NVDB API LES V3 Client
 
-## 1.11.1
+## 1.11.2
 * Handle html response like «504 server did not respond in time».
 * Do not trigger onDatakatalogUpdate callback if header is missing.
+
+## 1.11.1
+* /omrader/* does not have `?inkluder=polygon`.
 
 ## 1.11.0
 * All `ClientFactory.create_*_Client` has been renamed to `get_*_Client`. These methods used to return a new instance each
