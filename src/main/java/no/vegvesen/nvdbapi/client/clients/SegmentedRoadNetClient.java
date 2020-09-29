@@ -55,15 +55,13 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         UriBuilder path = endpoint().path("/veglenkesekvenser/segmentert").path(Integer.toString(id));
 
         WebTarget target = getClient().target(path);
-        JsonElement result = JerseyHelper.execute(target);
-        if (result.isJsonArray()) {
-            return StreamSupport.stream(result.getAsJsonArray().spliterator(), false)
-                .map(JsonElement::getAsJsonObject)
-                .map(rt(SegmentedLinkParser::parse))
-                .collect(Collectors.toList());
-        } else {
-            return Collections.singletonList(SegmentedLinkParser.parse(result.getAsJsonObject()));
-        }
+        return getLinks(target);
+    }
+
+    public List<SegmentedLink> getLinks(int id, RoadNetRequest request) {
+        WebTarget target = getWebTarget(id, request);
+
+        return getLinks(target);
     }
 
     public SegmentedLinkResult getLinks() {
@@ -83,10 +81,29 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         return new AsyncSegmentedLinkResult(target, request.getPage());
     }
 
+    private List<SegmentedLink> getLinks(WebTarget target) {
+        JsonElement result = JerseyHelper.execute(target);
+        if (result.isJsonArray()) {
+            return StreamSupport.stream(result.getAsJsonArray().spliterator(), false)
+                .map(JsonElement::getAsJsonObject)
+                .map(rt(SegmentedLinkParser::parse))
+                .collect(Collectors.toList());
+        } else {
+            return Collections.singletonList(SegmentedLinkParser.parse(result.getAsJsonObject()));
+        }
+    }
+
+    private WebTarget getWebTarget(int id, RoadNetRequest request) {
+        return getWebTarget(request, endpoint().path("/veglenkesekvenser/segmentert").path(Integer.toString(id)));
+    }
+
     private WebTarget getWebTarget(RoadNetRequest request) {
+        return getWebTarget(request, endpoint().path("/veglenkesekvenser/segmentert"));
+    }
+
+    private WebTarget getWebTarget(RoadNetRequest request, UriBuilder path) {
         Objects.requireNonNull(request, "Missing page info argument.");
 
-        UriBuilder path = endpoint().path("/veglenkesekvenser/segmentert");
         if (!request.getCounties().isEmpty()) path.queryParam("fylke", join(request.getCounties()));
         if (!request.getMunicipalities().isEmpty()) path.queryParam("kommune", join(request.getMunicipalities()));
         request.getContractArea().ifPresent(v -> path.queryParam("kontraktsomrade", v));
