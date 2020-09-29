@@ -51,15 +51,15 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         super(baseUrl, client, onClose);
     }
 
-    public List<SegmentedLink> getLinks(int id) {
-        UriBuilder path = endpoint().path("/veglenkesekvenser/segmentert").path(Integer.toString(id));
+    public List<SegmentedLink> getLinks(long linksequenceId) {
+        UriBuilder path = endpoint().path("/veglenkesekvenser/segmentert").path(Long.toString(linksequenceId));
 
         WebTarget target = getClient().target(path);
         return getLinks(target);
     }
 
-    public List<SegmentedLink> getLinks(int id, RoadNetRequest request) {
-        WebTarget target = getWebTarget(id, request);
+    public List<SegmentedLink> getLinks(long linksequenceId, RoadNetRequest request) {
+        WebTarget target = getWebTarget(linksequenceId, request);
 
         return getLinks(target);
     }
@@ -76,6 +76,7 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         WebTarget target = getWebTarget(request);
         return new SegmentedLinkResult(target, request.getPage());
     }
+
     public AsyncSegmentedLinkResult getLinksAsync(RoadNetRequest request) {
         WebTarget target = getWebTarget(request);
         return new AsyncSegmentedLinkResult(target, request.getPage());
@@ -93,8 +94,8 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         }
     }
 
-    private WebTarget getWebTarget(int id, RoadNetRequest request) {
-        return getWebTarget(request, endpoint().path("/veglenkesekvenser/segmentert").path(Integer.toString(id)));
+    private WebTarget getWebTarget(long linksequenceId, RoadNetRequest request) {
+        return getWebTarget(request, endpoint().path("/veglenkesekvenser/segmentert").path(Long.toString(linksequenceId)));
     }
 
     private WebTarget getWebTarget(RoadNetRequest request) {
@@ -112,9 +113,9 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         request.getBpolygon().ifPresent(v -> path.queryParam("polygon", v));
         request.getProjection().ifPresent(v -> path.queryParam("srid", v.getSrid()));
         request.getRoadRefFilter().ifPresent(v -> path.queryParam("vegsystemreferanse", v));
-        request.getArmFilter().ifPresent(v -> path.queryParam("arm", v.booleanValue()));
-        request.getIntersectionFilter().ifPresent(v -> path.queryParam("kryssystem", v.booleanValue()));
-        request.getSideAreaFilter().ifPresent(v -> path.queryParam("sideanlegg", v.booleanValue()));
+        request.getArmFilter().ifPresent(v -> path.queryParam("arm", v));
+        request.getIntersectionFilter().ifPresent(v -> path.queryParam("kryssystem", v));
+        request.getSideAreaFilter().ifPresent(v -> path.queryParam("sideanlegg", v));
         request.getRoadUserGroupFilter().ifPresent(v -> path.queryParam("trafikantgruppe", v.getTextValue()));
         request.getSeparatePassagesFilter().ifPresent(v -> path.queryParam("adskiltelop", v.getTextValue()));
         request.getTypeOfRoadFilter().ifPresent(v -> path.queryParam("typeveg", v.getTypeOfRoadSosi()));

@@ -48,16 +48,16 @@ public class RoadNetClient extends AbstractJerseyClient {
         super(baseUrl, client, onClose);
     }
 
-    public LinkSequence getLinkSequence(int id) {
-        UriBuilder path = endpoint().path("/veglenkesekvenser").path(Integer.toString(id));
+    public LinkSequence getLinkSequence(long linksequenceId) {
+        UriBuilder path = endpoint().path("/veglenkesekvenser").path(Long.toString(linksequenceId));
         WebTarget target = getClient().target(path);
         JsonElement result = JerseyHelper.execute(target);
 
         return rt(RoadNetParser::parseLinkSequence).apply(result.getAsJsonObject());
     }
 
-    public Node getNode(int id) {
-        UriBuilder path = endpoint().path("/noder").path(Integer.toString(id));
+    public Node getNode(long nodeId) {
+        UriBuilder path = endpoint().path("/noder").path(Long.toString(nodeId));
         WebTarget target = getClient().target(path);
         JsonElement result = JerseyHelper.execute(target);
 

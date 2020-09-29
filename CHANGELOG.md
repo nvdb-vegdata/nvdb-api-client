@@ -1,5 +1,9 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.12.0
+* `RoadNetClient` and `SegmentedRoadNetClient` used integer for linksequenceid, changed to long.
+* Added `SegmentedRoadNetClient.getLinks(long linksequenceId, RoadNetRequest request)`
+
 ## 1.11.2
 * Handle html response like «504 server did not respond in time».
 * Do not trigger onDatakatalogUpdate callback if header is missing.
