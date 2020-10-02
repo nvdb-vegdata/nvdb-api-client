@@ -34,6 +34,10 @@ public enum Direction {
         this.apiValue = apiValue;
     }
 
+    public String getApiValue() {
+        return apiValue;
+    }
+
     public static Direction from(String apiValue) {
         if(WITH.apiValue.equalsIgnoreCase(apiValue)) {
             return WITH;
