@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.12.1
+* Added getter for apiValue on `Direction` enum
+
 ## 1.12.0
 * `RoadNetClient` and `SegmentedRoadNetClient` used integer for linksequenceid, changed to long.
 * Added `SegmentedRoadNetClient.getLinks(long linksequenceId, RoadNetRequest request)`
