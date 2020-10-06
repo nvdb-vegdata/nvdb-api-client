@@ -5,12 +5,14 @@ import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.RefLinkPosition;
 import no.vegvesen.nvdbapi.client.model.roadnet.RoadUserGroup;
 import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
+import no.vegvesen.nvdbapi.client.model.roadnet.route.RouteField;
 
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
 import static java.util.Objects.nonNull;
@@ -21,15 +23,15 @@ public class RoadNetRouteRequest {
     private final RefLinkPosition endReflinkPosition;
     private final Coordinates startCoordinates;
     private final Coordinates endCoordinates;
+    private final Geometry geometry;
+    private final int distance;
+    private final int envelope;
+    private final boolean briefResponse;
     private final boolean connectionLinks;
     private final boolean detailedLinks;
-    private final Geometry geometry;
-    private final int distanceThreshold;
-    private final int circumferenceAroundPoints;
     private final Optional<String> roadRefFilter;
     private final Optional<RoadUserGroup> roadUserGroup;
     private final List<TypeOfRoad> typeOfRoad;
-    private final boolean briefResponse;
     private final Optional<LocalDate> pointInTime;
     private final Optional<LocalDate> startPointInTime;
     private final Optional<LocalDate> endPointInTime;
@@ -40,12 +42,12 @@ public class RoadNetRouteRequest {
         this.startCoordinates = b.startCoordinates;
         this.endCoordinates = b.endCoordinates;
         this.geometry = b.geometry;
-        this.distanceThreshold = b.distanceThreshold;
-        this.circumferenceAroundPoints = b.circumferenceAroundPoints;
-        this.roadRefFilter = b.roadRefFilter;
-        this.briefResponse = b.briefReponse;
+        this.distance = b.distance;
+        this.envelope = b.envelope;
+        this.briefResponse = b.briefResponse;
         this.connectionLinks = b.connectionLinks;
         this.detailedLinks = b.detailedLinks;
+        this.roadRefFilter = b.roadSysRefs;
         this.roadUserGroup = b.roadUserGroup;
         this.typeOfRoad = b.typeOfRoad;
         this.pointInTime = b.pointInTime;
@@ -89,12 +91,12 @@ public class RoadNetRouteRequest {
         return endCoordinates;
     }
 
-    public int getDistanceThreshold() {
-        return distanceThreshold;
+    public int getDistance() {
+        return distance;
     }
 
-    public int getCircumferenceAroundPoints() {
-        return circumferenceAroundPoints;
+    public int getEnvelope() {
+        return envelope;
     }
 
     public boolean usesReflinkPosition() {
@@ -128,19 +130,20 @@ public class RoadNetRouteRequest {
     public Map<String, String> getJsonObject() {
         Map<String, String> jsonMap = new HashMap<>();
 
-        if (startReflinkPosition != null) jsonMap.put("start", String.valueOf(startReflinkPosition));
-        if (endReflinkPosition != null) jsonMap.put("slutt", String.valueOf(endReflinkPosition));
-        if (geometry != null) jsonMap.put("geometri", geometry.toString(false));
-        jsonMap.put("kortform", String.valueOf(briefResponse));
-        jsonMap.put("konnekteringslenker", String.valueOf(connectionLinks));
-        jsonMap.put("detaljerte_lenker", String.valueOf(detailedLinks));
-        jsonMap.put("maks_avstand", String.valueOf(distanceThreshold));
-        jsonMap.put("omkrets", String.valueOf(circumferenceAroundPoints));
-        roadRefFilter.ifPresent(s -> jsonMap.put("vegsystemreferanse", s));
-        roadUserGroup.ifPresent(userGroup -> jsonMap.put("trafikantgruppe", userGroup.getTextValue()));
-        if (pointInTime.isPresent()) jsonMap.put("tidspunkt", String.valueOf(pointInTime));
-        if (startPointInTime.isPresent()) jsonMap.put("tidspunkt_start", String.valueOf(startPointInTime));
-        if (endPointInTime.isPresent()) jsonMap.put("tidspunkt_slutt", String.valueOf(endPointInTime));
+        if (startReflinkPosition != null) jsonMap.put(RouteField.START.getName(), String.valueOf(startReflinkPosition));
+        if (endReflinkPosition != null) jsonMap.put(RouteField.END.getName(), String.valueOf(endReflinkPosition));
+        if (geometry != null) jsonMap.put(RouteField.GEOMETRY.getName(), geometry.toString(false));
+        jsonMap.put(RouteField.DISTANCE.getName(), String.valueOf(distance));
+        jsonMap.put(RouteField.ENVELOPE.getName(), String.valueOf(envelope));
+        jsonMap.put(RouteField.BRIEF_RESPONSE.getName(), String.valueOf(briefResponse));
+        jsonMap.put(RouteField.CONNECTION_LINKS.getName(), String.valueOf(connectionLinks));
+        jsonMap.put(RouteField.DETAILED_LINKS.getName(), String.valueOf(detailedLinks));
+        roadRefFilter.ifPresent(s -> jsonMap.put(RouteField.ROAD_SYS_REFS.getName(), s));
+        roadUserGroup.ifPresent(userGroup -> jsonMap.put(RouteField.ROAD_USER_GROUP.getName(), userGroup.getTextValue()));
+        if (!typeOfRoad.isEmpty()) jsonMap.put(RouteField.TYPE_OF_ROAD.getName(), typeOfRoad.stream().map(TypeOfRoad::getTypeOfRoadSosi).collect(Collectors.joining(",")));
+        if (pointInTime.isPresent()) jsonMap.put(RouteField.POINT_IN_TIME.getName(), String.valueOf(pointInTime));
+        if (startPointInTime.isPresent()) jsonMap.put(RouteField.START_POINT_IN_TIME.getName(), String.valueOf(startPointInTime));
+        if (endPointInTime.isPresent()) jsonMap.put(RouteField.END_POINT_IN_TIME.getName(), String.valueOf(endPointInTime));
 
         return jsonMap;
     }
@@ -154,30 +157,73 @@ public class RoadNetRouteRequest {
         private RefLinkPosition endReflinkPosition;
         private Coordinates startCoordinates;
         private Coordinates endCoordinates;
-        private int distanceThreshold = 10;
-        private int circumferenceAroundPoints = 100;
         private Geometry geometry;
-        private Optional<String> roadRefFilter = Optional.empty();
-        private Optional<RoadUserGroup> roadUserGroup = Optional.empty();
-        private boolean briefReponse = false;
-        private boolean connectionLinks = false;
+        private int distance = 10;
+        private int envelope = 100;
+        private boolean briefResponse = false;
+        private boolean connectionLinks = true;
         private boolean detailedLinks = false;
+        private Optional<String> roadSysRefs = Optional.empty();
+        private Optional<RoadUserGroup> roadUserGroup = Optional.empty();
         private List<TypeOfRoad> typeOfRoad = emptyList();
         private Optional<LocalDate> pointInTime = Optional.empty();
         private Optional<LocalDate> startPointInTime = Optional.empty();
         private Optional<LocalDate> endPointInTime = Optional.empty();
 
-        public Builder between(RefLinkPosition startReflinkPosition,
-                               RefLinkPosition endReflinkPosition) {
+        public Builder between(RefLinkPosition startReflinkPosition, RefLinkPosition endReflinkPosition) {
             this.startReflinkPosition = startReflinkPosition;
             this.endReflinkPosition = endReflinkPosition;
             return this;
         }
 
-        public Builder between(Coordinates startCoordinates,
-                               Coordinates endCoordinates) {
+        public Builder between(Coordinates startCoordinates, Coordinates endCoordinates) {
             this.startCoordinates = startCoordinates;
             this.endCoordinates = endCoordinates;
+            return this;
+        }
+
+        public Builder fromGeometry(Geometry geometry) {
+            this.geometry = geometry;
+            return this;
+        }
+
+        public Builder withDistance(int distance) {
+            this.distance = distance;
+            return this;
+        }
+
+        public Builder withEnvelope(int envelope) {
+            this.envelope = envelope;
+            return this;
+        }
+
+        public Builder withBriefResponse(boolean briefResponse) {
+            this.briefResponse = briefResponse;
+            return this;
+        }
+
+        public Builder withConnectionLinks(boolean connectionLinks) {
+            this.connectionLinks = connectionLinks;
+            return this;
+        }
+
+        public Builder withDetailedLinks(boolean detailedLinks) {
+            this.detailedLinks = detailedLinks;
+            return this;
+        }
+
+        public Builder withRoadRefFilter(String filter) {
+            this.roadSysRefs = Optional.ofNullable(filter);
+            return this;
+        }
+
+        public Builder withRoadUserGroup(RoadUserGroup roadUserGroup) {
+            this.roadUserGroup = Optional.ofNullable(roadUserGroup);
+            return this;
+        }
+
+        public Builder withTypeOfRoad(List<TypeOfRoad> typeOfRoad) {
+            this.typeOfRoad = typeOfRoad;
             return this;
         }
 
@@ -193,51 +239,6 @@ public class RoadNetRouteRequest {
 
         public Builder withEndPointInTime(LocalDate endPointInTime) {
             this.endPointInTime = Optional.ofNullable(endPointInTime);
-            return this;
-        }
-
-        public Builder withDistanceThreshold(int distanceThreshold) {
-            this.distanceThreshold = distanceThreshold;
-            return this;
-        }
-
-        public Builder withRoadRefFilter(String filter) {
-            this.roadRefFilter = Optional.ofNullable(filter);
-            return this;
-        }
-
-        public Builder withRoadUserGroup(RoadUserGroup roadUserGroup) {
-            this.roadUserGroup = Optional.ofNullable(roadUserGroup);
-            return this;
-        }
-
-        public Builder withTypeOfRoad(List<TypeOfRoad> typeOfRoad) {
-            this.typeOfRoad = typeOfRoad;
-            return this;
-        }
-
-        public Builder withCircumferenceAroundPoints(int circumferenceAroundPoints) {
-            this.circumferenceAroundPoints = circumferenceAroundPoints;
-            return this;
-        }
-
-        public Builder fromGeometry(Geometry geometry) {
-            this.geometry = geometry;
-            return this;
-        }
-
-        public Builder withBriefResponse(boolean briefResponse) {
-            this.briefReponse = briefResponse;
-            return this;
-        }
-
-        public Builder withConnectionLinks(boolean connectionLinks) {
-            this.connectionLinks = connectionLinks;
-            return this;
-        }
-
-        public Builder withDetailedLinks(boolean detailedLinks) {
-            this.detailedLinks = detailedLinks;
             return this;
         }
 
