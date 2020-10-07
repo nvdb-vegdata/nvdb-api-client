@@ -105,6 +105,8 @@
     ],
     "metadata": {
         "antall": 2,
-        "lengde": 143.134
+        "lengde": 143.134,
+        "status": 2000,
+        "status_tekst": "KOMPLETT"
     }
 }

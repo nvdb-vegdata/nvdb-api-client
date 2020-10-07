@@ -1,5 +1,13 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.13.0
+* Renamed fields and getters in RoadNetRouteRequest:
+  * `distanceThreshold` -> `distance` / `getDistance`
+  * `circumferenceAroundPoints` -> `envelope` / `getEnvelope`
+* Boolean field `connectionLinks` in RoadNetRouteRequest is now true by default.
+* Added `length` / `getLength` and `status` / `getStatus` to `RouteOnRoadNet`.
+* Send typeOfRoad properly if using `RoadNetRouteClient.postRouteOnRoadnet`.
+
 ## 1.12.1
 * Added getter for apiValue on `Direction` enum
 

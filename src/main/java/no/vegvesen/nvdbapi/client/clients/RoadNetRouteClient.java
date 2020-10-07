@@ -25,6 +25,7 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -35,8 +36,6 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.UriBuilder;
 
-import com.google.gson.JsonArray;
-
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.gson.RouteParser;
 import no.vegvesen.nvdbapi.client.model.Coordinates;
@@ -46,6 +45,24 @@ import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
 import no.vegvesen.nvdbapi.client.model.roadnet.route.RouteOnRoadNet;
 
 public class RoadNetRouteClient extends AbstractJerseyClient {
+    static class RouteRequestField {
+        static final String START = "start";
+        static final String END = "slutt";
+        static final String GEOMETRY = "geometri";
+        static final String SRID = "srid";
+        static final String BRIEF_RESPONSE = "kortform";
+        static final String CONNECTION_LINKS = "konnekteringslenker";
+        static final String DETAILED_LINKS = "detaljerte_lenker";
+        static final String DISTANCE = "maks_avstand";
+        static final String ENVELOPE = "omkrets";
+        static final String ROAD_SYS_REFS = "vegsystemreferanse";
+        static final String TYPE_OF_ROAD = "typeveg";
+        static final String ROAD_USER_GROUP = "trafikantgruppe";
+        static final String POINT_IN_TIME = "tidspunkt";
+        static final String START_POINT_IN_TIME = "tidspunkt_start";
+        static final String END_POINT_IN_TIME = "tidspunkt_slutt";
+    }
+
     RoadNetRouteClient(String baseUrl, Client client, Consumer<AbstractJerseyClient> onClose) {
         super(baseUrl, client, onClose);
     }
@@ -62,13 +79,34 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
 
     public RouteOnRoadNet postRouteOnRoadnet(RoadNetRouteRequest request) {
         WebTarget target = getWebTarget();
-        Entity<Map<String, String>> entity = Entity.entity(request.getJsonObject(), MediaType.APPLICATION_JSON);
+        Entity<Map<String, String>> entity = Entity.entity(getJsonObject(request), MediaType.APPLICATION_JSON);
         JsonObject result = JerseyHelper.execute(target, entity).getAsJsonObject();
         if (request.isBriefResponse()) {
             return RouteParser.parseBrief(result);
         } else {
             return RouteParser.parseDetailed(result);
         }
+    }
+
+    private Map<String, String> getJsonObject(RoadNetRouteRequest request) {
+        Map<String, String> jsonMap = new HashMap<>();
+
+        if (request.getStartReflinkPosition() != null) jsonMap.put(RouteRequestField.START, String.valueOf(request.getStartReflinkPosition()));
+        if (request.getEndReflinkPosition() != null) jsonMap.put(RouteRequestField.END, String.valueOf(request.getEndReflinkPosition()));
+        if (request.getGeometry() != null) jsonMap.put(RouteRequestField.GEOMETRY, request.getGeometry().toString(false));
+        jsonMap.put(RouteRequestField.DISTANCE, String.valueOf(request.getDistance()));
+        jsonMap.put(RouteRequestField.ENVELOPE, String.valueOf(request.getEnvelope()));
+        jsonMap.put(RouteRequestField.BRIEF_RESPONSE, String.valueOf(request.isBriefResponse()));
+        jsonMap.put(RouteRequestField.CONNECTION_LINKS, String.valueOf(request.isConnectionLinks()));
+        jsonMap.put(RouteRequestField.DETAILED_LINKS, String.valueOf(request.isDetailedLinks()));
+        request.getRoadRefFilter().ifPresent(s -> jsonMap.put(RouteRequestField.ROAD_SYS_REFS, s));
+        request.getRoadUserGroup().ifPresent(userGroup -> jsonMap.put(RouteRequestField.ROAD_USER_GROUP, userGroup.getTextValue()));
+        if (!request.getTypeOfRoad().isEmpty()) jsonMap.put(RouteRequestField.TYPE_OF_ROAD, request.getTypeOfRoad().stream().map(TypeOfRoad::getTypeOfRoadSosi).collect(Collectors.joining(",")));
+        if (request.getPointInTime().isPresent()) jsonMap.put(RouteRequestField.POINT_IN_TIME, String.valueOf(request.getPointInTime()));
+        if (request.getStartPointInTime().isPresent()) jsonMap.put(RouteRequestField.START_POINT_IN_TIME, String.valueOf(request.getStartPointInTime()));
+        if (request.getEndPointInTime().isPresent()) jsonMap.put(RouteRequestField.END_POINT_IN_TIME, String.valueOf(request.getEndPointInTime()));
+
+        return jsonMap;
     }
 
     private WebTarget getWebTarget() {
@@ -80,38 +118,38 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
 
         UriBuilder path = endpoint();
 
-        request.getPointInTime().ifPresent(v -> path.queryParam("tidspunkt", v));
-        request.getStartPointInTime().ifPresent(v -> path.queryParam("tidspunkt_start", v));
-        request.getEndPointInTime().ifPresent(v -> path.queryParam("tidspunkt_slutt", v));
-        path.queryParam("kortform", request.isBriefResponse());
-        path.queryParam("konnekteringslenker", request.isConnectionLinks());
-        path.queryParam("detaljerte_lenker", request.isDetailedLinks());
-        request.getRoadRefFilter().ifPresent(v -> path.queryParam("vegsystemreferanse", v));
-        request.getRoadUserGroup().ifPresent(v -> path.queryParam("trafikantgruppe", v.getTextValue()));
-        if (!request.getTypeOfRoad().isEmpty()) path.queryParam("typeveg", request.getTypeOfRoad()
+        request.getPointInTime().ifPresent(v -> path.queryParam(RouteRequestField.POINT_IN_TIME, v));
+        request.getStartPointInTime().ifPresent(v -> path.queryParam(RouteRequestField.START_POINT_IN_TIME, v));
+        request.getEndPointInTime().ifPresent(v -> path.queryParam(RouteRequestField.END_POINT_IN_TIME, v));
+        path.queryParam(RouteRequestField.BRIEF_RESPONSE, request.isBriefResponse());
+        path.queryParam(RouteRequestField.CONNECTION_LINKS, request.isConnectionLinks());
+        path.queryParam(RouteRequestField.DETAILED_LINKS, request.isDetailedLinks());
+        request.getRoadRefFilter().ifPresent(v -> path.queryParam(RouteRequestField.ROAD_SYS_REFS, v));
+        request.getRoadUserGroup().ifPresent(v -> path.queryParam(RouteRequestField.ROAD_USER_GROUP, v.getTextValue()));
+        if (!request.getTypeOfRoad().isEmpty()) path.queryParam(RouteRequestField.TYPE_OF_ROAD, request.getTypeOfRoad()
                 .stream()
                 .map(TypeOfRoad::getTypeOfRoadSosi)
                 .collect(Collectors.joining(",")));
 
         if (request.usesGeometry()) {
             Geometry geometry = request.getGeometry();
-            path.queryParam("geometri", geometry.getWkt());
-            path.queryParam("maks_avstand", request.getDistanceThreshold());
+            path.queryParam(RouteRequestField.GEOMETRY, geometry.getWkt());
+            path.queryParam(RouteRequestField.DISTANCE, request.getDistance());
             if (geometry.getProjection() != Projection.UTM33) {
-                path.queryParam("srid", geometry.getProjection().getSrid());
+                path.queryParam(RouteRequestField.SRID, geometry.getProjection().getSrid());
             }
         } else if(request.usesReflinkPosition()) {
-            path.queryParam("start", request.getStartReflinkPosition());
-            path.queryParam("slutt", request.getEndReflinkPosition());
+            path.queryParam(RouteRequestField.START, request.getStartReflinkPosition());
+            path.queryParam(RouteRequestField.END, request.getEndReflinkPosition());
         } else {
             Coordinates startCoordinates = request.getStartCoordinates();
-            path.queryParam("start", startCoordinates);
-            path.queryParam("slutt", request.getEndCoordinates());
-            path.queryParam("maks_avstand", request.getDistanceThreshold());
-            path.queryParam("omkrets", request.getCircumferenceAroundPoints());
+            path.queryParam(RouteRequestField.START, startCoordinates);
+            path.queryParam(RouteRequestField.END, request.getEndCoordinates());
+            path.queryParam(RouteRequestField.DISTANCE, request.getDistance());
+            path.queryParam(RouteRequestField.ENVELOPE, request.getEnvelope());
 
             if(startCoordinates.getProjection() != Projection.UTM33) {
-                path.queryParam("srid", startCoordinates.getProjection().getSrid());
+                path.queryParam(RouteRequestField.SRID, startCoordinates.getProjection().getSrid());
             }
         }
 
