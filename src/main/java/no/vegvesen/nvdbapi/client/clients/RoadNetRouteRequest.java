@@ -5,14 +5,10 @@ import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.RefLinkPosition;
 import no.vegvesen.nvdbapi.client.model.roadnet.RoadUserGroup;
 import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
-import no.vegvesen.nvdbapi.client.model.roadnet.route.RouteField;
 
 import java.time.LocalDate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static java.util.Collections.emptyList;
 import static java.util.Objects.nonNull;
@@ -47,32 +43,12 @@ public class RoadNetRouteRequest {
         this.briefResponse = b.briefResponse;
         this.connectionLinks = b.connectionLinks;
         this.detailedLinks = b.detailedLinks;
-        this.roadRefFilter = b.roadSysRefs;
+        this.roadRefFilter = b.roadRefFilter;
         this.roadUserGroup = b.roadUserGroup;
         this.typeOfRoad = b.typeOfRoad;
         this.pointInTime = b.pointInTime;
         this.startPointInTime = b.startPointInTime;
         this.endPointInTime = b.endPointInTime;
-    }
-
-    public List<TypeOfRoad> getTypeOfRoad() {
-        return typeOfRoad;
-    }
-
-    public Optional<String> getRoadRefFilter() {
-        return roadRefFilter;
-    }
-
-    public Optional<RoadUserGroup> getRoadUserGroup() {
-        return roadUserGroup;
-    }
-
-    public boolean isConnectionLinks() {
-        return connectionLinks;
-    }
-
-    public boolean isDetailedLinks() {
-        return detailedLinks;
     }
 
     public RefLinkPosition getStartReflinkPosition() {
@@ -91,6 +67,10 @@ public class RoadNetRouteRequest {
         return endCoordinates;
     }
 
+    public Geometry getGeometry() {
+        return geometry;
+    }
+
     public int getDistance() {
         return distance;
     }
@@ -99,20 +79,28 @@ public class RoadNetRouteRequest {
         return envelope;
     }
 
-    public boolean usesReflinkPosition() {
-        return startReflinkPosition != null;
-    }
-
-    public boolean usesGeometry() {
-        return nonNull(geometry);
-    }
-
-    public Geometry getGeometry() {
-        return geometry;
-    }
-
     public boolean isBriefResponse() {
         return briefResponse;
+    }
+
+    public boolean isConnectionLinks() {
+        return connectionLinks;
+    }
+
+    public boolean isDetailedLinks() {
+        return detailedLinks;
+    }
+
+    public Optional<String> getRoadRefFilter() {
+        return roadRefFilter;
+    }
+
+    public Optional<RoadUserGroup> getRoadUserGroup() {
+        return roadUserGroup;
+    }
+
+    public List<TypeOfRoad> getTypeOfRoad() {
+        return typeOfRoad;
     }
 
     public Optional<LocalDate> getPointInTime() {
@@ -127,25 +115,12 @@ public class RoadNetRouteRequest {
         return endPointInTime;
     }
 
-    public Map<String, String> getJsonObject() {
-        Map<String, String> jsonMap = new HashMap<>();
+    public boolean usesReflinkPosition() {
+        return startReflinkPosition != null;
+    }
 
-        if (startReflinkPosition != null) jsonMap.put(RouteField.START.getName(), String.valueOf(startReflinkPosition));
-        if (endReflinkPosition != null) jsonMap.put(RouteField.END.getName(), String.valueOf(endReflinkPosition));
-        if (geometry != null) jsonMap.put(RouteField.GEOMETRY.getName(), geometry.toString(false));
-        jsonMap.put(RouteField.DISTANCE.getName(), String.valueOf(distance));
-        jsonMap.put(RouteField.ENVELOPE.getName(), String.valueOf(envelope));
-        jsonMap.put(RouteField.BRIEF_RESPONSE.getName(), String.valueOf(briefResponse));
-        jsonMap.put(RouteField.CONNECTION_LINKS.getName(), String.valueOf(connectionLinks));
-        jsonMap.put(RouteField.DETAILED_LINKS.getName(), String.valueOf(detailedLinks));
-        roadRefFilter.ifPresent(s -> jsonMap.put(RouteField.ROAD_SYS_REFS.getName(), s));
-        roadUserGroup.ifPresent(userGroup -> jsonMap.put(RouteField.ROAD_USER_GROUP.getName(), userGroup.getTextValue()));
-        if (!typeOfRoad.isEmpty()) jsonMap.put(RouteField.TYPE_OF_ROAD.getName(), typeOfRoad.stream().map(TypeOfRoad::getTypeOfRoadSosi).collect(Collectors.joining(",")));
-        if (pointInTime.isPresent()) jsonMap.put(RouteField.POINT_IN_TIME.getName(), String.valueOf(pointInTime));
-        if (startPointInTime.isPresent()) jsonMap.put(RouteField.START_POINT_IN_TIME.getName(), String.valueOf(startPointInTime));
-        if (endPointInTime.isPresent()) jsonMap.put(RouteField.END_POINT_IN_TIME.getName(), String.valueOf(endPointInTime));
-
-        return jsonMap;
+    public boolean usesGeometry() {
+        return nonNull(geometry);
     }
 
     public static Builder builder() {
@@ -163,7 +138,7 @@ public class RoadNetRouteRequest {
         private boolean briefResponse = false;
         private boolean connectionLinks = true;
         private boolean detailedLinks = false;
-        private Optional<String> roadSysRefs = Optional.empty();
+        private Optional<String> roadRefFilter = Optional.empty();
         private Optional<RoadUserGroup> roadUserGroup = Optional.empty();
         private List<TypeOfRoad> typeOfRoad = emptyList();
         private Optional<LocalDate> pointInTime = Optional.empty();
@@ -213,7 +188,7 @@ public class RoadNetRouteRequest {
         }
 
         public Builder withRoadRefFilter(String filter) {
-            this.roadSysRefs = Optional.ofNullable(filter);
+            this.roadRefFilter = Optional.ofNullable(filter);
             return this;
         }
 
