@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.13.1
+* Close Jersey Responses to avoid resource leak
+
 ## 1.13.0
 * Renamed fields and getters in RoadNetRouteRequest:
   * `distanceThreshold` -> `distance` / `getDistance`
