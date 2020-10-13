@@ -87,49 +87,50 @@ public class GenericResultSet<T> implements ResultSet<T> {
         if (currentPage != null) actualTarget = applyPage(currentPage, baseTarget);
         logger.debug("Invoking {}", actualTarget.getUri());
         Invocation inv = actualTarget.request().accept(JerseyHelper.MEDIA_TYPE).buildGet();
-        Response response = JerseyHelper.execute(inv, Response.class);
 
-        if (!JerseyHelper.isSuccess(response)) {
-            throw JerseyHelper.parseError(response);
-        }
-        String requestId = response.getHeaderString("X-REQUEST-ID");
-
-        try {
-            JsonObject currentResponse =
-                    JsonParser.parseReader(new InputStreamReader((InputStream) response.getEntity(), StandardCharsets.UTF_8))
-                            .getAsJsonObject();
-
-            int numTotal = GsonUtil.parseIntMember(currentResponse, "metadata.antall");
-            int numReturned = GsonUtil.parseIntMember(currentResponse, "metadata.returnert");
-//        int numPerPage = GsonUtil.parseIntMember(currentResponse, "metadata.sidestørrelse");
-            logger.debug("Result size returned was {}.", numTotal);
-            logger.debug("Results in page returned was {}.", numReturned);
-//        logger.debug("Page size returned was {}.", numPerPage);
-
-            if (logger.isTraceEnabled()){
-                logger.trace("Response: {}", currentResponse.toString());
+        try (Response response = JerseyHelper.execute(inv, Response.class)) {
+            if (!JerseyHelper.isSuccess(response)) {
+                throw JerseyHelper.parseError(response);
             }
+            String requestId = response.getHeaderString("X-REQUEST-ID");
 
-            // Prepare next request
-            String nextToken = GsonUtil.getNode(currentResponse, "metadata.neste.start")
-                    .map(JsonElement::getAsString)
-                    .orElse(null);
-            logger.debug("last token: {} next token: {}", token, nextToken);
-            // no next page if last token and next token are equal
-            hasNext = nextToken != null && (!nextToken.equals(token));
-            token = nextToken;
-            currentPage = currentPage.withStart(token);
+            try {
+                JsonObject currentResponse =
+                        JsonParser.parseReader(new InputStreamReader((InputStream) response.getEntity(), StandardCharsets.UTF_8))
+                                .getAsJsonObject();
 
-            if (!hasNext) {
-                logger.debug("Result set exhausted.");
+                int numTotal = GsonUtil.parseIntMember(currentResponse, "metadata.antall");
+                int numReturned = GsonUtil.parseIntMember(currentResponse, "metadata.returnert");
+//              int numPerPage = GsonUtil.parseIntMember(currentResponse, "metadata.sidestørrelse");
+                logger.debug("Result size returned was {}.", numTotal);
+                logger.debug("Results in page returned was {}.", numReturned);
+//              logger.debug("Page size returned was {}.", numPerPage);
+
+                if (logger.isTraceEnabled()){
+                    logger.trace("Response: {}", currentResponse.toString());
+                }
+
+                // Prepare next request
+                String nextToken = GsonUtil.getNode(currentResponse, "metadata.neste.start")
+                        .map(JsonElement::getAsString)
+                        .orElse(null);
+                logger.debug("last token: {} next token: {}", token, nextToken);
+                // no next page if last token and next token are equal
+                hasNext = nextToken != null && (!nextToken.equals(token));
+                token = nextToken;
+                currentPage = currentPage.withStart(token);
+
+                if (!hasNext) {
+                    logger.debug("Result set exhausted.");
+                }
+                return StreamSupport
+                        .stream(currentResponse.getAsJsonArray("objekter").spliterator(), false)
+                        .map(JsonElement::getAsJsonObject)
+                        .map(parser)
+                        .collect(Collectors.toList());
+            } catch (Exception e) {
+                throw new ClientException(response.getStatus(), requestId, Collections.emptyList(), e);
             }
-            return StreamSupport
-                    .stream(currentResponse.getAsJsonArray("objekter").spliterator(), false)
-                    .map(JsonElement::getAsJsonObject)
-                    .map(parser)
-                    .collect(Collectors.toList());
-        } catch (Exception e) {
-            throw new ClientException(response.getStatus(), requestId, Collections.emptyList(), e);
         }
     }
 
