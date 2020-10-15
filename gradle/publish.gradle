@@ -29,6 +29,14 @@ publishing {
             name = 'Snapshot'
             url = "https://maven.triona.no/nexus/content/repositories/vegdata-snapshot/"
         }
+        maven {
+            name "Artrepo"
+            url "https://artrepo.vegvesen.no/artifactory/libs-release-local"
+        }
+        maven {
+            name "Artreposnapshot"
+            url "https://artrepo.vegvesen.no/artifactory/libs-snapshot-local"
+        }
     }
 
 }
@@ -39,6 +47,19 @@ if (project.hasProperty("mavenUser") && project.hasProperty("mavenPass")) {
             it.credentials {
                 username mavenUser
                 password mavenPass
+            }
+        }
+    }
+}
+
+if (project.hasProperty("artrepoUser") && project.hasProperty("artrepoPass")) {
+    publishing {
+        repositories.each {
+            if(it.url.toString().contains('artrepo')) {
+                it.credentials {
+                    username artrepoUser
+                    password artrepoPass
+                }
             }
         }
     }
