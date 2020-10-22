@@ -31,6 +31,7 @@ public class RoadNetRouteRequest {
     private final Optional<LocalDate> pointInTime;
     private final Optional<LocalDate> startPointInTime;
     private final Optional<LocalDate> endPointInTime;
+    private final boolean keepRoadUserGroup;
 
     private RoadNetRouteRequest(Builder b) {
         this.startReflinkPosition = b.startReflinkPosition;
@@ -49,6 +50,7 @@ public class RoadNetRouteRequest {
         this.pointInTime = b.pointInTime;
         this.startPointInTime = b.startPointInTime;
         this.endPointInTime = b.endPointInTime;
+        this.keepRoadUserGroup = b.keepRoadUserGroup;
     }
 
     public RefLinkPosition getStartReflinkPosition() {
@@ -127,6 +129,10 @@ public class RoadNetRouteRequest {
         return new Builder();
     }
 
+    public boolean isKeepRoadUserGroup() {
+        return keepRoadUserGroup;
+    }
+
     public static class Builder {
         private RefLinkPosition startReflinkPosition;
         private RefLinkPosition endReflinkPosition;
@@ -144,6 +150,7 @@ public class RoadNetRouteRequest {
         private Optional<LocalDate> pointInTime = Optional.empty();
         private Optional<LocalDate> startPointInTime = Optional.empty();
         private Optional<LocalDate> endPointInTime = Optional.empty();
+        public boolean keepRoadUserGroup = false;
 
         public Builder between(RefLinkPosition startReflinkPosition, RefLinkPosition endReflinkPosition) {
             this.startReflinkPosition = startReflinkPosition;
@@ -214,6 +221,11 @@ public class RoadNetRouteRequest {
 
         public Builder withEndPointInTime(LocalDate endPointInTime) {
             this.endPointInTime = Optional.ofNullable(endPointInTime);
+            return this;
+        }
+
+        public Builder withKeepRoadUserGroup(boolean keepRoadUserGroup){
+            this.keepRoadUserGroup = keepRoadUserGroup;
             return this;
         }
 
