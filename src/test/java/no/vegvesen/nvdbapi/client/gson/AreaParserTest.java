@@ -33,6 +33,11 @@ class AreaParserTest {
         doParse("omrader/riksvegruter.json", AreaParser::parseRoute);
     }
 
+    @Test
+    void parseGater() throws IOException {
+        doParse("omrader/gater.json", AreaParser::parseStreet);
+    }
+
     private <T> void doParse(String file, Function<JsonObject, T> mapper) throws IOException {
         List<T> list = parsePlainList(file, mapper);
         long count = list.size();

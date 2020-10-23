@@ -1,0 +1,59 @@
+[
+    {
+        "navn": "Osloveien",
+        "gatekode": 6462,
+        "kommune": 3019,
+        "vegobjekter": [
+            {
+                "id": 1009291799,
+                "versjon": 1,
+                "type": 538,
+                "href": "http://localhost:12002/vegobjekter/538/1009291799/1"
+            }
+        ]
+    },
+    {
+        "navn": "Vargveien",
+        "gatekode": 35500,
+        "kommune": 3804,
+        "vegobjekter": [
+            {
+                "id": 1009367609,
+                "versjon": 1,
+                "type": 538,
+                "href": "http://localhost:12002/vegobjekter/538/1009367609/1"
+            }
+        ]
+    },
+    {
+        "navn": "Runarveien",
+        "gatekode": 27600,
+        "kommune": 3804,
+        "vegobjekter": [
+            {
+                "id": 1009364348,
+                "versjon": 1,
+                "type": 538,
+                "href": "http://localhost:12002/vegobjekter/538/1009364348/1"
+            },
+            {
+                "id": 1009364349,
+                "versjon": 1,
+                "type": 538,
+                "href": "http://localhost:12002/vegobjekter/538/1009364349/1"
+            },
+            {
+                "id": 1009364350,
+                "versjon": 1,
+                "type": 538,
+                "href": "http://localhost:12002/vegobjekter/538/1009364350/1"
+            },
+            {
+                "id": 1009364851,
+                "versjon": 1,
+                "type": 538,
+                "href": "http://localhost:12002/vegobjekter/538/1009364851/1"
+            }
+        ]
+    }
+]

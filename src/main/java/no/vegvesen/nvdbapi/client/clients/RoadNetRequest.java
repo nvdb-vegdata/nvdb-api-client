@@ -48,6 +48,7 @@ public class RoadNetRequest {
     private final Optional<String> bbox;
     private final Optional<String> contractArea;
     private final Optional<String> nationalRoute;
+    private final Optional<String> street;
     private final Optional<String> bpolygon;
     private final boolean history;
     private final Optional<LocalDate> dateFilter;
@@ -72,6 +73,7 @@ public class RoadNetRequest {
         bpolygon = b.bpolygon;
         contractArea = b.contractArea;
         nationalRoute = b.nationalRoute;
+        street = b.street;
         id = b.id;
         history = b.history;
         dateFilter = b.dateFilter;
@@ -162,6 +164,10 @@ public class RoadNetRequest {
         return nationalRoute;
     }
 
+    public Optional<String> getStreet() {
+        return street;
+    }
+
     public List<Long> getId() {
         return id;
     }
@@ -191,6 +197,7 @@ public class RoadNetRequest {
         private Optional<Projection> projection = Optional.empty();
         private Optional<String> contractArea = Optional.empty();
         private Optional<String> nationalRoute = Optional.empty();
+        private Optional<String> street = Optional.empty();
         private boolean history = false;
         private Optional<LocalDate> dateFilter = Optional.empty();
         private Optional<Boolean> armFilter = Optional.empty();
@@ -320,6 +327,11 @@ public class RoadNetRequest {
 
         public Builder withNationalRoute(String nationalRoute) {
             this.nationalRoute = Optional.ofNullable(nationalRoute);
+            return this;
+        }
+
+        public Builder withStreet(String street) {
+            this.street = Optional.ofNullable(street);
             return this;
         }
 
