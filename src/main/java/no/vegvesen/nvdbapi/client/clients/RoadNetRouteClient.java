@@ -58,6 +58,7 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
         static final String ROAD_SYS_REFS = "vegsystemreferanse";
         static final String TYPE_OF_ROAD = "typeveg";
         static final String ROAD_USER_GROUP = "trafikantgruppe";
+        static final String KEEP_ROAD_USER_GROUP = "behold_trafikantgruppe";
         static final String POINT_IN_TIME = "tidspunkt";
         static final String START_POINT_IN_TIME = "tidspunkt_start";
         static final String END_POINT_IN_TIME = "tidspunkt_slutt";
@@ -99,6 +100,7 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
         jsonMap.put(RouteRequestField.BRIEF_RESPONSE, String.valueOf(request.isBriefResponse()));
         jsonMap.put(RouteRequestField.CONNECTION_LINKS, String.valueOf(request.isConnectionLinks()));
         jsonMap.put(RouteRequestField.DETAILED_LINKS, String.valueOf(request.isDetailedLinks()));
+        jsonMap.put(RouteRequestField.KEEP_ROAD_USER_GROUP, String.valueOf(request.isKeepRoadUserGroup()));
         request.getRoadRefFilter().ifPresent(s -> jsonMap.put(RouteRequestField.ROAD_SYS_REFS, s));
         request.getRoadUserGroup().ifPresent(userGroup -> jsonMap.put(RouteRequestField.ROAD_USER_GROUP, userGroup.getTextValue()));
         if (!request.getTypeOfRoad().isEmpty()) jsonMap.put(RouteRequestField.TYPE_OF_ROAD, request.getTypeOfRoad().stream().map(TypeOfRoad::getTypeOfRoadSosi).collect(Collectors.joining(",")));
@@ -126,6 +128,7 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
         path.queryParam(RouteRequestField.DETAILED_LINKS, request.isDetailedLinks());
         request.getRoadRefFilter().ifPresent(v -> path.queryParam(RouteRequestField.ROAD_SYS_REFS, v));
         request.getRoadUserGroup().ifPresent(v -> path.queryParam(RouteRequestField.ROAD_USER_GROUP, v.getTextValue()));
+        path.queryParam(RouteRequestField.KEEP_ROAD_USER_GROUP, request.isKeepRoadUserGroup());
         if (!request.getTypeOfRoad().isEmpty()) path.queryParam(RouteRequestField.TYPE_OF_ROAD, request.getTypeOfRoad()
                 .stream()
                 .map(TypeOfRoad::getTypeOfRoadSosi)
