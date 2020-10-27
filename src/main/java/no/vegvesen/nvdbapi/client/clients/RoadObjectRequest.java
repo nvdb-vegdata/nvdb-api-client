@@ -56,6 +56,7 @@ public class RoadObjectRequest {
     private final List<Integer> counties;
     private final List<String> contractAreas;
     private final List<String> nationalRoutes;
+    private final List<String> streets;
     private final List<Long> roadobjectIds;
     private final LocalDate pointInTime;
     private final LocalDateTime modifiedAfter;
@@ -88,6 +89,7 @@ public class RoadObjectRequest {
         counties = b.counties;
         contractAreas = b.contractAreas;
         nationalRoutes = b.nationalRoutes;
+        streets = b.streets;
         allVersions = b.allVersions;
         roadobjectIds = b.roadobjectIds;
         pointInTime = b.pointInTime;
@@ -180,6 +182,10 @@ public class RoadObjectRequest {
 
     public List<String> getNationalRoutes() {
         return nationalRoutes;
+    }
+
+    public List<String> getStreets() {
+        return streets;
     }
 
     public List<Long> getRoadobjectIds() {
@@ -298,6 +304,7 @@ public class RoadObjectRequest {
         private List<Integer> counties = Collections.emptyList();
         private List<String> contractAreas = Collections.emptyList();
         private List<String> nationalRoutes = Collections.emptyList();
+        private List<String> streets = Collections.emptyList();
         private List<Long> roadobjectIds = Collections.emptyList();
         private LocalDate pointInTime = null;
         private Boolean armFilter = null;
@@ -510,6 +517,17 @@ public class RoadObjectRequest {
             this.nationalRoutes = Arrays.asList(nationalRoutes);
             return this;
         }
+
+        public Builder withStreet(String street) {
+            this.streets = Collections.singletonList(street);
+            return this;
+        }
+
+        public Builder withStreets(String... streets) {
+            this.streets = Arrays.asList(streets);
+            return this;
+        }
+
 
         public Builder withAllVersions(boolean allVersions) {
             this.allVersions = allVersions;

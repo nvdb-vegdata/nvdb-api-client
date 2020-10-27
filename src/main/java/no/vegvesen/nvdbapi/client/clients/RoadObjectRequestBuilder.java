@@ -69,6 +69,7 @@ class RoadObjectRequestBuilder {
         flatten(request.getCounties()).ifPresent(v -> map.putSingle("fylke", v));
         flattenString(request.getContractAreas()).ifPresent(v -> map.putSingle("kontraktsomrade", v));
         flattenString(request.getNationalRoutes()).ifPresent(v -> map.putSingle("riksvegrute", v));
+        flattenString(request.getStreets()).ifPresent(v -> map.putSingle("gate", v));
 
         // Multiple parameters
         request.getOverlapFilters().forEach(f -> map.add("overlapp", f.toString()));

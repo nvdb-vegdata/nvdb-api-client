@@ -29,8 +29,6 @@ import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.areas.*;
 
-import java.util.List;
-
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseIntListMember;
 
@@ -52,7 +50,8 @@ public final class AreaParser {
                 name,
                 county,
                 boundingBox,
-                centerPoint);
+                centerPoint
+        );
     }
 
     public static County parseCounty(JsonObject obj) {
@@ -86,14 +85,27 @@ public final class AreaParser {
         );
     }
 
+    public static Street parseStreet(JsonObject obj) {
+        return new Street(
+            parseStringMember(obj, "navn"),
+            parseIntMember(obj, "gatekode"),
+            parseIntMember(obj, "kommune"),
+            parseArray(obj, "vegobjekter", AreaParser::parseRoadObjectId)
+        );
+    }
+
     private static RoadObjectId parseId(JsonObject obj) {
-        RoadObjectId id = null;
         if (obj.has("vegobjekt")) {
-            long fid = parseLongMember(obj, "vegobjekt.id");
-            int tid = parseIntMember(obj, "vegobjekt.type");
-            id = new RoadObjectId(tid, fid);
+            return parseRoadObjectId(obj.getAsJsonObject("vegobjekt"));
         }
-        return id;
+        return null;
+    }
+
+    private static RoadObjectId parseRoadObjectId(JsonObject obj) {
+        long fid = parseLongMember(obj, "id");
+        int tid = parseIntMember(obj, "type");
+        Integer version = parseIntMember(obj, "versjon");
+        return new RoadObjectId(tid, fid, version);
     }
 
     private static Geometry parseGeometry(JsonObject obj, String fieldName) {
@@ -102,7 +114,4 @@ public final class AreaParser {
         }
         return GeometryParser.parse(obj.getAsJsonObject(fieldName));
     }
-
-
-
 }

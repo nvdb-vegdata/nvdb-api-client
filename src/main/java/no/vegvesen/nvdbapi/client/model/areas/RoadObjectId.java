@@ -30,10 +30,16 @@ import java.util.Objects;
 public class RoadObjectId {
     private final int featureTypeId;
     private final long featureId;
+    private final Integer version;
 
     public RoadObjectId(int featureTypeId, long featureId) {
+        this(featureTypeId, featureId, null);
+    }
+
+    public RoadObjectId(int featureTypeId, long featureId, Integer version) {
         this.featureTypeId = featureTypeId;
         this.featureId = featureId;
+        this.version = version;
     }
 
     public int getFeatureTypeId() {
@@ -44,17 +50,31 @@ public class RoadObjectId {
         return featureId;
     }
 
+    public Integer getVersion() {
+        return version;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RoadObjectId that = (RoadObjectId) o;
         return featureTypeId == that.featureTypeId &&
-                featureId == that.featureId;
+            featureId == that.featureId &&
+            Objects.equals(version, that.version);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(featureTypeId, featureId);
+        return Objects.hash(featureTypeId, featureId, version);
+    }
+
+    @Override
+    public String toString() {
+        return "RoadObjectId{" +
+            "featureTypeId=" + featureTypeId +
+            ", featureId=" + featureId +
+            (version == null ? "" : ", version=" + version) +
+            '}';
     }
 }

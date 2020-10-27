@@ -41,10 +41,7 @@ import com.google.gson.JsonObject;
 
 import no.vegvesen.nvdbapi.client.gson.AreaParser;
 import no.vegvesen.nvdbapi.client.model.Projection;
-import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
-import no.vegvesen.nvdbapi.client.model.areas.County;
-import no.vegvesen.nvdbapi.client.model.areas.Municipality;
-import no.vegvesen.nvdbapi.client.model.areas.Route;
+import no.vegvesen.nvdbapi.client.model.areas.*;
 
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
@@ -88,6 +85,22 @@ public class AreaClient extends AbstractJerseyClient {
         return getAreas(target)
             .map(rt(AreaParser::parseRoute))
             .collect(Collectors.toList());
+    }
+
+    public List<Street> getStreets(boolean includeObjectLink) {
+        UriBuilder path = areaRoot().path("gater");
+
+        if (includeObjectLink) path.queryParam("inkluder", getIncludeParameter(false, false, true));
+
+        WebTarget target = getClient().target(path);
+
+        return getAreas(target)
+            .map(rt(AreaParser::parseStreet))
+            .collect(Collectors.toList());
+    }
+
+    public List<Street> getStreets() {
+        return getStreets(true);
     }
 
     public List<Route> getNationalRoutes() {
