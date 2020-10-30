@@ -1,7 +1,7 @@
 # Changelog for NVDB API LES V3 Client
 
 ## 1.13.2
-* Street introduced as a area equal to Contract and Route
+* Street introduced as a area equal to Contract and Route (But not yet enabled in API)
 
 ## 1.13.1
 * Close Jersey Responses to avoid resource leak
