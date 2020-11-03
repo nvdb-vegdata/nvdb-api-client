@@ -1,7 +1,7 @@
 package no.vegvesen.nvdbapi.client.clients;
 
 import no.vegvesen.nvdbapi.client.model.Coordinates;
-import no.vegvesen.nvdbapi.client.model.Geometry;
+import no.vegvesen.nvdbapi.client.model.Projection;
 import no.vegvesen.nvdbapi.client.model.RefLinkPosition;
 import no.vegvesen.nvdbapi.client.model.roadnet.RoadUserGroup;
 import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
@@ -19,7 +19,7 @@ public class RoadNetRouteRequest {
     private final RefLinkPosition endReflinkPosition;
     private final Coordinates startCoordinates;
     private final Coordinates endCoordinates;
-    private final Geometry geometry;
+    private final String geometry;
     private final int distance;
     private final int envelope;
     private final boolean briefResponse;
@@ -32,6 +32,7 @@ public class RoadNetRouteRequest {
     private final Optional<LocalDate> startPointInTime;
     private final Optional<LocalDate> endPointInTime;
     private final boolean keepRoadUserGroup;
+    private final Projection projection;
 
     private RoadNetRouteRequest(Builder b) {
         this.startReflinkPosition = b.startReflinkPosition;
@@ -39,6 +40,7 @@ public class RoadNetRouteRequest {
         this.startCoordinates = b.startCoordinates;
         this.endCoordinates = b.endCoordinates;
         this.geometry = b.geometry;
+        this.projection = b.projection;
         this.distance = b.distance;
         this.envelope = b.envelope;
         this.briefResponse = b.briefResponse;
@@ -69,7 +71,7 @@ public class RoadNetRouteRequest {
         return endCoordinates;
     }
 
-    public Geometry getGeometry() {
+    public String getGeometry() {
         return geometry;
     }
 
@@ -133,12 +135,17 @@ public class RoadNetRouteRequest {
         return keepRoadUserGroup;
     }
 
+    public Projection getProjection() {
+        return projection;
+    }
+
     public static class Builder {
         private RefLinkPosition startReflinkPosition;
         private RefLinkPosition endReflinkPosition;
         private Coordinates startCoordinates;
         private Coordinates endCoordinates;
-        private Geometry geometry;
+        private String geometry;
+        private Projection projection = Projection.UTM33;
         private int distance = 10;
         private int envelope = 100;
         private boolean briefResponse = false;
@@ -164,8 +171,13 @@ public class RoadNetRouteRequest {
             return this;
         }
 
-        public Builder fromGeometry(Geometry geometry) {
+        public Builder fromGeometry(String geometry) {
             this.geometry = geometry;
+            return this;
+        }
+
+        public Builder withProjection(Projection projection) {
+            this.projection = projection;
             return this;
         }
 

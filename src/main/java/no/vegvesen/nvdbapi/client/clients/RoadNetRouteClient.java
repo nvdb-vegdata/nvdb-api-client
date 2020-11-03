@@ -94,7 +94,7 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
 
         if (request.getStartReflinkPosition() != null) jsonMap.put(RouteRequestField.START, String.valueOf(request.getStartReflinkPosition()));
         if (request.getEndReflinkPosition() != null) jsonMap.put(RouteRequestField.END, String.valueOf(request.getEndReflinkPosition()));
-        if (request.getGeometry() != null) jsonMap.put(RouteRequestField.GEOMETRY, request.getGeometry().toString(false));
+        if (request.getGeometry() != null) jsonMap.put(RouteRequestField.GEOMETRY, request.getGeometry());
         jsonMap.put(RouteRequestField.DISTANCE, String.valueOf(request.getDistance()));
         jsonMap.put(RouteRequestField.ENVELOPE, String.valueOf(request.getEnvelope()));
         jsonMap.put(RouteRequestField.BRIEF_RESPONSE, String.valueOf(request.isBriefResponse()));
@@ -135,11 +135,10 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
                 .collect(Collectors.joining(",")));
 
         if (request.usesGeometry()) {
-            Geometry geometry = request.getGeometry();
-            path.queryParam(RouteRequestField.GEOMETRY, geometry.getWkt());
+            path.queryParam(RouteRequestField.GEOMETRY, request.getGeometry());
             path.queryParam(RouteRequestField.DISTANCE, request.getDistance());
-            if (geometry.getProjection() != Projection.UTM33) {
-                path.queryParam(RouteRequestField.SRID, geometry.getProjection().getSrid());
+            if (request.getProjection() != Projection.UTM33) {
+                path.queryParam(RouteRequestField.SRID, request.getProjection().getSrid());
             }
         } else if(request.usesReflinkPosition()) {
             path.queryParam(RouteRequestField.START, request.getStartReflinkPosition());
