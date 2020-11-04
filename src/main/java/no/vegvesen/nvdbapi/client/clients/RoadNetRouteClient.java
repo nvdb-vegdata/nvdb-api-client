@@ -104,9 +104,10 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
         request.getRoadRefFilter().ifPresent(s -> jsonMap.put(RouteRequestField.ROAD_SYS_REFS, s));
         request.getRoadUserGroup().ifPresent(userGroup -> jsonMap.put(RouteRequestField.ROAD_USER_GROUP, userGroup.getTextValue()));
         if (!request.getTypeOfRoad().isEmpty()) jsonMap.put(RouteRequestField.TYPE_OF_ROAD, request.getTypeOfRoad().stream().map(TypeOfRoad::getTypeOfRoadSosi).collect(Collectors.joining(",")));
-        if (request.getPointInTime().isPresent()) jsonMap.put(RouteRequestField.POINT_IN_TIME, String.valueOf(request.getPointInTime()));
-        if (request.getStartPointInTime().isPresent()) jsonMap.put(RouteRequestField.START_POINT_IN_TIME, String.valueOf(request.getStartPointInTime()));
-        if (request.getEndPointInTime().isPresent()) jsonMap.put(RouteRequestField.END_POINT_IN_TIME, String.valueOf(request.getEndPointInTime()));
+
+        request.getPointInTime().ifPresent(pit -> jsonMap.put(RouteRequestField.POINT_IN_TIME, pit.toString()));
+        request.getStartPointInTime().ifPresent(pit -> jsonMap.put(RouteRequestField.START_POINT_IN_TIME, pit.toString()));
+        request.getEndPointInTime().ifPresent(pit -> jsonMap.put(RouteRequestField.END_POINT_IN_TIME, pit.toString()));
 
         return jsonMap;
     }
@@ -120,9 +121,9 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
 
         UriBuilder path = endpoint();
 
-        request.getPointInTime().ifPresent(v -> path.queryParam(RouteRequestField.POINT_IN_TIME, v));
-        request.getStartPointInTime().ifPresent(v -> path.queryParam(RouteRequestField.START_POINT_IN_TIME, v));
-        request.getEndPointInTime().ifPresent(v -> path.queryParam(RouteRequestField.END_POINT_IN_TIME, v));
+        request.getPointInTime().ifPresent(v -> path.queryParam(RouteRequestField.POINT_IN_TIME, v.toString()));
+        request.getStartPointInTime().ifPresent(v -> path.queryParam(RouteRequestField.START_POINT_IN_TIME, v.toString()));
+        request.getEndPointInTime().ifPresent(v -> path.queryParam(RouteRequestField.END_POINT_IN_TIME, v.toString()));
         path.queryParam(RouteRequestField.BRIEF_RESPONSE, request.isBriefResponse());
         path.queryParam(RouteRequestField.CONNECTION_LINKS, request.isConnectionLinks());
         path.queryParam(RouteRequestField.DETAILED_LINKS, request.isDetailedLinks());
