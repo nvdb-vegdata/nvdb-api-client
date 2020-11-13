@@ -30,19 +30,21 @@ import java.util.Objects;
 public class Geometry {
     private final String wkt;
     private final Projection projection;
-    private final Quality quality;
     private final GeometryAttributes geometryAttributes;
     private final boolean isSimplified;
     private final boolean isOwnGeometry;
 
     public Geometry(String wkt, Projection projection, boolean isSimplified, boolean isOwnGeometry) {
-        this(wkt, projection, null, isSimplified, isOwnGeometry, null);
+        this(wkt, projection, isSimplified, isOwnGeometry, null);
     }
 
-    public Geometry(String wkt, Projection projection, Quality quality, boolean isSimplified, boolean isOwnGeometry, GeometryAttributes geometryAttributes) {
+    public Geometry(String wkt,
+                    Projection projection,
+                    boolean isSimplified,
+                    boolean isOwnGeometry,
+                    GeometryAttributes geometryAttributes) {
         this.wkt = wkt;
         this.projection = projection;
-        this.quality = quality;
         this.isSimplified = isSimplified;
         this.isOwnGeometry = isOwnGeometry;
         this.geometryAttributes = geometryAttributes;
@@ -68,10 +70,6 @@ public class Geometry {
         return projection;
     }
 
-    public Quality getQuality() {
-        return quality;
-    }
-
     @Override
     public String toString() {
         return toString(true);
@@ -90,12 +88,11 @@ public class Geometry {
                 isOwnGeometry == geometry.isOwnGeometry &&
                 Objects.equals(wkt, geometry.wkt) &&
                 Objects.equals(projection, geometry.projection) &&
-                Objects.equals(geometryAttributes, geometry.geometryAttributes) &&
-                Objects.equals(quality, geometry.quality);
+                Objects.equals(geometryAttributes, geometry.geometryAttributes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(wkt, projection, quality, isSimplified, isOwnGeometry, geometryAttributes);
+        return Objects.hash(wkt, projection, isSimplified, isOwnGeometry, geometryAttributes);
     }
 }

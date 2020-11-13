@@ -47,11 +47,10 @@ public final class GeometryParser {
 
         boolean isSimplified = Optional.ofNullable(parseBooleanMember(obj, "forenklet")).orElse(false);
         boolean isOwnGeometry = Optional.ofNullable(parseBooleanMember(obj, "egengeometri")).orElse(false);
-        Quality quality = getQuality(obj);
 
         GeometryAttributes geometryAttributes = getGeometryAttributes(obj);
 
-        return new Geometry(wkt, srid, quality, isSimplified, isOwnGeometry, geometryAttributes);
+        return new Geometry(wkt, srid, isSimplified, isOwnGeometry, geometryAttributes);
     }
 
     private static GeometryAttributes getGeometryAttributes(JsonObject obj) {
@@ -66,7 +65,9 @@ public final class GeometryParser {
             parseIntMember(obj, "temakode"),
             parseBooleanMember(obj, "referansegeometri"),
             parseDoubleMember(obj, "lengde"),
-            parseIntMember(obj, "høydereferanse"));
+            parseIntMember(obj, "høydereferanse"),
+            getQuality(obj)
+        );
     }
 
     public static Geometry parseAttribute(JsonObject obj) {
@@ -75,11 +76,9 @@ public final class GeometryParser {
         String wkt = parseStringMember(obj, "verdi");
         Projection srid = Projection.UTM33;
 
-        Quality quality = getQuality(obj);
-
         GeometryAttributes geometryAttributes = getGeometryAttributes(obj);
 
-        return new Geometry(wkt, srid, quality, false, true, geometryAttributes);
+        return new Geometry(wkt, srid, false, true, geometryAttributes);
     }
 
     private static Quality getQuality(JsonObject obj) {

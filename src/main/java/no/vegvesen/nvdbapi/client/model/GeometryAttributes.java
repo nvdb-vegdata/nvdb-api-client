@@ -16,8 +16,20 @@ public class GeometryAttributes {
     private final Boolean referenceGeometry;  //
     private final Double length;              //               indexed by: roadnet & roadobject
     private final Integer heightRef;          //               indexed by: roadnet
+    private final Quality quality;
 
-    public GeometryAttributes(LocalDate capturedDate, LocalDate verifiedDate, LocalDate updatedDate, String processHistory, Integer municipality, String medium, String objectCode, Integer classCode, Boolean referenceGeometry, Double length, Integer heightRef) {
+    public GeometryAttributes(LocalDate capturedDate,
+                              LocalDate verifiedDate,
+                              LocalDate updatedDate,
+                              String processHistory,
+                              Integer municipality,
+                              String medium,
+                              String objectCode,
+                              Integer classCode,
+                              Boolean referenceGeometry,
+                              Double length,
+                              Integer heightRef,
+                              Quality quality) {
         this.capturedDate = capturedDate;
         this.verifiedDate = verifiedDate;
         this.updatedDate = updatedDate;
@@ -29,6 +41,7 @@ public class GeometryAttributes {
         this.referenceGeometry = referenceGeometry;
         this.length = length;
         this.heightRef = heightRef;
+        this.quality = quality;
     }
 
     public LocalDate getCapturedDate() {
@@ -90,13 +103,31 @@ public class GeometryAttributes {
             Objects.equals(classCode, that.classCode) &&
             Objects.equals(referenceGeometry, that.referenceGeometry) &&
             Objects.equals(length, that.length) &&
-            Objects.equals(heightRef, that.heightRef);
+            Objects.equals(heightRef, that.heightRef) &&
+            Objects.equals(quality, that.quality);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(capturedDate, verifiedDate, updatedDate, municipality, referenceGeometry,
-                length, heightRef);
+        return Objects.hash(capturedDate, verifiedDate, updatedDate, processHistory, municipality, medium,
+            objectCode, classCode, referenceGeometry, length, heightRef, quality);
     }
 
+    @Override
+    public String toString() {
+        return "GeometryAttributes{" +
+            "capturedDate=" + capturedDate +
+            ", verifiedDate=" + verifiedDate +
+            ", updatedDate=" + updatedDate +
+            ", processHistory='" + processHistory + '\'' +
+            ", municipality=" + municipality +
+            ", medium='" + medium + '\'' +
+            ", objectCode='" + objectCode + '\'' +
+            ", classCode=" + classCode +
+            ", referenceGeometry=" + referenceGeometry +
+            ", length=" + length +
+            ", heightRef=" + heightRef +
+            ", quality=" + quality +
+            '}';
+    }
 }

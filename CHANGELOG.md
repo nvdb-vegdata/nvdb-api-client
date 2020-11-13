@@ -1,8 +1,9 @@
 # Changelog for NVDB API LES V3 Client
 
-## 1.13.5
+## 1.14.0
 * `RoadNetRouteRequest.geometry` changed to `String`, added `RoadNetRouteRequest.projection`
 * Date params was not correctly handled in Route POST request
+* `Quality` moved into `GeomtryAttributes`
 
 ## 1.13.2
 * Street introduced as an area equal to Contract and Route (But not yet enabled in API)

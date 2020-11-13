@@ -35,7 +35,12 @@ public class Quality {
     private final Integer heightAccuracy;
     private final Integer tolerance;
 
-    public Quality(Integer method, Integer accuracy, Integer heightMethod, Integer heightAccuracy, Integer tolerance, Integer visibility) {
+    public Quality(Integer method,
+                   Integer accuracy,
+                   Integer heightMethod,
+                   Integer heightAccuracy,
+                   Integer tolerance,
+                   Integer visibility) {
         this.method = method;
         this.accuracy = accuracy;
         this.visibility = visibility;
@@ -84,5 +89,17 @@ public class Quality {
     @Override
     public int hashCode() {
         return Objects.hash(method, accuracy, visibility, heightMethod, heightAccuracy, tolerance);
+    }
+
+    @Override
+    public String toString() {
+        return "Quality{" +
+            "method=" + method +
+            ", accuracy=" + accuracy +
+            ", visibility=" + visibility +
+            ", heightMethod=" + heightMethod +
+            ", heightAccuracy=" + heightAccuracy +
+            ", tolerance=" + tolerance +
+            '}';
     }
 }

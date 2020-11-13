@@ -86,7 +86,6 @@ public class VegobjekterParserTest {
                 new Geometry(
                     "POINT Z(88206.76856 6783844.94758 259.86262)",
                     Projection.UTM33,
-                    new Quality(95, 5, 1, 1, 2, 2),
                     false, true,
                     new GeometryAttributes(
                         LocalDate.of(1012, 12, 12),
@@ -99,7 +98,8 @@ public class VegobjekterParserTest {
                         2012,
                         false,
                         0.0,
-                        123
+                        123,
+                        new Quality(95, 5, 1, 1, 2, 2)
                     )
                 )),
             new IntegerAttribute(7, 1, new Unit(1, "Meter", "m")),
