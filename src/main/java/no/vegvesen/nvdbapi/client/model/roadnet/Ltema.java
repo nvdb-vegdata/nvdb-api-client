@@ -25,7 +25,11 @@
 
 package no.vegvesen.nvdbapi.client.model.roadnet;
 
-import java.util.Arrays;
+import java.util.Map;
+import java.util.stream.Stream;
+
+import static java.util.function.Function.identity;
+import static java.util.stream.Collectors.toMap;
 
 public enum Ltema {
 
@@ -43,6 +47,8 @@ public enum Ltema {
     private final int code;
     private final String description;
 
+    private static final Map<Integer, Ltema> mapping = Stream.of(Ltema.values()).collect(toMap(Ltema::code, identity()));
+
     Ltema(int code, String description) {
         this.code = code;
         this.description = description;
@@ -56,7 +62,7 @@ public enum Ltema {
         return this.description;
     }
 
-    public static Ltema from(int code) {
-        return Arrays.stream(Ltema.values()).filter(v -> v.code() == code).findAny().orElse(null);
+    public static Ltema from(Integer code) {
+        return mapping.get(code);
     }
 }
