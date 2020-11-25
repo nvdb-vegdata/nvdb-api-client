@@ -4,6 +4,7 @@
 * `RoadNetRouteRequest.geometry` changed to `String`, added `RoadNetRouteRequest.projection`
 * Date params was not correctly handled in Route POST request
 * `Quality` moved into `GeomtryAttributes`
+* Handle exception on `ClientFactory.close()`
 
 ## 1.13.2
 * Street introduced as an area equal to Contract and Route (But not yet enabled in API)

@@ -401,7 +401,7 @@ public final class ClientFactory implements AutoCloseable {
 
     @Override
     public void close() throws Exception {
-        for (AbstractJerseyClient client : clients.values()) {
+        for (AbstractJerseyClient client : new ArrayList<>(clients.values())) {
             if (!client.isClosed()) {
                 client.close();
             }
