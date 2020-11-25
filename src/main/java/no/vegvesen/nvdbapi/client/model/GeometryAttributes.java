@@ -88,6 +88,10 @@ public class GeometryAttributes {
         return heightRef;
     }
 
+    public Quality getQuality() {
+        return quality;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
