@@ -7,21 +7,4 @@ repositories {
         url 'https://jcenter.bintray.com'
     }
 
-    maven {
-        url "https://maven.triona.no/nexus/content/repositories/vegdata"
-    }
-    maven {
-        url "https://maven.triona.no/nexus/content/repositories/vegdata-snapshot"
-    }
-}
-
-if (project.hasProperty("mavenUser") && project.hasProperty("mavenPass")) {
-    repositories.each {
-        if (it.url.toString().matches('.*maven\\.triona\\.no/.*/vegdata(-snapshot)?$')) {
-            it.credentials {
-                username mavenUser
-                password mavenPass
-            }
-        }
-    }
 }
