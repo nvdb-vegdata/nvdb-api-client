@@ -1,3 +1,3 @@
 ./gradlew clean release -Prelease.pushTagsOnly -Prelease.disableRemoteCheck
-./gradlew build publishMavenJavaPublicationToArtrepoRepository publishMavenJavaPublicationToReleaseRepository bintrayUpload
+./gradlew build publishMavenJavaPublicationToArtrepoRepository bintrayUpload
 
