@@ -87,7 +87,7 @@ public class AreaClient extends AbstractJerseyClient {
             .collect(Collectors.toList());
     }
 
-    public List<Street> getStreets(boolean includeObjectLink) {
+    public List<ExtendedStreet> getStreets(boolean includeObjectLink) {
         UriBuilder path = areaRoot().path("gater");
 
         if (includeObjectLink) path.queryParam("inkluder", getIncludeParameter(false, false, true));
@@ -99,7 +99,7 @@ public class AreaClient extends AbstractJerseyClient {
             .collect(Collectors.toList());
     }
 
-    public List<Street> getStreets() {
+    public List<ExtendedStreet> getStreets() {
         return getStreets(true);
     }
 

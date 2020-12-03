@@ -29,6 +29,7 @@ import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.RoadPlacement;
 import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
 import no.vegvesen.nvdbapi.client.model.areas.Route;
+import no.vegvesen.nvdbapi.client.model.areas.Street;
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
 import no.vegvesen.nvdbapi.client.model.roadobjects.RefLinkExtentPlacement;
 
@@ -50,6 +51,7 @@ public final class SegmentedLink implements Serializable {
     private final RefLinkPartType linkType;
     private final List<ContractArea> contractAreas;
     private final List<Route> routes;
+    private final Street street;
     private final DetailLevel detailLevel;
     private final TopologyLevel topologyLevel;
     private final TypeOfRoad roadType;
@@ -75,7 +77,8 @@ public final class SegmentedLink implements Serializable {
                          Geometry geometry, double length, RoadSysRef roadRef,
                          RefLinkPartType linkType,
                          List<ContractArea> contractAreas,
-                         List<Route> routes) {
+                         List<Route> routes,
+                         Street street) {
         this.id = id;
         this.start = start;
         this.end = end;
@@ -96,6 +99,7 @@ public final class SegmentedLink implements Serializable {
         this.linkType = linkType;
         this.contractAreas = contractAreas;
         this.routes = routes;
+        this.street = street;
         this.topologyLevel = topologyLevel;
     }
 
@@ -183,6 +187,10 @@ public final class SegmentedLink implements Serializable {
         return routes;
     }
 
+    public Street getStreet() {
+        return street;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -198,6 +206,7 @@ public final class SegmentedLink implements Serializable {
                 Objects.equals(linkType, that.linkType) &&
                 Objects.equals(contractAreas, that.contractAreas) &&
                 Objects.equals(routes, that.routes) &&
+                Objects.equals(street, that.street) &&
                 Objects.equals(detailLevel, that.detailLevel) &&
                 Objects.equals(roadType, that.roadType) &&
                 Objects.equals(superLinkExtent, that.superLinkExtent) &&
@@ -212,6 +221,6 @@ public final class SegmentedLink implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, start, end, geometry, length, linkNumber, segmentNumber, linkType, contractAreas, routes, detailLevel, roadType, superLinkExtent, county, municipality, roadRef, fromDate, toDate, startNode, endNode);
+        return Objects.hash(id, start, end, geometry, length, linkNumber, segmentNumber, linkType, contractAreas, routes, street, detailLevel, roadType, superLinkExtent, county, municipality, roadRef, fromDate, toDate, startNode, endNode);
     }
 }
