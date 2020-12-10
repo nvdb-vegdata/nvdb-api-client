@@ -95,6 +95,12 @@ ClientConfiguration clientConfig =
 ClientFactory factory = new ClientFactory("https://nvdbapiles-v3.atlas.vegvesen.no", "nvdb-read-api-v3-client", clientConfig);
 ```
 
+## Simple setup
+To use the client in your project, you should:
+1. Add the gradle or maven code to your project build file (pom.xml for maven projects); 
+2. Fill in your preferred version at $version (maven versions are available here: https://bintray.com/nvdb-vegdata);
+3. Add some of the example code and run it.
+
 # How to build 
 The repo contains the Gradle wrapper. The client is built running:
 ```bash
