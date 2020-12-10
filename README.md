@@ -59,7 +59,7 @@ To start using the library simply instantiate the factory. It takes three argume
 // First, create factory
 ClientFactory factory = new ClientFactory("https://nvdbapiles-v3.atlas.vegvesen.no", "nvdb-read-api-v3-client");
 // Then, create your client. Typically, there's one per root endpoint   
-RoadObjectClient client = factory.createRoadObjectClient();
+RoadObjectClient client = factory.getRoadObjectClient();
 
 // Example single object download
 RoadObject ro = client.getRoadObject(534, 1);
