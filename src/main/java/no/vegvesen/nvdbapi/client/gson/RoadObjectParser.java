@@ -47,6 +47,7 @@ import no.vegvesen.nvdbapi.client.model.Geometry;
 import no.vegvesen.nvdbapi.client.model.SidePosition;
 import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
 import no.vegvesen.nvdbapi.client.model.areas.Route;
+import no.vegvesen.nvdbapi.client.model.areas.Street;
 import no.vegvesen.nvdbapi.client.model.datakatalog.Unit;
 import no.vegvesen.nvdbapi.client.model.roadnet.DetailLevel;
 import no.vegvesen.nvdbapi.client.model.roadnet.RefLinkPartType;
@@ -169,6 +170,7 @@ public final class RoadObjectParser {
         List<Integer> counties = parseIntListMember(obj, "fylker");
         List<ContractArea> contractAreas = parseContractAreas(obj);
         List<Route> nationalRoutes = parseRoutes(obj);
+        List<Street> streets = parseStreets(obj);
 
         Geometry geometry = null;
         if (obj.has("geometri")) {
@@ -196,7 +198,7 @@ public final class RoadObjectParser {
         Double length = parseDoubleMember(obj, "lengde");
 
         return new Location(municipalities, counties, length, placements, roadRefs, contractAreas,
-            nationalRoutes, geometry);
+            nationalRoutes, streets, geometry);
     }
 
     static List<Route> parseRoutes(JsonObject obj) {
@@ -207,6 +209,26 @@ public final class RoadObjectParser {
                 .collect(Collectors.toList());
         }
         return nationalRoutes;
+    }
+
+    static List<Street> parseStreets(JsonObject obj) {
+        List<Street> streets = Collections.emptyList();
+        if (obj.has("gater")) {
+            streets = StreamSupport.stream(obj.getAsJsonArray("gater").spliterator(), false)
+                .map(JsonElement::getAsJsonObject)
+                .map(street -> new Street(parseStringMember(street, "navn"), parseIntMember(street,"gatekode")))
+                .collect(Collectors.toList());
+        }
+        return streets;
+    }
+
+    static Street parseStreet(JsonObject obj) {
+        if(obj.has("gate")) {
+            JsonObject street = obj.getAsJsonObject("gate");
+            return new Street(parseStringMember(street, "navn"), parseIntMember(street,"gatekode"));
+        } else {
+            return null;
+        }
     }
 
     static List<ContractArea> parseContractAreas(JsonObject obj) {

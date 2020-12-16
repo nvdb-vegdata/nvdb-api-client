@@ -32,8 +32,7 @@ import no.vegvesen.nvdbapi.client.model.roadnet.*;
 import no.vegvesen.nvdbapi.client.model.roadobjects.RefLinkExtentPlacement;
 
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
-import static no.vegvesen.nvdbapi.client.gson.RoadObjectParser.parseContractAreas;
-import static no.vegvesen.nvdbapi.client.gson.RoadObjectParser.parseRoutes;
+import static no.vegvesen.nvdbapi.client.gson.RoadObjectParser.*;
 
 public final class SegmentedLinkParser {
 
@@ -62,7 +61,8 @@ public final class SegmentedLinkParser {
                 GsonUtil.parseRoadSysRefMember(obj, "vegsystemreferanse"),
                 RefLinkPartType.fromValue(parseStringMember(obj,"type")),
                 parseContractAreas(obj),
-                parseRoutes(obj));
+                parseRoutes(obj),
+                parseStreet(obj));
     }
 
     private static RefLinkExtentPlacement parseSuperlinkExtent(JsonObject obj) {
