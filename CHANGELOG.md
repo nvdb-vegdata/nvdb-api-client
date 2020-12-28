@@ -1,4 +1,6 @@
 # Changelog for NVDB API LES V3 Client
+## 1.15.0
+* `AreaClient.getStreets` changed to support pagination of `Street`s
 
 ## 1.14.0
 * `RoadNetRouteRequest.geometry` changed to `String`, added `RoadNetRouteRequest.projection`
