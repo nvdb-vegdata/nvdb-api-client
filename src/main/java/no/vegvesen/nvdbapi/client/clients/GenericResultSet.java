@@ -53,14 +53,28 @@ public class GenericResultSet<T> implements ResultSet<T> {
 
     private final WebTarget baseTarget;
     private final Function<JsonObject, T> parser;
+    private final String objekterField;
     private Page currentPage;
     private String token;
     private boolean hasNext = true;
 
-    protected GenericResultSet(WebTarget baseTarget, Page currentPage, Function<JsonObject, T> parser) {
+    protected GenericResultSet(WebTarget baseTarget,
+                               Page currentPage,
+                               Function<JsonObject, T> parser) {
         this.baseTarget = baseTarget;
         this.parser = parser;
         this.currentPage = currentPage;
+        this.objekterField = "objekter";
+    }
+
+    protected GenericResultSet(WebTarget baseTarget,
+                               Page currentPage,
+                               String objekterField,
+                               Function<JsonObject, T> parser) {
+        this.baseTarget = baseTarget;
+        this.parser = parser;
+        this.currentPage = currentPage;
+        this.objekterField = objekterField;
     }
 
     public List<T> getAll() {
@@ -124,7 +138,7 @@ public class GenericResultSet<T> implements ResultSet<T> {
                     logger.debug("Result set exhausted.");
                 }
                 return StreamSupport
-                        .stream(currentResponse.getAsJsonArray("objekter").spliterator(), false)
+                        .stream(currentResponse.getAsJsonArray(objekterField).spliterator(), false)
                         .map(JsonElement::getAsJsonObject)
                         .map(parser)
                         .collect(Collectors.toList());

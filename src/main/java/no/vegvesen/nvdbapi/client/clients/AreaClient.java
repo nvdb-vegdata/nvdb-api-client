@@ -25,23 +25,23 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import no.vegvesen.nvdbapi.client.gson.AreaParser;
+import no.vegvesen.nvdbapi.client.model.Page;
+import no.vegvesen.nvdbapi.client.model.Projection;
+import no.vegvesen.nvdbapi.client.model.areas.*;
+
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.UriBuilder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.UriBuilder;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-
-import no.vegvesen.nvdbapi.client.gson.AreaParser;
-import no.vegvesen.nvdbapi.client.model.Projection;
-import no.vegvesen.nvdbapi.client.model.areas.*;
 
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
@@ -87,20 +87,28 @@ public class AreaClient extends AbstractJerseyClient {
             .collect(Collectors.toList());
     }
 
-    public List<ExtendedStreet> getStreets(boolean includeObjectLink) {
+    public StreetsResult getStreets(StreetRequest request) {
+        WebTarget target = getStreetWebTarget(request.includeObjectLink());
+
+        return new StreetsResult(target, Page.defaults().withCount(request.getPageSize()));
+    }
+
+    public AsyncStreetsResult getStreetsAsync(StreetRequest request) {
+        WebTarget target = getStreetWebTarget(request.includeObjectLink());
+
+        return new AsyncStreetsResult(target, Page.defaults().withCount(request.getPageSize()));
+    }
+
+    public StreetsResult getStreets() {
+        return getStreets(new StreetRequest(1000, true));
+    }
+
+    private WebTarget getStreetWebTarget(boolean includeObjectLink) {
         UriBuilder path = areaRoot().path("gater");
 
         if (includeObjectLink) path.queryParam("inkluder", getIncludeParameter(false, false, true));
 
-        WebTarget target = getClient().target(path);
-
-        return getAreas(target)
-            .map(rt(AreaParser::parseStreet))
-            .collect(Collectors.toList());
-    }
-
-    public List<ExtendedStreet> getStreets() {
-        return getStreets(true);
+        return getClient().target(path);
     }
 
     public List<Route> getNationalRoutes() {
@@ -163,5 +171,19 @@ public class AreaClient extends AbstractJerseyClient {
         return start().path("omrader");
     }
 
+    public static class StreetsResult extends GenericResultSet<ExtendedStreet> {
 
+        public StreetsResult(WebTarget baseTarget,
+                                 Page currentPage) {
+            super(baseTarget, currentPage, "gater", rt(AreaParser::parseStreet));
+        }
+    }
+
+    public static class AsyncStreetsResult extends AsyncResult<ExtendedStreet> {
+
+        public AsyncStreetsResult(WebTarget baseTarget,
+                                      Page currentPage) {
+            super(baseTarget, currentPage, rt(AreaParser::parseStreet));
+        }
+    }
 }
