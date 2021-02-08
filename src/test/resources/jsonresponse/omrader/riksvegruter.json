@@ -4,13 +4,29 @@
     "navn": "RUTE7",
     "nummer": "7",
     "beskrivelse": "Ev6 Trondheim - Fauske",
-    "periode": "2010-2019"
+    "periode": "2010-2019",
+    "vegobjekter": [
+         {
+            "id": 1,
+            "versjon": 1,
+            "type": 704,
+            "href": "http://localhost:12002/vegobjekter/704/10/1"
+        }
+      ]
   },
   {
     "id": 11,
     "navn": "RUTE7",
     "nummer": "7",
     "beskrivelse": "E6 Trondheim - Fauske",
-    "periode": "2014-2023 / 2018-2029"
+    "periode": "2014-2023 / 2018-2029",
+    "vegobjekter": [
+        {
+            "id": 1,
+            "versjon": 1,
+            "type": 704,
+            "href": "http://localhost:12002/vegobjekter/704/11/1"
+        }
+    ]
   }
 ]

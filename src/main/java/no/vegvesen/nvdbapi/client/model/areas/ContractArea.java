@@ -32,25 +32,22 @@ import java.util.Optional;
 
 public final class ContractArea implements Serializable {
 
-    private final long id;
     private final Integer number;
     private final String name;
     private final String type;
+    private final List<RoadObjectId> objects;
     private final List<Integer> counties;
     private final List<Integer> municipalities;
 
-    public ContractArea(long id, Integer number, String name, String type,
-          List<Integer> counties, List<Integer> municipalities) {
-        this.id = id;
+    public ContractArea(Integer number, String name, String type,
+                        List<RoadObjectId> objects,
+                        List<Integer> counties, List<Integer> municipalities) {
         this.number = number;
         this.name = name;
         this.type = type;
+        this.objects = objects;
         this.counties = counties;
         this.municipalities = municipalities;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public Optional<Integer> getNumber() {
@@ -63,6 +60,10 @@ public final class ContractArea implements Serializable {
 
     public String getType() {
         return type;
+    }
+
+    public List<RoadObjectId> getObjects() {
+        return objects;
     }
 
     public List<Integer> getCounties() {
@@ -78,16 +79,17 @@ public final class ContractArea implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ContractArea that = (ContractArea) o;
-        return id == that.id &&
+        return
             Objects.equals(number, that.number) &&
             Objects.equals(name, that.name) &&
             Objects.equals(type, that.type) &&
+            Objects.equals(objects, that.objects) &&
             Objects.equals(counties, that.counties) &&
             Objects.equals(municipalities, that.municipalities);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, number, name, type, counties, municipalities);
+        return Objects.hash(number, name, type, objects, counties, municipalities);
     }
 }
