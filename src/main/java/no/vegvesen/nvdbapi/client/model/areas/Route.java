@@ -31,27 +31,24 @@ import java.util.Objects;
 
 public final class Route implements Serializable {
 
-    private final long id;
     private final String number;
     private final String name;
     private final String description;
     private final String period;
+    private final List<RoadObjectId> objects;
     private final List<Integer> counties;
     private final List<Integer> municipalities;
 
-    public Route(long id, String number, String name, String description, String period,
+    public Route(String number, String name, String description, String period,
+                 List<RoadObjectId> objects,
                  List<Integer> counties, List<Integer> municipalities) {
-        this.id = id;
         this.number = number;
         this.name = name;
         this.description = description;
         this.period = period;
+        this.objects = objects;
         this.counties = counties;
         this.municipalities = municipalities;
-    }
-
-    public long getId() {
-        return id;
     }
 
     public String getNumber() {
@@ -83,17 +80,18 @@ public final class Route implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Route route = (Route) o;
-        return id == route.id &&
+        return
             Objects.equals(number, route.number) &&
             Objects.equals(name, route.name) &&
             Objects.equals(description, route.description) &&
             Objects.equals(period, route.period) &&
+            Objects.equals(objects, route.objects) &&
             Objects.equals(counties, route.counties) &&
             Objects.equals(municipalities, route.municipalities);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, number, name, description, period, counties, municipalities);
+        return Objects.hash(number, name, description, period, objects, counties, municipalities);
     }
 }

@@ -201,46 +201,38 @@
         ],
         "kontraktsområder": [
           {
-            "id": 145020211,
             "nummer": 1454,
             "navn": "1454 ELEKTRO"
           },
           {
-            "id": 218107773,
             "nummer": 1405,
             "navn": "1405 INDRE SUNNFJORD 2009-2015"
           },
           {
-            "id": 276453424,
             "nummer": 1454,
             "navn": "1454 ELEKTRO SOGN 2012-2017"
           },
           {
-            "id": 375350761,
             "nummer": 1405,
             "navn": "1405 Indre Sunnfjord 2015-2020"
           },
           {
-            "id": 671571191,
             "nummer": 1454,
             "navn": "E1454 Elektrokontrakt Sogn 2017-2022"
           }
         ],
         "riksvegruter": [
           {
-            "id": 137072909,
             "nummer": "9",
             "navn": "RUTE9",
             "periode": "2006-2009"
           },
           {
-            "id": 137072910,
             "nummer": "4A",
             "navn": "RUTE4A",
             "periode": "2010-2019"
           },
           {
-            "id": 495996693,
             "nummer": "4A",
             "navn": "RUTE4A",
             "periode": "2014-2023 / 2018-2029"

@@ -65,21 +65,21 @@ public final class AreaParser {
 
     public static Route parseRoute(JsonObject obj) {
         return new Route(
-                parseLongMember(obj, "id"),
                 parseStringMember(obj, "nummer"),
                 parseStringMember(obj, "navn"),
                 parseStringMember(obj, "beskrivelse"),
                 parseStringMember(obj, "periode"),
+                parseArray(obj, "vegobjekter", AreaParser::parseRoadObjectId),
                 parseIntListMember(obj, "fylker"),
                 parseIntListMember(obj, "kommuner"));
     }
 
     public static ContractArea parseContractArea(JsonObject obj) {
         return new ContractArea(
-                parseLongMember(obj, "id"),
                 parseIntMember(obj, "nummer"),
                 parseStringMember(obj, "navn"),
                 parseStringMember(obj, "type"),
+                parseArray(obj, "vegobjekter", AreaParser::parseRoadObjectId),
                 parseIntListMember(obj, "fylker"),
                 parseIntListMember(obj, "kommuner")
         );
