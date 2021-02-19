@@ -1,4 +1,8 @@
 # Changelog for NVDB API LES V3 Client
+
+## 1.16.0
+* `Contract` and `Route` can refer to several objects
+
 ## 1.15.0
 * `AreaClient.getStreets` changed to support pagination of `Street`s
 
