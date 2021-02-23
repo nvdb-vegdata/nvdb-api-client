@@ -10,9 +10,10 @@ public class ExtendedStreet extends Street implements Serializable {
 
     public ExtendedStreet(String name,
                           int streetCode,
+                          Boolean sideStreet,
                           int municipality,
                           List<RoadObjectId> objects) {
-        super(name, streetCode);
+        super(name, streetCode, sideStreet);
         this.municipality = municipality;
         this.objects = objects;
     }

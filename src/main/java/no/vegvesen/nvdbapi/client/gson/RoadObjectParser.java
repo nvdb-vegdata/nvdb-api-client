@@ -216,7 +216,11 @@ public final class RoadObjectParser {
         if (obj.has("gater")) {
             streets = StreamSupport.stream(obj.getAsJsonArray("gater").spliterator(), false)
                 .map(JsonElement::getAsJsonObject)
-                .map(street -> new Street(parseStringMember(street, "navn"), parseIntMember(street,"gatekode")))
+                .map(street -> new Street(
+                        parseStringMember(street, "navn"),
+                        parseIntMember(street,"gatekode"),
+                        parseBooleanMember(street, "sideveg")
+                ))
                 .collect(Collectors.toList());
         }
         return streets;
@@ -225,7 +229,11 @@ public final class RoadObjectParser {
     static Street parseStreet(JsonObject obj) {
         if(obj.has("gate")) {
             JsonObject street = obj.getAsJsonObject("gate");
-            return new Street(parseStringMember(street, "navn"), parseIntMember(street,"gatekode"));
+            return new Street(
+                    parseStringMember(street, "navn"),
+                    parseIntMember(street,"gatekode"),
+                    parseBooleanMember(street, "sideveg")
+            );
         } else {
             return null;
         }

@@ -89,6 +89,7 @@ public final class AreaParser {
         return new ExtendedStreet(
             parseStringMember(obj, "navn"),
             parseIntMember(obj, "gatekode"),
+            parseBooleanMember(obj, "sideveg"),
             parseIntMember(obj, "kommune"),
             parseArray(obj, "vegobjekter", AreaParser::parseRoadObjectId)
         );
