@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.16.1
+* Attribute `Street.sideStreet` added. 
+
 ## 1.16.0
 * `Contract` and `Route` can refer to several objects
 

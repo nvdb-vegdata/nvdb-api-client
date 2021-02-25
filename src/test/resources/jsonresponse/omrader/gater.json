@@ -28,6 +28,7 @@
     {
         "navn": "Runarveien",
         "gatekode": 27600,
+        "sideveg": true,
         "kommune": 3804,
         "vegobjekter": [
             {
