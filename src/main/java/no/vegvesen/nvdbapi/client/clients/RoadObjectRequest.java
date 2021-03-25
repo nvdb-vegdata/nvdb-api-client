@@ -33,6 +33,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
+@SuppressWarnings({"WeakerAccess", "UnusedReturnValue", "unused"})
 public class RoadObjectRequest {
 
     public static final RoadObjectRequest DEFAULT = new Builder().build();
@@ -68,7 +69,6 @@ public class RoadObjectRequest {
     private final DetailLevel detailLevel;
     private final TypeOfRoad typeOfRoad;
     private final RefLinkPartType refLinkPartType;
-
 
     private RoadObjectRequest(Builder b) {
         page = b.page;
@@ -281,24 +281,24 @@ public class RoadObjectRequest {
 
     public static class Builder {
 
-        private RefLinkPartType refLinkPartType = null;
-        private DetailLevel detailLevel = null;
-        private TypeOfRoad typeOfRoad = null;
+        private RefLinkPartType refLinkPartType;
+        private DetailLevel detailLevel;
+        private TypeOfRoad typeOfRoad;
 
         private Page page = Page.count(1000);
         private Boolean segmented;
         private Boolean allVersions;
-        private String depth = null;
-        private Projection projection = null;
-        private Integer distanceTolerance = null;
+        private String depth;
+        private Projection projection;
+        private Integer distanceTolerance;
         private Set<RoadObjectClient.Include> includes = Collections.emptySet();
         private Set<RoadObjectClient.IncludeGeometry> includeGeometries = Collections.emptySet();
         private Set<RoadObjectClient.IncludeAttribute> includeAttributes = Collections.emptySet();
-        private String attributeFilter = null;
-        private String bbox = null;
-        private String bpolygon = null;
-        private String roadRefFilter = null;
-        private String refLinkFilter = null;
+        private String attributeFilter;
+        private String bbox;
+        private String bpolygon;
+        private String roadRefFilter;
+        private String refLinkFilter;
         private List<OverlapFilter> overlapFilters = new ArrayList<>();
         private List<Integer> municipalities = Collections.emptyList();
         private List<Integer> counties = Collections.emptyList();
@@ -306,13 +306,13 @@ public class RoadObjectRequest {
         private List<String> nationalRoutes = Collections.emptyList();
         private List<String> streets = Collections.emptyList();
         private List<Long> roadobjectIds = Collections.emptyList();
-        private LocalDate pointInTime = null;
-        private Boolean armFilter = null;
-        private Boolean sideAreaFilter = null;
-        private Boolean intersectionFilter = null;
-        private RoadUserGroup roadUserGroupFilter = null;
-        private SeparatePassages separatePassagesFilter = null;
-        private LocalDateTime modifiedAfter = null;
+        private LocalDate pointInTime;
+        private Boolean armFilter;
+        private Boolean sideAreaFilter;
+        private Boolean intersectionFilter;
+        private RoadUserGroup roadUserGroupFilter;
+        private SeparatePassages separatePassagesFilter;
+        private LocalDateTime modifiedAfter;
 
         private Builder() { }
 
@@ -387,7 +387,6 @@ public class RoadObjectRequest {
             this.includeAttributes = includeAttributes;
             return this;
         }
-
 
         public Builder withIncludeAttributes(RoadObjectClient.IncludeAttribute... includeAttributes) {
             this.includeAttributes = new HashSet<>(Arrays.asList(includeAttributes));
@@ -528,8 +527,7 @@ public class RoadObjectRequest {
             return this;
         }
 
-
-        public Builder withAllVersions(boolean allVersions) {
+        public Builder withAllVersions(Boolean allVersions) {
             this.allVersions = allVersions;
             return this;
         }

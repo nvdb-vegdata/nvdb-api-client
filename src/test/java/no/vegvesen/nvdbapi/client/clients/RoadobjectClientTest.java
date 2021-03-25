@@ -4,6 +4,7 @@ import no.vegvesen.nvdbapi.client.util.Stopwatch;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
+@SuppressWarnings("WeakerAccess")
 public class RoadobjectClientTest {
 
     @Test
@@ -19,7 +20,7 @@ public class RoadobjectClientTest {
                 RoadObjectRequest
                         .newBuilder()
                         .includeAll()
-                        .withAllVersions(true)
+                        .withAllVersions(Boolean.TRUE)
                         .build());
         result.get()
                 .toStream()

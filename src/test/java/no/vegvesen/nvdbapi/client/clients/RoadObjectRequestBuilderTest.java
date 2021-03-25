@@ -26,14 +26,14 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
-
 import org.junit.jupiter.api.Test;
 
 import javax.ws.rs.core.MultivaluedMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-
+@SuppressWarnings("WeakerAccess")
 public class RoadObjectRequestBuilderTest {
 
     @Test
@@ -41,5 +41,13 @@ public class RoadObjectRequestBuilderTest {
         RoadObjectRequest req = RoadObjectRequest.newBuilder().build();
         MultivaluedMap<String, String> actual = RoadObjectRequestBuilder.convert(req);
         assertEquals(0, actual.size());
+    }
+
+    // issue 105
+    @Test
+    public void testEmptyRoadObjReq() {
+        RoadObjectRequest req = RoadObjectRequest.DEFAULT;
+        RoadObjectRequest.Builder b = req.toMutable();
+        assertNotNull(b);
     }
 }
