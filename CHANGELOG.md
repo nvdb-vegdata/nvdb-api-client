@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.16.2
+* Fixed a bug where `RoadObjectRequest::toMutable` would throw an exception when `allVersions` wasn't set.
+
 ## 1.16.1
 * Attribute `Street.sideStreet` added. 
 
