@@ -1,5 +1,3 @@
-apply plugin: 'pl.allegro.tech.build.axion-release'
-
 // http://axion-release-plugin.readthedocs.io/
 
 scmVersion {

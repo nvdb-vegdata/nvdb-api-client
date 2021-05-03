@@ -3,22 +3,14 @@ plugins {
     id 'pl.allegro.tech.build.axion-release' version '1.9.3'
     id 'java-library'
     id 'maven-publish'
-    id 'maven'
     id 'signing'
 }
 
+apply from: "gradle/tasks.gradle"
 apply from: "gradle/git.gradle"
 apply from: "gradle/versioning.gradle"
 apply from: "gradle/repositories.gradle"
 apply from: "gradle/publish.gradle"
-
-group = "no.vegvesen.nvdb"
-archivesBaseName="nvdb-api-client"
-version = "1.16.3-SNAPSHOT"
-
-sourceCompatibility = "1.8"
-targetCompatibility = "1.8"
-[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
 
 dependencies {
     api "com.google.code.gson:gson:2.8.6"
@@ -52,22 +44,7 @@ artifacts {
     archives javadocJar
 }
 
-task writeBuildInfo {
-    doLast {
-        Properties properties = new Properties();
-        properties.put("git.branch", git_branch);
-        properties.put("git.hash", git_shorthash);
-        properties.put("git.date", git_date.toString());
-        properties.put("build.version", version);
-        properties.put("build.date", build_date.toString());
-        properties.put("build.builder", build_builder.toString());
 
-        def resourceDir = new File("${buildDir}/resources/main/")
-        resourceDir.mkdirs()
-        new File(resourceDir, "build.properties").withWriter { writer ->
-            properties.store(writer, null)
-        }
-    }
-}
-
-processResources.dependsOn(writeBuildInfo)
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+[compileJava, compileTestJava]*.options*.encoding = "UTF-8"

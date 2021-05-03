@@ -1,4 +1,3 @@
-
 task sourceJar(type: Jar, dependsOn: classes) {
     getArchiveClassifier().set('sources')
     from sourceSets.main.allSource
@@ -9,33 +8,40 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
+signing {
+    sign configurations.archives
+}
+
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            name 'nvdb-api-client'
             artifactId 'nvdb-read-api-v3-client'
-            description 'Open source Java client library for use with the NVDB REST API v3.'
-            url 'https://github.com/nvdb-vegdata/nvdb-api-client'
-            inceptionYear '2015'
-            version '1.16.4-test-archiveclassifier' // remove this when testing is complete
 
-            scm {
-                connection 'scm:git:git://github.com/nvdb-vegdata/nvdb-api-client.git'
-                developerConnection 'scm:git:ssh://github.com:nvdb-vegdata/nvdb-api-client.git'
-                url 'http://github.com/nvdb-vegdata/nvdb-api-client/tree/master'
-            }
+            pom {
+                name = 'nvdb-api-client'
+                description = 'Open source Java client library for use with the NVDB REST API v3.'
+                url = 'https://github.com/nvdb-vegdata/nvdb-api-client'
+                inceptionYear = '2015'
+                version = '1.16.4-test-archiveclassifier' // remove this when testing is complete
 
-            licenses {
-                license {
-                    name 'BSD 2-Clause'
-                    url 'https://opensource.org/licenses/BSD-2-Clause'
+                scm {
+                    connection = 'scm:git:git://github.com/nvdb-vegdata/nvdb-api-client.git'
+                    developerConnection = 'scm:git:ssh://github.com:nvdb-vegdata/nvdb-api-client.git'
+                    url = 'http://github.com/nvdb-vegdata/nvdb-api-client/tree/master'
                 }
-            }
 
-            developers {
-                developer {
-                    id 'capgemini'
-                    organization 'Capgemini'
+                licenses {
+                    license {
+                        name = 'BSD 2-Clause'
+                        url = 'https://opensource.org/licenses/BSD-2-Clause'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id = 'capgemini'
+                        organization = 'Capgemini'
+                    }
                 }
             }
 
