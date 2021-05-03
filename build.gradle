@@ -1,9 +1,10 @@
 plugins {
-    id "com.jfrog.bintray" version "1.8.4"
     id 'com.github.ben-manes.versions' version '0.21.0'
     id 'pl.allegro.tech.build.axion-release' version '1.9.3'
     id 'java-library'
     id 'maven-publish'
+    id 'maven'
+    id 'signing'
 }
 
 apply from: "gradle/git.gradle"
@@ -12,6 +13,8 @@ apply from: "gradle/repositories.gradle"
 apply from: "gradle/publish.gradle"
 
 group = "no.vegvesen.nvdb"
+archivesBaseName="nvdb-api-client"
+version = "1.16.3-SNAPSHOT"
 
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"

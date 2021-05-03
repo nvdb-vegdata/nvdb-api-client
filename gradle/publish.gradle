@@ -1,18 +1,43 @@
 
 task sourceJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
+    getArchiveClassifier().set('sources')
     from sourceSets.main.allSource
 }
 
 task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
+    getArchiveClassifier().set('javadoc')
     from javadoc.destinationDir
 }
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
+            name 'nvdb-api-client'
             artifactId 'nvdb-read-api-v3-client'
+            description 'Open source Java client library for use with the NVDB REST API v3.'
+            url 'https://github.com/nvdb-vegdata/nvdb-api-client'
+            inceptionYear '2015'
+            version '1.16.4-test-archiveclassifier' // remove this when testing is complete
+
+            scm {
+                connection 'scm:git:git://github.com/nvdb-vegdata/nvdb-api-client.git'
+                developerConnection 'scm:git:ssh://github.com:nvdb-vegdata/nvdb-api-client.git'
+                url 'http://github.com/nvdb-vegdata/nvdb-api-client/tree/master'
+            }
+
+            licenses {
+                license {
+                    name 'BSD 2-Clause'
+                    url 'https://opensource.org/licenses/BSD-2-Clause'
+                }
+            }
+
+            developers {
+                developer {
+                    id 'capgemini'
+                    organization 'Capgemini'
+                }
+            }
 
             from components.java
 
@@ -29,14 +54,29 @@ publishing {
             name "Artreposnapshot"
             url "https://artrepo.vegvesen.no/artifactory/libs-snapshot-local"
         }
+        maven {
+            name "Staging"
+            url "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+            credentials(PasswordCredentials) {
+                username ossrhUsername
+                password ossrhPassword
+            }
+        }
+        maven {
+            name "Snapshot"
+            url "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+            credentials(PasswordCredentials) {
+                username ossrhUsername
+                password ossrhPassword
+            }
+        }
     }
-
 }
 
 if (project.hasProperty("artrepoUser") && project.hasProperty("artrepoPass")) {
     publishing {
         repositories.each {
-            if(it.url.toString().contains('artrepo')) {
+            if (it.url.toString().contains('artrepo')) {
                 it.credentials {
                     username artrepoUser
                     password artrepoPass
@@ -46,18 +86,3 @@ if (project.hasProperty("artrepoUser") && project.hasProperty("artrepoPass")) {
     }
 }
 
-bintray {
-    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
-    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
-    publications = ['mavenJava']
-    pkg {
-        repo = 'vegdata'
-        name = 'nvdb-read-api-v3-client'
-        userOrg = 'nvdb-vegdata'
-        licenses = ['BSD 2-Clause']
-        vcsUrl = 'https://github.com/nvdb-vegdata/nvdb-api-client'
-        version {
-            name = project.version
-        }
-    }
-}

@@ -1,10 +1,4 @@
 repositories {
     mavenLocal()
-
     mavenCentral()
-
-    maven {
-        url 'https://jcenter.bintray.com'
-    }
-
 }
