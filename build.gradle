@@ -1,7 +1,7 @@
 plugins {
     id 'com.github.ben-manes.versions' version '0.21.0'
     id 'org.ajoberstar.grgit' version '4.1.0'
-    id 'pl.allegro.tech.build.axion-release' version '1.13.2'
+    id 'pl.allegro.tech.build.axion-release' version '1.9.3'
     id 'java-library'
     id 'maven-publish'
     id 'signing'
