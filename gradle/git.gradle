@@ -1,16 +1,6 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'org.ajoberstar:gradle-git:1.4.1'
-    }
-}
-
-import org.ajoberstar.grgit.*
 import java.text.SimpleDateFormat
 
-def repo = Grgit.open(project.file('.'))
+def repo = grgit.open(dir: project.file('.'))
 def head = repo.head()
 def branch = repo.branch.current.name
 
