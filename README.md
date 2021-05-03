@@ -7,8 +7,8 @@ Support or feedback: Issue on this repo or on [Gitter](https://gitter.im/nvdb-ve
 Base URL for the API is https://nvdbapiles-v3.atlas.vegvesen.no
 
 # Artifact
-This artifact will be published to _jCenter_ upon releases: http://jcenter.bintray.com/
-See 'set me up' on [bintray](https://bintray.com/beta/#/nvdb-vegdata/vegdata/nvdb-read-api-v3-client?tab=overview) for the latest version number.
+This artifact will be published to [Maven Central](https://search.maven.org/) upon releases.
+TODO: update with full url once approved by Sonatype.
 
 ## Gradle
 ```gradle
@@ -17,7 +17,7 @@ dependencies {
 }
 repositories {
    maven {
-      url  "https://dl.bintray.com/nvdb-vegdata/vegdata"
+      url *COMING SOON*
    }
 }
 ```
@@ -31,23 +31,13 @@ repositories {
         <version>$version</version>
     </dependency>
 </dependencies>
-<repositories>
-    <repository>
-        <snapshots>
-            <enabled>false</enabled>
-        </snapshots>
-        <id>bintray-nvdb-vegdata-vegdata</id>
-        <name>bintray</name>
-        <url>https://dl.bintray.com/nvdb-vegdata/vegdata</url>
-    </repository>
-</repositories>
 ```
 
 # Getting started
 Using the client is very simple. All it takes is a couple of lines of code.
 
 ## Authentication
-This is a completely open API, but some featuretypes are restricted and need authentication and authorization. 
+This is a completely open API, but some featuretypes are restricted and need authentication and authorization.
 We strongly encourage using the **X-Client-Name** header because it helps us gather statistics which we use to improve the API.
 
 ## Example
@@ -80,9 +70,9 @@ try (ClientFactory factory = new ClientFactory("https://nvdbapiles-v3.atlas.vegv
 RoadObject ro = client.getRoadObject(534, 1);
 ```
 
- ### Setting timeouts for Jersey client.
- To set a connect and read timeout for the nvdb-api-client. An instance of `ClientConfiguration` can be added when creating the `ClientFactory`
- 
+### Setting timeouts for Jersey client.
+To set a connect and read timeout for the nvdb-api-client. An instance of `ClientConfiguration` can be added when creating the `ClientFactory`
+
  ```java
 // Add a read timeout of 5000 millis and connect timeout of 1000 millis
 ClientConfiguration clientConfig = 
@@ -97,11 +87,11 @@ ClientFactory factory = new ClientFactory("https://nvdbapiles-v3.atlas.vegvesen.
 
 ## Simple setup
 To use the client in your project, you should:
-1. Add the gradle or maven code to your project build file (pom.xml for maven projects); 
-2. Fill in your preferred version at $version (maven versions are available here: https://bintray.com/nvdb-vegdata);
+1. Add the gradle or maven code to your project build file (pom.xml for maven projects);
+2. Fill in your preferred version at $version (maven versions are available here: **MAVEN CENTRAL URL COMING SOON**);
 3. Add some of the example code and run it.
 
-# How to build 
+# How to build
 The repo contains the Gradle wrapper. The client is built running:
 ```bash
 // Simple compilation 

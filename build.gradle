@@ -4,6 +4,7 @@ plugins {
     id 'pl.allegro.tech.build.axion-release' version '1.9.3'
     id 'java-library'
     id 'maven-publish'
+    id 'maven'
     id 'signing'
 }
 
@@ -43,10 +44,14 @@ jar {
 }
 
 artifacts {
+    archives jar
     archives sourceJar
     archives javadocJar
 }
 
+signing {
+    sign configurations.archives
+}
 
 sourceCompatibility = "1.8"
 targetCompatibility = "1.8"
