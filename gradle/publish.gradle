@@ -22,7 +22,6 @@ publishing {
                 description = 'Open source Java client library for use with the NVDB REST API v3.'
                 url = 'https://github.com/nvdb-vegdata/nvdb-api-client'
                 inceptionYear = '2015'
-                version = '1.16.4-test-archiveclassifier' // remove this when testing is complete
 
                 scm {
                     connection = 'scm:git:git://github.com/nvdb-vegdata/nvdb-api-client.git'
