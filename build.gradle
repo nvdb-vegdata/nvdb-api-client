@@ -9,9 +9,11 @@ plugins {
 
 apply from: "gradle/tasks.gradle"
 apply from: "gradle/git.gradle"
-//apply from: "gradle/versioning.gradle"
+apply from: "gradle/versioning.gradle"
 apply from: "gradle/repositories.gradle"
 apply from: "gradle/publish.gradle"
+
+group = "no.vegvesen.nvdb"
 
 dependencies {
     api "com.google.code.gson:gson:2.8.6"
