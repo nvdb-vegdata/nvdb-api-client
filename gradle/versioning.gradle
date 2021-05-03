@@ -1,6 +1,9 @@
 // http://axion-release-plugin.readthedocs.io/
 
 scmVersion {
+    tag {
+        prefix = 'nvdb-read-api-v3-client'
+    }
     versionCreator 'versionWithBranch'
     useHighestVersion = true
     sanitizeVersion = false
