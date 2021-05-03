@@ -1,40 +1,7 @@
-task sourceJar(type: Jar, dependsOn: classes) {
-    archiveClassifier.set("sources")
-    from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    archiveClassifier.set("javadoc")
-    from javadoc.destinationDir
-}
-
 publishing {
     publications {
         mavenJava(MavenPublication) {
             artifactId 'nvdb-read-api-v3-client'
-
-            pom {
-                name = 'nvdb-api-client'
-                description = 'Open source Java client library for use with the NVDB REST API v3.'
-                url = 'https://github.com/nvdb-vegdata/nvdb-api-client'
-                licenses {
-                    license {
-                        name = 'BSD 2-Clause'
-                        url = 'https://opensource.org/licenses/BSD-2-Clause'
-                    }
-                }
-                developers {
-                    developer {
-                        id = 'capgemini'
-                        organization = 'Capgemini'
-                    }
-                }
-                scm {
-                    connection = 'scm:git:git://github.com/nvdb-vegdata/nvdb-api-client.git'
-                    developerConnection = 'scm:git:ssh://github.com:nvdb-vegdata/nvdb-api-client.git'
-                    url = 'http://github.com/nvdb-vegdata/nvdb-api-client/tree/master'
-                }
-            }
 
             from components.java
 
@@ -50,22 +17,6 @@ publishing {
         maven {
             name "Artreposnapshot"
             url "https://artrepo.vegvesen.no/artifactory/libs-snapshot-local"
-        }
-        maven {
-            name "Staging"
-            url "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
-            credentials(PasswordCredentials) {
-                username ossrhUsername
-                password ossrhPassword
-            }
-        }
-        maven {
-            name "Snapshot"
-            url "https://s01.oss.sonatype.org/content/repositories/snapshots/"
-            credentials(PasswordCredentials) {
-                username ossrhUsername
-                password ossrhPassword
-            }
         }
     }
 }

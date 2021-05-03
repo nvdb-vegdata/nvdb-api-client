@@ -1,5 +1,11 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.16.6
+* Separate builds for local artifactory and maven central
+
+## 1.16.5
+* Proper release docs and libraries
+
 ## 1.16.4
 * Release script updates
 

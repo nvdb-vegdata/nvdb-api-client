@@ -8,13 +8,14 @@ plugins {
     id 'signing'
 }
 
-apply from: "gradle/tasks.gradle"
-apply from: "gradle/git.gradle"
-apply from: "gradle/versioning.gradle"
 apply from: "gradle/repositories.gradle"
+apply from: "gradle/tasks.gradle"
+apply from: "gradle/versioning.gradle"
+apply from: "gradle/git.gradle"
 apply from: "gradle/publish.gradle"
 
 group = "no.vegvesen.nvdb"
+archivesBaseName = "nvdb-api-client"
 
 dependencies {
     api "com.google.code.gson:gson:2.8.6"
@@ -44,7 +45,6 @@ jar {
 }
 
 artifacts {
-    archives jar
     archives sourceJar
     archives javadocJar
 }

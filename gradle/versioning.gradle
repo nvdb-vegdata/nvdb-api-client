@@ -16,7 +16,6 @@ for (def line : project.file('CHANGELOG.md')) {
         break
     }
 }
-println("Found version ${version} from CHANGELOG.md")
 
 allprojects {
     project.version = version
