@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.16.3
+* Moved client to maven central (after shutdown of bintray) and fixed several gradle-related issues.
+
 ## 1.16.2
 * Fixed a bug where `RoadObjectRequest::toMutable` would throw an exception when `allVersions` wasn't set.
 

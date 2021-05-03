@@ -7,6 +7,17 @@ scmVersion {
     versionCreator = {version, position -> "${version}${versionBranch}"}
 }
 
+def version = null;
+for (def line : project.file('CHANGELOG.md')) {
+    if (line.contains("## ")) {
+        def start = line.indexOf(" ") + 1;  // the space after ##
+        def end = line.length() - 1
+        version = line[start..end]
+        break
+    }
+}
+println("Found version ${version} from CHANGELOG.md")
+
 allprojects {
-    project.version = scmVersion.version
+    project.version = version
 }
