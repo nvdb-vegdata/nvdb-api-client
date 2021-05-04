@@ -1,7 +1,7 @@
 plugins {
     id 'com.github.ben-manes.versions' version '0.21.0'
     id 'org.ajoberstar.grgit' version '4.1.0'
-    id 'pl.allegro.tech.build.axion-release' version '1.9.3'
+    id 'pl.allegro.tech.build.axion-release' version '1.9.3'  // do not update past 2 due to SSH errors on windows.
     id 'java-library'
     id 'maven-publish'
     id 'maven'
@@ -13,9 +13,10 @@ apply from: "gradle/tasks.gradle"
 apply from: "gradle/versioning.gradle"
 apply from: "gradle/git.gradle"
 apply from: "gradle/publish.gradle"
+apply from: "gradle/upload.gradle"
 
 group = "no.vegvesen.nvdb"
-archivesBaseName = "nvdb-api-client"
+archivesBaseName = "nvdb-read-api-v3-client"
 
 dependencies {
     api "com.google.code.gson:gson:2.8.6"
