@@ -17,6 +17,8 @@ gradle-app.setting
 
 ### Java ###
 *.class
+.classpath
+bin/
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
@@ -37,6 +39,8 @@ hs_err_pid*
 
 ## Directory-based project format:
 .idea/
+.project
+.settings
 # if you remove the above rule, at least ignore the following:
 
 # User-specific stuff:

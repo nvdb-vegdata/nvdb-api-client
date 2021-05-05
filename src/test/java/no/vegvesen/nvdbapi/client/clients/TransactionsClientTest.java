@@ -10,7 +10,7 @@ public class TransactionsClientTest {
     @Disabled("manual test")
     void downloadTransacyions() {
         Stopwatch started = Stopwatch.createStarted();
-        ClientFactory clientFactory = new ClientFactory("https://nvdbw01.kantega.no/nvdb/api/v3",
+        ClientFactory clientFactory = new ClientFactory("https://nvdbapiles-v3.atlas.vegvesen.no",
                 "nvdbapi-client-test");
         TransactionsClient roadNetService = clientFactory.getTransactionsClient();
 

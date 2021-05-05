@@ -11,7 +11,7 @@ public class RoadobjectClientTest {
     @Disabled("manual test")
     void downloadAll() {
         Stopwatch started = Stopwatch.createStarted();
-        ClientFactory clientFactory = new ClientFactory("https://nvdbw01.kantega.no/nvdb/api/v3",
+        ClientFactory clientFactory = new ClientFactory("https://nvdbapiles-v3.atlas.vegvesen.no",
                  "nvdbapi-client-test");
         RoadObjectClient roadNetService = clientFactory.getRoadObjectClient();
 
