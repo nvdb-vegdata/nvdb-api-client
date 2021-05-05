@@ -7,8 +7,7 @@ Support or feedback: Issue on this repo or on [Gitter](https://gitter.im/nvdb-ve
 Base URL for the API is https://nvdbapiles-v3.atlas.vegvesen.no
 
 # Artifact
-This artifact will be published to [Maven Central](https://search.maven.org/) upon releases.
-TODO: update with full url once approved by Sonatype.
+This artifact will be published to [Maven Central](https://search.maven.org/artifact/no.vegvesen.nvdb/nvdb-read-api-v3-client/) upon releases.
 
 ## Gradle
 ```gradle
@@ -17,7 +16,7 @@ dependencies {
 }
 repositories {
    maven {
-      url *COMING SOON*
+      url "https://repo1.maven.org/maven2/"
    }
 }
 ```
