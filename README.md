@@ -104,7 +104,7 @@ ClientFactory factory = new ClientFactory("https://nvdbapiles-v3.atlas.vegvesen.
 ## Simple setup
 To use the client in your project, you should:
 1. Add the gradle or maven code to your project build file (pom.xml for maven projects);
-2. Fill in your preferred version at $version (maven versions are available here: **MAVEN CENTRAL URL COMING SOON**);
+2. Fill in your preferred version at $version (maven versions are available here: https://search.maven.org/artifact/no.vegvesen.nvdb/nvdb-read-api-v3-client);
 3. Add some of the example code and run it.
 
 # How to build
