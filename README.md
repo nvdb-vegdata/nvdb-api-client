@@ -11,23 +11,40 @@ This artifact will be published to [Maven Central](https://search.maven.org/arti
 
 ## Gradle
 ```gradle
+def nvdbVersion = "1.16.6"
+def slfVersion = "1.7.30"
+
 dependencies {
-    compile "no.vegvesen.nvdb:nvdb-read-api-v3-client:$version"
+    compile "no.vegvesen.nvdb:nvdb-read-api-v3-client:$nvdbVersion"
+    compile "javax.activation:activation:1.1"
+    compile "org.slf4j:slf4j-api:$slfVersion"
+    compile "org.slf4j:slf4j-simple:$slfVersion"
 }
-repositories {
-   maven {
-      url "https://repo1.maven.org/maven2/"
-   }
-}
+
 ```
 
 ## Maven
 ```xml
+<properties>
+    <nvdb.version>1.16.6</nvdb.version>
+    <slf.version>1.7.30</slf.version>
+</properties>
+
 <dependencies>
     <dependency>
         <groupId>no.vegvesen.nvdb</groupId>
         <artifactId>nvdb-read-api-v3-client</artifactId>
-        <version>$version</version>
+        <version>${nvdb.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-api</artifactId>
+        <version>${slf.version}</version>
+    </dependency>
+    <dependency>
+        <groupId>org.slf4j</groupId>
+        <artifactId>slf4j-simple</artifactId>
+        <version>${slf.version}</version>
     </dependency>
 </dependencies>
 ```
