@@ -7,10 +7,10 @@ To make releases to the remote, you need the following properties in your `gradl
 
 |property|description|value|
 | :--- | :--- | :--- |
-| ossrhUsername | sonatype user key | eCL9I7y+ |
-| ossrhPassword | sonatype api key | contact system owner | 
+| ossrhUsername | sonatype user key | accessible through secrets |
+| ossrhPassword | sonatype api key | accessible through secrets | 
 | signing.keyId | public key | 0EA667BC | 
-| signing.password | passphrase | contact system owner |
+| signing.password | passphrase | accessible through secrets |
 | signing.secretKeyRingFile | absolute file location for the keyring file | contact system owner |
 
 The public key full ID is hosted on [openpgp.org](https://keys.openpgp.org/search?q=14E44A7F9D6724682D66C941A1C18A010EA667BC)
