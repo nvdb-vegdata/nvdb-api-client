@@ -1,0 +1,39 @@
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            snapshotRepository(url: "https://s01.oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: ossrhUsername, password: ossrhPassword)
+            }
+
+            pom.project {
+                name = 'nvdb-api-client'
+                packaging 'jar'
+                description = 'Open source Java client library for use with the NVDB REST API v3.'
+                url = 'https://github.com/nvdb-vegdata/nvdb-api-client'
+                licenses {
+                    license {
+                        name = 'BSD 2-Clause'
+                        url = 'https://opensource.org/licenses/BSD-2-Clause'
+                    }
+                }
+                developers {
+                    developer {
+                        id = 'capgemini'
+                        organization = 'Capgemini'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/nvdb-vegdata/nvdb-api-client.git'
+                    developerConnection = 'scm:git:ssh://github.com:nvdb-vegdata/nvdb-api-client.git'
+                    url = 'http://github.com/nvdb-vegdata/nvdb-api-client/tree/master'
+                }
+            }
+        }
+    }
+}

@@ -1,17 +1,8 @@
-buildscript {
-    repositories {
-        mavenCentral()
-    }
-    dependencies {
-        classpath 'org.ajoberstar:gradle-git:1.4.1'
-    }
-}
-
-import org.ajoberstar.grgit.*
 import java.text.SimpleDateFormat
 
-def repo = Grgit.open(project.file('.'))
+def repo = grgit.open(dir: project.file('.'))
 def head = repo.head()
+def branch = repo.branch.current.name
 
 SimpleDateFormat iso8601 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
 ext {
@@ -22,5 +13,6 @@ ext {
     git_branch = repo.branch.current.name
     build_date = iso8601.format(new Date())
     build_builder = "${System.getProperty("user.name")}@${InetAddress.getLocalHost().getHostName()}"
+    versionBranch = (branch == 'master') ? '' : ".${branch}"
 }
 repo.close()

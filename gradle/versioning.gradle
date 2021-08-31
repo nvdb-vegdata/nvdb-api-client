@@ -1,13 +1,22 @@
-apply plugin: 'pl.allegro.tech.build.axion-release'
-
 // http://axion-release-plugin.readthedocs.io/
 
 scmVersion {
     tag {
-        prefix = 'nvdb-api-client'
+        prefix = 'nvdb-read-api-v3-client'
+    }
+    versionCreator = {version, position -> "${version}${versionBranch}"}
+}
+
+def version = null;
+for (def line : project.file('CHANGELOG.md')) {
+    if (line.contains("## ")) {
+        def start = line.indexOf(" ") + 1;  // the space after ##
+        def end = line.length() - 1
+        version = line[start..end]
+        break
     }
 }
 
 allprojects {
-    project.version = scmVersion.version
+    project.version = version
 }
