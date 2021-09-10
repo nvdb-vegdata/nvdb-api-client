@@ -1,21 +1,22 @@
 plugins {
-    id "com.jfrog.bintray" version "1.8.4"
     id 'com.github.ben-manes.versions' version '0.21.0'
-    id 'pl.allegro.tech.build.axion-release' version '1.9.3'
+    id 'org.ajoberstar.grgit' version '4.1.0'
+    id 'pl.allegro.tech.build.axion-release' version '1.9.3'  // do not update past 2 due to SSH errors on windows.
     id 'java-library'
     id 'maven-publish'
+    id 'maven'
+    id 'signing'
 }
 
-apply from: "gradle/git.gradle"
-apply from: "gradle/versioning.gradle"
 apply from: "gradle/repositories.gradle"
+apply from: "gradle/tasks.gradle"
+apply from: "gradle/versioning.gradle"
+apply from: "gradle/git.gradle"
 apply from: "gradle/publish.gradle"
+apply from: "gradle/upload.gradle"
 
 group = "no.vegvesen.nvdb"
-
-sourceCompatibility = "1.8"
-targetCompatibility = "1.8"
-[compileJava, compileTestJava]*.options*.encoding = "UTF-8"
+archivesBaseName = "nvdb-read-api-v3-client"
 
 dependencies {
     api "com.google.code.gson:gson:2.8.6"
@@ -49,22 +50,10 @@ artifacts {
     archives javadocJar
 }
 
-task writeBuildInfo {
-    doLast {
-        Properties properties = new Properties();
-        properties.put("git.branch", git_branch);
-        properties.put("git.hash", git_shorthash);
-        properties.put("git.date", git_date.toString());
-        properties.put("build.version", version);
-        properties.put("build.date", build_date.toString());
-        properties.put("build.builder", build_builder.toString());
-
-        def resourceDir = new File("${buildDir}/resources/main/")
-        resourceDir.mkdirs()
-        new File(resourceDir, "build.properties").withWriter { writer ->
-            properties.store(writer, null)
-        }
-    }
+signing {
+    sign configurations.archives
 }
 
-processResources.dependsOn(writeBuildInfo)
+sourceCompatibility = "1.8"
+targetCompatibility = "1.8"
+[compileJava, compileTestJava]*.options*.encoding = "UTF-8"

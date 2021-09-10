@@ -1,10 +1,16 @@
 repositories {
     mavenLocal()
-
     mavenCentral()
-
     maven {
-        url 'https://jcenter.bintray.com'
+        name = 'ajoberstar-backup'
+        url = 'https://ajoberstar.org/bintray-backup/'
     }
-
+    maven {
+        name "Artrepo"
+        url "https://artrepo.vegvesen.no/artifactory/libs-release-local"
+    }
+    maven {
+        name "Artreposnapshot"
+        url "https://artrepo.vegvesen.no/artifactory/libs-snapshot-local"
+    }
 }
