@@ -67,7 +67,7 @@ public class RoadObjectRequest {
     private final RoadUserGroup roadUserGroupFilter;
     private final SeparatePassages separatePassagesFilter;
     private final DetailLevel detailLevel;
-    private final TypeOfRoad typeOfRoad;
+    private final Set<TypeOfRoad> typeOfRoadFilter;
     private final RefLinkPartType refLinkPartType;
 
     private RoadObjectRequest(Builder b) {
@@ -98,7 +98,7 @@ public class RoadObjectRequest {
         sideAreaFilter = b.sideAreaFilter;
         intersectionFilter = b.intersectionFilter;
         detailLevel = b.detailLevel;
-        typeOfRoad = b.typeOfRoad;
+        typeOfRoadFilter = b.typeOfRoadFilter;
         refLinkPartType = b.refLinkPartType;
         roadUserGroupFilter = b.roadUserGroupFilter;
         separatePassagesFilter = b.separatePassagesFilter;
@@ -224,8 +224,8 @@ public class RoadObjectRequest {
         return Optional.ofNullable(detailLevel);
     }
 
-    public Optional<TypeOfRoad> getTypeOfRoad() {
-        return Optional.ofNullable(typeOfRoad);
+    public Set<TypeOfRoad> getTypeOfRoadFilter() {
+        return typeOfRoadFilter;
     }
 
     public Optional<RefLinkPartType> getRefLinkPartType() {
@@ -272,7 +272,7 @@ public class RoadObjectRequest {
                 .withSeparatePassagesFilter(separatePassagesFilter)
                 .withRoadUserGroupFilter(roadUserGroupFilter)
                 .withRefLinkPartType(refLinkPartType)
-                .withTypeOfRoad(typeOfRoad)
+                .withTypeOfRoadFilter(typeOfRoadFilter)
                 .withDetailLevel(detailLevel);
 
         overlapFilters.forEach(of -> b.addOverlapFilter(of.filter, of.typeId));
@@ -283,7 +283,7 @@ public class RoadObjectRequest {
 
         private RefLinkPartType refLinkPartType;
         private DetailLevel detailLevel;
-        private TypeOfRoad typeOfRoad;
+        private Set<TypeOfRoad> typeOfRoadFilter = Collections.emptySet();
 
         private Page page = Page.count(1000);
         private Boolean segmented;
@@ -339,8 +339,13 @@ public class RoadObjectRequest {
             return this;
         }
 
-        public Builder withTypeOfRoad(TypeOfRoad typeOfRoad) {
-            this.typeOfRoad = typeOfRoad;
+        public Builder withTypeOfRoadFilter(Set<TypeOfRoad> typeOfRoadFilter) {
+            this.typeOfRoadFilter = typeOfRoadFilter;
+            return this;
+        }
+
+        public Builder withTypeOfRoadFilter(TypeOfRoad... typeOfRoad) {
+            this.typeOfRoadFilter = new HashSet<>(Arrays.asList(typeOfRoad));
             return this;
         }
 

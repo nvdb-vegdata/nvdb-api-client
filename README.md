@@ -11,7 +11,7 @@ This artifact will be published to [Maven Central](https://search.maven.org/arti
 
 ## Gradle
 ```gradle
-def nvdbVersion = "1.16.6"
+def nvdbVersion = "1.17.0"
 def slfVersion = "1.7.30"
 
 dependencies {
@@ -26,7 +26,7 @@ dependencies {
 ## Maven
 ```xml
 <properties>
-    <nvdb.version>1.16.6</nvdb.version>
+    <nvdb.version>1.17.0</nvdb.version>
     <slf.version>1.7.30</slf.version>
 </properties>
 

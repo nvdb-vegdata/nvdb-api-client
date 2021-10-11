@@ -60,7 +60,6 @@ class RoadObjectRequestBuilder {
         request.getBpolygon().ifPresent(v -> map.putSingle("polygon", v));
         request.getBbox().ifPresent(v -> map.putSingle("kartutsnitt", v));
         request.getDetailLevel().ifPresent(v -> map.putSingle("detaljniva", v.getSosi()));
-        request.getTypeOfRoad().ifPresent(v -> map.putSingle("typeveg", v.getTypeOfRoadSosi()));
         request.getRefLinkPartType().ifPresent(v -> map.putSingle("veglenketype", v.getRefLinkPartType()));
         request.getRoadRefFilter().ifPresent(v -> map.putSingle("vegsystemreferanse", v));
         request.getRefLinkFilter().ifPresent(v -> map.putSingle("veglenkesekvens", v));
@@ -73,6 +72,7 @@ class RoadObjectRequestBuilder {
 
         // Multiple parameters
         request.getOverlapFilters().forEach(f -> map.add("overlapp", f.toString()));
+        request.getTypeOfRoadFilter().forEach(f -> map.add("typeveg", f.toString()));
 
         return map;
     }
