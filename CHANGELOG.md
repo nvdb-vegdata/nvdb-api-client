@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.17.2
+* Fixed serialization of TypeOfRoad parameters
+
 ## 1.17.1
 * Fixed a bug where reading UTF-8 encoded cached files lead to an exception
 

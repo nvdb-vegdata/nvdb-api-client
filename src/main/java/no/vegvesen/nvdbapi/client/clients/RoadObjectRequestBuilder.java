@@ -26,6 +26,8 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
+import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
+
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import java.time.format.DateTimeFormatter;
@@ -56,6 +58,7 @@ class RoadObjectRequestBuilder {
         getIncludeArgument(request.getIncludes()).ifPresent(v -> map.putSingle("inkluder", v));
         getIncludeGeometriesArgument(request.getIncludeGeometries()).ifPresent(v -> map.putSingle("inkludergeometri", v));
         getIncludeAttributesArgument(request.getIncludeAttributes()).ifPresent(v -> map.putSingle("inkluder_egenskaper", v));
+        getTypeOfRoadArgument(request.getTypeOfRoadFilter()).ifPresent(v -> map.putSingle("typeveg", v));
         request.getAttributeFilter().ifPresent(v -> map.putSingle("egenskap", v));
         request.getBpolygon().ifPresent(v -> map.putSingle("polygon", v));
         request.getBbox().ifPresent(v -> map.putSingle("kartutsnitt", v));
@@ -72,9 +75,20 @@ class RoadObjectRequestBuilder {
 
         // Multiple parameters
         request.getOverlapFilters().forEach(f -> map.add("overlapp", f.toString()));
-        request.getTypeOfRoadFilter().forEach(f -> map.add("typeveg", f.toString()));
 
         return map;
+    }
+
+    private static Optional<String> getTypeOfRoadArgument(Set<TypeOfRoad> values){
+        // Defaults
+        if (values == null || values.isEmpty()) {
+            return Optional.empty();
+        }
+        String val = values.stream()
+                .map(TypeOfRoad::getTypeOfRoadSosi)
+                .collect(Collectors.joining(","));
+        return Optional.of(val);
+
     }
 
     private static Optional<String> getIncludeArgument(Set<RoadObjectClient.Include> values) {
