@@ -25,10 +25,7 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
-import java.io.Closeable;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -493,7 +490,7 @@ public final class ClientFactory implements AutoCloseable {
         if(etagFile.exists()) {
             try {
                 return Optional.of(
-                    JsonParser.parseReader(new JsonReader(new FileReader(etagFile)))
+                    JsonParser.parseReader(new JsonReader(new InputStreamReader(new FileInputStream(etagFile), StandardCharsets.UTF_8)))
                 );
             } catch (IOException e) {
                 LoggerFactory.getLogger(ClientFactory.class).error("Error getting body for {}", resource, e);
