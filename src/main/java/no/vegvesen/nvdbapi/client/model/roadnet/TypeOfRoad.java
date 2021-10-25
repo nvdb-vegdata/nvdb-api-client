@@ -23,6 +23,9 @@ public enum TypeOfRoad {
     TRAPP("trapp", "Trapp"),
     GANGFELT("gangfelt", "Gangfelt"),
     GATETUN("gatetun", "Gatetun"),
+    TRAKTORVEG("traktorveg", "Traktorveg"),
+    STI("sti", "Sti"),
+    ANNET("annet", "Annet"),
     UKJENT("ukjent", "Ukjent");
 
     private final String typeOfRoadText;
