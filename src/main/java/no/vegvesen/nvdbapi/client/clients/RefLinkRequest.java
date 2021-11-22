@@ -27,6 +27,7 @@ package no.vegvesen.nvdbapi.client.clients;
 
 import no.vegvesen.nvdbapi.client.model.Projection;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 public class RefLinkRequest {
@@ -34,15 +35,19 @@ public class RefLinkRequest {
     private final long linksequenceId;
     private final double position;
     private final Projection projection;
+    private final LocalDate dateFilter;
 
     public RefLinkRequest(long linksequenceId, double position) {
-        this(linksequenceId, position, null);
+        this(linksequenceId, position, null, null);
     }
 
-    public RefLinkRequest(long linksequenceId, double position, Projection projection) {
+    public RefLinkRequest(long linksequenceId, double position, Projection projection) { this(linksequenceId, position, projection, null); }
+
+    public RefLinkRequest(long linksequenceId, double position, Projection projection, LocalDate dateFilter) {
         this.linksequenceId = linksequenceId;
         this.position = position;
         this.projection = projection;
+        this.dateFilter = dateFilter;
     }
 
     public long getLinksequenceId() {
@@ -56,6 +61,8 @@ public class RefLinkRequest {
     public Optional<Projection> getProjection() {
         return Optional.ofNullable(projection);
     }
+
+    public Optional<LocalDate> getDateFilter() { return Optional.ofNullable(dateFilter); }
 
     public String getQueryParam() {
         return position + "@" + linksequenceId;

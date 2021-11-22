@@ -35,6 +35,7 @@ import no.vegvesen.nvdbapi.client.model.RoadPlacementBulkResult;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -54,7 +55,8 @@ public class RoadPlacementClient extends AbstractJerseyClient {
      * @return {@code Optional<RoadPlacement>} if query had result, otherwise {@code Optional.empty()}
      */
     public Optional<RoadPlacement> findPlacement(RoadSysRefRequest request) {
-        return getResults("vegsystemreferanse", request.getQueryParam(), request.getMunicipality().orElse(null), request.getProjection().orElse(null));
+        return getResults("vegsystemreferanse", request.getQueryParam(), request.getMunicipality().orElse(null),
+                request.getProjection().orElse(null), request.getDateFilter().orElse(null));
     }
 
     /**
@@ -63,25 +65,32 @@ public class RoadPlacementClient extends AbstractJerseyClient {
      * @return {@code Optional<RoadPlacement>} if query had result, otherwise {@code Optional.empty()}
      */
     public Optional<RoadPlacement> findPlacement(RefLinkRequest request) {
-        return getResults("veglenkesekvens", request.getQueryParam(), null, request.getProjection().orElse(null));
+        return getResults("veglenkesekvens", request.getQueryParam(), null,
+                request.getProjection().orElse(null), request.getDateFilter().orElse(null));
+    }
+
+    public List<RoadPlacementBulkResult> getRoadPlacementsInBulk(List<RoadSysRefRequest> requests, Integer municipality, Projection projection, LocalDate dateFilter) {
+        String queryParam = requests.stream().map(RoadSysRefRequest::getQueryParam).collect(Collectors.joining(","));
+        return getRoadPlacementsInBatch("vegsystemreferanser", queryParam, municipality, projection, dateFilter);
     }
 
     public List<RoadPlacementBulkResult> getRoadPlacementsInBulk(List<RoadSysRefRequest> requests, Integer municipality, Projection projection) {
         String queryParam = requests.stream().map(RoadSysRefRequest::getQueryParam).collect(Collectors.joining(","));
-        return getRoadPlacementsInBatch("vegsystemreferanser", queryParam, municipality, projection);
+        return getRoadPlacementsInBatch("vegsystemreferanser", queryParam, municipality, projection, null);
     }
 
     public List<RoadPlacementBulkResult> getRoadPlacementsInBulkFromReflinks(List<RefLinkRequest> requests, Projection projection) {
         String queryParam = requests.stream().map(RefLinkRequest::getQueryParam).collect(Collectors.joining(","));
-        return getRoadPlacementsInBatch("veglenkesekvenser", queryParam, null, projection);
+        return getRoadPlacementsInBatch("veglenkesekvenser", queryParam, null, projection, null);
     }
 
-    private List<RoadPlacementBulkResult> getRoadPlacementsInBatch(String paramName, String queryParam, Integer municipality, Projection projection) {
+    private List<RoadPlacementBulkResult> getRoadPlacementsInBatch(String paramName, String queryParam, Integer municipality, Projection projection, LocalDate dateFilter) {
         UriBuilder url = bulkEndpoint();
 
         url.queryParam(paramName, queryParam);
         Optional.ofNullable(municipality).ifPresent(p -> url.queryParam("kommune", municipality));
         Optional.ofNullable(projection).ifPresent(p -> url.queryParam("srid", projection.getSrid()));
+        Optional.ofNullable(dateFilter).ifPresent(p -> url.queryParam("tidspunkt", dateFilter));
 
         WebTarget target = getClient().target(url);
 
@@ -92,12 +101,13 @@ public class RoadPlacementClient extends AbstractJerseyClient {
             .collect(Collectors.toList());
     }
 
-    private Optional<RoadPlacement> getResults(String paramName, String queryParam, Integer municipality, Projection projection) {
+    private Optional<RoadPlacement> getResults(String paramName, String queryParam, Integer municipality, Projection projection, LocalDate dateFilter) {
         UriBuilder url = endpoint();
 
         url.queryParam(paramName, queryParam);
         Optional.ofNullable(municipality).ifPresent(p -> url.queryParam("kommune", municipality));
         Optional.ofNullable(projection).ifPresent(p -> url.queryParam("srid", projection.getSrid()));
+        Optional.ofNullable(dateFilter).ifPresent(p -> url.queryParam("tidspunkt", dateFilter));
 
         WebTarget target = getClient().target(url);
 
