@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.17.4 
+* Added parameter tidspunkt to veg and posisjon 
+
 ## 1.17.3
 * Added "Sti, Traktorveg and Annet" to TypeOfRoad 
 
