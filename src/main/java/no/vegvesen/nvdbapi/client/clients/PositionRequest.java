@@ -27,6 +27,7 @@ package no.vegvesen.nvdbapi.client.clients;
 
 import no.vegvesen.nvdbapi.client.model.Projection;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 public class PositionRequest {
@@ -41,6 +42,7 @@ public class PositionRequest {
     private final Optional<Boolean> connectionLinks;
     private final Optional<Boolean> detailedLinks;
     private final Optional<String> roadRefFilters;
+    private final Optional<LocalDate> dateFilter;
 
     private PositionRequest(Builder builder) {
         north = builder.north;
@@ -53,6 +55,7 @@ public class PositionRequest {
         connectionLinks = builder.connectionLinks;
         detailedLinks = builder.detailedLinks;
         roadRefFilters = builder.roadRefFilters;
+        dateFilter = builder.dateFilter;
     }
 
     public static Builder utm33(double northing, double easting) {
@@ -103,6 +106,10 @@ public class PositionRequest {
         return roadRefFilters;
     }
 
+    public Optional<LocalDate> getDateFilter() {
+        return dateFilter;
+    }
+
     public static class Builder {
         private Optional<Double> north = Optional.empty();
         private Optional<Double> east = Optional.empty();
@@ -114,8 +121,10 @@ public class PositionRequest {
         private Optional<Boolean> connectionLinks = Optional.of(false);
         private Optional<Boolean> detailedLinks = Optional.of(false);
         private Optional<String> roadRefFilters = Optional.empty();
+        private Optional<LocalDate> dateFilter = Optional.empty();
 
-        private Builder() {}
+        private Builder() {
+        }
 
         public PositionRequest build() {
             return new PositionRequest(this);
@@ -160,6 +169,11 @@ public class PositionRequest {
 
         public Builder withRoadRefFilters(String roadRefFilters) {
             this.roadRefFilters = Optional.ofNullable(roadRefFilters);
+            return this;
+        }
+
+        public Builder withDateFilter(LocalDate dateFilter) {
+            this.dateFilter = Optional.ofNullable(dateFilter);
             return this;
         }
     }

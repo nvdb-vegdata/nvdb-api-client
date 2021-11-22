@@ -29,6 +29,7 @@ import no.vegvesen.nvdbapi.client.model.Projection;
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.Phase;
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadCategory;
 
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static java.util.Objects.nonNull;
@@ -59,6 +60,8 @@ public class RoadSysRefRequest {
     private final Integer municipality;
     private final Projection projection;
 
+    private final LocalDate dateFilter;
+
     public RoadSysRefRequest(Builder builder) {
         this.roadNumber = builder.roadNumber;
         this.roadCategory = builder.roadCategory;
@@ -74,6 +77,7 @@ public class RoadSysRefRequest {
         this.sideAreaMeter = builder.sideAreaMeter;
         this.municipality = builder.municipality;
         this.projection = builder.projection;
+        this.dateFilter = builder.dateFilter;
     }
 
     public static Builder newBuilder() {
@@ -136,6 +140,10 @@ public class RoadSysRefRequest {
         return Optional.ofNullable(projection);
     }
 
+    public Optional<LocalDate> getDateFilter() {
+        return Optional.ofNullable(dateFilter);
+    }
+
     public String getQueryParam() {
         return this.getRoadCategory().name() + this.getPhase() + this.getRoadNumber() +
                 "S" + this.getSectionNumber() + "D" + this.getSectionPartNumber() + "M" + this.getSectionMeter() +
@@ -163,6 +171,7 @@ public class RoadSysRefRequest {
         private Integer sideAreaMeter;
         private Integer municipality;
         private Projection projection;
+        private LocalDate dateFilter;
 
         public Builder withRoadNumber(Integer roadNumber) {
             this.roadNumber = roadNumber;
@@ -242,6 +251,11 @@ public class RoadSysRefRequest {
 
         public Builder withProjection(Projection projection) {
             this.projection = projection;
+            return this;
+        }
+
+        public Builder withDateFilter(LocalDate dateFilter) {
+            this.dateFilter = dateFilter;
             return this;
         }
 
