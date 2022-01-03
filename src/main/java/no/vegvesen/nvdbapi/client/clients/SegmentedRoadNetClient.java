@@ -26,9 +26,7 @@
 package no.vegvesen.nvdbapi.client.clients;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -42,6 +40,7 @@ import no.vegvesen.nvdbapi.client.gson.SegmentedLinkParser;
 import no.vegvesen.nvdbapi.client.model.Page;
 import no.vegvesen.nvdbapi.client.model.roadnet.SegmentedLink;
 import no.vegvesen.nvdbapi.client.model.roadnet.TopologyLevel;
+import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
 
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.rt;
 
@@ -119,7 +118,7 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         request.getSideAreaFilter().ifPresent(v -> path.queryParam("sideanlegg", v));
         request.getRoadUserGroupFilter().ifPresent(v -> path.queryParam("trafikantgruppe", v.getTextValue()));
         request.getSeparatePassagesFilter().ifPresent(v -> path.queryParam("adskiltelop", v.getTextValue()));
-        request.getTypeOfRoadFilter().ifPresent(v -> path.queryParam("typeveg", v.getTypeOfRoadSosi()));
+        getTypeOfRoadArgument(request.getTypeOfRoadFilter()).ifPresent(v -> path.queryParam("typeveg", v));
         request.getRefLinkPartTypeFilter().ifPresent(v -> path.queryParam("veglenketype", v.getRefLinkPartType()));
         request.getDetailLevelFilter().ifPresent(v -> path.queryParam("detaljniva", v.getSosi()));
         if (!request.getTopologyLevel().isEmpty()) {
@@ -135,6 +134,18 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
             .ifPresent(v -> path.queryParam("tidspunkt", v.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
 
         return getClient().target(path);
+    }
+
+    private static Optional<String> getTypeOfRoadArgument(Set<TypeOfRoad> values){
+        // Defaults
+        if (values == null || values.isEmpty()) {
+            return Optional.empty();
+        }
+        String val = values.stream()
+                .map(TypeOfRoad::getTypeOfRoadSosi)
+                .collect(Collectors.joining(","));
+        return Optional.of(val);
+
     }
 
     private static String join(List<?> list) {

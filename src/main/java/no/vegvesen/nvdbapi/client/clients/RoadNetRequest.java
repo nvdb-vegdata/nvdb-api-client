@@ -30,9 +30,7 @@ import no.vegvesen.nvdbapi.client.model.Projection;
 import no.vegvesen.nvdbapi.client.model.roadnet.*;
 
 import java.time.LocalDate;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class RoadNetRequest {
     public static final RoadNetRequest DEFAULT = newBuilder().build();
@@ -57,7 +55,7 @@ public class RoadNetRequest {
     private final Optional<Boolean> intersectionFilter;
     private final Optional<RoadUserGroup> roadUserGroupFilter;
     private final Optional<SeparatePassages> separatePassagesFilter;
-    private final Optional<TypeOfRoad> typeOfRoadFilter;
+    private final Set<TypeOfRoad> typeOfRoadFilter;
     private final Optional<RefLinkPartType> refLinkPartTypeFilter;
     private final Optional<DetailLevel> detailLevelFilter;
 
@@ -116,7 +114,7 @@ public class RoadNetRequest {
         return separatePassagesFilter;
     }
 
-    public Optional<TypeOfRoad> getTypeOfRoadFilter() {
+    public Set<TypeOfRoad> getTypeOfRoadFilter() {
         return typeOfRoadFilter;
     }
 
@@ -207,7 +205,7 @@ public class RoadNetRequest {
         private Optional<SeparatePassages> separatePassagesFilter = Optional.empty();
         private Optional<RefLinkPartType> refLinkPartTypeFilter = Optional.empty();
         private Optional<DetailLevel> detailLevelFilter = Optional.empty();
-        private Optional<TypeOfRoad> typeOfRoadFilter = Optional.empty();
+        private Set<TypeOfRoad> typeOfRoadFilter = Collections.emptySet();
 
         private Builder() {
         }
@@ -251,8 +249,13 @@ public class RoadNetRequest {
             return this;
         }
 
-        public Builder withTypeOfRoadFilter(TypeOfRoad typeOfRoadFilter) {
-            this.typeOfRoadFilter = Optional.ofNullable(typeOfRoadFilter);
+        public Builder withTypeOfRoadFilter(Set<TypeOfRoad> typeOfRoadFilter) {
+            this.typeOfRoadFilter = typeOfRoadFilter;
+            return this;
+        }
+
+        public Builder withTypeOfRoadFilter(TypeOfRoad... typeOfRoad) {
+            this.typeOfRoadFilter = new HashSet<>(Arrays.asList(typeOfRoad));
             return this;
         }
 

@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.17.5
+* `RoadNetRequest.typeOfRoad` replaced with `RoadNetRequest.typeOfRoadFilter` accepting multiple types as a `Set<TypeOfRoad>`
+
 ## 1.17.4
 * Added parameter tidspunkt to veg and posisjon 
 
