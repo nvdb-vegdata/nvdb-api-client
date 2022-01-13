@@ -1,5 +1,10 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.18.0
+* Parses StructuralAttributeTypes from NVDB API LES V3
+* `Quality` of Geometry objects provide Enum values for its 'measurement', 'visibility' and 'heightMeasurement' properties
+* `RoadCategory` enum contain sosi-names
+
 ## 1.17.5
 * `RoadNetRequest.typeOfRoad` replaced with `RoadNetRequest.typeOfRoadFilter` accepting multiple types as a `Set<TypeOfRoad>`
 

@@ -22,6 +22,7 @@ dependencies {
     api "com.google.code.gson:gson:2.8.6"
     api "org.slf4j:slf4j-api:1.7.25"
 
+    implementation 'javax.activation:activation:1.1.1'
     implementation "org.glassfish.jersey.core:jersey-client:2.32"
     implementation "org.glassfish.jersey.connectors:jersey-apache-connector:2.32"
     implementation "org.glassfish.jersey.inject:jersey-hk2:2.32"

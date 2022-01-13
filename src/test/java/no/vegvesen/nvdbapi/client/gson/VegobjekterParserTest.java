@@ -99,7 +99,7 @@ public class VegobjekterParserTest {
                         false,
                         0.0,
                         123,
-                        new Quality(95, 5, 1, 1, 2, 2)
+                        new Quality(Quality.MeasurementMethod.byId(95), 5, Quality.HeightMeasurementMethod.byId(1), 1, 2, Quality.Visibility.byId(2))
                     )
                 )),
             new IntegerAttribute(7, 1, new Unit(1, "Meter", "m")),

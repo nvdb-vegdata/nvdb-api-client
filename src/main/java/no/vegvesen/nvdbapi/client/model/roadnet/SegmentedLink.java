@@ -55,6 +55,7 @@ public final class SegmentedLink implements Serializable {
     private final DetailLevel detailLevel;
     private final TopologyLevel topologyLevel;
     private final TypeOfRoad roadType;
+    private final List<String> lanes;
 
 
     private final RefLinkExtentPlacement superLinkExtent;
@@ -78,7 +79,8 @@ public final class SegmentedLink implements Serializable {
                          RefLinkPartType linkType,
                          List<ContractArea> contractAreas,
                          List<Route> routes,
-                         Street street) {
+                         Street street,
+                         List<String> lanes) {
         this.id = id;
         this.start = start;
         this.end = end;
@@ -101,6 +103,7 @@ public final class SegmentedLink implements Serializable {
         this.routes = routes;
         this.street = street;
         this.topologyLevel = topologyLevel;
+        this.lanes = lanes;
     }
 
     public long getId() {
@@ -191,6 +194,10 @@ public final class SegmentedLink implements Serializable {
         return street;
     }
 
+    public List<String> getLanes() {
+        return lanes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -216,11 +223,12 @@ public final class SegmentedLink implements Serializable {
                 Objects.equals(fromDate, that.fromDate) &&
                 Objects.equals(toDate, that.toDate) &&
                 Objects.equals(startNode, that.startNode) &&
-                Objects.equals(endNode, that.endNode);
+                Objects.equals(endNode, that.endNode) &&
+                Objects.equals(lanes, that.lanes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, start, end, geometry, length, linkNumber, segmentNumber, linkType, contractAreas, routes, street, detailLevel, roadType, superLinkExtent, county, municipality, roadRef, fromDate, toDate, startNode, endNode);
+        return Objects.hash(id, start, end, geometry, length, linkNumber, segmentNumber, linkType, contractAreas, routes, street, detailLevel, roadType, superLinkExtent, county, municipality, roadRef, fromDate, toDate, startNode, endNode, lanes);
     }
 }

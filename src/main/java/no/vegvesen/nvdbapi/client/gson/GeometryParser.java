@@ -89,7 +89,7 @@ public final class GeometryParser {
             Integer heightAccuracy = parseIntMember(obj, "kvalitet.nøyaktighetHøyde");
             Integer tolerance = parseIntMember(obj, "kvalitet.maksimaltAvvik");
             Integer visibility = parseIntMember(obj, "kvalitet.synbarhet");
-            return new Quality(method, accuracy, heightMethod, heightAccuracy, tolerance, visibility);
+            return new Quality(Quality.MeasurementMethod.byId(method), accuracy, Quality.HeightMeasurementMethod.byId(heightMethod), heightAccuracy, tolerance, Quality.Visibility.byId(visibility));
         } else {
             return null;
         }

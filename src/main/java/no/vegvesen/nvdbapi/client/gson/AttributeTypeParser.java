@@ -33,7 +33,9 @@ import no.vegvesen.nvdbapi.client.model.SpatialType;
 import no.vegvesen.nvdbapi.client.model.datakatalog.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toSet;
@@ -72,7 +74,7 @@ public final class AttributeTypeParser {
             case "Binær":
                 return parseBinaryObjectAttributeType(typeMap, object);
             case "Struktur":
-                return new StructureAttributeType(parseCommonProperties(typeMap, object));
+                return parseStructureObjectAttributeType(typeMap, object);
             case "Liste":
                 return parseListAttributeType(typeMap, object);
             case "Assosiasjon":
@@ -100,6 +102,13 @@ public final class AttributeTypeParser {
             parse(typeMap, object.getAsJsonObject("innhold")),
             parseIntMember(object, "maksimalt_antall_verdier"),
             parseIntMember(object, "minimalt_antall_verdier"));
+    }
+
+    private static StructureAttributeType parseStructureObjectAttributeType(Map<String, DataType> typeMap, JsonObject object) {
+        return new StructureAttributeType(
+                parseCommonProperties(typeMap, object),
+                parseList(object, "egenskapstyper", e -> parse(typeMap, e.getAsJsonObject()))
+                        .collect(Collectors.toList()));
     }
 
     private static BinaryObjectAttributeType parseBinaryObjectAttributeType(Map<String, DataType> typeMap, JsonObject object) {

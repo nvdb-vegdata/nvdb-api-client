@@ -25,11 +25,16 @@
 
 package no.vegvesen.nvdbapi.client.gson;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import no.vegvesen.nvdbapi.client.model.Direction;
 import no.vegvesen.nvdbapi.client.model.SidePosition;
 import no.vegvesen.nvdbapi.client.model.roadnet.*;
 import no.vegvesen.nvdbapi.client.model.roadobjects.RefLinkExtentPlacement;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 import static no.vegvesen.nvdbapi.client.gson.RoadObjectParser.*;
@@ -62,7 +67,15 @@ public final class SegmentedLinkParser {
                 RefLinkPartType.fromValue(parseStringMember(obj,"type")),
                 parseContractAreas(obj),
                 parseRoutes(obj),
-                parseStreet(obj));
+                parseStreet(obj),
+                parseLanes(obj.getAsJsonArray("feltoversikt")));
+    }
+
+    private static List<String> parseLanes(JsonArray obj) {
+        List<String> fields = new ArrayList<>();
+        if (obj != null)
+            obj.forEach(p -> fields.add(p.toString()));
+        return fields;
     }
 
     private static RefLinkExtentPlacement parseSuperlinkExtent(JsonObject obj) {

@@ -25,10 +25,34 @@
 
 package no.vegvesen.nvdbapi.client.model.datakatalog;
 
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 public class StructureAttributeType extends AttributeType {
 
-    public StructureAttributeType(AttributeCommonProperties props) {
+    private final Map<Integer, AttributeType> attributeTypes;
+    public StructureAttributeType(AttributeCommonProperties props, List<AttributeType> attributeTypes) {
         super(props);
+        this.attributeTypes = attributeTypes.stream().collect(Collectors.toMap(AttributeType::getId, Function.identity()));
+    }
+
+    public Stream<AttributeType> getAttributes(){
+        return attributeTypes.values().stream();
+    }
+
+    public AttributeType getAttribute(int id){
+        return attributeTypes.get(id);
+    }
+
+    public <T extends AttributeType> T getAttribute(int id, Class<T> clazz){
+        return Optional.ofNullable(attributeTypes.get(id))
+                .filter(clazz::isInstance)
+                .map(clazz::cast)
+                .orElse(null);
     }
 }
 

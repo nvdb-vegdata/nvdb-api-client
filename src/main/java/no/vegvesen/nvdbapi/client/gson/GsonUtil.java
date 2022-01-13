@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
 import com.google.gson.JsonArray;
@@ -83,6 +84,14 @@ public final class GsonUtil {
             throw new IllegalArgumentException(path + " did not contain a string.");
         }
         return e.map(JsonElement::getAsString).orElse(null);
+    }
+
+    public static <T> Stream<T> parseList(JsonObject obj, String path, Function<JsonElement, T> map){
+        Optional<JsonArray> e = getNode(obj, path).map(JsonElement::getAsJsonArray);
+        if (e.isPresent() && !e.get().isJsonArray())
+            throw new IllegalArgumentException(path + " did not contain an array.");
+        return e.map(s -> StreamSupport.stream(s.spliterator(), false).map(map))
+                .orElse(Stream.empty());
     }
 
     public static Optional<String> parseOptionalStringMember(JsonObject obj, String path) {
