@@ -173,7 +173,12 @@ public class Quality {
         TREGHETSSTEDFESTING("Treghetsstedfesting", "Treghetsstedfesting", "treghetsstedfesting", 90),
         UKJENT_MAALEMETODE("Ukjent målemetode", "Målemetode er ukjent", "ukjentMålemetode", 99),
         UTMAAL("Utmål", "Punkt beregnet på bakgrunn av måling mot andre punkter, slik som to avstander eller avstand og retning    -- Definition --   Point calculated on the basis of other items, such as two distances or distance + direction.", "utmål", 15),
-        VEKTORISERING_AV_LASERDATA("Vektorisering av laserdata", "Vektorisering fra laserdata, brukes også der vektoriseringen støttes av ortofoto", "vektoriseringAvLaserdata", 49);
+        VEKTORISERING_AV_LASERDATA("Vektorisering av laserdata", "Vektorisering fra laserdata, brukes også der vektoriseringen støttes av ortofoto", "vektoriseringAvLaserdata", 49),
+        TERRESTRISK_LASERSKANNING("Terrestrisk laserskanning", "", "terrestriskLaserskanning", 39),
+        BILDEMATCHING("Bildematching", "", "bildematching", 75),
+        ANNET("Annet", "", "annet", 79),
+        ANNET_19("Annet", "", "annet", 19),
+        IKKE_REGISTRERT("Ikke registrert", "Ikke registrert", "ikkeRegistrert", 0);
 
         private final String presentationName;
         private final String description;
@@ -243,6 +248,11 @@ public class Quality {
         TERRENGMAALT_TOTALSTASJON("Terrengmålt: Totalstasjon", "terrengmåltTotalstasjon", 11),
         TERRENGMAALT_USPESIFISERT_MAALEINSTRUMENT("Terrengmålt: Uspesifisert måleinstrument", "terrengmåltUspesifisertMåleinstrument", 10),
         TREGHETSSTEDFESTING("Treghetsstedfesting", "treghetsstedfesting", 90),
+        BILBAAREN_LASERKANNING("Bilbåren laserskanning", "bilbårenLaserskanning", 37),
+        VEKTORISERING_AV_LASERDATA("Vektorisering av laserdata", "vektoriseringAvLaserdata", 49),
+        GPS_FASEMAALING_FLYT("GPS Fasemåling, flyt", "GNSSFasemålingFloat-løsning", 97),
+        ANNET("Annet", "annet", 19),
+        IKKE_REGISTRERT("Ikke registrert", "ikkeRegistrert", -1),
         UKJENT_MAALEMETODE("Ukjent målemetode", "ukjentMålemetode", 99);
 
         public final String presentationName;

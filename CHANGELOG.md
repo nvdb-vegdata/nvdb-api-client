@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.18.1
+* Added missing `Quality.Measurement` and `Quality.HeightMeasurement` enums
+
 ## 1.18.0
 * Parses StructuralAttributeTypes from NVDB API LES V3
 * `Quality` of Geometry objects provide Enum values for its 'measurement', 'visibility' and 'heightMeasurement' properties
