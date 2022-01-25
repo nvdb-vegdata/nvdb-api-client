@@ -48,6 +48,10 @@ public enum SidePosition {
         this.apiValue = apiValue;
     }
 
+    public String getApiValue() {
+        return apiValue;
+    }
+
     private static Map<String, SidePosition> mapping = new HashMap<>();
     public static SidePosition from(String apiValue) {
         return mapping.computeIfAbsent(

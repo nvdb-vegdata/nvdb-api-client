@@ -1,5 +1,9 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.18.2
+* `RoadObjectRequest.separatePassagesFilter` allows for multiple filters
+* `RoadObjectRequest.detailLevelFilter` allows for filtering on multiple detail-levels.
+
 ## 1.18.1
 * Added missing `Quality.Measurement` and `Quality.HeightMeasurement` enums
 

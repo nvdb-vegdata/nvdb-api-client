@@ -65,8 +65,8 @@ public class RoadObjectRequest {
     private final Boolean sideAreaFilter;
     private final Boolean intersectionFilter;
     private final RoadUserGroup roadUserGroupFilter;
-    private final SeparatePassages separatePassagesFilter;
-    private final DetailLevel detailLevel;
+    private final Set<SeparatePassages> separatePassagesFilter;
+    private final Set<DetailLevel> detailLevelFilter;
     private final Set<TypeOfRoad> typeOfRoadFilter;
     private final RefLinkPartType refLinkPartType;
 
@@ -97,7 +97,7 @@ public class RoadObjectRequest {
         armFilter = b.armFilter;
         sideAreaFilter = b.sideAreaFilter;
         intersectionFilter = b.intersectionFilter;
-        detailLevel = b.detailLevel;
+        detailLevelFilter = b.detailLevelFilter;
         typeOfRoadFilter = b.typeOfRoadFilter;
         refLinkPartType = b.refLinkPartType;
         roadUserGroupFilter = b.roadUserGroupFilter;
@@ -212,16 +212,16 @@ public class RoadObjectRequest {
         return Optional.ofNullable(roadUserGroupFilter);
     }
 
-    public Optional<SeparatePassages> getSeparatePassagesFilter() {
-        return Optional.ofNullable(separatePassagesFilter);
+    public Set<SeparatePassages> getSeparatePassagesFilter() {
+        return separatePassagesFilter;
     }
 
     public Optional<LocalDateTime> getModifiedAfter() {
         return Optional.ofNullable(modifiedAfter);
     }
 
-    public Optional<DetailLevel> getDetailLevel() {
-        return Optional.ofNullable(detailLevel);
+    public Set<DetailLevel> getDetailLevel() {
+        return detailLevelFilter;
     }
 
     public Set<TypeOfRoad> getTypeOfRoadFilter() {
@@ -273,7 +273,7 @@ public class RoadObjectRequest {
                 .withRoadUserGroupFilter(roadUserGroupFilter)
                 .withRefLinkPartType(refLinkPartType)
                 .withTypeOfRoadFilter(typeOfRoadFilter)
-                .withDetailLevel(detailLevel);
+                .withDetailLevelFilter(detailLevelFilter);
 
         overlapFilters.forEach(of -> b.addOverlapFilter(of.filter, of.typeId));
         return b;
@@ -282,7 +282,7 @@ public class RoadObjectRequest {
     public static class Builder {
 
         private RefLinkPartType refLinkPartType;
-        private DetailLevel detailLevel;
+        private Set<DetailLevel> detailLevelFilter = Collections.emptySet();
         private Set<TypeOfRoad> typeOfRoadFilter = Collections.emptySet();
 
         private Page page = Page.count(1000);
@@ -311,7 +311,7 @@ public class RoadObjectRequest {
         private Boolean sideAreaFilter;
         private Boolean intersectionFilter;
         private RoadUserGroup roadUserGroupFilter;
-        private SeparatePassages separatePassagesFilter;
+        private Set<SeparatePassages> separatePassagesFilter;
         private LocalDateTime modifiedAfter;
 
         private Builder() { }
@@ -334,8 +334,13 @@ public class RoadObjectRequest {
             return this;
         }
 
-        public Builder withDetailLevel(DetailLevel detailLevel) {
-            this.detailLevel = detailLevel;
+        public Builder withDetailLevelFilter(Set<DetailLevel> detailLevelFilter) {
+            this.detailLevelFilter = detailLevelFilter;
+            return this;
+        }
+
+        public Builder withDetailLevelFilter(DetailLevel... detailLevel) {
+            this.detailLevelFilter = new HashSet<>(Arrays.asList(detailLevel));
             return this;
         }
 
@@ -452,8 +457,13 @@ public class RoadObjectRequest {
             return this;
         }
 
-        public Builder withSeparatePassagesFilter(SeparatePassages separatePassagesFilter) {
+        public Builder withSeparatePassagesFilter(Set<SeparatePassages> separatePassagesFilter) {
             this.separatePassagesFilter = separatePassagesFilter;
+            return this;
+        }
+
+        public Builder withSeparatePassagesFilter(SeparatePassages... separatePassagesFilter) {
+            this.separatePassagesFilter = new HashSet<>(Arrays.asList(separatePassagesFilter));
             return this;
         }
 

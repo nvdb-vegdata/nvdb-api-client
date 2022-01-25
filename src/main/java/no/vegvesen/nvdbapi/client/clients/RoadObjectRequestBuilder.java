@@ -26,12 +26,15 @@
 
 package no.vegvesen.nvdbapi.client.clients;
 
+import no.vegvesen.nvdbapi.client.model.roadnet.DetailLevel;
+import no.vegvesen.nvdbapi.client.model.roadnet.SeparatePassages;
 import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
 
 import javax.ws.rs.core.MultivaluedHashMap;
 import javax.ws.rs.core.MultivaluedMap;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 class RoadObjectRequestBuilder {
@@ -49,7 +52,7 @@ class RoadObjectRequestBuilder {
         request.getIntersectionFilter().ifPresent(v -> map.putSingle("kryssystem", Boolean.toString(v)));
         request.getSideAreaFilter().ifPresent(v -> map.putSingle("sideanlegg", Boolean.toString(v)));
         request.getRoadUserGroupFilter().ifPresent(v -> map.putSingle("trafikantgruppe", v.getTextValue()));
-        request.getSeparatePassagesFilter().ifPresent(v -> map.putSingle("adskiltelop", v.getTextValue()));
+        fromSet(request.getSeparatePassagesFilter(), SeparatePassages::getTextValue).ifPresent(v -> map.putSingle("adskiltelop", v));
         request.getModifiedAfter().ifPresent(v -> map.putSingle("endret_etter",
                 v.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)));
         request.getProjection().ifPresent(v -> map.putSingle("srid", Integer.toString(v.getSrid())));
@@ -58,11 +61,11 @@ class RoadObjectRequestBuilder {
         getIncludeArgument(request.getIncludes()).ifPresent(v -> map.putSingle("inkluder", v));
         getIncludeGeometriesArgument(request.getIncludeGeometries()).ifPresent(v -> map.putSingle("inkludergeometri", v));
         getIncludeAttributesArgument(request.getIncludeAttributes()).ifPresent(v -> map.putSingle("inkluder_egenskaper", v));
-        getTypeOfRoadArgument(request.getTypeOfRoadFilter()).ifPresent(v -> map.putSingle("typeveg", v));
+        fromSet(request.getTypeOfRoadFilter(), TypeOfRoad::getTypeOfRoadSosi).ifPresent(v -> map.putSingle("typeveg", v));
         request.getAttributeFilter().ifPresent(v -> map.putSingle("egenskap", v));
         request.getBpolygon().ifPresent(v -> map.putSingle("polygon", v));
         request.getBbox().ifPresent(v -> map.putSingle("kartutsnitt", v));
-        request.getDetailLevel().ifPresent(v -> map.putSingle("detaljniva", v.getSosi()));
+        fromSet(request.getDetailLevel(), DetailLevel::getSosi).ifPresent(v -> map.putSingle("detaljniva", v));
         request.getRefLinkPartType().ifPresent(v -> map.putSingle("veglenketype", v.getRefLinkPartType()));
         request.getRoadRefFilter().ifPresent(v -> map.putSingle("vegsystemreferanse", v));
         request.getRefLinkFilter().ifPresent(v -> map.putSingle("veglenkesekvens", v));
@@ -79,16 +82,15 @@ class RoadObjectRequestBuilder {
         return map;
     }
 
-    private static Optional<String> getTypeOfRoadArgument(Set<TypeOfRoad> values){
+    private static <T> Optional<String> fromSet(Set<T> values, Function<T, String> stringify){
         // Defaults
         if (values == null || values.isEmpty()) {
             return Optional.empty();
         }
         String val = values.stream()
-                .map(TypeOfRoad::getTypeOfRoadSosi)
+                .map(stringify)
                 .collect(Collectors.joining(","));
         return Optional.of(val);
-
     }
 
     private static Optional<String> getIncludeArgument(Set<RoadObjectClient.Include> values) {

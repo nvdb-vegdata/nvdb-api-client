@@ -26,10 +26,7 @@
 package no.vegvesen.nvdbapi.client.clients;
 
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.StreamSupport;
 import javax.ws.rs.client.Client;
