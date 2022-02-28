@@ -176,6 +176,7 @@ public final class ClientFactory implements AutoCloseable {
      * @return {@code Login} containing either {@code AuthTokens} if successful or {@code Failure} if not
      */
     public Login login(String username, String password) {
+
         try {
             AuthClient client = getAuthClient();
             Login login = client.login(username, password);
@@ -245,11 +246,20 @@ public final class ClientFactory implements AutoCloseable {
      * @return {@code Login} containing either {@code AuthTokens} if successful or {@code Failure} if not
      */
     public Login refresh() {
-        if(isNull(this.authTokens)) {
-            throw new IllegalStateException("Tried to refresh without existing AuthTokens");
+        if(isNull(this.authTokens) || isNull(authTokens.refreshToken)) {
+            throw new IllegalStateException("Tried to refresh without existing refresh token");
         }
 
         return refresh(this.authTokens.refreshToken);
+    }
+
+    /**
+     * Use an existing token to authenticate.
+     * @param idToken - preexisting idtoken
+     * NOTE: The client will not be able to reauthenticate without a refresh-token
+     */
+    public void setIdToken(String idToken) {
+        this.authTokens = new Login.AuthTokens(idToken, null);
     }
 
     /**
