@@ -65,7 +65,7 @@ class RequestHeaderFilter implements ClientRequestFilter {
         headers.putSingle(X_SESSION, xsessionId);
 
         Login.AuthTokens authTokens = authTokensProvider.get();
-        if(authTokens != null) {
+        if(authTokens != null && authTokens.idToken != null) {
             headers.putSingle(HttpHeaders.AUTHORIZATION, "Bearer " + authTokens.idToken);
         }
     }

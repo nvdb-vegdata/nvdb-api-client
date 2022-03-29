@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.18.4
+* Fix: `idToken` is not set in header if the token is null.
+
 ## 1.18.3
 * ClientFactory can set an `idToken` without needing refresh token. Note that this will prevent automatic authentication refresh.
 
