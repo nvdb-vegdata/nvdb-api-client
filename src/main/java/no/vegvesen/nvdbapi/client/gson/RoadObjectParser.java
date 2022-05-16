@@ -29,12 +29,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.MonthDay;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -53,14 +48,7 @@ import no.vegvesen.nvdbapi.client.model.roadnet.DetailLevel;
 import no.vegvesen.nvdbapi.client.model.roadnet.RefLinkPartType;
 import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
-import no.vegvesen.nvdbapi.client.model.roadobjects.Association;
-import no.vegvesen.nvdbapi.client.model.roadobjects.Location;
-import no.vegvesen.nvdbapi.client.model.roadobjects.Placement;
-import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObject;
-import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObjectType;
-import no.vegvesen.nvdbapi.client.model.roadobjects.RoadObjectTypeWithStats;
-import no.vegvesen.nvdbapi.client.model.roadobjects.Segment;
-import no.vegvesen.nvdbapi.client.model.roadobjects.Statistics;
+import no.vegvesen.nvdbapi.client.model.roadobjects.*;
 import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.AssociationAttribute;
 import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.Attribute;
 import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.BlobAttribute;
@@ -268,7 +256,7 @@ public final class RoadObjectParser {
         double startPos = isPoint ? parseDoubleMember(obj, "relativPosisjon") : parseDoubleMember(obj, "startposisjon");
         double endPos   = isPoint ? startPos : parseDoubleMember(obj, "sluttposisjon");
 
-        return new Segment(
+        Segment segment = new Segment(
             parseLongMember(obj, "veglenkesekvensid"),
             startPos,
             endPos,
@@ -283,6 +271,9 @@ public final class RoadObjectParser {
             RefLinkPartType.fromValue(parseStringMember(obj, "veglenkeType")),
             DetailLevel.fromTextValue(parseStringMember(obj, "detaljnivå")),
             TypeOfRoad.fromTextValue(parseStringMember(obj, "typeVeg")));
+        if (obj.has("feltoversikt")){
+            return ElvegSegment.fromSegment(segment, parseStringListMember(obj, "feltoversikt"));
+        } else return segment;
     }
 
     public static Attribute parseAttribute(JsonObject obj) {

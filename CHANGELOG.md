@@ -1,5 +1,9 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.19.0
+* Added field `separatePassagesNumber` to Section
+* Renamed `Section.separatePassages` (from `Section.sepratePassages`)
+
 ## 1.18.4
 * Fix: `idToken` is not set in header if the token is null.
 

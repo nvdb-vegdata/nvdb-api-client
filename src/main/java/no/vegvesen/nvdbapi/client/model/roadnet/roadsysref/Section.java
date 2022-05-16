@@ -13,7 +13,8 @@ public class Section {
     public final Integer sectionNumber;
     public final Integer sectionPartNumber;
     public final Boolean arm;
-    public final SeparatePassages sepratePassages;
+    public final SeparatePassages separatePassages;
+    public final String separatePassagesNumber;
     public final RoadUserGroup trafficType;
     public final double startMeter;
     public final Double endMeter;
@@ -24,7 +25,8 @@ public class Section {
                    Integer sectionNumber,
                    Integer sectionPartNumber,
                    Boolean arm,
-                   SeparatePassages sepratePassages,
+                   SeparatePassages separatePassages,
+                   String separatePassagesNumber,
                    RoadUserGroup trafficType,
                    double startMeter,
                    Double endMeter,
@@ -34,7 +36,8 @@ public class Section {
         this.sectionNumber = sectionNumber;
         this.sectionPartNumber = sectionPartNumber;
         this.arm = arm;
-        this.sepratePassages = sepratePassages;
+        this.separatePassages = separatePassages;
+        this.separatePassagesNumber = separatePassagesNumber;
         this.trafficType = trafficType;
         this.startMeter = startMeter;
         this.endMeter = endMeter;
@@ -49,7 +52,8 @@ public class Section {
                 ", sectionNumber=" + sectionNumber +
                 ", sectionPartNumber=" + sectionPartNumber +
                 ", arm='" + arm + '\'' +
-                ", sepratePassages='" + sepratePassages + '\'' +
+                ", separatePassages='" + separatePassages + '\'' +
+                ", separatePassagesNumber='" + separatePassagesNumber + '\'' +
                 ", trafficType='" + trafficType + '\'' +
                 ", startMeter='" + startMeter + '\'' +
                 ", endMeter='" + endMeter + '\'' +
@@ -75,7 +79,7 @@ public class Section {
                 Objects.equals(id, section.id) &&
                 Objects.equals(version, section.version) &&
                 Objects.equals(arm, section.arm) &&
-                Objects.equals(sepratePassages, section.sepratePassages) &&
+                Objects.equals(separatePassages, section.separatePassages) &&
                 Objects.equals(trafficType, section.trafficType) &&
                 Objects.equals(endMeter, section.endMeter) &&
                 Objects.equals(direction, section.direction);
@@ -83,7 +87,7 @@ public class Section {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, version, sectionNumber, sectionPartNumber, arm, sepratePassages, trafficType,
+        return Objects.hash(id, version, sectionNumber, sectionPartNumber, arm, separatePassages, trafficType,
                 startMeter, endMeter, direction);
     }
 }
