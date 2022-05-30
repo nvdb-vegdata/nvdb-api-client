@@ -5,6 +5,7 @@ import no.vegvesen.nvdbapi.client.model.SidePosition;
 import no.vegvesen.nvdbapi.client.model.roadnet.NetElementType;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class ReflinkExtentAttribute extends LocationalAttribute {
@@ -52,7 +53,7 @@ public class ReflinkExtentAttribute extends LocationalAttribute {
 
     @Override
     public String getValueAsString() {
-        return startLoc + "-" + endLoc + "@" + getNetelementId();
+        return String.format(Locale.ROOT, "%f-%f@%d", startLoc, endLoc, getNetelementId());
     }
 
     @Override
