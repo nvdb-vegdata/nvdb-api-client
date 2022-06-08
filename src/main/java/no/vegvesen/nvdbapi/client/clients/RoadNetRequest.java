@@ -57,7 +57,7 @@ public class RoadNetRequest {
     private final Optional<SeparatePassages> separatePassagesFilter;
     private final Set<TypeOfRoad> typeOfRoadFilter;
     private final Optional<RefLinkPartType> refLinkPartTypeFilter;
-    private final Optional<DetailLevel> detailLevelFilter;
+    private final Set<DetailLevel> detailLevelFilter;
 
     private RoadNetRequest(Builder b) {
         page = b.page;
@@ -122,7 +122,7 @@ public class RoadNetRequest {
         return refLinkPartTypeFilter;
     }
 
-    public Optional<DetailLevel> getDetailLevelFilter() {
+    public Set<DetailLevel> getDetailLevelFilter() {
         return detailLevelFilter;
     }
 
@@ -204,7 +204,7 @@ public class RoadNetRequest {
         private Optional<RoadUserGroup> roadUserGroupFilter = Optional.empty();
         private Optional<SeparatePassages> separatePassagesFilter = Optional.empty();
         private Optional<RefLinkPartType> refLinkPartTypeFilter = Optional.empty();
-        private Optional<DetailLevel> detailLevelFilter = Optional.empty();
+        private Set<DetailLevel> detailLevelFilter = Collections.emptySet();
         private Set<TypeOfRoad> typeOfRoadFilter = Collections.emptySet();
 
         private Builder() {
@@ -244,8 +244,12 @@ public class RoadNetRequest {
             return this;
         }
 
-        public Builder withDetailLevelFilter(DetailLevel detailLevelFilter) {
-            this.detailLevelFilter = Optional.ofNullable(detailLevelFilter);
+        public Builder withDetailLevelFilter(Set<DetailLevel> detailLevelFilter) {
+            this.detailLevelFilter = detailLevelFilter;
+            return this;
+        }
+        public Builder withDetailLevelFilter(DetailLevel... detailLevelFilter) {
+            this.detailLevelFilter = new HashSet<>(Arrays.asList(detailLevelFilter));
             return this;
         }
 

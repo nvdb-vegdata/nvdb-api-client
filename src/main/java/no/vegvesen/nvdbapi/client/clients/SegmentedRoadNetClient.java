@@ -28,6 +28,7 @@ package no.vegvesen.nvdbapi.client.clients;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 import javax.ws.rs.client.Client;
@@ -38,6 +39,7 @@ import com.google.gson.JsonElement;
 
 import no.vegvesen.nvdbapi.client.gson.SegmentedLinkParser;
 import no.vegvesen.nvdbapi.client.model.Page;
+import no.vegvesen.nvdbapi.client.model.roadnet.DetailLevel;
 import no.vegvesen.nvdbapi.client.model.roadnet.SegmentedLink;
 import no.vegvesen.nvdbapi.client.model.roadnet.TopologyLevel;
 import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
@@ -118,9 +120,11 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         request.getSideAreaFilter().ifPresent(v -> path.queryParam("sideanlegg", v));
         request.getRoadUserGroupFilter().ifPresent(v -> path.queryParam("trafikantgruppe", v.getTextValue()));
         request.getSeparatePassagesFilter().ifPresent(v -> path.queryParam("adskiltelop", v.getTextValue()));
-        getTypeOfRoadArgument(request.getTypeOfRoadFilter()).ifPresent(v -> path.queryParam("typeveg", v));
+        serializeSet(request.getTypeOfRoadFilter(), TypeOfRoad::getTypeOfRoadSosi)
+                .ifPresent(v -> path.queryParam("typeveg", v));
         request.getRefLinkPartTypeFilter().ifPresent(v -> path.queryParam("veglenketype", v.getRefLinkPartType()));
-        request.getDetailLevelFilter().ifPresent(v -> path.queryParam("detaljniva", v.getSosi()));
+        serializeSet(request.getDetailLevelFilter(), DetailLevel::getSosi)
+                .ifPresent(v -> path.queryParam("detaljniva", v));
         if (!request.getTopologyLevel().isEmpty()) {
             String topologiniva = request.getTopologyLevel()
                 .stream()
@@ -136,13 +140,13 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         return getClient().target(path);
     }
 
-    private static Optional<String> getTypeOfRoadArgument(Set<TypeOfRoad> values){
+    private static <T> Optional<String> serializeSet(Set<T> values, Function<T, String> serialize){
         // Defaults
         if (values == null || values.isEmpty()) {
             return Optional.empty();
         }
         String val = values.stream()
-                .map(TypeOfRoad::getTypeOfRoadSosi)
+                .map(serialize)
                 .collect(Collectors.joining(","));
         return Optional.of(val);
 

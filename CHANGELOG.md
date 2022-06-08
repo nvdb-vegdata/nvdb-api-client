@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.19.1
+* `RoadNetRequest.detalLevelFilter` allows for multiple filters
+
 ## 1.19.0
 * Added field `separatePassagesNumber` to Section
 * Renamed `Section.separatePassages` (from `Section.sepratePassages`)
