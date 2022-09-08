@@ -61,6 +61,7 @@ public class PositionClient extends AbstractJerseyClient {
         req.getDetailedLinks().ifPresent(v -> url.queryParam("detaljerte_lenker", v));
         req.getRoadRefFilters().ifPresent(v -> url.queryParam("vegsystemreferanse", v));
         req.getDateFilter().ifPresent(v -> url.queryParam("tidspunkt", v));
+        req.getRoadUserGroup().ifPresent(v -> url.queryParam("trafikantgruppe", v.getTextValue()));
 
         WebTarget target = getClient().target(url);
 

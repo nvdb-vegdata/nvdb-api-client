@@ -26,6 +26,7 @@
 package no.vegvesen.nvdbapi.client.clients;
 
 import no.vegvesen.nvdbapi.client.model.Projection;
+import no.vegvesen.nvdbapi.client.model.roadnet.RoadUserGroup;
 
 import java.time.LocalDate;
 import java.util.Optional;
@@ -44,6 +45,8 @@ public class PositionRequest {
     private final Optional<String> roadRefFilters;
     private final Optional<LocalDate> dateFilter;
 
+    private final Optional<RoadUserGroup> roadUserGroup;
+
     private PositionRequest(Builder builder) {
         north = builder.north;
         east = builder.east;
@@ -56,6 +59,7 @@ public class PositionRequest {
         detailedLinks = builder.detailedLinks;
         roadRefFilters = builder.roadRefFilters;
         dateFilter = builder.dateFilter;
+        roadUserGroup = builder.roadUserGroup;
     }
 
     public static Builder utm33(double northing, double easting) {
@@ -110,6 +114,8 @@ public class PositionRequest {
         return dateFilter;
     }
 
+    public Optional<RoadUserGroup> getRoadUserGroup(){ return roadUserGroup; }
+
     public static class Builder {
         private Optional<Double> north = Optional.empty();
         private Optional<Double> east = Optional.empty();
@@ -122,6 +128,8 @@ public class PositionRequest {
         private Optional<Boolean> detailedLinks = Optional.of(false);
         private Optional<String> roadRefFilters = Optional.empty();
         private Optional<LocalDate> dateFilter = Optional.empty();
+
+        private Optional<RoadUserGroup> roadUserGroup = Optional.empty();
 
         private Builder() {
         }
@@ -174,6 +182,11 @@ public class PositionRequest {
 
         public Builder withDateFilter(LocalDate dateFilter) {
             this.dateFilter = Optional.ofNullable(dateFilter);
+            return this;
+        }
+
+        public Builder withRoadUserGroup(RoadUserGroup roadUserGroup) {
+            this.roadUserGroup = Optional.ofNullable(roadUserGroup);
             return this;
         }
     }
