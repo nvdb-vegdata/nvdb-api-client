@@ -32,10 +32,25 @@ import java.util.stream.Stream;
 
 public class Projection implements Serializable {
     /**
+     * ETRS89 / UTM zone 32 + NN2000 height
+     * https://epsg.io/5972
+     */
+    public static final Projection UTM32 = new Projection(5972, "utm32");
+    /**
      * ETRS89 / UTM zone 33 + NN2000 height
      * https://epsg.io/5973
      */
     public static final Projection UTM33 = new Projection(5973, "utm33");
+    /**
+     * ETRS89 / UTM zone 34 + NN2000 height
+     * https://epsg.io/5974
+     */
+    public static final Projection UTM34 = new Projection(5974, "utm34");
+    /**
+     * ETRS89 / UTM zone 35 + NN2000 height
+     * https://epsg.io/5975
+     */
+    public static final Projection UTM35 = new Projection(5975, "utm35");
     /**
      * WGS 84
      * https://epsg.io/4326
@@ -82,6 +97,6 @@ public class Projection implements Serializable {
     }
 
     public static Optional<Projection> of(int srid) {
-        return Stream.of(UTM33, WGS84).filter(p -> p.getSrid() == srid).findAny();
+        return Stream.of(UTM32, UTM33, UTM34, UTM35, WGS84).filter(p -> p.getSrid() == srid).findAny();
     }
 }
