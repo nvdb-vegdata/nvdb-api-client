@@ -1,7 +1,13 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.19.4
+* Added additional projections UTM32, UTM34 and UTM35
+
+## 1.19.3
+* Added `trafikantgruppe` parameter to `PositionRequest`.
+
 ## 1.19.2
-* `RefliunkExtentAttribute` is correctly formatted as decimal
+* `ReflinkExtentAttribute` is correctly formatted as decimal
 
 ## 1.19.1
 * `RoadNetRequest.detalLevelFilter` allows for multiple filters
