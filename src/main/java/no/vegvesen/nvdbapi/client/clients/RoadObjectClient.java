@@ -80,6 +80,19 @@ public class RoadObjectClient extends AbstractJerseyClient {
         return rt(RoadObjectParser::parseStatistics).apply(e.getAsJsonObject());
     }
 
+    public List<Statistics> getRootStats(RoadObjectRequest request) {
+        UriBuilder path = start().path("statistikk");
+
+        applyRequestParameters(path, convert(request));
+        logger.debug("Invoking {}", path);
+        WebTarget target = getClient().target(path);
+
+        JsonElement e = execute(target);
+        return StreamSupport.stream(e.getAsJsonArray().spliterator(),true)
+                .map(obj -> rt(RoadObjectParser::parseStatistics).apply(obj.getAsJsonObject().get("statistikk").getAsJsonObject()))
+                .collect(toList());
+    }
+
     public RoadObjectsResult getRoadObjects(int featureTypeId) {
         return getRoadObjects(featureTypeId, DEFAULT);
     }
@@ -230,7 +243,7 @@ public class RoadObjectClient extends AbstractJerseyClient {
     }
 
     public List<RoadObjectTypeWithStats> getSummary(RoadObjectRequest request) {
-        UriBuilder path = start();
+        UriBuilder path = start().path("statistikk");
         applyRequestParameters(path, convert(request));
         WebTarget target = getClient().target(path);
         logger.debug("Invoking {}", path);

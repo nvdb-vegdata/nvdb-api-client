@@ -33,7 +33,6 @@ import no.vegvesen.nvdbapi.client.model.SpatialType;
 import no.vegvesen.nvdbapi.client.model.datakatalog.*;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -82,6 +81,10 @@ public final class AttributeTypeParser {
             default:
                 throw new UnsupportedOperationException("Unrecognized attribute type" + egenskapstype);
         }
+    }
+
+    public static AttributeTypeWithOwner parseWithOwner(Map<String, DataType> typeMap, JsonObject object) {
+        return parse(typeMap, object).withOwner(parseOwner(object.getAsJsonObject("eier")));
     }
 
     private static AssociationRoleType parseAssociationRoleType(Map<String, DataType> typeMap, JsonObject object) {
@@ -462,5 +465,12 @@ public final class AttributeTypeParser {
             parseStringMember(obj, "kortnavn"),
             parseStringMember(obj, "beskrivelse"),
             parseIntMember(obj, "sorteringsnummer"));
+    }
+
+    private static Owner parseOwner(JsonObject object) {
+        return new Owner(
+                parseIntMember(object, "id_eier"),
+                parseStringMember(object, "navn_eier")
+        );
     }
 }

@@ -93,6 +93,10 @@ public abstract class AttributeType implements Serializable {
         return props.getSosiNvdbName();
     }
 
+    public AttributeTypeWithOwner withOwner(Owner owner) {
+        return new AttributeTypeWithOwner(this, owner);
+    }
+
     public enum Importance {
         NOT_SET(0, "IKKE_SATT"),
         MANDATORY(1, "PÅKREVD_ABSOLUTT"),
