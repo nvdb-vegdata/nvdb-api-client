@@ -71,10 +71,10 @@ public final class SegmentedLinkParser {
                 parseLanes(obj.getAsJsonArray("feltoversikt")));
     }
 
-    private static List<String> parseLanes(JsonArray obj) {
+    static List<String> parseLanes(JsonArray obj) {
         List<String> fields = new ArrayList<>();
         if (obj != null)
-            obj.forEach(p -> fields.add(p.toString()));
+            obj.forEach(p -> fields.add(p.getAsString()));
         return fields;
     }
 

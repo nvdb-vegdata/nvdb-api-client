@@ -33,6 +33,7 @@ import no.vegvesen.nvdbapi.client.model.roadnet.route.RouteOnRoadNet;
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 import static no.vegvesen.nvdbapi.client.gson.RoadObjectParser.parseContractAreas;
 import static no.vegvesen.nvdbapi.client.gson.RoadObjectParser.parseRoutes;
+import static no.vegvesen.nvdbapi.client.gson.SegmentedLinkParser.parseLanes;
 
 public final class DetailedRouteSegmentParser  {
 
@@ -59,7 +60,9 @@ public final class DetailedRouteSegmentParser  {
                 GsonUtil.parseRoadSysRefMember(obj, "vegsystemreferanse"),
                 RefLinkPartType.fromValue(parseStringMember(obj,"type")),
                 parseContractAreas(obj),
-                parseRoutes(obj));
+                parseRoutes(obj),
+                parseLanes(obj.getAsJsonArray("feltoversikt"))
+                );
     }
 
 }

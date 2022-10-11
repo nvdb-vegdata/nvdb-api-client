@@ -62,6 +62,9 @@ public final class DetailedRouteSegment implements Serializable, RouteSegment {
     private final LocalDate toDate;
     private final String startNode;
     private final String endNode;
+    private final List<String> lanes;
+
+
 
     public DetailedRouteSegment(long id,
                                 Long superLinkId,
@@ -81,7 +84,8 @@ public final class DetailedRouteSegment implements Serializable, RouteSegment {
                                 RoadSysRef roadRef,
                                 RefLinkPartType linkType,
                                 List<ContractArea> contractAreas,
-                                List<Route> routes) {
+                                List<Route> routes,
+                                List<String> lanes) {
         this.id = id;
         this.superLinkId = superLinkId;
         this.start = start;
@@ -101,6 +105,7 @@ public final class DetailedRouteSegment implements Serializable, RouteSegment {
         this.linkType = linkType;
         this.contractAreas = contractAreas;
         this.routes = routes;
+        this.lanes = lanes;
     }
 
     public long getId() {
@@ -179,6 +184,10 @@ public final class DetailedRouteSegment implements Serializable, RouteSegment {
         return routes;
     }
 
+    public List<String> getLanes() {
+        return lanes;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -202,11 +211,12 @@ public final class DetailedRouteSegment implements Serializable, RouteSegment {
                 Objects.equals(fromDate, that.fromDate) &&
                 Objects.equals(toDate, that.toDate) &&
                 Objects.equals(startNode, that.startNode) &&
-                Objects.equals(endNode, that.endNode);
+                Objects.equals(endNode, that.endNode) &&
+                Objects.equals(lanes, that.lanes);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, start, end, geometry, length, linkNumber, linkType, contractAreas, routes, detailLevel, roadType, superLinkId, county, municipality, roadRef, fromDate, toDate, startNode, endNode);
+        return Objects.hash(id, start, end, geometry, length, linkNumber, linkType, contractAreas, routes, detailLevel, roadType, superLinkId, county, municipality, roadRef, fromDate, toDate, startNode, endNode, lanes);
     }
 }

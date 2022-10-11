@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.19.5
+* DetailedRouteSegments include `feltoversikt` for detailed RouteOnRoadNet requests.
+
 ## 1.19.4
 * Added additional projections UTM32, UTM34 and UTM35
 
