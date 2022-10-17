@@ -125,6 +125,14 @@ public class DatakatalogClient extends AbstractJerseyClient {
                            .map(o -> AttributeTypeParser.parse(dataTypes, o));
     }
 
+    public Optional<AttributeTypeWithOwner> getAttributeTypeWithOwner(int typeId) {
+        initDataTypes();
+        WebTarget target = getClient().target(endpoint()).path("egenskapstyper").path(Integer.toString(typeId));
+        return JerseyHelper.executeOptional(target)
+                .map(JsonElement::getAsJsonObject)
+                .map(o -> AttributeTypeParser.parseWithOwner(dataTypes, o));
+    }
+
     private void initDataTypes() {
         if(isNull(this.dataTypes)) {
             this.dataTypes = getDataTypeMap();
