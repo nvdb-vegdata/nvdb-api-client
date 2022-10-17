@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.19.6
+* Added get attribute type with owner to datakatalog client.
+
 ## 1.19.5
 * DetailedRouteSegments include `feltoversikt` for detailed RouteOnRoadNet requests.
 
