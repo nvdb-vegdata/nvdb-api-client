@@ -262,6 +262,7 @@ public class RoadObjectRequest {
                 .withRefLinkFilter(refLinkFilter)
                 .withMunicipalities(municipalities)
                 .withCounties(counties)
+                .withContractAreas(contractAreas)
                 .withAllVersions(allVersions)
                 .withPointInTime(pointInTime)
                 .withModifiedAfter(modifiedAfter)
@@ -521,7 +522,10 @@ public class RoadObjectRequest {
             this.contractAreas = Arrays.asList(contractAreas);
             return this;
         }
-
+        public Builder withContractAreas(List<String> contractAreas) {
+            this.contractAreas = contractAreas;
+            return this;
+        }
         public Builder withNationalRoute(String nationalRoute) {
             this.nationalRoutes = Collections.singletonList(nationalRoute);
             return this;
