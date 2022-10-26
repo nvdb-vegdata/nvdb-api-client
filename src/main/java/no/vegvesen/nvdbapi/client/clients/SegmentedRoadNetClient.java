@@ -106,6 +106,7 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
     private WebTarget getWebTarget(RoadNetRequest request, UriBuilder path) {
         Objects.requireNonNull(request, "Missing page info argument.");
 
+        if (!request.getId().isEmpty()) path.queryParam("ider", join(request.getId()));
         if (!request.getCounties().isEmpty()) path.queryParam("fylke", join(request.getCounties()));
         if (!request.getMunicipalities().isEmpty()) path.queryParam("kommune", join(request.getMunicipalities()));
         request.getContractArea().ifPresent(v -> path.queryParam("kontraktsomrade", v));
