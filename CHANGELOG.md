@@ -1,7 +1,10 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.19.7
+* SegmentedRoadNetClient failed to include reflink id parameter 'ider' in serialized query.
+
 ## 1.19.6
-* Added get attribute type with owner to datakatalog client.
+* Fixed RoadObjectRequest's toMutable function didn't transfer contract areas to the new builder.
 
 ## 1.19.5
 * DetailedRouteSegments include `feltoversikt` for detailed RouteOnRoadNet requests.
