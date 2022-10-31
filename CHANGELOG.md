@@ -2,7 +2,7 @@
 
 ## 1.19.8
 * Added RoadReferenceClient.
-=======
+
 ## 1.19.7
 * SegmentedRoadNetClient failed to include reflink id parameter 'ider' in serialized query.
 
