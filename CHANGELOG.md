@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.19.8
+* Added RoadReferenceClient.
+=======
 ## 1.19.7
 * SegmentedRoadNetClient failed to include reflink id parameter 'ider' in serialized query.
 
@@ -140,7 +143,8 @@ on the roadnet placement for the segment.
   When NVDB API LES V3 has a different version of Datakatalogen than the version in this header 
   `HTTP 422: Nåværende datakatalogversjon i APIet er: {new version}` is returned.
 * It is possible to define a callback for `RoadObjectClient` that is called when Datakatalog version changes.
-  ```java
+  ```
+  java
     clientFactory.createRoadObjectClient(
       DatakatalogPolicy.builder()
       .onDatakatalogUpdateCallback(() -> { /* do something */})    
