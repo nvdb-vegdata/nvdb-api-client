@@ -345,6 +345,13 @@ public final class ClientFactory implements AutoCloseable {
     }
 
     /**
+     * @return a new instance of {@code RoadReferenceClient}, or existing if one exists
+     */
+    public RoadReferenceClient getRoadReferenceClient() {
+        return getOrCreateClient(RoadReferenceClient.class, RoadReferenceClient::new);
+    }
+
+    /**
      * @return a new instance of {@code RoadPlacementClient}, or existing if one exists
      */
     public RoadPlacementClient getRoadPlacementClient() {
