@@ -43,6 +43,26 @@ public class RoadReferenceClient extends AbstractJerseyClient {
         return new Position(collect);
 
     }
+public Position getRoadSysRef(Optional<String> roadRef,
+                              Optional<String> dato) {
+
+        UriBuilder url = getRoadRefEndpoint();
+
+        roadRef.ifPresent(v -> url.queryParam("vegreferanse", v));
+        dato.ifPresent(v -> url.queryParam("tidspunkt", v));
+
+        WebTarget target = getClient().target(url);
+
+        JsonArray results = JerseyHelper.execute(target).getAsJsonArray();
+
+        List<Position.Result> collect =
+                StreamSupport.stream(results.spliterator(), false)
+                        .map(JsonElement::getAsJsonObject)
+                        .map(rt(PlacementParser::parsePosition))
+                        .collect(Collectors.toList());
+        return new Position(collect);
+
+    }
 
     private UriBuilder getRoadRefEndpoint() { return rootEndpoint().path("vegreferanseposisjon");}
 
