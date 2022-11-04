@@ -64,6 +64,27 @@ public Position getRoadSysRef(Optional<String> roadRef,
 
     }
 
+public Position getRoadSysRefLastValid(Optional<String> roadRef,
+                                       Optional<String> lastValid) {
+
+    UriBuilder url = getRoadRefEndpoint();
+
+    roadRef.ifPresent(v -> url.queryParam("vegreferanse", v));
+    lastValid.ifPresent(v -> url.queryParam("sisteGyldige", v));
+
+    WebTarget target = getClient().target(url);
+
+    JsonArray results = JerseyHelper.execute(target).getAsJsonArray();
+
+    List<Position.Result> collect =
+            StreamSupport.stream(results.spliterator(), false)
+                    .map(JsonElement::getAsJsonObject)
+                    .map(rt(PlacementParser::parsePosition))
+                    .collect(Collectors.toList());
+    return new Position(collect);
+
+}
+
     private UriBuilder getRoadRefEndpoint() { return rootEndpoint().path("vegreferanseposisjon");}
 
     private UriBuilder rootEndpoint() {
