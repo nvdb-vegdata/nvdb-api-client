@@ -25,29 +25,34 @@
 
 package no.vegvesen.nvdbapi.client.model;
 
-import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
-
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class RoadPlacement {
 
-    private final RoadSysRef roadSysRef;
+    private final Object roadRef;
     private final RefLinkPosition refLinkPosition;
     private final Geometry point;
     private final Integer municipality;
+    private final LocalDate startDate;
+    private final LocalDate endDate;
 
-    public RoadPlacement(RoadSysRef roadSysRef,
+
+    public <T> RoadPlacement(T roadSysRef,
                          RefLinkPosition refLinkPosition,
                          Geometry point,
-                         Integer municipality) {
-        this.roadSysRef = roadSysRef;
+                         Integer municipality,
+                         LocalDate startDate, LocalDate endDate) {
+        this.roadRef = roadSysRef;
         this.refLinkPosition = refLinkPosition;
         this.point = point;
         this.municipality = municipality;
+        this.startDate = startDate;
+        this.endDate = endDate;
     }
 
-    public RoadSysRef getRoadSysRef() {
-        return roadSysRef;
+    public <T> T getRoadSysRef() {
+        return (T) roadRef;
     }
 
     public RefLinkPosition getRefLinkPosition() {
@@ -62,10 +67,18 @@ public class RoadPlacement {
         return municipality;
     }
 
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
     @Override
     public String toString() {
         return "RoadPlacement{" +
-                "roadSysRef=" + roadSysRef +
+                "roadRef=" + roadRef +
                 ", refLinkPosition=" + refLinkPosition +
                 ", point=" + point +
                 '}';
@@ -76,14 +89,16 @@ public class RoadPlacement {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         RoadPlacement that = (RoadPlacement) o;
-        return Objects.equals(roadSysRef, that.roadSysRef) &&
+        return Objects.equals(roadRef, that.roadRef) &&
                 Objects.equals(refLinkPosition, that.refLinkPosition) &&
                 Objects.equals(point, that.point) &&
+                Objects.equals(startDate, that.startDate) &&
+                Objects.equals(endDate, that.endDate) &&
                 Objects.equals(municipality, that.municipality);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(roadSysRef, refLinkPosition, point, municipality);
+        return Objects.hash(roadRef, refLinkPosition, point, municipality, startDate, endDate);
     }
 }

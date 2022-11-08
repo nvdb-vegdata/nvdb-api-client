@@ -26,6 +26,7 @@
 package no.vegvesen.nvdbapi.client.model;
 
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
 
 import java.util.List;
 import java.util.Objects;
@@ -59,6 +60,10 @@ public class Position {
         }
 
         public RoadSysRef getRoadRef() {
+            return placement.getRoadSysRef();
+        }
+
+        public RoadRef getRoadRefInHpMeter() {
             return placement.getRoadSysRef();
         }
 

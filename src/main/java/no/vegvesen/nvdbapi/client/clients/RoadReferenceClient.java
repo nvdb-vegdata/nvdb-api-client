@@ -8,6 +8,7 @@ import no.vegvesen.nvdbapi.client.model.Position;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.UriBuilder;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -21,6 +22,13 @@ public class RoadReferenceClient extends AbstractJerseyClient {
         super(baseUrl, client, onClose);
     }
 
+    /**
+     * Get road system reference for an old reference in hp/meter
+     * @param roadRef            Old road reference in hp/m
+     * @param startDato          Start date
+     * @param sluttDato          End date
+     * @return   A position with geometry, reflink, municipality and a road system reference (section/part/meter)
+     */
     public Position getRoadSysRef(Optional<String> roadRef,
                                   Optional<String> startDato,
                                   Optional<String> sluttDato) {
@@ -32,19 +40,18 @@ public class RoadReferenceClient extends AbstractJerseyClient {
         sluttDato.ifPresent(v -> url.queryParam("sluttDato", v));
 
         WebTarget target = getClient().target(url);
+        JsonArray response = JerseyHelper.execute(target).getAsJsonArray();
 
-        JsonArray results = JerseyHelper.execute(target).getAsJsonArray();
-
-        List<Position.Result> collect =
-                StreamSupport.stream(results.spliterator(), false)
-                        .map(JsonElement::getAsJsonObject)
-                        .map(rt(PlacementParser::parsePosition))
-                        .collect(Collectors.toList());
-        return new Position(collect);
-
+        return new Position(collectResults(response));
     }
-public Position getRoadSysRef(Optional<String> roadRef,
-                              Optional<String> dato) {
+
+    /**
+     * Get road system reference for an old reference in hp/meter
+     * @param roadRef            Old road reference in hp/m
+     * @param dato               Search for this date
+     * @return   A position with geometry, reflink, municipality and a road system reference (section/part/meter)
+     */
+public Position getRoadSysRef(Optional<String> roadRef, Optional<String> dato) {
 
         UriBuilder url = getRoadRefEndpoint();
 
@@ -52,20 +59,18 @@ public Position getRoadSysRef(Optional<String> roadRef,
         dato.ifPresent(v -> url.queryParam("tidspunkt", v));
 
         WebTarget target = getClient().target(url);
+        JsonArray response = JerseyHelper.execute(target).getAsJsonArray();
 
-        JsonArray results = JerseyHelper.execute(target).getAsJsonArray();
-
-        List<Position.Result> collect =
-                StreamSupport.stream(results.spliterator(), false)
-                        .map(JsonElement::getAsJsonObject)
-                        .map(rt(PlacementParser::parsePosition))
-                        .collect(Collectors.toList());
-        return new Position(collect);
-
+        return new Position(collectResults(response));
     }
 
-public Position getRoadSysRefLastValid(Optional<String> roadRef,
-                                       Optional<String> lastValid) {
+    /**
+     * Get road system reference for an old reference in hp/meter
+     * @param roadRef        The reflink
+     * @param lastValid      The position
+     * @return   A position with geometry, reflink, municipality and a road system reference (section/part/meter)
+     */
+    public Position getRoadSysRefLastValid(Optional<String> roadRef, Optional<String> lastValid) {
 
     UriBuilder url = getRoadRefEndpoint();
 
@@ -73,19 +78,78 @@ public Position getRoadSysRefLastValid(Optional<String> roadRef,
     lastValid.ifPresent(v -> url.queryParam("sisteGyldige", v));
 
     WebTarget target = getClient().target(url);
+    JsonArray response = JerseyHelper.execute(target).getAsJsonArray();
 
-    JsonArray results = JerseyHelper.execute(target).getAsJsonArray();
+    return new Position(collectResults(response));
 
-    List<Position.Result> collect =
-            StreamSupport.stream(results.spliterator(), false)
-                    .map(JsonElement::getAsJsonObject)
-                    .map(rt(PlacementParser::parsePosition))
-                    .collect(Collectors.toList());
-    return new Position(collect);
+    }
 
-}
+    /**
+     * Get old road reference in hp/meter for a reflink position
+     *
+     * @param reflink            The reflink
+     * @param reflinkPosition    The position
+     * @return   A postion with geometry, reflink, municipality and a road system reference (section/part/meter)
+     */
+
+    public Position getRoadRef(int reflink, double reflinkPosition) {
+
+        UriBuilder url = getRefLinkEndpoint();
+        url.queryParam("veglenkesekvens", "" + reflinkPosition + "@" + reflink);
+        WebTarget target = getClient().target(url);
+        JsonArray response = JerseyHelper.execute(target).getAsJsonArray();
+
+        return new Position(collectResults(response));
+    }
+
+    /**
+     * Get old road reference in hp/meter for a reflink position
+     *
+     * @param reflink            The reflink
+     * @param reflinkPosition    The position
+     * @param date               Search for this date
+     * @return   A postion with geometry, reflink, municipality and a road system reference (section/part/meter)
+     */
+    public Position getRoadRef(int reflink, double reflinkPosition, LocalDate date) {
+
+        UriBuilder url = getRefLinkEndpoint();
+        url.queryParam("veglenkesekvens", "" + reflinkPosition + "@" + reflink);
+        url.queryParam("tidspunkt", date.toString());
+        WebTarget target = getClient().target(url);
+        JsonArray response = JerseyHelper.execute(target).getAsJsonArray();
+
+        return new Position(collectResults(response));
+    }
+
+    /**
+     * Get old road reference in hp/meter for a reflink position
+     * @param reflink            The reflink
+     * @param reflinkPosition    The position
+     * @param allVersions        Include all history - all versions
+     * @return    A postion with geometry, reflink, municipality and a road system reference (section/part/meter)
+     */
+    public Position getRoadRef(int reflink, double reflinkPosition, boolean allVersions) {
+
+        UriBuilder url = getRefLinkEndpoint();
+        url.queryParam("veglenkesekvens", "" + reflinkPosition + "@" + reflink);
+        url.queryParam("alle_versjoner", allVersions);
+        WebTarget target = getClient().target(url);
+        JsonArray response = JerseyHelper.execute(target).getAsJsonArray();
+
+        return new Position(collectResults(response));
+    }
+
+    private List<Position.Result> collectResults(JsonArray results) {
+        return StreamSupport.stream(results.spliterator(), false)
+                .map(JsonElement::getAsJsonObject)
+                .map(rt(PlacementParser::parsePosition))
+                .collect(Collectors.toList());
+    }
+
 
     private UriBuilder getRoadRefEndpoint() { return rootEndpoint().path("vegreferanseposisjon");}
+
+    private UriBuilder getRefLinkEndpoint() { return rootEndpoint().path("vegreferanse");}
 
     private UriBuilder rootEndpoint() {
         return start();
