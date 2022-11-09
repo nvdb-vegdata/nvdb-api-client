@@ -125,14 +125,14 @@ public Position getRoadSysRef(Optional<String> roadRef, Optional<String> dato) {
      * Get old road reference in hp/meter for a reflink position
      * @param reflink            The reflink
      * @param reflinkPosition    The position
-     * @param allVersions        Include all history - all versions
+     * @param history            Include history - return all segments from past and present
      * @return    A postion with geometry, reflink, municipality and a road system reference (section/part/meter)
      */
-    public Position getRoadRef(int reflink, double reflinkPosition, boolean allVersions) {
+    public Position getRoadRef(int reflink, double reflinkPosition, boolean history) {
 
         UriBuilder url = getRefLinkEndpoint();
         url.queryParam("veglenkesekvens", "" + reflinkPosition + "@" + reflink);
-        url.queryParam("alle_versjoner", allVersions);
+        url.queryParam("historisk", history);
         WebTarget target = getClient().target(url);
         JsonArray response = JerseyHelper.execute(target).getAsJsonArray();
 
