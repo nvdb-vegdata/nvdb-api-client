@@ -36,6 +36,7 @@ import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
 
 import java.time.LocalDate;
 
+import static java.util.Objects.isNull;
 import static java.util.Objects.nonNull;
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseDateMember;
 
@@ -54,7 +55,10 @@ public final class RoadPlacementParser {
 
     public static RoadPlacement parseRoadPlacement(JsonObject obj) {
         RoadSysRef roadSysRef = RoadSysRefParser.parse(obj.getAsJsonObject("vegsystemreferanse"));
-        RoadRef roadRef = RoadRefParser.parse(obj.getAsJsonObject("vegreferanse"));
+        RoadRef roadRef = null;
+        if (nonNull(obj.getAsJsonObject("vegreferanse"))) {
+            roadRef = RoadRefParser.parse(obj.getAsJsonObject("vegreferanse"));
+        }
         RefLinkPosition refLinkPosition = ShortRefLinkParser.parseShortRefLink(obj.getAsJsonObject("veglenkesekvens"));
         Geometry point = GeometryParser.parse(obj.getAsJsonObject("geometri"));
         Integer municipality = obj.has("kommune") ? obj.getAsJsonPrimitive("kommune").getAsInt() : null;
