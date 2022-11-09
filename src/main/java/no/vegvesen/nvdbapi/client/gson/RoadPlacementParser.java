@@ -32,6 +32,13 @@ import no.vegvesen.nvdbapi.client.model.RefLinkPosition;
 import no.vegvesen.nvdbapi.client.model.RoadPlacement;
 import no.vegvesen.nvdbapi.client.model.RoadPlacementBulkResult;
 import no.vegvesen.nvdbapi.client.model.roadnet.roadsysref.RoadSysRef;
+import no.vegvesen.nvdbapi.client.model.roadobjects.RoadRef;
+
+import java.time.LocalDate;
+
+import static java.util.Objects.isNull;
+import static java.util.Objects.nonNull;
+import static no.vegvesen.nvdbapi.client.gson.GsonUtil.parseDateMember;
 
 public final class RoadPlacementParser {
     private RoadPlacementParser() {}
@@ -47,11 +54,19 @@ public final class RoadPlacementParser {
     }
 
     public static RoadPlacement parseRoadPlacement(JsonObject obj) {
-        RoadSysRef roadRef = RoadSysRefParser.parse(obj.getAsJsonObject("vegsystemreferanse"));
+        RoadSysRef roadSysRef = RoadSysRefParser.parse(obj.getAsJsonObject("vegsystemreferanse"));
+        RoadRef roadRef = null;
+        if (nonNull(obj.getAsJsonObject("vegreferanse"))) {
+            roadRef = RoadRefParser.parse(obj.getAsJsonObject("vegreferanse"));
+        }
         RefLinkPosition refLinkPosition = ShortRefLinkParser.parseShortRefLink(obj.getAsJsonObject("veglenkesekvens"));
         Geometry point = GeometryParser.parse(obj.getAsJsonObject("geometri"));
         Integer municipality = obj.has("kommune") ? obj.getAsJsonPrimitive("kommune").getAsInt() : null;
-        return new RoadPlacement(roadRef, refLinkPosition, point, municipality);
+        LocalDate startDate = parseDateMember(obj, "startdato");
+        LocalDate endDate = parseDateMember(obj, "sluttdato");
+
+        return new RoadPlacement(nonNull(roadSysRef) ? roadSysRef : roadRef, refLinkPosition, point, municipality,
+                startDate, endDate);
     }
 
 }
