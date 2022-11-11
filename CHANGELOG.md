@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.19.11
+* Improved storage of ETags to prevent crashing when faced with a broken cache
+
 ## 1.19.10
 * Added RoadReferenceClient getRoadRef functions.
 

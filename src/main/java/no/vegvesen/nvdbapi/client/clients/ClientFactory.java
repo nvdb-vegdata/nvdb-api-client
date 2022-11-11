@@ -494,7 +494,10 @@ public final class ClientFactory implements AutoCloseable {
         File etagFile = new File(getClientHome(), resource.replace('/', '_') + ".etag");
         if(etagFile.exists()) {
             try {
-                return Optional.of(Files.readAllLines(etagFile.toPath(), StandardCharsets.UTF_8).get(0));
+                return Optional.of(Files.readAllLines(etagFile.toPath(), StandardCharsets.UTF_8)
+                        .get(0)
+                        .replaceAll("\"{2,}", "\"")
+                );
             } catch (IOException e) {
                 LoggerFactory.getLogger(ClientFactory.class).error("Error getting etag for {}", resource, e);
             }
@@ -520,7 +523,7 @@ public final class ClientFactory implements AutoCloseable {
         try {
             String r = resource.replace('/', '_');
             File etagFile = new File(getClientHome(), r + ".etag");
-            Files.write(etagFile.toPath(), etag.getBytes(StandardCharsets.UTF_8), CREATE);
+            Files.write(etagFile.toPath(), etag.replaceAll("\"{2,}", "\"").getBytes(StandardCharsets.UTF_8), CREATE);
             File bodyFile = new File(getClientHome(), r + ".json");
             Files.write(bodyFile.toPath(), body.getBytes(StandardCharsets.UTF_8), CREATE);
         } catch (IOException e) {
