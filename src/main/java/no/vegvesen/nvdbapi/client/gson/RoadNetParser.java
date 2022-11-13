@@ -88,7 +88,7 @@ public final class RoadNetParser {
                         parseDoubleMember(o, "sluttposisjon"),
                         parseIntMember(o, "geometri.kommune"),
                         parseIntMember(o, "geometri.kommune"),
-                        parseDoubleMember(o, "geometri.lengde"),
+                        parseDoubleMember(o, "lengde"),
                         parseStringMember(o, "målemetode"),
                         parseDateMember(o, "måledato"),
                         SosiMedium.from(parseStringMember(o, "medium")),
