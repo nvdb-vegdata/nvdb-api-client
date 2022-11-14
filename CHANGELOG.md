@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.19.13
+* Updated RoadReferenceClient with new parameter.
+
 ## 1.19.12
 * Fixed an issue where RoadNet Links incorrectly assigned `geometry.length` to the `length` field.
 
