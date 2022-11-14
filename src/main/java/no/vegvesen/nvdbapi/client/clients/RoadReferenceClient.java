@@ -27,17 +27,23 @@ public class RoadReferenceClient extends AbstractJerseyClient {
      * @param roadRef            Old road reference in hp/m
      * @param startDato          Start date
      * @param sluttDato          End date
+     * @param tidspunkt          Tidspunkt
+     * @param historisk          Historisk
      * @return   A position with geometry, reflink, municipality and a road system reference (section/part/meter)
      */
     public Position getRoadSysRef(Optional<String> roadRef,
                                   Optional<String> startDato,
-                                  Optional<String> sluttDato) {
+                                  Optional<String> sluttDato,
+                                  Optional <String> tidspunkt,
+                                  Optional <String> historisk) {
 
         UriBuilder url = getRoadRefEndpoint();
 
         roadRef.ifPresent(v -> url.queryParam("vegreferanse", v));
         startDato.ifPresent(v -> url.queryParam("startDato", v));
         sluttDato.ifPresent(v -> url.queryParam("sluttDato", v));
+        tidspunkt.ifPresent(v -> url.queryParam("tidspunkt", v));
+        historisk.ifPresent(v -> url.queryParam("historisk", v));
 
         WebTarget target = getClient().target(url);
         JsonArray response = JerseyHelper.execute(target).getAsJsonArray();
@@ -45,44 +51,6 @@ public class RoadReferenceClient extends AbstractJerseyClient {
         return new Position(collectResults(response));
     }
 
-    /**
-     * Get road system reference for an old reference in hp/meter
-     * @param roadRef            Old road reference in hp/m
-     * @param dato               Search for this date
-     * @return   A position with geometry, reflink, municipality and a road system reference (section/part/meter)
-     */
-public Position getRoadSysRef(Optional<String> roadRef, Optional<String> dato) {
-
-        UriBuilder url = getRoadRefEndpoint();
-
-        roadRef.ifPresent(v -> url.queryParam("vegreferanse", v));
-        dato.ifPresent(v -> url.queryParam("tidspunkt", v));
-
-        WebTarget target = getClient().target(url);
-        JsonArray response = JerseyHelper.execute(target).getAsJsonArray();
-
-        return new Position(collectResults(response));
-    }
-
-    /**
-     * Get road system reference for an old reference in hp/meter
-     * @param roadRef        The reflink
-     * @param lastValid      The position
-     * @return   A position with geometry, reflink, municipality and a road system reference (section/part/meter)
-     */
-    public Position getRoadSysRefLastValid(Optional<String> roadRef, Optional<String> lastValid) {
-
-    UriBuilder url = getRoadRefEndpoint();
-
-    roadRef.ifPresent(v -> url.queryParam("vegreferanse", v));
-    lastValid.ifPresent(v -> url.queryParam("sisteGyldige", v));
-
-    WebTarget target = getClient().target(url);
-    JsonArray response = JerseyHelper.execute(target).getAsJsonArray();
-
-    return new Position(collectResults(response));
-
-    }
 
     /**
      * Get old road reference in hp/meter for a reflink position
