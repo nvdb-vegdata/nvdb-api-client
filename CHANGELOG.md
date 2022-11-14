@@ -15,9 +15,6 @@
 ## 1.19.9
 * Added RoadReferenceClient lastValid function.
 
-## 1.19.9
-* Added RoadReferenceClient lastValid function.
-
 ## 1.19.8
 * Added RoadReferenceClient.
 
