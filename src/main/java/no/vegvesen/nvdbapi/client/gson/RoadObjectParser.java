@@ -250,7 +250,7 @@ public final class RoadObjectParser {
             ref = RoadSysRefParser.parse(obj.getAsJsonObject("vegsystemreferanse"));
         }
 
-        Integer length = parseIntMember(obj, "lengde");
+        Double length = parseDoubleMember(obj, "lengde");
 
         boolean isPoint = obj.has("relativPosisjon");
         double startPos = isPoint ? parseDoubleMember(obj, "relativPosisjon") : parseDoubleMember(obj, "startposisjon");
