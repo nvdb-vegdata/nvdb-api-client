@@ -45,7 +45,7 @@ public class Segment {
     private final int municipality;
     private final int county;
     private final RoadSysRef roadSysRef;
-    private final Integer length;
+    private final Double length;
     private final LocalDate startDate;
     private final LocalDate endDate;
     private final RefLinkPartType refLinkPartType;
@@ -60,7 +60,7 @@ public class Segment {
                    int municipality,
                    int county,
                    RoadSysRef roadSysRef,
-                   Integer length,
+                   Double length,
                    LocalDate startDate,
                    LocalDate endDate,
                    RefLinkPartType refLinkPartType,
@@ -114,7 +114,7 @@ public class Segment {
         return roadSysRef;
     }
 
-    public Integer getLength() {
+    public Double getLength() {
         return length;
     }
 

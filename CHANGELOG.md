@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.19.14
+* RoadObject Segment length is now correctly represented as a double 
+
 ## 1.19.13
 * Updated RoadReferenceClient with new parameter.
 

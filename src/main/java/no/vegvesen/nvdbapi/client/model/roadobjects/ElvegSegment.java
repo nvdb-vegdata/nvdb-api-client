@@ -14,7 +14,7 @@ public class ElvegSegment extends Segment {
 
     private List<String> lanes;
 
-    public ElvegSegment(long netElementId, double startPosition, double endPosition, Direction direction, Geometry geometry, int municipality, int county, RoadSysRef roadSysRef, Integer length, LocalDate startDate, LocalDate endDate, RefLinkPartType refLinkPartType, DetailLevel detailLevel, TypeOfRoad typeOfRoad, List<String> lanes) {
+    public ElvegSegment(long netElementId, double startPosition, double endPosition, Direction direction, Geometry geometry, int municipality, int county, RoadSysRef roadSysRef, Double length, LocalDate startDate, LocalDate endDate, RefLinkPartType refLinkPartType, DetailLevel detailLevel, TypeOfRoad typeOfRoad, List<String> lanes) {
         super(netElementId, startPosition, endPosition, direction, geometry, municipality, county, roadSysRef, length, startDate, endDate, refLinkPartType, detailLevel, typeOfRoad);
         this.lanes = lanes;
     }
