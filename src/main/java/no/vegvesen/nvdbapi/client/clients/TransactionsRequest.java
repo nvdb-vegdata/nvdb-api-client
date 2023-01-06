@@ -31,6 +31,12 @@ import no.vegvesen.nvdbapi.client.model.Page;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.Objects.isNull;
 
 public class TransactionsRequest {
 
@@ -40,12 +46,15 @@ public class TransactionsRequest {
     private final List<Integer> ider;
     private final LocalDateTime from;
     private final LocalDateTime to;
+    private final Type type;
 
     private TransactionsRequest(Builder b){
         this.page = b.page;
         this.ider = b.ider;
         this.from = b.from;
         this.to = b.to;
+        this.type = b.type;
+
     }
 
     public static Builder newBuilder() {
@@ -68,8 +77,13 @@ public class TransactionsRequest {
         return to;
     }
 
+    public Type getType() {
+        return type;
+    }
+
     public static class Builder{
 
+        private Type type = Type.INDEXED_TRANSACTIONS;
         private Page page = Page.defaults();
         private List<Integer> ider = Collections.emptyList();
         private LocalDateTime from = null;
@@ -97,6 +111,33 @@ public class TransactionsRequest {
         public Builder withTo(LocalDateTime to){
             this.to = to;
             return this;
+        }
+
+        public Builder withType(Type type) {
+            this.type = type;
+            return this;
+        }
+    }
+
+    public enum Type {
+        NOT_INDEXED_TRANSACTIONS("ikke_indeksert"),
+        LAST_INDEXED_TRANSACTION("sist_indeksert"),
+        INDEXED_TRANSACTIONS("indeksert");
+
+        private final String type;
+        private static Map<String, Type> mapping = Stream.of(Type.values()).collect(Collectors.toMap(k -> k.type.toLowerCase(), Function.identity()));
+
+        Type(String type) {
+            this.type = type;
+        }
+
+        public String getTextValue() {
+            return type;
+        }
+
+        public static Type fromTextValue(String type) {
+            if (isNull(type)) return Type.INDEXED_TRANSACTIONS;
+            return mapping.getOrDefault(type.toLowerCase(), INDEXED_TRANSACTIONS);
         }
     }
 
