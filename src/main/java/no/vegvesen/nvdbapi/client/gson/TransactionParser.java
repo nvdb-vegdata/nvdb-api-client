@@ -44,7 +44,7 @@ public class TransactionParser {
             parseRoadObjects(obj.getAsJsonArray("objekter")));
     }
 
-    private static TransactionId parseTransactionId(JsonObject obj){
+    public static TransactionId parseTransactionId(JsonObject obj){
         Integer taskId = parseIntMember(obj, "taskId");
         LocalDateTime dateTime = parseDateTimeMember(obj, "tidspunkt");
         return new TransactionId(taskId, dateTime);

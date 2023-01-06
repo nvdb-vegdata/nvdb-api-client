@@ -372,6 +372,10 @@ public final class ClientFactory implements AutoCloseable {
         return getOrCreateClient(TransactionsClient.class, TransactionsClient::new);
     }
 
+    public TransactionStatusClient getTransactionStatusClient(){
+        return getOrCreateClient(TransactionStatusClient.class, TransactionStatusClient::new);
+    }
+
     private Client createClient() {
         return createClient(Function.identity());
     }
