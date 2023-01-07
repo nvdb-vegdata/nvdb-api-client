@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.19.16-NVDB-10579-SNAPSHOT
+# Added TransactionStatusClient 
+
 ## 1.19.15
 * Added "Ikke registert" as Visibility enum value
 

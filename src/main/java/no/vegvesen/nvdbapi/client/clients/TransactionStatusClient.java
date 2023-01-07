@@ -63,7 +63,7 @@ public class TransactionStatusClient extends AbstractJerseyClient {
         UriBuilder url = start().path("/transaksjoner/status");
 
         if(nonNull(request.getFrom())) url.queryParam("fra", request.getFrom().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
-        if(nonNull(request.getType())) url.queryParam("type", request.getType());
+        if(nonNull(request.getType())) url.queryParam("type", request.getType().getTextValue());
 
         return getClient().target(url);
     }
