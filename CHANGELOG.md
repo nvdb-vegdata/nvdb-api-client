@@ -1,5 +1,8 @@
 # Changelog for NVDB API LES V3 Client
 
+## 1.19.16
+* Added transaction status client 
+
 ## 1.19.13
 * Updated RoadReferenceClient with new parameter.
 

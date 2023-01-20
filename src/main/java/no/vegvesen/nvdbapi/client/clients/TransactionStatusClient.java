@@ -27,8 +27,8 @@ package no.vegvesen.nvdbapi.client.clients;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import no.vegvesen.nvdbapi.client.gson.TransactionParser;
-import no.vegvesen.nvdbapi.client.model.transaction.TransactionId;
+import no.vegvesen.nvdbapi.client.gson.TransactionInfoParser;
+import no.vegvesen.nvdbapi.client.model.transaction.TransactionInfo;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
@@ -48,13 +48,13 @@ public class TransactionStatusClient extends AbstractJerseyClient {
         super(baseUrl, client, onClose);
     }
 
-    public List<TransactionId> getTransactions(TransactionStatusRequest request) {
+    public List<TransactionInfo> getTransactions(TransactionStatusRequest request) {
         WebTarget target = setupGetTransactions(request);
         JsonElement jsonElement = JerseyHelper.execute(target);
         JsonArray jsonArray = jsonElement.getAsJsonArray();
 
         return StreamSupport.stream(jsonArray.spliterator(), false).map(JsonElement::getAsJsonObject)
-                .map(rt(TransactionParser::parseTransactionId))
+                .map(rt(TransactionInfoParser::parseTransaction))
                 .collect(Collectors.toList());
     }
 

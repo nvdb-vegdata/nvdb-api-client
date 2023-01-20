@@ -48,7 +48,7 @@ public class TransactionParser {
         return parseDateTimeMember(obj, "indekseringstidspunkt");
     }
 
-    public static TransactionId parseTransactionId(JsonObject obj){
+    private static TransactionId parseTransactionId(JsonObject obj){
         Integer taskId = parseIntMember(obj, "taskId");
         LocalDateTime dateTime = parseDateTimeMember(obj, "tidspunkt");
         return new TransactionId(taskId, dateTime);
