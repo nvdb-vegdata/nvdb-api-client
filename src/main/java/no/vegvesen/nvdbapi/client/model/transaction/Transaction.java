@@ -25,18 +25,21 @@
 
 package no.vegvesen.nvdbapi.client.model.transaction;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
 public class Transaction {
 
     private final TransactionId transactionId;
+    private final LocalDateTime indexedDateTime;
     private final Integer taskTypeId;
     private final String userId;
     private final List<RoadObject> roadObjects;
 
-    public Transaction(TransactionId transactionId, Integer taskTypeId, String userId, List<RoadObject> roadObjects) {
+    public Transaction(TransactionId transactionId, LocalDateTime indexedDateTime, Integer taskTypeId, String userId, List<RoadObject> roadObjects) {
         this.transactionId = transactionId;
+        this.indexedDateTime = indexedDateTime;
         this.taskTypeId = taskTypeId;
         this.userId = userId;
         this.roadObjects = roadObjects;
@@ -58,6 +61,10 @@ public class Transaction {
         return taskTypeId;
     }
 
+    public LocalDateTime getIndexedDateTime() {
+        return indexedDateTime;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -71,7 +78,6 @@ public class Transaction {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(getTransactionId(), getTaskTypeId(), getUserId(), getRoadObjects());
     }
 
@@ -79,6 +85,7 @@ public class Transaction {
     public String toString() {
         return "Transaction{" +
             "transactionId=" + transactionId +
+            ", indexedDateTime=" + indexedDateTime +
             ", taskTypeId=" + taskTypeId +
             ", userId='" + userId + '\'' +
             ", roadObjects=" + roadObjects +

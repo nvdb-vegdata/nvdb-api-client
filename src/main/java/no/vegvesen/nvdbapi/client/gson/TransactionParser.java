@@ -40,8 +40,12 @@ public class TransactionParser {
 
     public static Transaction parseTransaction(JsonObject obj) {
         return new Transaction(
-            parseTransactionId(obj), parseIntMember(obj, "taskTypeId"), parseStringMember(obj, "brukerid"),
+            parseTransactionId(obj), parseTransactionIndexed(obj), parseIntMember(obj, "taskTypeId"), parseStringMember(obj, "brukerid"),
             parseRoadObjects(obj.getAsJsonArray("objekter")));
+    }
+
+    private static LocalDateTime parseTransactionIndexed(JsonObject obj) {
+        return parseDateTimeMember(obj, "indekseringstidspunkt");
     }
 
     public static TransactionId parseTransactionId(JsonObject obj){
