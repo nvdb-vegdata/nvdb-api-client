@@ -284,6 +284,7 @@ public class Quality {
     }
 
     public enum Visibility {
+        IKKE_REGISTRERT("ikkeRegistrert", "Ikke registrert", 99),
         FULLT_SYNLIG_OG_GJENFINNBAR_I_TERRENGET("fulltSynligOgGjenfinnbarITerrenget", "Fullt ut synlig/gjenfinnbar i terrenget Default", 0),
         DAARLIG_GJENFINNBAR_I_TERRENGET("dårligGjenfinnbarITerrenget", "Dårlig gjenfinnbar i terreng.", 1),
         MIDDELS_SYNLIG_I_FLYBILDE("middelsSynligIFlybilde", "Middels synlig i flybilde/modell", 2),
