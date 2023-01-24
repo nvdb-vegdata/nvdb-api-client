@@ -35,7 +35,7 @@ public class TransactionInfoParser {
     public static TransactionInfo parseTransaction(JsonObject obj) {
 
         Integer id = GsonUtil.parseIntMember(obj, "taskId");
-        LocalDateTime date = GsonUtil.parseDateTimeMember(obj, "tidspunkt");
+        LocalDateTime date = GsonUtil.parseDateTimeMember(obj, "transaksjonstidspunkt");
         LocalDateTime indexedDate = GsonUtil.parseDateTimeMember(obj, "indekseringstidspunkt");
         return new TransactionInfo(id, date, indexedDate);
     }
