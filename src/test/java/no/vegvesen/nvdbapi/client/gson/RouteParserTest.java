@@ -1,10 +1,13 @@
 package no.vegvesen.nvdbapi.client.gson;
 
+import no.vegvesen.nvdbapi.client.model.Quality;
 import no.vegvesen.nvdbapi.client.model.roadnet.route.RouteOnRoadNet;
 import no.vegvesen.nvdbapi.client.model.roadnet.route.RouteSegment;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
 import static no.vegvesen.nvdbapi.client.gson.Helper.parseObject;

@@ -38,12 +38,14 @@
         "datatype": "GeomPunkt",
         "verdi": "POINT Z(88206.76856 6783844.94758 259.86262)",
         "kvalitet": {
-            "målemetode": 95,
+            "målemetode": 10,
             "nøyaktighet": 5,
             "synbarhet": 2,
-            "målemetodeHøyde": 1,
+            "målemetodeHøyde": 10,
             "nøyaktighetHøyde": 1,
-            "maksimaltAvvik": 2
+            "maksimaltAvvik": 2,
+            "datafangstmetode": "lan",
+            "datafangstmetodeHøyde": "lan"
         },
         "datafangstdato": "1012-12-12",
         "verifiseringsdato": "1012-12-13",

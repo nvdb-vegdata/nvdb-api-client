@@ -1,4 +1,7 @@
 # Changelog for NVDB API LES V3 Client
+## 1.20.0
+* **Breaking**: Removed Quality enums: `Measurement`, `HeightMeasurement` and `Visibility`. Replaced with integer values as provided by NVDB API Les v3.
+* Introduced bindings for *datafangstmetode* and *datafangstmetodeHøyde* (`Quality#getCaptureMethod()` and `Quality#getHeightCaptureMethod()` respectively)
 
 ## 1.19.16
 * Added TransactionStatusClient 
