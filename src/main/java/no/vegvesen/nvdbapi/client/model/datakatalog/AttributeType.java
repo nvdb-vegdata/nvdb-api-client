@@ -100,7 +100,7 @@ public abstract class AttributeType implements Serializable {
     public enum Importance {
         NOT_SET(0, "IKKE_SATT"),
         MANDATORY(1, "PÅKREVD_ABSOLUTT"),
-        REQUIRED(2, "PÅKREVD"),
+        RECOMMENDED(2, "PÅKREVD_IKKE_ABSOLUTT"),
         CONDITIONAL(3, "BETINGET"),
         OPTIONAL(4, "OPSJONELL"),
         MINOR(7, "MINDRE_VIKTIG"),
