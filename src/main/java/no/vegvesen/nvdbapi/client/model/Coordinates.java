@@ -1,6 +1,10 @@
 package no.vegvesen.nvdbapi.client.model;
 
 import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Stream;
+
+import static no.vegvesen.nvdbapi.client.model.Projection.*;
 
 public class Coordinates {
     private final Projection projection;
@@ -18,7 +22,7 @@ public class Coordinates {
     }
 
     public static Coordinates utm33(double easting, double northing) {
-        return new Coordinates(Projection.UTM33, easting, northing);
+        return new Coordinates(UTM33, easting, northing);
     }
 
     public Projection getProjection() {
@@ -51,5 +55,10 @@ public class Coordinates {
     @Override
     public int hashCode() {
         return Objects.hash(projection, lat_easting, long_northing);
+    }
+
+    public static Optional<Coordinates> of(int srid, double x, double y){
+        return Stream.of(UTM32, UTM33, UTM34, UTM35, WGS84).filter(p -> p.getSrid() == srid).findAny()
+                .map(projection -> new Coordinates(projection, x, y));
     }
 }
