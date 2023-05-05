@@ -1,4 +1,6 @@
 # Changelog for NVDB API LES V3 Client
+## 1.20.2
+* Added more srid to Coordinates class
 ## 1.20.1
 * Fixed broken binding in `Importance` enum. (*"PÅKREVD"* -> *PÅKREVD_IKKE_ABSOLUTT*)
 ## 1.20.0
