@@ -159,12 +159,25 @@ public class RoadObjectClient extends AbstractJerseyClient {
         return Page.defaults();
     }
 
+    public RoadObject getRoadObject(long featureId, RoadObjectRequest request) {
+        return getRoadObject(null, featureId, request);
+    }
+    public RoadObject getRoadObject(long featureId) {
+        return getRoadObject(featureId, DEFAULT);
+    }
+
     public RoadObject getRoadObject(int featureTypeId, long featureId) {
         return getRoadObject(featureTypeId, featureId, DEFAULT);
     }
 
     public RoadObject getRoadObject(int featureTypeId, long featureId, RoadObjectRequest request) {
-        UriBuilder path = start(featureTypeId).path(valueOf(featureId));
+        return getRoadObject(Integer.valueOf(featureTypeId), featureId, request);
+    }
+
+    private RoadObject getRoadObject(Integer featureTypeId, long featureId, RoadObjectRequest request) {
+        UriBuilder path = featureTypeId != null
+                ? start(featureTypeId).path(valueOf(featureId))
+                : startShortcut().queryParam("id", valueOf(featureId));
 
         logger.debug("Invoking {}", path);
         applyRequestParameters(path, convert(request));
@@ -256,6 +269,9 @@ public class RoadObjectClient extends AbstractJerseyClient {
 
     private UriBuilder start(int typeId) {
         return start().path(valueOf(typeId));
+    }
+    private UriBuilder startShortcut(){
+        return super.start().path("vegobjekt");
     }
 
     @Override
