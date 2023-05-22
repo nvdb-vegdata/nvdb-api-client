@@ -60,6 +60,19 @@ public class RoadPlacementClient extends AbstractJerseyClient {
     }
 
     /**
+     * Search for a placement by road sys ref with municipality in the roadsysref.
+     * @param request search parameters
+     * @param doubleMunicipality is used to set municipality as 'kommune' parameter as well as in the
+     *                           roadSysRef, to trigger exception.
+     * @return {@code Optional<RoadPlacement>} if query had result, otherwise {@code Optional.empty()}
+     */
+    public Optional<RoadPlacement> findPlacementWithMunicipality(RoadSysRefRequest request, boolean doubleMunicipality) {
+        return getResults("vegsystemreferanse", request.getQueryParamWithMunicipality(),
+                doubleMunicipality ? request.getMunicipality().orElse(null) : null,
+                request.getProjection().orElse(null), request.getDateFilter().orElse(null));
+    }
+
+    /**
      * Search for a placement by ref link.
      * @param request search parameters
      * @return {@code Optional<RoadPlacement>} if query had result, otherwise {@code Optional.empty()}
