@@ -1,4 +1,6 @@
 # Changelog for NVDB API LES V3 Client
+## 1.21.1
+Added methode in `RoadPlacementClient` to test municipality in roadSysRef
 ## 1.21.0
 Added `RoadObjectClient#getRoadObject` for retrieving RoadObject without typeId
 ## 1.20.2

@@ -151,6 +151,14 @@ public class RoadSysRefRequest {
                 (nonNull(this.getSideAreaPart()) ? "SD" + this.getSideAreaPart() + "M" + this.getSideAreaMeter() : "");
     }
 
+    public String getQueryParamWithMunicipality() {
+        return (this.getMunicipality().isPresent() ? this.getMunicipality().get().toString() : "") + this.getRoadCategory().name() +
+                this.getPhase() + this.getRoadNumber() + "S" + this.getSectionNumber() + "D" + this.getSectionPartNumber() +
+                "M" + this.getSectionMeter() + (nonNull(this.getInterSectionPart()) ? "KD" + this.getInterSectionPart() +
+                "M" + this.getInterSectionMeter() : "") + (nonNull(this.getSideAreaPart()) ? "SD" + this.getSideAreaPart() +
+                "M" + this.getSideAreaMeter() : "");
+    }
+
     @Override
     public String toString() {
         return this.getQueryParam();
