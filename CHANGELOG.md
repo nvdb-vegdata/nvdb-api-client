@@ -1,4 +1,6 @@
 # Changelog for NVDB API LES V3 Client
+## 1.21.2
+Added X-Client header and check for null variable
 ## 1.21.1
 Added methode in `RoadPlacementClient` to test municipality in roadSysRef
 ## 1.21.0

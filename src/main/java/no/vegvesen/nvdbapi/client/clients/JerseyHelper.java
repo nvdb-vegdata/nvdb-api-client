@@ -120,8 +120,9 @@ class JerseyHelper {
 
     static Optional<JsonElement> executeOptional(WebTarget target) {
         Invocation.Builder request = target.request();
+        request.header("X-Client", "Les API Client");
         URI uri = target.getUri();
-        String path = uri.getPath() + uri.getQuery();
+        String path = uri.getPath() + (uri.getQuery() == null ? "" : uri.getQuery());
         getEtag(path)
             .ifPresent(etag -> request.header(IF_NONE_MATCH, etag));
         Invocation inv = request.buildGet();
