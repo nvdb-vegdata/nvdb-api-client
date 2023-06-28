@@ -49,7 +49,7 @@ public class AsyncResult<T> {
         return Flux.create(sink -> executorService.execute(() -> {
             try {
                 PagingIndicator pagingIndicator = doPage(sink, page);
-                while (pagingIndicator.hasNext) {
+                while (pagingIndicator.hasNext && !sink.isCancelled()) {
                     pagingIndicator = doPage(sink, pagingIndicator.currentPage);
                 }
             } catch (Exception e) {
@@ -83,7 +83,7 @@ public class AsyncResult<T> {
                 reader.beginObject();
                 reader.nextName();
                 reader.beginArray();
-                while (reader.hasNext()) {
+                while (reader.hasNext() && !sink.isCancelled()) {
                     sink.next(
                             parser.apply(
                                     Streams.parse(reader).getAsJsonObject()));
@@ -97,7 +97,7 @@ public class AsyncResult<T> {
                 String token = currentPage.getStart().orElse(null);
                 logger.debug("last token: {} next token: {}", token, nextToken);
                 // no next page if last token and next token are equal
-                boolean hasNext = nextToken != null && (!nextToken.equals(token));
+                boolean hasNext = nextToken != null && (!nextToken.equals(token)) && !sink.isCancelled();
                 reader.endObject();
 
                 /*
