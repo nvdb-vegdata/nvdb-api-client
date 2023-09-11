@@ -1,6 +1,6 @@
 package no.vegvesen.nvdbapi.client.clients;
 
-import javax.ws.rs.ProcessingException;
+import jakarta.ws.rs.ProcessingException;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import org.junit.jupiter.api.AfterAll;

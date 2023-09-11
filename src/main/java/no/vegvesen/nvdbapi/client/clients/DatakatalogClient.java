@@ -35,9 +35,9 @@ import no.vegvesen.nvdbapi.client.util.Stopwatch;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.UriBuilder;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.UriBuilder;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.function.Function;
