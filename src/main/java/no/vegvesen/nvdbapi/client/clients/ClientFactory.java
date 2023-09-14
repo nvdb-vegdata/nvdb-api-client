@@ -35,8 +35,8 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;

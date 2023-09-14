@@ -29,9 +29,9 @@ import no.vegvesen.nvdbapi.client.gson.TransactionParser;
 import no.vegvesen.nvdbapi.client.model.Page;
 import no.vegvesen.nvdbapi.client.model.transaction.Transaction;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.UriBuilder;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.UriBuilder;
 
 import java.time.format.DateTimeFormatter;
 import java.util.function.Consumer;

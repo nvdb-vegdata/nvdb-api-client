@@ -1,16 +1,16 @@
 package no.vegvesen.nvdbapi.client.clients;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.UriBuilder;
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.UriBuilder;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
 import static java.util.Collections.singletonMap;
-import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
+import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
 class AuthClient extends AbstractJerseyClient {
     AuthClient(String baseUrl, Client client, Consumer<AbstractJerseyClient> onClose) {
