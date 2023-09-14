@@ -1,4 +1,6 @@
 # Changelog for NVDB API LES V3 Client
+## 2.0.1
+Upgrade of libraries to Jersey 3.1.1 and Jakarta 2.1.2
 ## 1.21.2
 Added X-Client header and check for null variable
 ## 1.21.1
