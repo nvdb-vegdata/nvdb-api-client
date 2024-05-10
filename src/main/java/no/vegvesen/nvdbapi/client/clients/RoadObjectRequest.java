@@ -52,6 +52,7 @@ public class RoadObjectRequest {
     private final Set<RoadObjectClient.Include> includes;
     private final Set<RoadObjectClient.IncludeGeometry> includeGeometries;
     private final Set<RoadObjectClient.IncludeAttribute> includeAttributes;
+    private final Set<RoadObjectClient.IncludeStats> includeStats;
     private final List<OverlapFilter> overlapFilters;
     private final List<Integer> municipalities;
     private final List<Integer> counties;
@@ -78,6 +79,7 @@ public class RoadObjectRequest {
         includes = b.includes;
         includeGeometries = b.includeGeometries;
         includeAttributes = b.includeAttributes;
+        includeStats = b.includeStats;
         distanceTolerance = b.distanceTolerance;
         attributeFilter = b.attributeFilter;
         bbox = b.bbox;
@@ -138,6 +140,10 @@ public class RoadObjectRequest {
 
     public Set<RoadObjectClient.IncludeGeometry> getIncludeGeometries() {
         return this.includeGeometries;
+    }
+
+    public Set<RoadObjectClient.IncludeStats> getIncludeStats() {
+        return this.includeStats;
     }
 
     public Set<RoadObjectClient.IncludeAttribute> getIncludeAttributes() {
@@ -295,6 +301,7 @@ public class RoadObjectRequest {
         private Set<RoadObjectClient.Include> includes = Collections.emptySet();
         private Set<RoadObjectClient.IncludeGeometry> includeGeometries = Collections.emptySet();
         private Set<RoadObjectClient.IncludeAttribute> includeAttributes = Collections.emptySet();
+        private Set<RoadObjectClient.IncludeStats> includeStats = Collections.emptySet();
         private String attributeFilter;
         private String bbox;
         private String bpolygon;
@@ -406,6 +413,11 @@ public class RoadObjectRequest {
 
         public Builder withIncludeGeometries(RoadObjectClient.IncludeGeometry... includes) {
             this.includeGeometries = new HashSet<>(Arrays.asList(includes));
+            return this;
+        }
+
+        public Builder withIncludeStats(Set<RoadObjectClient.IncludeStats> includeStats) {
+            this.includeStats = includeStats;
             return this;
         }
 

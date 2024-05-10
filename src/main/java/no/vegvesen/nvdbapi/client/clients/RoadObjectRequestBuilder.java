@@ -59,6 +59,7 @@ class RoadObjectRequestBuilder {
         request.getDistanceTolerance().ifPresent(v -> map.putSingle("geometritoleranse", Integer.toString(v)));
         request.getDepth().ifPresent(v -> map.putSingle("dybde", v));
         getIncludeArgument(request.getIncludes()).ifPresent(v -> map.putSingle("inkluder", v));
+        getIncludeStatsArgument(request.getIncludeStats()).ifPresent(v -> map.putSingle("inkluder", v));
         getIncludeGeometriesArgument(request.getIncludeGeometries()).ifPresent(v -> map.putSingle("inkludergeometri", v));
         getIncludeAttributesArgument(request.getIncludeAttributes()).ifPresent(v -> map.putSingle("inkluder_egenskaper", v));
         fromSet(request.getTypeOfRoadFilter(), TypeOfRoad::getTypeOfRoadSosi).ifPresent(v -> map.putSingle("typeveg", v));
@@ -143,6 +144,19 @@ class RoadObjectRequestBuilder {
 
         return Optional.of(values.stream()
             .map(RoadObjectClient.IncludeAttribute::stringValue)
+            .collect(Collectors.joining(",")));
+    }
+
+    private static Optional<String> getIncludeStatsArgument(Set<RoadObjectClient.IncludeStats> values) {
+        // Defaults
+        if (values == null
+            || values.isEmpty()
+            || values.equals(RoadObjectClient.IncludeAttribute.all())) {
+            return Optional.empty();
+        }
+
+        return Optional.of(values.stream()
+            .map(RoadObjectClient.IncludeStats::stringValue)
             .collect(Collectors.joining(",")));
     }
 

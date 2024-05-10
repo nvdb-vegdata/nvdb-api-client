@@ -1,4 +1,6 @@
 # Changelog for NVDB API LES V3 Client
+## 2.0.2
+Added param include=alle,lengde,antall for roadobject statistics 
 ## 2.0.1
 Upgrade of libraries to Jersey 3.1.1 and Jakarta 2.1.2
 ## 1.21.2

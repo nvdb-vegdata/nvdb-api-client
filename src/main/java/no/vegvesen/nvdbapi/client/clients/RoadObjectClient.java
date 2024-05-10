@@ -350,6 +350,25 @@ public class RoadObjectClient extends AbstractJerseyClient {
         }
     }
 
+    public enum IncludeStats {
+        ALLE("alle"),
+        LENGDE("lengde"),
+        ANTALL("antall");
+
+        private final String value;
+        IncludeStats(String stringValue) {
+            this.value = stringValue;
+        }
+
+        public String stringValue() {
+            return value;
+        }
+
+        public static Set<IncludeStats> all() {
+            return EnumSet.allOf(IncludeStats.class);
+        }
+    }
+
     public static class RoadObjectsResult extends GenericResultSet<RoadObject> {
 
         public RoadObjectsResult(WebTarget baseTarget,

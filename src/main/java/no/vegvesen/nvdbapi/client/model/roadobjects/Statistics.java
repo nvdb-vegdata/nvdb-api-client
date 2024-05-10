@@ -26,22 +26,33 @@
 package no.vegvesen.nvdbapi.client.model.roadobjects;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class Statistics {
 
-    private final int numFound;
-    private final double length;
+    private final Optional<Integer> numFound;
+    private final Optional<Double> length;
 
     public Statistics(int numFound, double length) {
-        this.numFound = numFound;
-        this.length = length;
+        this.numFound = Optional.of(numFound);
+        this.length = Optional.of(length);
     }
 
-    public int getNumFound() {
+    public Statistics(int numFound) {
+        this.numFound = Optional.of(numFound);
+        this.length = Optional.empty();
+    }
+
+    public Statistics(double length) {
+        this.length = Optional.of(length);
+        this.numFound = Optional.empty();
+    }
+
+    public Optional<Integer> getNumFound() {
         return numFound;
     }
 
-    public double getLength() {
+    public Optional<Double> getLength() {
         return length;
     }
 
