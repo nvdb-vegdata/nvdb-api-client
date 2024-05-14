@@ -33,13 +33,13 @@ import no.vegvesen.nvdbapi.client.exceptions.JsonExceptionParser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.WebApplicationException;
+import jakarta.ws.rs.client.Entity;
+import jakarta.ws.rs.client.Invocation;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.Response;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
@@ -48,7 +48,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-import static javax.ws.rs.core.HttpHeaders.IF_NONE_MATCH;
+import static jakarta.ws.rs.core.HttpHeaders.IF_NONE_MATCH;
 import static no.vegvesen.nvdbapi.client.clients.ClientFactory.*;
 
 class JerseyHelper {
