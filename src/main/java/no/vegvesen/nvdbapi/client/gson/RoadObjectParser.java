@@ -68,6 +68,7 @@ import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.StructAttribute;
 import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.TimeAttribute;
 import no.vegvesen.nvdbapi.client.model.roadobjects.attribute.TurnExtent;
 
+import static java.util.Objects.nonNull;
 import static java.util.stream.Collectors.toList;
 
 import static no.vegvesen.nvdbapi.client.gson.AttributeTypeParser.parseUnit;
@@ -384,10 +385,16 @@ public final class RoadObjectParser {
     }
 
     public static Statistics parseStatistics(JsonObject obj) {
-        int numFound = parseIntMember(obj, "antall");
-        double length = parseDoubleMember(obj, "lengde");
+        Integer numFound = parseIntMember(obj, "antall");
+        Double length = parseDoubleMember(obj, "lengde");
 
-        return new Statistics(numFound, length);
+        if (nonNull(numFound) && nonNull(length)) return new Statistics(numFound, length);
+
+        if (nonNull(numFound)) {
+            return new Statistics(numFound);
+        } else {
+            return new Statistics(length);
+        }
     }
 
     public static RoadObjectType parseRoadObjectType(JsonObject obj){
