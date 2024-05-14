@@ -93,10 +93,16 @@ public class RoadNetRouteClient extends AbstractJerseyClient {
         Map<String, String> jsonMap = new HashMap<>();
 
         if (request.getStartReflinkPosition() != null) jsonMap.put(RouteRequestField.START, String.valueOf(request.getStartReflinkPosition()));
+        else if (request.getStartCoordinates() != null) jsonMap.put(RouteRequestField.START, String.valueOf(request.getStartCoordinates()));
+
         if (request.getEndReflinkPosition() != null) jsonMap.put(RouteRequestField.END, String.valueOf(request.getEndReflinkPosition()));
+        else if (request.getEndCoordinates() != null) jsonMap.put(RouteRequestField.END, String.valueOf(request.getEndCoordinates()));
+
         if (request.getGeometry() != null) jsonMap.put(RouteRequestField.GEOMETRY, request.getGeometry());
+
         jsonMap.put(RouteRequestField.DISTANCE, String.valueOf(request.getDistance()));
         jsonMap.put(RouteRequestField.ENVELOPE, String.valueOf(request.getEnvelope()));
+        jsonMap.put(RouteRequestField.SRID, String.valueOf(request.getProjection().getSrid()));
         jsonMap.put(RouteRequestField.BRIEF_RESPONSE, String.valueOf(request.isBriefResponse()));
         jsonMap.put(RouteRequestField.CONNECTION_LINKS, String.valueOf(request.isConnectionLinks()));
         jsonMap.put(RouteRequestField.DETAILED_LINKS, String.valueOf(request.isDetailedLinks()));
