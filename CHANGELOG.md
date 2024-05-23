@@ -1,4 +1,6 @@
 # Changelog for NVDB API LES V3 Client
+## 2.0.4
+RoadNetRequest now accepts multiple RefLinkPartTypes.
 ## 2.0.3
 Added param include=alle,lengde,antall for roadobject statistics 
 ## 2.0.1

@@ -56,7 +56,7 @@ public class RoadNetRequest {
     private final Optional<RoadUserGroup> roadUserGroupFilter;
     private final Optional<SeparatePassages> separatePassagesFilter;
     private final Set<TypeOfRoad> typeOfRoadFilter;
-    private final Optional<RefLinkPartType> refLinkPartTypeFilter;
+    private final Set<RefLinkPartType> refLinkPartTypeFilter;
     private final Set<DetailLevel> detailLevelFilter;
 
     private RoadNetRequest(Builder b) {
@@ -118,7 +118,7 @@ public class RoadNetRequest {
         return typeOfRoadFilter;
     }
 
-    public Optional<RefLinkPartType> getRefLinkPartTypeFilter() {
+    public Set<RefLinkPartType> getRefLinkPartTypeFilter() {
         return refLinkPartTypeFilter;
     }
 
@@ -203,7 +203,7 @@ public class RoadNetRequest {
         private Optional<Boolean> intersectionFilter = Optional.empty();
         private Optional<RoadUserGroup> roadUserGroupFilter = Optional.empty();
         private Optional<SeparatePassages> separatePassagesFilter = Optional.empty();
-        private Optional<RefLinkPartType> refLinkPartTypeFilter = Optional.empty();
+        private Set<RefLinkPartType> refLinkPartTypeFilter = Collections.emptySet();
         private Set<DetailLevel> detailLevelFilter = Collections.emptySet();
         private Set<TypeOfRoad> typeOfRoadFilter = Collections.emptySet();
 
@@ -239,8 +239,13 @@ public class RoadNetRequest {
             return this;
         }
 
-        public Builder withRefLinkPartTypeFilter(RefLinkPartType refLinkPartTypeFilter) {
-            this.refLinkPartTypeFilter = Optional.ofNullable(refLinkPartTypeFilter);
+        public Builder withRefLinkPartTypeFilter(Set<RefLinkPartType> refLinkPartTypeFilter) {
+            this.refLinkPartTypeFilter = refLinkPartTypeFilter;
+            return this;
+        }
+
+        public Builder withRefLinkPartTypeFilter(RefLinkPartType... refLinkPartTypeFilter) {
+            this.refLinkPartTypeFilter = new HashSet<>(Arrays.asList(refLinkPartTypeFilter));
             return this;
         }
 
