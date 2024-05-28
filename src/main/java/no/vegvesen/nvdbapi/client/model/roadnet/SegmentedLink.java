@@ -56,8 +56,7 @@ public final class SegmentedLink implements Serializable {
     private final TopologyLevel topologyLevel;
     private final TypeOfRoad roadType;
     private final List<String> lanes;
-
-
+    private final List<String> lanes_metrert;
     private final RefLinkExtentPlacement superLinkExtent;
     private final Integer county;
     private final Integer municipality;
@@ -80,7 +79,8 @@ public final class SegmentedLink implements Serializable {
                          List<ContractArea> contractAreas,
                          List<Route> routes,
                          Street street,
-                         List<String> lanes) {
+                         List<String> lanes,
+                         List<String> lanes_metrert) {
         this.id = id;
         this.start = start;
         this.end = end;
@@ -104,6 +104,7 @@ public final class SegmentedLink implements Serializable {
         this.street = street;
         this.topologyLevel = topologyLevel;
         this.lanes = lanes;
+        this.lanes_metrert = lanes_metrert;
     }
 
     public long getId() {
@@ -196,6 +197,10 @@ public final class SegmentedLink implements Serializable {
 
     public List<String> getLanes() {
         return lanes;
+    }
+
+    public List<String> getLanes_metrert() {
+        return lanes_metrert;
     }
 
     @Override

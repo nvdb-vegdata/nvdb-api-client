@@ -34,8 +34,8 @@ import no.vegvesen.nvdbapi.client.model.roadobjects.RefLinkExtentPlacement;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+import static java.util.Objects.nonNull;
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 import static no.vegvesen.nvdbapi.client.gson.RoadObjectParser.*;
 
@@ -45,6 +45,22 @@ public final class SegmentedLinkParser {
     }
 
     public static SegmentedLink parse(JsonObject obj) {
+
+        JsonArray feltoversikt;
+        JsonArray feltoversikt_metrert;
+
+        JsonObject superstedfesting = (JsonObject) obj.get("superstedfesting");
+        if (nonNull(superstedfesting)) {
+            feltoversikt = superstedfesting.getAsJsonArray("kjørefelt");
+            feltoversikt_metrert = superstedfesting.getAsJsonArray("kjørefelt_metrering");
+        } else {
+            feltoversikt = obj.getAsJsonArray("feltoversikt");
+            feltoversikt_metrert = obj.getAsJsonArray("feltoversikt_metrering");
+        }
+
+        List<String> lanes = parseLanes(feltoversikt);
+        List<String> lanesMetrert = parseLanes(feltoversikt_metrert);
+
         return new SegmentedLink(
                 parseLongMember(obj, "veglenkesekvensid"),
                 parseDoubleMember(obj, "startposisjon"),
@@ -61,14 +77,15 @@ public final class SegmentedLinkParser {
                 parseDateMember(obj, "metadata.sluttdato"),
                 parseIntMember(obj, "fylke"),
                 parseIntMember(obj, "kommune"),
-                GsonUtil.parseGeometryMember(obj, "geometri"),
+                parseGeometryMember(obj, "geometri"),
                 parseDoubleMember(obj, "lengde"),
-                GsonUtil.parseRoadSysRefMember(obj, "vegsystemreferanse"),
+                parseRoadSysRefMember(obj, "vegsystemreferanse"),
                 RefLinkPartType.fromValue(parseStringMember(obj,"type")),
                 parseContractAreas(obj),
                 parseRoutes(obj),
                 parseStreet(obj),
-                parseLanes(obj.getAsJsonArray("feltoversikt")));
+                lanes,
+                lanesMetrert);
     }
 
     static List<String> parseLanes(JsonArray obj) {
