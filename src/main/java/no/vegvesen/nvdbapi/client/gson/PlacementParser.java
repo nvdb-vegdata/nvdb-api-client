@@ -122,9 +122,17 @@ public final class PlacementParser {
         SidePosition sidePos = Optional.ofNullable(parseStringMember(obj, "sideposisjon"))
             .map(SidePosition::from)
             .orElse(null);
+
+        Direction meteredDir = Optional.ofNullable(parseStringMember(obj, "retning_metrering"))
+                .map(Direction::from)
+                .orElse(null);
+        SidePosition meteredSidePos = Optional.ofNullable(parseStringMember(obj, "sideposisjon_metrering"))
+                .map(SidePosition::from)
+                .orElse(null);
+
         List<String> lane = parseStringListMember(obj, "kjørefelt");
 
-        return new RefLinkExtentPlacement(netElementId, startPos, endPos, dir, sidePos, lane);
+        return new RefLinkExtentPlacement(netElementId, startPos, endPos, dir, sidePos, lane, meteredDir, meteredSidePos);
     }
 
 }

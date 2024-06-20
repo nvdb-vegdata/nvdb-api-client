@@ -104,8 +104,8 @@ public final class SegmentedLinkParser {
                 parseDoubleMember(obj, "superstedfesting.sluttposisjon"),
                 parseOptionalStringMember(obj, "superstedfesting.retning").map(Direction::from).orElse(null),
                 parseOptionalStringMember(obj, "superstedfesting.sideposisjon").map(SidePosition::from).orElse(null),
-                parseStringListMember(obj, "superstedfesting.kjørefelt")
-            );
+                parseStringListMember(obj, "superstedfesting.kjørefelt"),
+                    null, null);
         } else {
             return null;
         }
