@@ -40,6 +40,7 @@ import com.google.gson.JsonElement;
 import no.vegvesen.nvdbapi.client.gson.SegmentedLinkParser;
 import no.vegvesen.nvdbapi.client.model.Page;
 import no.vegvesen.nvdbapi.client.model.roadnet.DetailLevel;
+import no.vegvesen.nvdbapi.client.model.roadnet.RefLinkPartType;
 import no.vegvesen.nvdbapi.client.model.roadnet.SegmentedLink;
 import no.vegvesen.nvdbapi.client.model.roadnet.TopologyLevel;
 import no.vegvesen.nvdbapi.client.model.roadnet.TypeOfRoad;
@@ -123,7 +124,8 @@ public class SegmentedRoadNetClient extends AbstractJerseyClient {
         request.getSeparatePassagesFilter().ifPresent(v -> path.queryParam("adskiltelop", v.getTextValue()));
         serializeSet(request.getTypeOfRoadFilter(), TypeOfRoad::getTypeOfRoadSosi)
                 .ifPresent(v -> path.queryParam("typeveg", v));
-        request.getRefLinkPartTypeFilter().ifPresent(v -> path.queryParam("veglenketype", v.getRefLinkPartType()));
+        serializeSet(request.getRefLinkPartTypeFilter(), RefLinkPartType::getRefLinkPartType)
+                .ifPresent(v -> path.queryParam("veglenketype", v));
         serializeSet(request.getDetailLevelFilter(), DetailLevel::getSosi)
                 .ifPresent(v -> path.queryParam("detaljniva", v));
         if (!request.getTopologyLevel().isEmpty()) {
