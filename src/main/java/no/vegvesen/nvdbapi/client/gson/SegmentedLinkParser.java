@@ -46,20 +46,17 @@ public final class SegmentedLinkParser {
 
     public static SegmentedLink parse(JsonObject obj) {
 
-        JsonArray feltoversikt;
-        JsonArray feltoversikt_metrert;
+        JsonArray lanes;
+        JsonArray lanesMetered;
 
         JsonObject superstedfesting = (JsonObject) obj.get("superstedfesting");
         if (nonNull(superstedfesting)) {
-            feltoversikt = superstedfesting.getAsJsonArray("kjørefelt");
-            feltoversikt_metrert = superstedfesting.getAsJsonArray("kjørefelt_metrering");
+            lanes = superstedfesting.getAsJsonArray("kjørefelt");
+            lanesMetered = superstedfesting.getAsJsonArray("kjørefelt_metrering");
         } else {
-            feltoversikt = obj.getAsJsonArray("feltoversikt");
-            feltoversikt_metrert = obj.getAsJsonArray("feltoversikt_metrering");
+            lanes = obj.getAsJsonArray("feltoversikt");
+            lanesMetered = obj.getAsJsonArray("feltoversikt_metrering");
         }
-
-        List<String> lanes = parseLanes(feltoversikt);
-        List<String> lanesMetrert = parseLanes(feltoversikt_metrert);
 
         return new SegmentedLink(
                 parseLongMember(obj, "veglenkesekvensid"),
@@ -84,8 +81,8 @@ public final class SegmentedLinkParser {
                 parseContractAreas(obj),
                 parseRoutes(obj),
                 parseStreet(obj),
-                lanes,
-                lanesMetrert);
+                parseLanes(lanes),
+                parseLanes(lanesMetered));
     }
 
     static List<String> parseLanes(JsonArray obj) {
