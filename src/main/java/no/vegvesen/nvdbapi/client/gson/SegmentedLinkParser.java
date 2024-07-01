@@ -34,8 +34,8 @@ import no.vegvesen.nvdbapi.client.model.roadobjects.RefLinkExtentPlacement;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
+import static java.util.Objects.nonNull;
 import static no.vegvesen.nvdbapi.client.gson.GsonUtil.*;
 import static no.vegvesen.nvdbapi.client.gson.RoadObjectParser.*;
 
@@ -45,6 +45,19 @@ public final class SegmentedLinkParser {
     }
 
     public static SegmentedLink parse(JsonObject obj) {
+
+        JsonArray lanes;
+        JsonArray lanesMetered;
+
+        JsonObject superstedfesting = (JsonObject) obj.get("superstedfesting");
+        if (nonNull(superstedfesting)) {
+            lanes = superstedfesting.getAsJsonArray("kjørefelt");
+            lanesMetered = superstedfesting.getAsJsonArray("kjørefelt_metrering");
+        } else {
+            lanes = obj.getAsJsonArray("feltoversikt");
+            lanesMetered = obj.getAsJsonArray("feltoversikt_metrering");
+        }
+
         return new SegmentedLink(
                 parseLongMember(obj, "veglenkesekvensid"),
                 parseDoubleMember(obj, "startposisjon"),
@@ -61,14 +74,15 @@ public final class SegmentedLinkParser {
                 parseDateMember(obj, "metadata.sluttdato"),
                 parseIntMember(obj, "fylke"),
                 parseIntMember(obj, "kommune"),
-                GsonUtil.parseGeometryMember(obj, "geometri"),
+                parseGeometryMember(obj, "geometri"),
                 parseDoubleMember(obj, "lengde"),
-                GsonUtil.parseRoadSysRefMember(obj, "vegsystemreferanse"),
+                parseRoadSysRefMember(obj, "vegsystemreferanse"),
                 RefLinkPartType.fromValue(parseStringMember(obj,"type")),
                 parseContractAreas(obj),
                 parseRoutes(obj),
                 parseStreet(obj),
-                parseLanes(obj.getAsJsonArray("feltoversikt")));
+                parseLanes(lanes),
+                parseLanes(lanesMetered));
     }
 
     static List<String> parseLanes(JsonArray obj) {
@@ -87,8 +101,8 @@ public final class SegmentedLinkParser {
                 parseDoubleMember(obj, "superstedfesting.sluttposisjon"),
                 parseOptionalStringMember(obj, "superstedfesting.retning").map(Direction::from).orElse(null),
                 parseOptionalStringMember(obj, "superstedfesting.sideposisjon").map(SidePosition::from).orElse(null),
-                parseStringListMember(obj, "superstedfesting.kjørefelt")
-            );
+                parseStringListMember(obj, "superstedfesting.kjørefelt"),
+                    null, null);
         } else {
             return null;
         }

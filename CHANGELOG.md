@@ -1,4 +1,7 @@
 # Changelog for NVDB API LES V3 Client
+## 2.0.5
+Added retning_metrering, sideposisjon_metrering for road objects when parameter inkluder=vegsegmenter, lokasjon
+Added kjørefelt_metrering and feltoversikt_metrering for road net
 ## 2.0.4
 RoadNetRequest now accepts multiple RefLinkPartTypes.
 ## 2.0.3

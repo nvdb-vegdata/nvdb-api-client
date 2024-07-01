@@ -26,7 +26,6 @@
 package no.vegvesen.nvdbapi.client.model.roadnet;
 
 import no.vegvesen.nvdbapi.client.model.Geometry;
-import no.vegvesen.nvdbapi.client.model.RoadPlacement;
 import no.vegvesen.nvdbapi.client.model.areas.ContractArea;
 import no.vegvesen.nvdbapi.client.model.areas.Route;
 import no.vegvesen.nvdbapi.client.model.areas.Street;
@@ -56,8 +55,7 @@ public final class SegmentedLink implements Serializable {
     private final TopologyLevel topologyLevel;
     private final TypeOfRoad roadType;
     private final List<String> lanes;
-
-
+    private final List<String> lanesMetered;
     private final RefLinkExtentPlacement superLinkExtent;
     private final Integer county;
     private final Integer municipality;
@@ -80,7 +78,8 @@ public final class SegmentedLink implements Serializable {
                          List<ContractArea> contractAreas,
                          List<Route> routes,
                          Street street,
-                         List<String> lanes) {
+                         List<String> lanes,
+                         List<String> lanesMetered) {
         this.id = id;
         this.start = start;
         this.end = end;
@@ -104,6 +103,7 @@ public final class SegmentedLink implements Serializable {
         this.street = street;
         this.topologyLevel = topologyLevel;
         this.lanes = lanes;
+        this.lanesMetered = lanesMetered;
     }
 
     public long getId() {
@@ -196,6 +196,10 @@ public final class SegmentedLink implements Serializable {
 
     public List<String> getLanes() {
         return lanes;
+    }
+
+    public List<String> getLanesMetered() {
+        return lanesMetered;
     }
 
     @Override

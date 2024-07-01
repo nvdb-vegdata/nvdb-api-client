@@ -38,19 +38,25 @@ public class RefLinkExtentPlacement implements Placement {
     private final Direction direction;
     private final SidePosition sidePos;
     private final List<String> lane;
+    private final Direction meteredDirection;
+    private final SidePosition meteredSidePos;
 
     public RefLinkExtentPlacement(long netElementId,
                                   double startPosition,
                                   double endPosition,
                                   Direction direction,
                                   SidePosition sidePos,
-                                  List<String> lane) {
+                                  List<String> lane,
+                                  Direction meteredDirection,
+                                  SidePosition meteredSidePos) {
         this.netElementId = netElementId;
         this.startPosition = startPosition;
         this.endPosition = endPosition;
         this.direction = direction;
         this.sidePos = sidePos;
         this.lane = lane;
+        this.meteredDirection = meteredDirection;
+        this.meteredSidePos = meteredSidePos;
     }
 
     public long getNetElementId() {
@@ -81,6 +87,14 @@ public class RefLinkExtentPlacement implements Placement {
         return lane;
     }
 
+    public Direction getMeteredDirection() {
+        return meteredDirection;
+    }
+
+    public SidePosition getMeteredSidePos() {
+        return meteredSidePos;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,12 +105,15 @@ public class RefLinkExtentPlacement implements Placement {
                 Double.compare(refLinkExtentPlacement.endPosition, endPosition) == 0 &&
                 direction == refLinkExtentPlacement.direction &&
                 sidePos == refLinkExtentPlacement.sidePos &&
+                meteredDirection == refLinkExtentPlacement.meteredDirection &&
+                meteredSidePos == refLinkExtentPlacement.meteredSidePos &&
                 Objects.equals(lane, refLinkExtentPlacement.lane);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(netElementId, startPosition, endPosition, direction, sidePos, lane);
+        return Objects.hash(netElementId, startPosition, endPosition, direction, sidePos, lane,
+                meteredDirection, meteredSidePos);
     }
 
     @Override
@@ -107,6 +124,8 @@ public class RefLinkExtentPlacement implements Placement {
                 ", endPosition=" + endPosition +
                 ", direction=" + direction +
                 ", sidePos=" + sidePos +
+                ", meteredDirection=" + direction +
+                ", meteredSidePos=" + sidePos +
                 ", lane=" + lane +
                 '}';
     }

@@ -76,6 +76,10 @@ public class VegobjekterParserTest {
     @Test
     void parseEgenskaper() throws IOException {
         List<Attribute> attributes = parsePlainList("vegobjekter/egenskaper.json", RoadObjectParser::parseAttribute);
+
+
+
+
         assertThat(attributes, contains(
             new BlobAttribute(1, 213, "bah", "https://bah"),
             new BooleanAttribute(2, false),
@@ -138,16 +142,18 @@ public class VegobjekterParserTest {
                     0.23585116,
                     Direction.WITH,
                     SidePosition.MIDDLE,
-                    emptyList()
-                ),
+                    emptyList(),
+                    null,
+                    null),
                 new RefLinkExtentPlacement(
                     942694,
                     0.64558392,
                     0.64558392,
                     Direction.WITH,
                     SidePosition.MIDDLE,
-                    emptyList()
-                )
+                    emptyList(),
+                    null,
+                    null)
             ),
             new ListAttribute(
                 220016,
