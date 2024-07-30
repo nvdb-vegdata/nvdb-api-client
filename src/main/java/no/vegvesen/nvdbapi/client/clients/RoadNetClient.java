@@ -138,6 +138,7 @@ public class RoadNetClient extends AbstractJerseyClient {
         request.getContractArea().ifPresent(v -> path.queryParam("kontraktsomrade", v));
         request.getNationalRoute().ifPresent(v -> path.queryParam("riksvegrute", v));
         request.getStreet().ifPresent(v -> path.queryParam("gate", v));
+        request.getDistanceTolerance().ifPresent(v -> path.queryParam("geometritoleranse", v));
     }
 
     private UriBuilder endpoint() {
