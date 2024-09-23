@@ -87,8 +87,8 @@ public final class AreaParser {
 
     public static ExtendedStreet parseStreet(JsonObject obj) {
         return new ExtendedStreet(
-            parseStringMember(obj, "navn"),
-            parseIntMember(obj, "gatekode"),
+            parseStringMember(obj, "adressenavn"),
+            parseIntMember(obj, "adressekode"),
             parseBooleanMember(obj, "sideveg"),
             parseIntMember(obj, "kommune"),
             parseArray(obj, "vegobjekter", AreaParser::parseRoadObjectId)

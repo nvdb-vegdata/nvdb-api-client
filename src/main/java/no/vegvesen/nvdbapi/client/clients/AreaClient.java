@@ -104,7 +104,7 @@ public class AreaClient extends AbstractJerseyClient {
     }
 
     private WebTarget getStreetWebTarget(boolean includeObjectLink) {
-        UriBuilder path = areaRoot().path("gater");
+        UriBuilder path = areaRoot().path("adresser");
 
         if (includeObjectLink) path.queryParam("inkluder", getIncludeParameter(false, false, true));
 
@@ -175,7 +175,7 @@ public class AreaClient extends AbstractJerseyClient {
 
         public StreetsResult(WebTarget baseTarget,
                                  Page currentPage) {
-            super(baseTarget, currentPage, "gater", rt(AreaParser::parseStreet));
+            super(baseTarget, currentPage, "adresser", rt(AreaParser::parseStreet));
         }
     }
 
