@@ -76,6 +76,7 @@ public final class AreaParser {
 
     public static ContractArea parseContractArea(JsonObject obj) {
         return new ContractArea(
+                parseLongMember(obj, "id"),
                 parseIntMember(obj, "nummer"),
                 parseStringMember(obj, "navn"),
                 parseStringMember(obj, "type"),

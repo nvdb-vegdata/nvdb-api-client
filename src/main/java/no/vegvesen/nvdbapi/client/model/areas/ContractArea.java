@@ -32,6 +32,7 @@ import java.util.Optional;
 
 public final class ContractArea implements Serializable {
 
+    private final long id;
     private final Integer number;
     private final String name;
     private final String type;
@@ -39,9 +40,10 @@ public final class ContractArea implements Serializable {
     private final List<Integer> counties;
     private final List<Integer> municipalities;
 
-    public ContractArea(Integer number, String name, String type,
+    public ContractArea(long id, Integer number, String name, String type,
                         List<RoadObjectId> objects,
                         List<Integer> counties, List<Integer> municipalities) {
+        this.id = id;
         this.number = number;
         this.name = name;
         this.type = type;
@@ -49,7 +51,9 @@ public final class ContractArea implements Serializable {
         this.counties = counties;
         this.municipalities = municipalities;
     }
-
+    public long getId() {
+        return id;
+    }
     public Optional<Integer> getNumber() {
         return Optional.ofNullable(number);
     }
@@ -79,7 +83,7 @@ public final class ContractArea implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ContractArea that = (ContractArea) o;
-        return
+        return id == that.id &&
             Objects.equals(number, that.number) &&
             Objects.equals(name, that.name) &&
             Objects.equals(type, that.type) &&
@@ -90,6 +94,6 @@ public final class ContractArea implements Serializable {
 
     @Override
     public int hashCode() {
-        return Objects.hash(number, name, type, objects, counties, municipalities);
+        return Objects.hash(id,number, name, type, objects, counties, municipalities);
     }
 }
