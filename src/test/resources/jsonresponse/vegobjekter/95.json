@@ -52,26 +52,32 @@
         ],
         "kontraktsområder": [
           {
+            "id": 11111454,
             "nummer": 1454,
             "navn": "1454 ELEKTRO"
           },
           {
+            "id": 111111401,
             "nummer": 1401,
             "navn": "1401 INDRE SOGN 2009-2014"
           },
           {
+            "id": 111111454,
             "nummer": 1454,
             "navn": "1454 ELEKTRO SOGN 2012-2017"
           },
           {
+            "id": 111111455,
             "nummer": 1454,
             "navn": "E1454 Elektrokontrakt Sogn 2017-2022"
           },
           {
+            "id": 1005601401,
             "nummer": 1401,
             "navn": "1401 Indre Sogn 2014-2019"
           },
           {
+            "id": 1005601401,
             "nummer": 1401,
             "navn": "1401 Indre Sogn 2019-2024"
           }

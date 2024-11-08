@@ -94,38 +94,47 @@
         ],
         "kontraktsområder": [
           {
+            "id": 1005601339,
             "nummer": 1810,
             "navn": "1810 VESTERÅLEN 2015-2021"
           },
           {
+            "id": 1013587823,
             "nummer": 1823,
             "navn": "1823 1810-04 Vinterdrift Vesterålen Vest 2015-2021"
           },
           {
+            "id": 1005601339,
             "nummer": 5003,
             "navn": "5003 Lofoten_Vesterålen 2014-2019"
           },
           {
+            "id": 1005601331,
             "nummer": 1824,
             "navn": "1824 1810-05 Vesterålen Brøytestikk 2015-2021"
           },
           {
+            "id": 1005601332,
             "nummer": 1825,
             "navn": "1825 1810-06 Drenering Vesterålen 2016-2021"
           },
           {
+            "id": 1005601344,
             "nummer": 1826,
             "navn": "1826 1810-07 Faste dekker Vesterålen 2016-2021"
           },
           {
+            "id": 1005601345,
             "nummer": 1828,
             "navn": "1828 1810-09 Skilt-rekkverk Vesterålen 2016-2021"
           },
           {
+            "id": 1005601346,
             "nummer": 1827,
             "navn": "1827 1810-08 Grønt-renhold Vesterålen 2016-2021"
           },
           {
+            "id": 1005601346,
             "nummer": 5003,
             "navn": "5003 Ofoten - Lofoten og Vesterålen 2020-2025"
           }

@@ -201,22 +201,27 @@
         ],
         "kontraktsområder": [
           {
+            "id": 11111454,
             "nummer": 1454,
             "navn": "1454 ELEKTRO"
           },
           {
+            "id": 11111405,
             "nummer": 1405,
             "navn": "1405 INDRE SUNNFJORD 2009-2015"
           },
           {
+            "id": 11111454,
             "nummer": 1454,
             "navn": "1454 ELEKTRO SOGN 2012-2017"
           },
           {
+            "id": 11111405,
             "nummer": 1405,
             "navn": "1405 Indre Sunnfjord 2015-2020"
           },
           {
+            "id": 11111454,
             "nummer": 1454,
             "navn": "E1454 Elektrokontrakt Sogn 2017-2022"
           }
