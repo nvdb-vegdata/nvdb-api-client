@@ -1,6 +1,8 @@
 # Changelog for NVDB API LES V3 Client
-## 2.0.6
+## 2.0.8
 Reintroduced id to contract areas.
+## 2.0.7
+Do not use this version - hardcoded datakatalogversion 2.26.
 ## 2.0.5
 Added retning_metrering, sideposisjon_metrering for road objects when parameter inkluder=vegsegmenter, lokasjon
 Added kjørefelt_metrering and feltoversikt_metrering for road net
