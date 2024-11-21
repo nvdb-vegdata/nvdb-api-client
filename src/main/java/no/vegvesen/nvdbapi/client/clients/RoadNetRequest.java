@@ -58,6 +58,7 @@ public class RoadNetRequest {
     private final Set<TypeOfRoad> typeOfRoadFilter;
     private final Set<RefLinkPartType> refLinkPartTypeFilter;
     private final Set<DetailLevel> detailLevelFilter;
+    private final Integer distanceTolerance;
 
     private RoadNetRequest(Builder b) {
         page = b.page;
@@ -83,6 +84,7 @@ public class RoadNetRequest {
         refLinkPartTypeFilter = b.refLinkPartTypeFilter;
         detailLevelFilter = b.detailLevelFilter;
         typeOfRoadFilter = b.typeOfRoadFilter;
+        distanceTolerance = b.distanceTolerance;
 
     }
 
@@ -182,6 +184,10 @@ public class RoadNetRequest {
         return dateFilter;
     }
 
+    public Optional<Integer> getDistanceTolerance() {
+        return distanceTolerance;
+    }
+
     public static class Builder {
         private Optional<String> bpolygon = Optional.empty();
         private Optional<Page> page = Optional.empty();
@@ -206,6 +212,7 @@ public class RoadNetRequest {
         private Set<RefLinkPartType> refLinkPartTypeFilter = Collections.emptySet();
         private Set<DetailLevel> detailLevelFilter = Collections.emptySet();
         private Set<TypeOfRoad> typeOfRoadFilter = Collections.emptySet();
+        private Optional<Integer> distanceTolerance = Optional.empty();
 
         private Builder() {
         }
